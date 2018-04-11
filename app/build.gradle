@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 27
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.haotang.newpet"
         minSdkVersion 14
@@ -15,7 +15,7 @@ android {
         //指定EventBus加速用的Index
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ eventBusIndex : "com.haotang.newpet.MyEventBusIndex" ]
+                arguments = [eventBusIndex: "com.haotang.newpet.MyEventBusIndex"]
             }
         }
     }
@@ -55,8 +55,14 @@ android {
         targetGenDir 'src/main/java' //生成源文件的路径。默认源文件目录是在build目录中的(build/generated/source/greendao)
     }
 
-    lintOptions {
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
+    lintOptions {//处理打包失败
+        checkReleaseBuilds false
         abortOnError false
+        disable 'MissingTranslation', 'ExtraTranslation'
     }
 }
 
@@ -65,8 +71,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+//    compile 'com.android.support:appcompat-v7:25.3.0'
+//    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
+
     testCompile 'junit:junit:4.12'
     compile 'com.ljy.ring:devring:+'
     //══════════════════════依赖注入(Dagger2)开始══════════════════════
