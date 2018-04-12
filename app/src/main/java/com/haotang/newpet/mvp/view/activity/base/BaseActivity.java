@@ -6,9 +6,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 
-import com.haotang.newpet.BuildConfig;
 import com.haotang.newpet.R;
 import com.haotang.newpet.mvp.presenter.base.BasePresenter;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.base.activity.IBaseActivity;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.ColorBar;
@@ -45,7 +45,6 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IBaseActivity {
     private final static String TAG = BaseActivity.class.getSimpleName();
-    private final static boolean DEBUG = BuildConfig.DEBUG;
     @BindColor(R.color.colorPrimary)
     protected int mColor;
     @Inject
@@ -56,6 +55,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     protected abstract void initView(Bundle savedInstanceState);//做视图相关的初始化工作
 
+    protected abstract void setView(Bundle savedInstanceState);//做视图相关的初始化工作
+
     protected abstract void initData(Bundle savedInstanceState);//做数据相关的初始化工作
 
     protected abstract void initEvent();//做监听事件相关的初始化工作
@@ -63,13 +64,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getContentLayout() != 0) {
             setContentView(getContentLayout());
             ButterKnife.bind(this);
         }
+        DevRing.activityStackManager().pushOneActivity(this);
         initBarColor();//初始化状态栏/导航栏颜色，需在设置了布局后再调用
         initView(savedInstanceState);//由具体的activity实现，做视图相关的初始化
+        setView(savedInstanceState);//由具体的activity实现，做视图相关的设置
         initData(savedInstanceState);//由具体的activity实现，做数据的初始化
         initEvent();//由具体的activity实现，做事件监听的初始化
     }
@@ -110,44 +112,35 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onStart() {
         super.onStart();
-        if (DEBUG) {
-            RingLog.d(TAG, "onStart");
-        }
+        RingLog.d(TAG, "onStart");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (DEBUG) {
-            RingLog.d(TAG, "onRestart");
-        }
+        RingLog.d(TAG, "onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (DEBUG) {
-            RingLog.d(TAG, "onResume");
-        }
+        RingLog.d(TAG, "onResume");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (DEBUG) {
-            RingLog.d(TAG, "onStop");
-        }
+        RingLog.d(TAG, "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (DEBUG) {
-            RingLog.d(TAG, "onDestroy");
-        }
+        RingLog.d(TAG, "onDestroy");
         if (mPresenter != null) {
             mPresenter.destroy();
             mPresenter = null;
         }
+        DevRing.activityStackManager().exitActivity(this); //退出activity
     }
 }

@@ -1,10 +1,12 @@
 package com.haotang.newpet.mvp.presenter;
 
+import com.haotang.newpet.app.AppConfig;
 import com.haotang.newpet.mvp.model.entity.res.FlashBean;
 import com.haotang.newpet.mvp.model.entity.res.HttpResult;
-import com.haotang.newpet.mvp.model.imodel.IFlashMoel;
+import com.haotang.newpet.mvp.model.imodel.IFlashModel;
 import com.haotang.newpet.mvp.presenter.base.BasePresenter;
 import com.haotang.newpet.mvp.view.iview.IFlashView;
+import com.haotang.newpet.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
@@ -17,9 +19,9 @@ import com.ljy.devring.util.RxLifecycleUtil;
  * @author 徐俊
  * @date XJ on 2018/4/11 18:10
  */
-public class FlashPresenter extends BasePresenter<IFlashView, IFlashMoel> {
-    public FlashPresenter(IFlashView iFlashView, IFlashMoel iFlashMoel) {
-        super(iFlashView, iFlashMoel);
+public class FlashPresenter extends BasePresenter<IFlashView, IFlashModel> {
+    public FlashPresenter(IFlashView iFlashView, IFlashModel iFlashModel) {
+        super(iFlashView, iFlashModel);
     }
 
     /**
@@ -36,12 +38,11 @@ public class FlashPresenter extends BasePresenter<IFlashView, IFlashMoel> {
                                 mIView.getFlashSuccess(result.getSubjects());
                             }
                         } else {
-                            int errType = 9999;
-                            String errMessage = "服务器异常";
-                            if (result.getMsg() != null && !result.getMsg().isEmpty()) {
-                                errMessage = result.getMsg();
+                            if (!StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.getFlashFail(AppConfig.SERVER_ERROR, result.getMsg());
+                            } else {
+                                mIView.getFlashFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
                             }
-                            mIView.getFlashFail(errType, errMessage);
                         }
                     }
                 }

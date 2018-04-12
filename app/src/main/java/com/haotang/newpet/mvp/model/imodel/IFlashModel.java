@@ -12,6 +12,6 @@ import io.reactivex.Observable;
  * @author 徐俊
  * @date XJ on 2018/4/11 18:39
  */
-public interface IFlashMoel extends IBaseModel {
+public interface IFlashModel extends IBaseModel {
     Observable startPageConfig();
 }

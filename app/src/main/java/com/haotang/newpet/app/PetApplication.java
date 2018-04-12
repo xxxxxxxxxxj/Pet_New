@@ -27,7 +27,6 @@ public class PetApplication extends Application {
 //        if (LeakCanary.isInAnalyzerProcess(this)) return;
 //        LeakCanary.install(this);
 
-
         //*********1.初始化**********
         DevRing.init(this);
 
@@ -90,6 +89,7 @@ public class PetApplication extends Application {
                 .setIsUseCrashDiary(true)//设置是否开启崩溃日志功能，默认不开启
 //                .setCrashDiaryFolder(file)//设置崩溃日志的地址，传入的file需为文件夹，默认保存在/storage/emulated/0/Android/data/com.xxx.xxx/cache/crash_log下
                 .setIsShowRingLog(true);//设置是否显示Ringlog打印的内容，默认true
+
 
         //*********3.开始构建**********
         DevRing.create();

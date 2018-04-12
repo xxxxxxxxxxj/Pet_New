@@ -35,4 +35,42 @@ public class UrlConstants {
         }
         return url;
     }
+
+    public static String getServiceBaseUrlNew() {
+        String url = "";
+        switch (getEnvironmental()) {
+            case 1://test环境
+                url = "http://192.168.0.252/pet-api/";
+                break;
+            case 2://demo环境
+                url = "http://demo.cwjia.cn/pet-api/";
+                break;
+            case 3://线上环境
+                url = "https://api.ichongwujia.com/";
+                break;
+            default:
+                break;
+        }
+        return url;
+    }
+
+    public static String getWebBaseUrl() {
+        String url = "";
+        switch (getEnvironmental()) {
+            case 1://test环境
+                url = "http://192.168.0.247/";
+                break;
+            case 2://demo环境
+                url = "http://192.168.0.248/";
+                break;
+            case 3://线上环境
+                url = "https://m.cwjia.cn/";
+                break;
+            default:
+                break;
+        }
+        return url;
+    }
+
+    public static final String GET_FLASH_DATA = getServiceBaseUrlNew() + "startPageConfig/startShowImg";
 }
