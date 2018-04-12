@@ -1,6 +1,13 @@
 package com.haotang.newpet.di.module.activity;
 
+import com.haotang.newpet.mvp.model.FlashModel;
+import com.haotang.newpet.mvp.model.imodel.IFlashModel;
+import com.haotang.newpet.mvp.presenter.FlashPresenter;
+import com.haotang.newpet.mvp.view.iview.IFlashView;
+import com.ljy.devring.di.scope.ActivityScope;
+
 import dagger.Module;
+import dagger.Provides;
 
 /**
  * <p>Title:${type_name}</p>
@@ -12,5 +19,27 @@ import dagger.Module;
  */
 @Module
 public class FlashActivityModule {
+    private IFlashView mIFlashView;
 
+    public FlashActivityModule(IFlashView iFlashView) {
+        mIFlashView = iFlashView;
+    }
+
+    @Provides
+    @ActivityScope
+    IFlashView iFlashView() {
+        return mIFlashView;
+    }
+
+    @Provides
+    @ActivityScope
+    IFlashModel iFlashModel() {
+        return new FlashModel();
+    }
+
+    @Provides
+    @ActivityScope
+    FlashPresenter FlashPresenter(IFlashView iFlashView, IFlashModel iFlashModel) {
+        return new FlashPresenter(iFlashView, iFlashModel);
+    }
 }

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.haotang.newpet.R;
+import com.haotang.newpet.di.component.activity.DaggerFlashActivityCommponent;
+import com.haotang.newpet.di.module.activity.FlashActivityModule;
 import com.haotang.newpet.mvp.model.entity.res.FlashBean;
 import com.haotang.newpet.mvp.presenter.FlashPresenter;
 import com.haotang.newpet.mvp.view.activity.base.BaseActivity;
@@ -53,6 +55,8 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
     @Override
     protected void initView(Bundle savedInstanceState) {
         //使用Dagger2对本类中相关变量进行初始化
+        //使用Dagger2对本类中相关变量进行初始化
+        DaggerFlashActivityCommponent.builder().flashActivityModule(new FlashActivityModule(this)).build().inject(this);
         DevRing.activityStackManager().pushOneActivity(this);
     }
 
