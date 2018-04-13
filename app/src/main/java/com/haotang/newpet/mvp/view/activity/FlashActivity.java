@@ -1,7 +1,9 @@
 package com.haotang.newpet.mvp.view.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 
 import com.haotang.newpet.R;
 import com.haotang.newpet.di.component.activity.DaggerFlashActivityCommponent;
@@ -10,10 +12,12 @@ import com.haotang.newpet.mvp.model.entity.res.FlashBean;
 import com.haotang.newpet.mvp.presenter.FlashPresenter;
 import com.haotang.newpet.mvp.view.activity.base.BaseActivity;
 import com.haotang.newpet.mvp.view.iview.IFlashView;
+import com.haotang.newpet.mvp.view.widget.PermissionDialog;
 import com.haotang.newpet.util.CountdownUtil;
 import com.haotang.newpet.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.other.permission.PermissionListener;
 import com.ljy.devring.util.RingToast;
 
 /**
@@ -33,11 +37,15 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
 
     @Override
     public void getFlashSuccess(FlashBean flashBean) {
-        backup = flashBean.getBackup();
-        imgUrl = flashBean.getImgUrl();
-        jumpUrl = flashBean.getJumpUrl();
-        point = flashBean.getPoint();
-        initTimer(1);
+        if (flashBean != null) {
+            backup = flashBean.getBackup();
+            imgUrl = flashBean.getImgUrl();
+            jumpUrl = flashBean.getJumpUrl();
+            point = flashBean.getPoint();
+            initTimer(1);
+        } else {
+            initTimer(0);
+        }
     }
 
     @Override
@@ -67,11 +75,42 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        if (DevRing.cacheManager().spCache().getBoolean("guide", false)) {
-            mPresenter.startPageConfig();
-        } else {
-            initTimer(0);
-        }
+        //申请必要权限
+        DevRing.permissionManager().requestEach(FlashActivity.this, new PermissionListener() {
+            @Override
+            public void onGranted(String permissionName) {
+                //全部权限都被授予的话，则弹出底部选项
+                if (DevRing.cacheManager().spCache().getBoolean("guide", false)) {
+                    mPresenter.startPageConfig(FlashActivity.this);
+                } else {
+                    initTimer(0);
+                }
+            }
+
+            @Override
+            public void onDenied(String permissionName) {
+                //如果用户拒绝了其中一个授权请求，则提醒用户
+                RingToast.show(R.string.permission_request_READ_PHONE_STATE);
+                if (DevRing.cacheManager().spCache().getBoolean("guide", false)) {
+                    mPresenter.startPageConfig(FlashActivity.this);
+                } else {
+                    initTimer(0);
+                }
+            }
+
+            @Override
+            public void onDeniedWithNeverAsk(String permissionName) {
+                //如果用户拒绝了其中一个授权请求，且勾选了不再提醒，则需要引导用户到权限管理页面开启
+                new PermissionDialog(FlashActivity.this).setMessage(R.string.permission_request_READ_PHONE_STATE)
+                        .setPositiveButton(R.string.permission_request_dialog_pos)
+                        .setNegativeButton(R.string.permission_request_dialog_nav).show();
+                if (DevRing.cacheManager().spCache().getBoolean("guide", false)) {
+                    mPresenter.startPageConfig(FlashActivity.this);
+                } else {
+                    initTimer(0);
+                }
+            }
+        }, Manifest.permission.READ_PHONE_STATE);
     }
 
     private void initTimer(final int flag) {

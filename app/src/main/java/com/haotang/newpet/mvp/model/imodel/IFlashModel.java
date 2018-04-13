@@ -1,5 +1,7 @@
 package com.haotang.newpet.mvp.model.imodel;
 
+import android.app.Activity;
+
 import com.haotang.newpet.mvp.model.imodel.base.IBaseModel;
 
 import io.reactivex.Observable;
@@ -13,5 +15,5 @@ import io.reactivex.Observable;
  * @date XJ on 2018/4/11 18:39
  */
 public interface IFlashModel extends IBaseModel {
-    Observable startPageConfig();
+    Observable startPageConfig(Activity activity);
 }

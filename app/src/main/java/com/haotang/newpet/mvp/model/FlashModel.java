@@ -1,8 +1,11 @@
 package com.haotang.newpet.mvp.model;
 
+import android.app.Activity;
+
 import com.haotang.newpet.app.constant.UrlConstants;
 import com.haotang.newpet.mvp.model.http.FlashApiService;
 import com.haotang.newpet.mvp.model.imodel.IFlashModel;
+import com.haotang.newpet.util.SystemUtil;
 import com.ljy.devring.DevRing;
 
 import io.reactivex.Observable;
@@ -20,7 +23,7 @@ public class FlashModel implements IFlashModel {
      * 获取广告页数据
      */
     @Override
-    public Observable startPageConfig() {
-        return DevRing.httpManager().getService(FlashApiService.class).startPageConfig(UrlConstants.GET_FLASH_DATA);
+    public Observable startPageConfig(Activity activity) {
+        return DevRing.httpManager().getService(FlashApiService.class).startPageConfig(SystemUtil.getGlobalParam(UrlConstants.GET_FLASH_DATA, activity));
     }
 }

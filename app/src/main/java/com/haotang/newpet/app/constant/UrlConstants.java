@@ -72,5 +72,5 @@ public class UrlConstants {
         return url;
     }
 
-    public static final String GET_FLASH_DATA = getServiceBaseUrlNew() + "startPageConfig/startShowImg";
+    public static final String GET_FLASH_DATA = getServiceBaseUrlNew() + "startPageConfig/startShowImg?";
 }

@@ -7,6 +7,7 @@ import com.haotang.newpet.R;
 import com.haotang.newpet.app.constant.UrlConstants;
 import com.haotang.newpet.mvp.model.db.greendao.GreenDBManager;
 import com.haotang.newpet.mvp.model.imageload.FrescoManager;
+import com.haotang.newpet.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.FileUtil;
 
@@ -37,7 +38,7 @@ public class PetApplication extends Application {
         DevRing.configureHttp()//配置retrofit
                 .setBaseUrl(UrlConstants.getServiceBaseUrl())//设置BaseUrl
                 .setConnectTimeout(15)//设置请求超时时长，单位秒
-//                .setMapHeader(mapHeader)//设置全局的header信息
+                //.setMapHeader(SystemUtil.getMapHeader(getApplicationContext()))//设置全局的header信息
 //                .setIsUseCache(true)//设置是否启用缓存，默认不启用
 //                .setCacheFolder(file)//设置缓存地址，传入的file需为文件夹，默认保存在/storage/emulated/0/Android/data/com.xxx.xxx/cache/retrofit_http_cache下
 //                .setCacheSize(size)//设置缓存大小，单位byte，默认20M

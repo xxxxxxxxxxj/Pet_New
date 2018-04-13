@@ -1,5 +1,7 @@
 package com.haotang.newpet.mvp.presenter;
 
+import android.app.Activity;
+
 import com.haotang.newpet.app.AppConfig;
 import com.haotang.newpet.mvp.model.entity.res.FlashBean;
 import com.haotang.newpet.mvp.model.entity.res.HttpResult;
@@ -27,16 +29,14 @@ public class FlashPresenter extends BasePresenter<IFlashView, IFlashModel> {
     /**
      * 获取广告页数据
      */
-    public void startPageConfig() {
-        DevRing.httpManager().commonRequest(mIModel.startPageConfig(), new CommonObserver<HttpResult<FlashBean>>() {
+    public void startPageConfig(Activity activity) {
+        DevRing.httpManager().commonRequest(mIModel.startPageConfig(activity), new CommonObserver<HttpResult<FlashBean>>() {
             @Override
             public void onResult(HttpResult<FlashBean> result) {
                 if (mIView != null) {
                     if (result != null) {
                         if (result.getCode() == 0) {
-                            if (result.getSubjects() != null) {
-                                mIView.getFlashSuccess(result.getSubjects());
-                            }
+                            mIView.getFlashSuccess(result.getSubjects());
                         } else {
                             if (!StringUtil.isNotEmpty(result.getMsg())) {
                                 mIView.getFlashFail(AppConfig.SERVER_ERROR, result.getMsg());

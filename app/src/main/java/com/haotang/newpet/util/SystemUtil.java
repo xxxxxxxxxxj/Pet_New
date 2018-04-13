@@ -1,12 +1,24 @@
 package com.haotang.newpet.util;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.view.View;
+
+import com.haotang.newpet.R;
+import com.haotang.newpet.mvp.view.widget.PermissionDialog;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.other.permission.PermissionListener;
+import com.ljy.devring.util.RingToast;
 
 import java.io.InputStream;
 
@@ -47,5 +59,74 @@ public class SystemUtil {
         // 获取资源图片
         InputStream is = context.getResources().openRawResource(resId);
         return BitmapFactory.decodeStream(is, null, opt);
+    }
+
+    /**
+     * 获取IMEI码
+     *
+     * @param activity
+     * @return
+     */
+    public static String getIMEI(final Activity activity) {
+        TelephonyManager tm = (TelephonyManager) activity.getSystemService(activity.TELEPHONY_SERVICE);
+        return tm.getDeviceId();
+    }
+
+    /**
+     * 拨打电话
+     *
+     * @param context
+     * @param phone
+     */
+    public static void cellPhone(Context context, String phone) {
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.DIAL");
+        intent.setData(Uri.parse("tel:" + phone));
+        context.startActivity(intent);
+    }
+
+    /**
+     * 获取当前版本号
+     *
+     * @param context
+     * @return
+     */
+    public static String getCurrentVersion(Context context) {
+        String curVersion = "0";
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);// getPackageName()是你当前类的包名，0代表是获取版本信息
+            curVersion = packInfo.versionName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return curVersion;
+    }
+
+    public static String getGlobalParam(String baseUrl, Activity activity) {
+        if (baseUrl.contains("?")) {
+            baseUrl = baseUrl
+                    + "&system=android_" + getCurrentVersion(activity)
+                    + "&imei="
+                    + getIMEI(activity)
+                    + "&cellPhone="
+                    + DevRing.cacheManager().spCache().getString("cellphone", "") + "&phoneModel="
+                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                    + "&phoneSystemVersion=" + "Android "
+                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                    + System.currentTimeMillis();
+        } else {
+            baseUrl = baseUrl
+                    + "?system=android_" + getCurrentVersion(activity)
+                    + "&imei="
+                    + getIMEI(activity)
+                    + "&cellPhone="
+                    + DevRing.cacheManager().spCache().getString("cellphone", "") + "&phoneModel="
+                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                    + "&phoneSystemVersion=" + "Android "
+                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                    + System.currentTimeMillis();
+        }
+        return baseUrl;
     }
 }
