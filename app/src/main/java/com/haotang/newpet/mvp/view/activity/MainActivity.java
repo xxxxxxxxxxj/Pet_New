@@ -119,6 +119,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     public void getLatestVersionSuccess(LastVersionBean lastVersionBean) {
+        RingLog.d(TAG, "lastVersionBean = " + lastVersionBean.toString());
         if (lastVersionBean != null) {
             String downloadPath = lastVersionBean.getDownload();
             int isUpgrade = lastVersionBean.getMandate();

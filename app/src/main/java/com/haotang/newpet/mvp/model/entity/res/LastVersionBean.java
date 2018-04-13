@@ -16,6 +16,16 @@ public class LastVersionBean implements Serializable {
     private String download;
     private String text;
 
+    @Override
+    public String toString() {
+        return "LastVersionBean{" +
+                "nversion='" + nversion + '\'' +
+                ", mandate=" + mandate +
+                ", download='" + download + '\'' +
+                ", text='" + text + '\'' +
+                '}';
+    }
+
     public String getNversion() {
         return nversion;
     }

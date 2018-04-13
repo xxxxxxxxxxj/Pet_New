@@ -59,6 +59,9 @@ public class UpdateUtil {
         switch (updateType) {
             case UPDATEFORDIALOG:
                 //BgUpdate.updateForDialog(context, url, filePath);
+                break;
+            case UPDATEFORNOTIFICATION:
+                //BgUpdate.updateForNotification(context, url, filePath);
                 if (SystemUtil.isWifiConnected(context)) {
                     DownloadAppUtils.download(context, apkPath, serverVersionName);
                 } else {
@@ -69,9 +72,6 @@ public class UpdateUtil {
                         }
                     }).setContent("目前手机不是WiFi状态\n确认是否继续下载更新？").show();
                 }
-                break;
-            case UPDATEFORNOTIFICATION:
-                //BgUpdate.updateForNotification(context, url, filePath);
                 break;
         }
     }
