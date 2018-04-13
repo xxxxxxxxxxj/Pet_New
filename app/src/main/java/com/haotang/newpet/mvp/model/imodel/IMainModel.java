@@ -15,7 +15,7 @@ import io.reactivex.Observable;
  * @date XJ on 2018/4/13 15:02
  */
 public interface IMainModel extends IBaseModel {
-    Observable getLatestVersion(Activity activity);
+    Observable getLatestVersion(Activity activity, int systemType, String version, String time);
 
     Observable getBottomBar(Activity activity);
 }

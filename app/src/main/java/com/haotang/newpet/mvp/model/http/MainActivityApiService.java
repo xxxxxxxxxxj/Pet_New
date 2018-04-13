@@ -1,7 +1,12 @@
 package com.haotang.newpet.mvp.model.http;
 
+import com.haotang.newpet.mvp.model.entity.res.BootmBarBean;
+import com.haotang.newpet.mvp.model.entity.res.LastVersionBean;
+import com.haotang.newpet.mvp.model.entity.res.base.HttpResult;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
@@ -17,11 +22,13 @@ public interface MainActivityApiService {
      * 获取最新版本
      */
     @GET
-    Observable getLatestVersion(@Url String url);
+    Observable<HttpResult<LastVersionBean>> getLatestVersion(@Url String url, @Query("systemType") int systemType,
+                                                             @Query("version") String version,
+                                                             @Query("time") String time);
 
     /**
      * 获取底部bar
      */
     @GET
-    Observable getBottomBar(@Url String url);
+    Observable<HttpResult<BootmBarBean>> getBottomBar(@Url String url);
 }

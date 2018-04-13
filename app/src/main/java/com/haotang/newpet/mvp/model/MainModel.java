@@ -20,8 +20,8 @@ import io.reactivex.Observable;
 public class MainModel implements IMainModel {
 
     @Override
-    public Observable getLatestVersion(Activity activity) {
-        return DevRing.httpManager().getService(MainActivityApiService.class).getLatestVersion(UrlConstants.getGlobalParam(UrlConstants.GET_LASTVERSION_DATA, activity));
+    public Observable getLatestVersion(Activity activity, int systemType, String version, String time) {
+        return DevRing.httpManager().getService(MainActivityApiService.class).getLatestVersion(UrlConstants.getGlobalParam(UrlConstants.GET_LASTVERSION_DATA, activity), systemType, version, time);
     }
 
     @Override

@@ -5,9 +5,6 @@ import android.app.Activity;
 import com.haotang.newpet.util.SystemUtil;
 import com.ljy.devring.DevRing;
 
-import static com.haotang.newpet.util.SystemUtil.getCurrentVersion;
-import static com.haotang.newpet.util.SystemUtil.getIMEI;
-
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>

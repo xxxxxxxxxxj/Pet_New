@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             @Override
             public void onGranted(String permissionName) {
                 //全部权限都被授予的话，则弹出底部选项
-                mPresenter.getLatestVersion(MainActivity.this);
+                mPresenter.getLatestVersion(MainActivity.this, 2, SystemUtil.getCurrentVersion(MainActivity.this), String.valueOf(System.currentTimeMillis()));
             }
 
             @Override
@@ -153,14 +153,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     public void getLatestVersionFail(int status, String desc) {
-        RingLog.e(TAG, "FlashActivity getFlashFail() status = " + status + "---desc = " + desc);
-        RingToast.show("FlashActivity getFlashFail() status = " + status + "---desc = " + desc);
+        RingLog.e(TAG, "MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
+        RingToast.show("MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
     public void getBootmBarFail(int status, String desc) {
-        RingLog.e(TAG, "FlashActivity getBootmBarFail() status = " + status + "---desc = " + desc);
-        RingToast.show("FlashActivity getBootmBarFail() status = " + status + "---desc = " + desc);
+        RingLog.e(TAG, "MainActivity getBootmBarFail() status = " + status + "---desc = " + desc);
+        RingToast.show("MainActivity getBootmBarFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
