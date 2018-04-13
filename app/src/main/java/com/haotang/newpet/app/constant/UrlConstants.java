@@ -1,5 +1,13 @@
 package com.haotang.newpet.app.constant;
 
+import android.app.Activity;
+
+import com.haotang.newpet.util.SystemUtil;
+import com.ljy.devring.DevRing;
+
+import static com.haotang.newpet.util.SystemUtil.getCurrentVersion;
+import static com.haotang.newpet.util.SystemUtil.getIMEI;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -72,5 +80,34 @@ public class UrlConstants {
         return url;
     }
 
+    public static String getGlobalParam(String baseUrl, Activity activity) {
+        if (baseUrl.contains("?")) {
+            baseUrl = baseUrl
+                    + "&system=android_" + SystemUtil.getCurrentVersion(activity)
+                    + "&imei="
+                    + SystemUtil.getIMEI(activity)
+                    + "&cellPhone="
+                    + DevRing.cacheManager().spCache().getString("cellphone", "") + "&phoneModel="
+                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                    + "&phoneSystemVersion=" + "Android "
+                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                    + System.currentTimeMillis();
+        } else {
+            baseUrl = baseUrl
+                    + "?system=android_" + SystemUtil.getCurrentVersion(activity)
+                    + "&imei="
+                    + SystemUtil.getIMEI(activity)
+                    + "&cellPhone="
+                    + DevRing.cacheManager().spCache().getString("cellphone", "") + "&phoneModel="
+                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                    + "&phoneSystemVersion=" + "Android "
+                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                    + System.currentTimeMillis();
+        }
+        return baseUrl;
+    }
+
     public static final String GET_FLASH_DATA = getServiceBaseUrlNew() + "startPageConfig/startShowImg?";
+    public static final String GET_LASTVERSION_DATA = getServiceBaseUrlNew() + "user/checkversion?";
+    public static final String GET_BOTTOMBAR_DATA = getServiceBaseUrl() + "pet/user/index?";
 }

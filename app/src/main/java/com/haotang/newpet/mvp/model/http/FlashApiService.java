@@ -1,7 +1,7 @@
 package com.haotang.newpet.mvp.model.http;
 
 import com.haotang.newpet.mvp.model.entity.res.FlashBean;
-import com.haotang.newpet.mvp.model.entity.res.HttpResult;
+import com.haotang.newpet.mvp.model.entity.res.base.HttpResult;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

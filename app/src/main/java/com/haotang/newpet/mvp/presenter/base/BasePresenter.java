@@ -1,7 +1,7 @@
 package com.haotang.newpet.mvp.presenter.base;
 
 import com.haotang.newpet.mvp.model.imodel.base.IBaseModel;
-import com.haotang.newpet.mvp.view.iview.IBaseView;
+import com.haotang.newpet.mvp.view.iview.base.IBaseView;
 
 /**
  * author:  ljy

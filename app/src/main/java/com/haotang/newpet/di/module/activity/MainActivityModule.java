@@ -2,10 +2,10 @@ package com.haotang.newpet.di.module.activity;
 
 import android.content.Context;
 
-import com.haotang.newpet.mvp.model.FlashModel;
-import com.haotang.newpet.mvp.model.imodel.IFlashModel;
-import com.haotang.newpet.mvp.presenter.FlashPresenter;
-import com.haotang.newpet.mvp.view.iview.IFlashView;
+import com.haotang.newpet.mvp.model.MainModel;
+import com.haotang.newpet.mvp.model.imodel.IMainModel;
+import com.haotang.newpet.mvp.presenter.MainPresenter;
+import com.haotang.newpet.mvp.view.iview.IMainView;
 import com.haotang.newpet.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.di.scope.ActivityScope;
 
@@ -18,22 +18,22 @@ import dagger.Provides;
  * <p>Company:北京昊唐科技有限公司</p>
  *
  * @author 徐俊
- * @date XJ on 2018/4/12 13:54
+ * @date XJ on 2018/4/13 17:23
  */
 @Module
-public class FlashActivityModule {
+public class MainActivityModule {
     private Context mContext;
-    private IFlashView mIFlashView;
+    private IMainView mIMainView;
 
-    public FlashActivityModule(IFlashView iFlashView, Context context) {
-        mIFlashView = iFlashView;
+    public MainActivityModule(IMainView iMainView, Context context) {
+        mIMainView = iMainView;
         mContext = context;
     }
 
     @Provides
     @ActivityScope
-    IFlashView iFlashView() {
-        return mIFlashView;
+    IMainView iMainView() {
+        return mIMainView;
     }
 
     @Provides
@@ -44,8 +44,8 @@ public class FlashActivityModule {
 
     @Provides
     @ActivityScope
-    IFlashModel iFlashModel() {
-        return new FlashModel();
+    IMainModel iMainModel() {
+        return new MainModel();
     }
 
     @Provides
@@ -56,7 +56,7 @@ public class FlashActivityModule {
 
     @Provides
     @ActivityScope
-    FlashPresenter FlashPresenter(IFlashView iFlashView, IFlashModel iFlashModel) {
-        return new FlashPresenter(iFlashView, iFlashModel);
+    MainPresenter MainPresenter(IMainView iMainView, IMainModel iMainModel) {
+        return new MainPresenter(iMainView, iMainModel);
     }
 }

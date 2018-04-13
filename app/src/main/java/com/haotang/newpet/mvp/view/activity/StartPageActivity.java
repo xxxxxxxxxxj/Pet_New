@@ -41,10 +41,10 @@ public class StartPageActivity extends BaseActivity {
     @Override
     protected void setView(Bundle savedInstanceState) {
         SystemUtil.hideBottomUIMenu(this);
-        img_url = savedInstanceState.getString("img_url");
-        jump_url = savedInstanceState.getString("jump_url");
-        backup = savedInstanceState.getString("backup");
-        point = savedInstanceState.getInt("point");
+        img_url = getIntent().getStringExtra("img_url");
+        jump_url = getIntent().getStringExtra("jump_url");
+        backup = getIntent().getStringExtra("backup");
+        point = getIntent().getIntExtra("point", 0);
         DevRing.imageManager().loadNet(img_url, ivLandingpage);
         CountdownUtil.getInstance().newTimer(3000, 1000, new CountdownUtil.ICountDown() {
             @Override

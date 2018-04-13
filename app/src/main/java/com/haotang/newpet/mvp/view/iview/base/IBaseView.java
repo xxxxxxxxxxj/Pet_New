@@ -1,4 +1,4 @@
-package com.haotang.newpet.mvp.view.iview;
+package com.haotang.newpet.mvp.view.iview.base;
 
 /**
  * author:  ljy

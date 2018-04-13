@@ -3,7 +3,7 @@ package com.haotang.newpet.mvp.view.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
+import android.view.View;
 
 import com.haotang.newpet.R;
 import com.haotang.newpet.di.component.activity.DaggerFlashActivityCommponent;
@@ -14,11 +14,14 @@ import com.haotang.newpet.mvp.view.activity.base.BaseActivity;
 import com.haotang.newpet.mvp.view.iview.IFlashView;
 import com.haotang.newpet.mvp.view.widget.PermissionDialog;
 import com.haotang.newpet.util.CountdownUtil;
+import com.haotang.newpet.util.SystemTypeUtil;
 import com.haotang.newpet.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.other.permission.PermissionListener;
 import com.ljy.devring.util.RingToast;
+
+import javax.inject.Inject;
 
 /**
  * <p>Title:${type_name}</p>
@@ -34,6 +37,8 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
     private String imgUrl;
     private String jumpUrl;
     private int point;
+    @Inject
+    PermissionDialog permissionDialog;
 
     @Override
     public void getFlashSuccess(FlashBean flashBean) {
@@ -63,9 +68,9 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
     @Override
     protected void initView(Bundle savedInstanceState) {
         //使用Dagger2对本类中相关变量进行初始化
-        //使用Dagger2对本类中相关变量进行初始化
-        DaggerFlashActivityCommponent.builder().flashActivityModule(new FlashActivityModule(this)).build().inject(this);
+        DaggerFlashActivityCommponent.builder().flashActivityModule(new FlashActivityModule(this, this)).build().inject(this);
         DevRing.activityStackManager().pushOneActivity(this);
+        permissionDialog.setMessage(R.string.permission_request_READ_PHONE_STATE);
     }
 
     @Override
@@ -101,14 +106,7 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
             @Override
             public void onDeniedWithNeverAsk(String permissionName) {
                 //如果用户拒绝了其中一个授权请求，且勾选了不再提醒，则需要引导用户到权限管理页面开启
-                new PermissionDialog(FlashActivity.this).setMessage(R.string.permission_request_READ_PHONE_STATE)
-                        .setPositiveButton(R.string.permission_request_dialog_pos)
-                        .setNegativeButton(R.string.permission_request_dialog_nav).show();
-                if (DevRing.cacheManager().spCache().getBoolean("guide", false)) {
-                    mPresenter.startPageConfig(FlashActivity.this);
-                } else {
-                    initTimer(0);
-                }
+                permissionDialog.show();
             }
         }, Manifest.permission.READ_PHONE_STATE);
     }
@@ -154,6 +152,28 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
 
     @Override
     protected void initEvent() {
-
+        permissionDialog.setPositiveButton(R.string.permission_request_dialog_pos, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                permissionDialog.dismiss();
+                if (DevRing.cacheManager().spCache().getBoolean("guide", false)) {
+                    mPresenter.startPageConfig(FlashActivity.this);
+                } else {
+                    initTimer(0);
+                }
+                SystemTypeUtil.goToPermissionManager(FlashActivity.this);
+            }
+        });
+        permissionDialog.setNegativeButton(R.string.permission_request_dialog_nav, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                permissionDialog.dismiss();
+                if (DevRing.cacheManager().spCache().getBoolean("guide", false)) {
+                    mPresenter.startPageConfig(FlashActivity.this);
+                } else {
+                    initTimer(0);
+                }
+            }
+        });
     }
 }

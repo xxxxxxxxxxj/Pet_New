@@ -1,6 +1,5 @@
 package com.haotang.newpet.util;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -9,16 +8,14 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.view.View;
 
-import com.haotang.newpet.R;
-import com.haotang.newpet.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
-import com.ljy.devring.other.permission.PermissionListener;
-import com.ljy.devring.util.RingToast;
 
 import java.io.InputStream;
 
@@ -103,30 +100,17 @@ public class SystemUtil {
         return curVersion;
     }
 
-    public static String getGlobalParam(String baseUrl, Activity activity) {
-        if (baseUrl.contains("?")) {
-            baseUrl = baseUrl
-                    + "&system=android_" + getCurrentVersion(activity)
-                    + "&imei="
-                    + getIMEI(activity)
-                    + "&cellPhone="
-                    + DevRing.cacheManager().spCache().getString("cellphone", "") + "&phoneModel="
-                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
-                    + "&phoneSystemVersion=" + "Android "
-                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
-                    + System.currentTimeMillis();
-        } else {
-            baseUrl = baseUrl
-                    + "?system=android_" + getCurrentVersion(activity)
-                    + "&imei="
-                    + getIMEI(activity)
-                    + "&cellPhone="
-                    + DevRing.cacheManager().spCache().getString("cellphone", "") + "&phoneModel="
-                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
-                    + "&phoneSystemVersion=" + "Android "
-                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
-                    + System.currentTimeMillis();
+    /**
+     * 检测wifi是否连接
+     */
+    public static boolean isWifiConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                return true;
+            }
         }
-        return baseUrl;
+        return false;
     }
 }

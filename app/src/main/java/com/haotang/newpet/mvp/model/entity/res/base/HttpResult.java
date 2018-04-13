@@ -1,4 +1,4 @@
-package com.haotang.newpet.mvp.model.entity.res;
+package com.haotang.newpet.mvp.model.entity.res.base;
 
 /**
  * author:  ljy

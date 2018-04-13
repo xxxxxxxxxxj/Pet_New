@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.haotang.newpet.app.AppConfig;
 import com.haotang.newpet.mvp.model.entity.res.FlashBean;
-import com.haotang.newpet.mvp.model.entity.res.HttpResult;
+import com.haotang.newpet.mvp.model.entity.res.base.HttpResult;
 import com.haotang.newpet.mvp.model.imodel.IFlashModel;
 import com.haotang.newpet.mvp.presenter.base.BasePresenter;
 import com.haotang.newpet.mvp.view.iview.IFlashView;

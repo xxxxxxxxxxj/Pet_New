@@ -7,7 +7,6 @@ import com.haotang.newpet.R;
 import com.haotang.newpet.app.constant.UrlConstants;
 import com.haotang.newpet.mvp.model.db.greendao.GreenDBManager;
 import com.haotang.newpet.mvp.model.imageload.FrescoManager;
-import com.haotang.newpet.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.FileUtil;
 

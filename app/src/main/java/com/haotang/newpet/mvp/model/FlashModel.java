@@ -5,7 +5,6 @@ import android.app.Activity;
 import com.haotang.newpet.app.constant.UrlConstants;
 import com.haotang.newpet.mvp.model.http.FlashApiService;
 import com.haotang.newpet.mvp.model.imodel.IFlashModel;
-import com.haotang.newpet.util.SystemUtil;
 import com.ljy.devring.DevRing;
 
 import io.reactivex.Observable;
@@ -24,6 +23,6 @@ public class FlashModel implements IFlashModel {
      */
     @Override
     public Observable startPageConfig(Activity activity) {
-        return DevRing.httpManager().getService(FlashApiService.class).startPageConfig(SystemUtil.getGlobalParam(UrlConstants.GET_FLASH_DATA, activity));
+        return DevRing.httpManager().getService(FlashApiService.class).startPageConfig(UrlConstants.getGlobalParam(UrlConstants.GET_FLASH_DATA, activity));
     }
 }

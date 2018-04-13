@@ -1,6 +1,7 @@
 package com.haotang.newpet.mvp.view.iview;
 
 import com.haotang.newpet.mvp.model.entity.res.FlashBean;
+import com.haotang.newpet.mvp.view.iview.base.IBaseView;
 
 /**
  * <p>Title:${type_name}</p>
