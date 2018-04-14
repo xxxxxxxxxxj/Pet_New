@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
  */
 
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IBaseActivity {
-    private final static String TAG = BaseActivity.class.getSimpleName();
+    protected final static String TAG = BaseActivity.class.getSimpleName();
     @BindColor(R.color.colorPrimary)
     protected int mColor;
     @Inject

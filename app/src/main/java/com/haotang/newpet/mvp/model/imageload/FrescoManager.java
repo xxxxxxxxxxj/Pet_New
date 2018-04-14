@@ -42,6 +42,8 @@ import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.haotang.newpet.app.constant.UrlConstants;
+import com.haotang.newpet.util.StringUtil;
 import com.ljy.devring.image.support.IImageManager;
 import com.ljy.devring.image.support.ImageConfig;
 import com.ljy.devring.image.support.ImageListener;
@@ -69,18 +71,18 @@ import okhttp3.OkHttpClient;
  * description:
  * 目的是来演示如何使用其他图片框架来替换DevRing中默认提供的Glide。
  * 选了Fresco来替换，Fresco的相关使用可以参考 <a>https://www.jianshu.com/p/5b5625612f56</a>
- *
+ * <p>
  * 替换步骤：
  * 1.gradle中添加其他图片框架的依赖，去除被替换的框架的依赖以减小包体积
  * 2.实现IImageManager接口
  * 3.Application中通过DevRing.configureImage(new FrescoManager())方法传入，该方法返回ImageConfig，可以进行相关的全局配置
  * 4.把加载图片的ImageView更换为Fresco要求的SimpleDraweeView
- *
+ * <p>
  * 替换后一样是通过DevRing.imageManager()来使用相关功能。
- *
+ * <p>
  * 可在本类中添加IImageManager接口以外的方法(比如Fresco独特的渐进式加载、先加载小图再加载大图等功能。)
  * ，然后通过DevRing.<FrescoManager>imageManager()来调用。
- *
+ * <p>
  * <a>https://www.jianshu.com/p/5b5625612f56</a>
  */
 
@@ -121,17 +123,20 @@ public class FrescoManager implements IImageManager {
             DiskCacheConfig.Builder diakBuilder = DiskCacheConfig.newBuilder(context);
             diakBuilder.setBaseDirectoryPath(imageConfig.getDiskCacheFile().getParentFile());// 磁盘缓存目录路径
             diakBuilder.setBaseDirectoryName(imageConfig.getDiskCacheFile().getName());// 磁盘缓存目录名
-            if (imageConfig.getDiskCacheSize() > 0) diakBuilder.setMaxCacheSize(imageConfig.getDiskCacheSize());// 磁盘缓存大小
+            if (imageConfig.getDiskCacheSize() > 0)
+                diakBuilder.setMaxCacheSize(imageConfig.getDiskCacheSize());// 磁盘缓存大小
             imagePipelineConfigBuilder.setMainDiskCacheConfig(diakBuilder.build());
         } else if (imageConfig.isDiskCacheExternal()) {
             DiskCacheConfig.Builder diakBuilder = DiskCacheConfig.newBuilder(context);
             diakBuilder.setBaseDirectoryPath(context.getExternalCacheDir());// 磁盘缓存目录路径
             diakBuilder.setBaseDirectoryName("fresco_image_cache");// 磁盘缓存目录名
-            if (imageConfig.getDiskCacheSize() > 0) diakBuilder.setMaxCacheSize(imageConfig.getDiskCacheSize());// 磁盘缓存大小
+            if (imageConfig.getDiskCacheSize() > 0)
+                diakBuilder.setMaxCacheSize(imageConfig.getDiskCacheSize());// 磁盘缓存大小
             imagePipelineConfigBuilder.setMainDiskCacheConfig(diakBuilder.build());
         }
 
-        if (imageConfig.isUseOkhttp()) imagePipelineConfigBuilder.setNetworkFetcher(new OkHttpNetworkFetcher(new OkHttpClient()));
+        if (imageConfig.isUseOkhttp())
+            imagePipelineConfigBuilder.setNetworkFetcher(new OkHttpNetworkFetcher(new OkHttpClient()));
 
         //当内存紧张时采取的措施
         MemoryTrimmableRegistry memoryTrimmableRegistry = NoOpMemoryTrimmableRegistry.getInstance();
@@ -172,14 +177,26 @@ public class FrescoManager implements IImageManager {
 
     @Override
     public void loadNet(String url, ImageView imageView) {
-        Uri uri = Uri.parse(url);
-        load(uri, imageView, null);
+        if (StringUtil.isNotEmpty(url)) {
+            if (!url.startsWith("http://")
+                    && !url.startsWith("https://")) {
+                url = UrlConstants.getServiceBaseUrl() + url;
+            }
+            Uri uri = Uri.parse(url);
+            load(uri, imageView, null);
+        }
     }
 
     @Override
     public void loadNet(String url, ImageView imageView, LoadOption loadOption) {
-        Uri uri = Uri.parse(url);
-        load(uri, imageView, loadOption);
+        if (StringUtil.isNotEmpty(url)) {
+            if (!url.startsWith("http://")
+                    && !url.startsWith("https://")) {
+                url = UrlConstants.getServiceBaseUrl() + url;
+            }
+            Uri uri = Uri.parse(url);
+            load(uri, imageView, loadOption);
+        }
     }
 
     @Override

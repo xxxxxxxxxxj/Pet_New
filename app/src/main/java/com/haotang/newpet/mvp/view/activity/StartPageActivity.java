@@ -11,6 +11,7 @@ import com.haotang.newpet.mvp.view.activity.base.BaseActivity;
 import com.haotang.newpet.util.CountdownUtil;
 import com.haotang.newpet.util.SystemUtil;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,6 +46,7 @@ public class StartPageActivity extends BaseActivity {
         jump_url = getIntent().getStringExtra("jump_url");
         backup = getIntent().getStringExtra("backup");
         point = getIntent().getIntExtra("point", 0);
+        RingLog.d(TAG, "img_url = " + img_url);
         DevRing.imageManager().loadNet(img_url, ivLandingpage);
         CountdownUtil.getInstance().newTimer(3000, 1000, new CountdownUtil.ICountDown() {
             @Override

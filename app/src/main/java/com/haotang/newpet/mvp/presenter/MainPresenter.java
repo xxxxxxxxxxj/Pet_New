@@ -31,13 +31,14 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
      * 获取最新版本
      */
     public void getLatestVersion(Activity activity, int systemType, String version, String time) {
-        DevRing.httpManager().commonRequest(mIModel.getLatestVersion(activity, systemType, version, time), new CommonObserver<HttpResult<LastVersionBean>>() {
+        DevRing.httpManager().commonRequest(mIModel.getLatestVersion(activity, systemType, version, time),
+                new CommonObserver<HttpResult<LastVersionBean>>() {
             @Override
             public void onResult(HttpResult<LastVersionBean> result) {
                 if (mIView != null) {
                     if (result != null) {
                         if (result.getCode() == 0) {
-                            mIView.getLatestVersionSuccess(result.getSubjects());
+                            mIView.getLatestVersionSuccess(result.getData());
                         } else {
                             if (!StringUtil.isNotEmpty(result.getMsg())) {
                                 mIView.getLatestVersionFail(AppConfig.SERVER_ERROR, result.getMsg());
@@ -59,13 +60,14 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
      * 获取底部bar
      */
     public void getBottomBar(Activity activity) {
-        DevRing.httpManager().commonRequest(mIModel.getBottomBar(activity), new CommonObserver<HttpResult<BootmBarBean>>() {
+        DevRing.httpManager().commonRequest(mIModel.getBottomBar(activity),
+                new CommonObserver<HttpResult<BootmBarBean>>() {
             @Override
             public void onResult(HttpResult<BootmBarBean> result) {
                 if (mIView != null) {
                     if (result != null) {
                         if (result.getCode() == 0) {
-                            mIView.getBootmBarSuccess(result.getSubjects());
+                            mIView.getBootmBarSuccess(result.getData());
                         } else {
                             if (!StringUtil.isNotEmpty(result.getMsg())) {
                                 mIView.getBootmBarFail(AppConfig.SERVER_ERROR, result.getMsg());

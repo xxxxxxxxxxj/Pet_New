@@ -14,6 +14,7 @@ import com.haotang.newpet.mvp.view.activity.base.BaseActivity;
 import com.haotang.newpet.mvp.view.iview.IFlashView;
 import com.haotang.newpet.mvp.view.widget.PermissionDialog;
 import com.haotang.newpet.util.CountdownUtil;
+import com.haotang.newpet.util.StringUtil;
 import com.haotang.newpet.util.SystemTypeUtil;
 import com.haotang.newpet.util.SystemUtil;
 import com.ljy.devring.DevRing;
@@ -47,7 +48,11 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
             imgUrl = flashBean.getImgUrl();
             jumpUrl = flashBean.getJumpUrl();
             point = flashBean.getPoint();
-            initTimer(1);
+            if(StringUtil.isNotEmpty(imgUrl)){
+                initTimer(1);
+            }else{
+                initTimer(0);
+            }
         } else {
             initTimer(0);
         }

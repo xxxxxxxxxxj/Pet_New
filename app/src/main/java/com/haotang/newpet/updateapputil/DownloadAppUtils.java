@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
+import com.haotang.newpet.mvp.view.widget.MyNotification;
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadLargeFileListener;
 import com.liulishuo.filedownloader.FileDownloader;
@@ -54,8 +54,20 @@ public class DownloadAppUtils {
                     }
 
                     @Override
+                    protected void started(BaseDownloadTask task) {
+                    }
+
+                    @Override
+                    protected void connected(BaseDownloadTask task, String etag, boolean isContinue, long soFarBytes, long totalBytes) {
+                    }
+
+                    @Override
+                    protected void retry(BaseDownloadTask task, Throwable ex, int retryingTimes, long soFarBytes) {
+                    }
+
+                    @Override
                     protected void progress(BaseDownloadTask task, long soFarBytes, long totalBytes) {
-                        send(context, (int) (soFarBytes * 100.0 / totalBytes), serverVersionName);
+                        send(context, (int) (soFarBytes * 100.0 / totalBytes), serverVersionName, MyNotification.DOWNLOADING);
                     }
 
                     @Override
@@ -64,12 +76,12 @@ public class DownloadAppUtils {
 
                     @Override
                     protected void completed(BaseDownloadTask task) {
-                        send(context, 100, serverVersionName);
+                        send(context, 100, serverVersionName, MyNotification.DOWNLOAD_COMPLETE);
                     }
 
                     @Override
                     protected void error(BaseDownloadTask task, Throwable e) {
-                        Toast.makeText(context, "下载出错", Toast.LENGTH_SHORT).show();
+                        send(context, 100, serverVersionName, MyNotification.DOWNLOAD_FAIL);
                     }
 
                     @Override
@@ -78,9 +90,10 @@ public class DownloadAppUtils {
                 }).start();
     }
 
-    private static void send(Context context, int progress, String serverVersionName) {
+    private static void send(Context context, int progress, String serverVersionName, int state) {
         Intent intent = new Intent("teprinciple.update");
         intent.putExtra("progress", progress);
+        intent.putExtra("state", state);
         intent.putExtra("title", serverVersionName);
         context.sendBroadcast(intent);
     }

@@ -27,6 +27,8 @@ import com.ljy.devring.util.RingToast;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindString;
@@ -119,7 +121,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     public void getLatestVersionSuccess(LastVersionBean lastVersionBean) {
-        RingLog.d(TAG, "lastVersionBean = " + lastVersionBean.toString());
+        RingLog.d(TAG, "lastVersionBean = " + lastVersionBean);
         if (lastVersionBean != null) {
             String downloadPath = lastVersionBean.getDownload();
             int isUpgrade = lastVersionBean.getMandate();
@@ -166,6 +168,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     public void getBootmBarSuccess(BootmBarBean bootmBarBean) {
+        if (bootmBarBean != null) {
+            BootmBarBean.IndexBean index = bootmBarBean.getIndex();
+            String mallRedPoint = bootmBarBean.getMallRedPoint();
+            if (index != null) {
+                BootmBarBean.IndexBean.BottomBean bottom = index.getBottom();
+                if (bottom != null) {
+                    List<BootmBarBean.IndexBean.BottomBean.ListBean> list = bottom.getList();
+                    if (list != null && list.size() > 0) {
 
+                    }
+                }
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ package com.haotang.newpet.mvp.model.entity.res.base;
 public class HttpResult<T> {
     private int code;
     private String msg;
-    private T subjects;//返回的数据内容，类型不确定，使用泛型T表示
+    private T data;//返回的数据内容，类型不确定，使用泛型T表示
 
     public int getCode() {
         return code;
@@ -27,11 +27,11 @@ public class HttpResult<T> {
         this.msg = msg;
     }
 
-    public T getSubjects() {
-        return subjects;
+    public T getData() {
+        return data;
     }
 
-    public void setSubjects(T subjects) {
-        this.subjects = subjects;
+    public void setData(T data) {
+        this.data = data;
     }
 }

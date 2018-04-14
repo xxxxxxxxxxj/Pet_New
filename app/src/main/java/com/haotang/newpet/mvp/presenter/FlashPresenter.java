@@ -36,7 +36,7 @@ public class FlashPresenter extends BasePresenter<IFlashView, IFlashModel> {
                 if (mIView != null) {
                     if (result != null) {
                         if (result.getCode() == 0) {
-                            mIView.getFlashSuccess(result.getSubjects());
+                            mIView.getFlashSuccess(result.getData());
                         } else {
                             if (!StringUtil.isNotEmpty(result.getMsg())) {
                                 mIView.getFlashFail(AppConfig.SERVER_ERROR, result.getMsg());

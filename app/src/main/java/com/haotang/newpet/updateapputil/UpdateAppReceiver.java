@@ -1,14 +1,15 @@
 package com.haotang.newpet.updateapputil;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
+
+import com.haotang.newpet.R;
+import com.haotang.newpet.mvp.view.widget.MyNotification;
+import com.ljy.devring.other.RingLog;
 
 import java.io.File;
 
@@ -18,23 +19,25 @@ import java.io.File;
  */
 
 public class UpdateAppReceiver extends BroadcastReceiver {
+    private final static String TAG = UpdateAppReceiver.class.getSimpleName();
+    private MyNotification mNotification;
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        int notifyId = 1;
         int progress = intent.getIntExtra("progress", 0);
         String title = intent.getStringExtra("title");
-        NotificationManager nm = null;
+        int state = intent.getIntExtra("state", 0);
+        RingLog.d(TAG, "progress = " + progress + "---title = " + title);
         if (UpdateAppUtils.showNotification) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-            builder.setContentTitle("正在下载 " + title);
-            builder.setSmallIcon(android.R.mipmap.sym_def_app_icon);
-            builder.setProgress(100, progress, false);
-            Notification notification = builder.build();
-            nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.notify(notifyId, notification);
+            mNotification = new MyNotification(context, null, 1);
+            mNotification.showCustomizeNotification(R.mipmap.logo, "宠物家" + title,
+                    R.layout.download_notif, progress);
         }
-        if (progress == 100) {
-            if (nm != null) nm.cancel(notifyId);
+        if (state == MyNotification.DOWNLOAD_COMPLETE) {
+            if (mNotification != null) {
+                mNotification.changeNotificationStatus(state);
+                mNotification.removeNotification();
+            }
             if (DownloadAppUtils.downloadUpdateApkFilePath != null) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 File apkFile = new File(DownloadAppUtils.downloadUpdateApkFilePath);
@@ -49,6 +52,11 @@ public class UpdateAppReceiver extends BroadcastReceiver {
                 }
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
+            }
+        } else if (state == MyNotification.DOWNLOAD_FAIL) {
+            if (mNotification != null) {
+                mNotification.changeNotificationStatus(state);
+                mNotification.removeNotification();
             }
         }
     }
