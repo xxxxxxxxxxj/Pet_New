@@ -5,6 +5,10 @@ import android.content.Context;
 import com.haotang.newpet.mvp.model.MainModel;
 import com.haotang.newpet.mvp.model.imodel.IMainModel;
 import com.haotang.newpet.mvp.presenter.MainPresenter;
+import com.haotang.newpet.mvp.view.fragment.MainFragment;
+import com.haotang.newpet.mvp.view.fragment.MyFragment;
+import com.haotang.newpet.mvp.view.fragment.PetCircleFragment;
+import com.haotang.newpet.mvp.view.fragment.ShopMarketFragment;
 import com.haotang.newpet.mvp.view.iview.IMainView;
 import com.haotang.newpet.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.di.scope.ActivityScope;
@@ -58,5 +62,29 @@ public class MainActivityModule {
     @ActivityScope
     MainPresenter MainPresenter(IMainView iMainView, IMainModel iMainModel) {
         return new MainPresenter(iMainView, iMainModel);
+    }
+
+    @Provides
+    @ActivityScope
+    MainFragment mainFragment() {
+        return new MainFragment();
+    }
+
+    @Provides
+    @ActivityScope
+    ShopMarketFragment shopMarketFragment() {
+        return new ShopMarketFragment();
+    }
+
+    @Provides
+    @ActivityScope
+    PetCircleFragment petCircleFragment() {
+        return new PetCircleFragment();
+    }
+
+    @Provides
+    @ActivityScope
+    MyFragment myFragment() {
+        return new MyFragment();
     }
 }

@@ -1,6 +1,7 @@
 package com.haotang.newpet.mvp.view.activity;
 
 import android.Manifest;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.view.ViewPager;
@@ -8,16 +9,28 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.flyco.tablayout.utils.UnreadMsgUtils;
+import com.flyco.tablayout.widget.MsgView;
 import com.haotang.newpet.R;
 import com.haotang.newpet.di.component.activity.DaggerMainActivityCommponent;
 import com.haotang.newpet.di.module.activity.MainActivityModule;
 import com.haotang.newpet.mvp.model.entity.res.BootmBarBean;
+import com.haotang.newpet.mvp.model.entity.res.DefaultTabEntity;
 import com.haotang.newpet.mvp.model.entity.res.LastVersionBean;
 import com.haotang.newpet.mvp.model.entity.table.MovieCollect;
 import com.haotang.newpet.mvp.presenter.MainPresenter;
 import com.haotang.newpet.mvp.view.activity.base.BaseActivity;
+import com.haotang.newpet.mvp.view.adapter.MainActivityPagerAdapter;
+import com.haotang.newpet.mvp.view.fragment.MainFragment;
+import com.haotang.newpet.mvp.view.fragment.MyFragment;
+import com.haotang.newpet.mvp.view.fragment.PetCircleFragment;
+import com.haotang.newpet.mvp.view.fragment.ShopMarketFragment;
+import com.haotang.newpet.mvp.view.fragment.base.BaseFragment;
 import com.haotang.newpet.mvp.view.iview.IMainView;
 import com.haotang.newpet.mvp.view.widget.PermissionDialog;
+import com.haotang.newpet.util.DensityUtil;
 import com.haotang.newpet.util.SystemUtil;
 import com.haotang.newpet.util.UpdateUtil;
 import com.ljy.devring.DevRing;
@@ -27,7 +40,9 @@ import com.ljy.devring.util.RingToast;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -48,6 +63,24 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private long mExitTime;
     @Inject
     PermissionDialog permissionDialog;
+    private String[] mTitles = {"宠物家", "商城", "宠圈", "我的"};
+    private int[] mIconUnselectIds = {
+            R.mipmap.tab_home_normal, R.mipmap.tab_order_normal,
+            R.mipmap.tab_knowledge_normal, R.mipmap.tab_my_normal};
+    private int[] mIconSelectIds = {
+            R.mipmap.tab_home_passed, R.mipmap.tab_order_passed,
+            R.mipmap.tab_knowledge_passed, R.mipmap.tab_my_passed};
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
+    private ArrayList<BaseFragment> mFragments = new ArrayList<>();
+    @Inject
+    MainFragment mainFragment;
+    @Inject
+    ShopMarketFragment shopMarketFragment;
+    @Inject
+    PetCircleFragment petCircleFragment;
+    @Inject
+    MyFragment myFragment;
+    Random mRandom = new Random();
 
     @Override
     protected int getContentLayout() {
@@ -64,6 +97,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     @Override
     protected void setView(Bundle savedInstanceState) {
         DevRing.cacheManager().spCache().put("guide", true);
+        permissionDialog.setPositiveButton(R.string.permission_request_dialog_pos);
+        permissionDialog.setNegativeButton(R.string.permission_request_dialog_nav);
+
+        mFragments.add(mainFragment);
+        mFragments.add(shopMarketFragment);
+        mFragments.add(petCircleFragment);
+        mFragments.add(myFragment);
+        vpMainactivity.setAdapter(new MainActivityPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
+        setDefaultBottom();
+        vpMainactivity.setCurrentItem(0);
     }
 
     @Override
@@ -93,8 +136,36 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     protected void initEvent() {
-        permissionDialog.setPositiveButton(R.string.permission_request_dialog_pos);
-        permissionDialog.setNegativeButton(R.string.permission_request_dialog_nav);
+        ctlMainactivity.setTabData(mTabEntities);
+        ctlMainactivity.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                vpMainactivity.setCurrentItem(position);
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+                if (position == 0) {
+                    ctlMainactivity.showMsg(0, mRandom.nextInt(100) + 1);
+                }
+            }
+        });
+        vpMainactivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ctlMainactivity.setCurrentTab(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Subscribe
@@ -180,6 +251,32 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                     }
                 }
             }
+        }
+    }
+
+    private void setDefaultBottom() {
+        for (int i = 0; i < mTitles.length; i++) {
+            mTabEntities.add(new DefaultTabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+        }
+        ctlMainactivity.setTabData(mTabEntities);
+        //两位数
+        ctlMainactivity.showMsg(0, 55);
+        ctlMainactivity.setMsgMargin(0, -5, 5);
+        //三位数
+        ctlMainactivity.showMsg(1, 100);
+        ctlMainactivity.setMsgMargin(1, -5, 5);
+        //设置未读消息红点
+        ctlMainactivity.showDot(2);
+        MsgView rtv_2_2 = ctlMainactivity.getMsgView(2);
+        if (rtv_2_2 != null) {
+            UnreadMsgUtils.setSize(rtv_2_2, DensityUtil.dp2px(this, 7.5f));
+        }
+        //设置未读消息背景
+        ctlMainactivity.showMsg(3, 5);
+        ctlMainactivity.setMsgMargin(3, 0, 5);
+        MsgView rtv_2_3 = ctlMainactivity.getMsgView(3);
+        if (rtv_2_3 != null) {
+            rtv_2_3.setBackgroundColor(Color.parseColor("#6D8FB0"));
         }
     }
 }
