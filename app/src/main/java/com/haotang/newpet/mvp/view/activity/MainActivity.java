@@ -17,7 +17,7 @@ import com.haotang.newpet.R;
 import com.haotang.newpet.di.component.activity.DaggerMainActivityCommponent;
 import com.haotang.newpet.di.module.activity.MainActivityModule;
 import com.haotang.newpet.mvp.model.entity.res.BootmBarBean;
-import com.haotang.newpet.mvp.model.entity.res.DefaultTabEntity;
+import com.haotang.newpet.mvp.model.entity.res.ImageTabEntity;
 import com.haotang.newpet.mvp.model.entity.res.LastVersionBean;
 import com.haotang.newpet.mvp.model.entity.table.MovieCollect;
 import com.haotang.newpet.mvp.presenter.MainPresenter;
@@ -247,7 +247,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 if (bottom != null) {
                     List<BootmBarBean.IndexBean.BottomBean.ListBean> list = bottom.getList();
                     if (list != null && list.size() > 0) {
-
+                        for (int i = 0; i < list.size(); i++) {
+                            BootmBarBean.IndexBean.BottomBean.ListBean listBean = list.get(i);
+                            if (listBean != null) {
+                                ImageTabEntity imageTabEntity = (ImageTabEntity) mTabEntities.get(i);
+                                imageTabEntity.setSelectedIconStr(listBean.getPicH());
+                                imageTabEntity.setUnSelectedIconStr(listBean.getPic());
+                            }
+                        }
+                        ctlMainactivity.setTabData(mTabEntities);
                     }
                 }
             }
@@ -256,7 +264,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     private void setDefaultBottom() {
         for (int i = 0; i < mTitles.length; i++) {
-            mTabEntities.add(new DefaultTabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+            mTabEntities.add(new ImageTabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
         ctlMainactivity.setTabData(mTabEntities);
         //两位数
