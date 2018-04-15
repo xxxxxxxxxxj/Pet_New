@@ -99,6 +99,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
     }
 
+    protected void setBarColor(int mColor) {
+        this.mColor = mColor;
+        initBarColor();
+    }
+
     @Override
     public boolean isUseEventBus() {
         return false;

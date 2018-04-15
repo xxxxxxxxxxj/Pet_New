@@ -81,6 +81,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     @Inject
     MyFragment myFragment;
     Random mRandom = new Random();
+    private int currentTabIndex;
 
     @Override
     protected int getContentLayout() {
@@ -105,8 +106,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         mFragments.add(petCircleFragment);
         mFragments.add(myFragment);
         vpMainactivity.setAdapter(new MainActivityPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
-        setDefaultBottom();
-        vpMainactivity.setCurrentItem(0);
+        for (int i = 0; i < mTitles.length; i++) {
+            mTabEntities.add(new ImageTabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+        }
+        ctlMainactivity.setTabData(mTabEntities);
+        ctlMainactivity.setCurrentTab(currentTabIndex);
+        vpMainactivity.setCurrentItem(currentTabIndex);
     }
 
     @Override
@@ -136,11 +141,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     protected void initEvent() {
-        ctlMainactivity.setTabData(mTabEntities);
         ctlMainactivity.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-                vpMainactivity.setCurrentItem(position);
+                currentTabIndex = position;
+                vpMainactivity.setCurrentItem(currentTabIndex);
+                if (position == 0 || position == 1) {
+                    setBarColor(getResources().getColor(R.color.aD1494F));
+                } else {
+                    setBarColor(getResources().getColor(R.color.colorPrimary));
+                }
             }
 
             @Override
@@ -158,7 +168,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
             @Override
             public void onPageSelected(int position) {
-                ctlMainactivity.setCurrentTab(position);
+                currentTabIndex = position;
+                if (position == 0 || position == 1) {
+                    setBarColor(getResources().getColor(R.color.aD1494F));
+                } else {
+                    setBarColor(getResources().getColor(R.color.colorPrimary));
+                }
+                ctlMainactivity.setCurrentTab(currentTabIndex);
             }
 
             @Override
@@ -263,10 +279,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     }
 
     private void setDefaultBottom() {
-        for (int i = 0; i < mTitles.length; i++) {
-            mTabEntities.add(new ImageTabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
-        }
-        ctlMainactivity.setTabData(mTabEntities);
+
         //两位数
         ctlMainactivity.showMsg(0, 55);
         ctlMainactivity.setMsgMargin(0, -5, 5);
