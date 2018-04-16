@@ -1,7 +1,6 @@
 package com.haotang.newpet.mvp.view.activity;
 
 import android.Manifest;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.view.ViewPager;
@@ -42,7 +41,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -80,8 +78,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     PetCircleFragment petCircleFragment;
     @Inject
     MyFragment myFragment;
-    Random mRandom = new Random();
-    private int currentTabIndex;
+    private int currentTabIndex = 1;
 
     @Override
     protected int getContentLayout() {
@@ -112,6 +109,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         ctlMainactivity.setTabData(mTabEntities);
         ctlMainactivity.setCurrentTab(currentTabIndex);
         vpMainactivity.setCurrentItem(currentTabIndex);
+        if (currentTabIndex == 0 || currentTabIndex == 1) {
+            setBarColor(getResources().getColor(R.color.aD1494F));
+        } else {
+            setBarColor(getResources().getColor(R.color.colorPrimary));
+        }
     }
 
     @Override
@@ -144,6 +146,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         ctlMainactivity.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
+                RingLog.d(TAG, "onTabSelect position = " + position);
                 currentTabIndex = position;
                 vpMainactivity.setCurrentItem(currentTabIndex);
                 if (position == 0 || position == 1) {
@@ -151,12 +154,27 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 } else {
                     setBarColor(getResources().getColor(R.color.colorPrimary));
                 }
+                if (position == 1) {
+                    ctlMainactivity.hideMsg(1);
+                } else if (position == 2) {
+                    ctlMainactivity.hideMsg(2);
+                }
             }
 
             @Override
             public void onTabReselect(int position) {
-                if (position == 0) {
-                    ctlMainactivity.showMsg(0, mRandom.nextInt(100) + 1);
+                RingLog.d(TAG, "onTabReselect position = " + position);
+                currentTabIndex = position;
+                vpMainactivity.setCurrentItem(currentTabIndex);
+                if (position == 0 || position == 1) {
+                    setBarColor(getResources().getColor(R.color.aD1494F));
+                } else {
+                    setBarColor(getResources().getColor(R.color.colorPrimary));
+                }
+                if (position == 1) {
+                    ctlMainactivity.hideMsg(1);
+                } else if (position == 2) {
+                    ctlMainactivity.hideMsg(2);
                 }
             }
         });
@@ -168,6 +186,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
             @Override
             public void onPageSelected(int position) {
+                RingLog.d(TAG, "onPageSelected position = " + position);
                 currentTabIndex = position;
                 if (position == 0 || position == 1) {
                     setBarColor(getResources().getColor(R.color.aD1494F));
@@ -175,6 +194,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                     setBarColor(getResources().getColor(R.color.colorPrimary));
                 }
                 ctlMainactivity.setCurrentTab(currentTabIndex);
+                if (position == 1) {
+                    ctlMainactivity.hideMsg(1);
+                } else if (position == 2) {
+                    ctlMainactivity.hideMsg(2);
+                }
             }
 
             @Override
@@ -258,6 +282,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         if (bootmBarBean != null) {
             BootmBarBean.IndexBean index = bootmBarBean.getIndex();
             String mallRedPoint = bootmBarBean.getMallRedPoint();
+            int nToBeComment = bootmBarBean.getNToBeComment();
             if (index != null) {
                 BootmBarBean.IndexBean.BottomBean bottom = index.getBottom();
                 if (bottom != null) {
@@ -275,29 +300,31 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                     }
                 }
             }
-        }
-    }
-
-    private void setDefaultBottom() {
-
-        //两位数
-        ctlMainactivity.showMsg(0, 55);
-        ctlMainactivity.setMsgMargin(0, -5, 5);
-        //三位数
-        ctlMainactivity.showMsg(1, 100);
-        ctlMainactivity.setMsgMargin(1, -5, 5);
-        //设置未读消息红点
-        ctlMainactivity.showDot(2);
-        MsgView rtv_2_2 = ctlMainactivity.getMsgView(2);
-        if (rtv_2_2 != null) {
-            UnreadMsgUtils.setSize(rtv_2_2, DensityUtil.dp2px(this, 7.5f));
-        }
-        //设置未读消息背景
-        ctlMainactivity.showMsg(3, 5);
-        ctlMainactivity.setMsgMargin(3, 0, 5);
-        MsgView rtv_2_3 = ctlMainactivity.getMsgView(3);
-        if (rtv_2_3 != null) {
-            rtv_2_3.setBackgroundColor(Color.parseColor("#6D8FB0"));
+            if (Integer.parseInt(mallRedPoint) > 0) {
+                //设置未读消息红点
+                ctlMainactivity.showDot(1);
+                MsgView rtv_2_2 = ctlMainactivity.getMsgView(1);
+                if (rtv_2_2 != null) {
+                    UnreadMsgUtils.setSize(rtv_2_2, DensityUtil.dp2px(this, 7.5f));
+                }
+            } else {
+                ctlMainactivity.hideMsg(1);
+            }
+            if (nToBeComment > 0) {
+                //设置未读消息红点
+                ctlMainactivity.showDot(2);
+                MsgView rtv_2_2 = ctlMainactivity.getMsgView(2);
+                if (rtv_2_2 != null) {
+                    UnreadMsgUtils.setSize(rtv_2_2, DensityUtil.dp2px(this, 7.5f));
+                }
+            } else {
+                ctlMainactivity.hideMsg(2);
+            }
+            if (currentTabIndex == 1) {
+                ctlMainactivity.hideMsg(1);
+            } else if (currentTabIndex == 2) {
+                ctlMainactivity.hideMsg(2);
+            }
         }
     }
 }
