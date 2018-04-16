@@ -5,7 +5,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.haotang.newpet"
+        applicationId "com.haotang.deving"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
@@ -15,7 +15,7 @@ android {
         //指定EventBus加速用的Index
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [eventBusIndex: "com.haotang.newpet.MyEventBusIndex"]
+                arguments = [eventBusIndex: "com.haotang.deving.MyEventBusIndex"]
             }
         }
     }
@@ -26,7 +26,7 @@ android {
             //KEY_ALIAS，KEY_PASSWORD，STORE_PASSWORD写在项目根目录下的gradle.properties里
             keyAlias KEY_ALIAS
             keyPassword KEY_PASSWORD
-            storeFile file('/Users/zhoujunxia/as_workspace/pet_android_new/keystore/BJPC_Keystore.Keystore')
+            storeFile file('../deving.jks')
             storePassword STORE_PASSWORD
         }
     }
@@ -50,7 +50,7 @@ android {
     greendao {
         //数据库版本号，升级时进行修改
         schemaVersion 1
-        daoPackage 'com.haotang.newpet.mvp.model.db.greendao'
+        daoPackage 'com.haotang.deving.mvp.model.db.greendao'
         //生成的DAO，DaoMaster和DaoSession的包名。默认是实体的包名
         targetGenDir 'src/main/java' //生成源文件的路径。默认源文件目录是在build目录中的(build/generated/source/greendao)
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.haotang.newpet">
+    package="com.haotang.deving">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
@@ -9,26 +9,26 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".app.PetApplication"
+        android:name="com.haotang.deving.app.PetApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mvp.view.activity.FlashActivity">
+        <activity android:name="com.haotang.deving.mvp.view.activity.FlashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.view.activity.MainActivity" />
-        <activity android:name=".mvp.view.activity.StartPageActivity" />
-        <activity android:name=".mvp.view.activity.GuideActivity"></activity>
+        <activity android:name="com.haotang.deving.mvp.view.activity.MainActivity" />
+        <activity android:name="com.haotang.deving.mvp.view.activity.StartPageActivity" />
+        <activity android:name="com.haotang.deving.mvp.view.activity.GuideActivity"></activity>
 
         <receiver
-            android:name="com.haotang.newpet.updateapputil.UpdateAppReceiver"
+            android:name="com.haotang.deving.updateapputil.UpdateAppReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
