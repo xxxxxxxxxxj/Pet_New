@@ -11,4 +11,8 @@ package com.haotang.deving.app;
 public class AppConfig {
     public static final int SERVER_ERROR = 5201314;
     public static final String SERVER_ERROR_MSG = "服务器错误";
+    public static final String QQ_ID = "1104724367";
+    public static final String WX_ID = "wx1668e9f200eb89b2";
+    public static final boolean isShowLog = true;
+    public static final int environmental = 3;//1.test环境---2.demo环境---3.线上环境
 }

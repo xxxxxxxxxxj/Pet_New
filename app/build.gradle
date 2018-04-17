@@ -18,6 +18,12 @@ android {
                 arguments = [eventBusIndex: "com.haotang.deving.MyEventBusIndex"]
             }
         }
+
+        manifestPlaceholders = [
+                qq_id: "1104724367"
+        ]
+
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -64,6 +70,12 @@ android {
         abortOnError false
         disable 'MissingTranslation', 'ExtraTranslation'
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -73,7 +85,9 @@ dependencies {
     })
     compile project(':FlycoTabLayout_Lib')
     // (必选)
+
     // (可选)
+
     // (可选)
     compile 'com.android.support:appcompat-v7:27.0.2'
     compile 'com.android.support:design:27.0.2'
@@ -96,4 +110,8 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
     annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile 'me.shaohui.shareutil:shareutil:1.3.8'
+    compile 'me.shaohui:bottomdialog:1.1.9'
+    compile files('libs/jcore-android-1.2.0.jar')
+    compile files('libs/jpush-android-3.1.2.jar')
 }

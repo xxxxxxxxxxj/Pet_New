@@ -1,7 +1,7 @@
 <resources>
     <string name="cancel">取消</string>
     <string name="sure">确认</string>
-    <string name="app_name">Deving</string>
+    <string name="app_name">便利电</string>
     <string name="loading">正在加载...</string>
     <string name="loadFail">加载不出数据</string>
     <string name="loadFail_reload">点击屏幕重试</string>

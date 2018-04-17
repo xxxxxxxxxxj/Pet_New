@@ -2,6 +2,7 @@ package com.haotang.deving.app.constant;
 
 import android.app.Activity;
 
+import com.haotang.deving.app.AppConfig;
 import com.haotang.deving.util.SystemUtil;
 import com.ljy.devring.DevRing;
 
@@ -15,7 +16,7 @@ import com.ljy.devring.DevRing;
  */
 public class UrlConstants {
     private static int getEnvironmental() {
-        return 3;//1.test环境---2.demo环境---3.线上环境
+        return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境
     }
 
     /**

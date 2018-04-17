@@ -10,6 +10,10 @@ import com.haotang.deving.mvp.model.imageload.FrescoManager;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.FileUtil;
 
+import cn.jpush.android.api.JPushInterface;
+import me.shaohui.shareutil.ShareConfig;
+import me.shaohui.shareutil.ShareManager;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -46,7 +50,7 @@ public class PetApplication extends Application {
 //                .setIsUseRetryWhenError(true)//设置是否开启失败重试功能，目前仅支持普通的网络请求，上传下载不支持。默认不开启
 //                .setMaxRetryCount(2)//设置失败后重试的最大次数，默认3次
 //                .setTimeRetryDelay(5)//设置失败后重试的延迟时长，单位秒，默认3秒
-                .setIsUseLog(true);//设置是否开启Log，默认不开启
+                .setIsUseLog(AppConfig.isShowLog);//设置是否开启Log，默认不开启
         //如果提供的配置方法还无法满足你的需求，那可以通过以下方法获取builder进行你的定制
 //        DevRing.configureHttp().getOkHttpClientBuilder();
 //        DevRing.configureHttp().getRetrofitBuilder();
@@ -88,10 +92,19 @@ public class PetApplication extends Application {
         DevRing.configureOther()//配置其他
                 .setIsUseCrashDiary(true)//设置是否开启崩溃日志功能，默认不开启
 //                .setCrashDiaryFolder(file)//设置崩溃日志的地址，传入的file需为文件夹，默认保存在/storage/emulated/0/Android/data/com.xxx.xxx/cache/crash_log下
-                .setIsShowRingLog(true);//设置是否显示Ringlog打印的内容，默认true
+                .setIsShowRingLog(AppConfig.isShowLog);//设置是否显示Ringlog打印的内容，默认true
 
 
         //*********3.开始构建**********
         DevRing.create();
+
+        ShareConfig config = ShareConfig.instance()
+                .qqId(AppConfig.QQ_ID)
+                .wxId(AppConfig.WX_ID)
+                .wxSecret(AppConfig.WX_ID);
+        ShareManager.init(config);
+
+        JPushInterface.setDebugMode(AppConfig.isShowLog); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);     		// 初始化 JPush
     }
 }
