@@ -11,8 +11,6 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.util.FileUtil;
 
 import cn.jpush.android.api.JPushInterface;
-import me.shaohui.shareutil.ShareConfig;
-import me.shaohui.shareutil.ShareManager;
 
 /**
  * <p>Title:${type_name}</p>
@@ -97,12 +95,6 @@ public class PetApplication extends Application {
 
         //*********3.开始构建**********
         DevRing.create();
-
-        ShareConfig config = ShareConfig.instance()
-                .qqId(AppConfig.QQ_ID)
-                .wxId(AppConfig.WX_ID)
-                .wxSecret(AppConfig.WX_ID);
-        ShareManager.init(config);
 
         JPushInterface.setDebugMode(AppConfig.isShowLog); 	// 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);     		// 初始化 JPush
