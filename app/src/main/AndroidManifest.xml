@@ -9,32 +9,33 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="com.haotang.deving.app.PetApplication"
+        android:name=".app.PetApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.haotang.deving.mvp.view.activity.FlashActivity">
+        <activity android:name=".mvp.view.activity.FlashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.haotang.deving.mvp.view.activity.MainActivity" />
-        <activity android:name="com.haotang.deving.mvp.view.activity.StartPageActivity" />
-        <activity android:name="com.haotang.deving.mvp.view.activity.GuideActivity"></activity>
+        <activity android:name=".mvp.view.activity.MainActivity" />
+        <activity android:name=".mvp.view.activity.StartPageActivity" />
+        <activity android:name=".mvp.view.activity.GuideActivity" />
 
         <receiver
-            android:name="com.haotang.deving.updateapputil.UpdateAppReceiver"
+            android:name=".updateapputil.UpdateAppReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="teprinciple.update" />
             </intent-filter>
         </receiver>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -42,8 +43,11 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".mvp.view.activity.TestActivity" />
+        <activity android:name=".mvp.view.activity.WebViewActivity"></activity>
     </application>
 
 </manifest>
