@@ -10,11 +10,14 @@ import com.ljy.devring.DevRing;
 
 import butterknife.OnClick;
 
+import static android.R.attr.key;
+
 /**
  * 测试类
  */
 public class TestActivity extends BaseActivity {
     protected final static String TAG = TestActivity.class.getSimpleName();
+
     @Override
     protected int getContentLayout() {
         return R.layout.activity_test;
@@ -51,7 +54,73 @@ public class TestActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_test_webview:
-                startActivity(new Intent(this, WebViewActivity.class).putExtra("url_key", "https://www.duba.com/?f=liebao"));
+                int key = 0;
+                String url = "";
+                switch (key) {
+                    /*Fragment 使用AgenWeb*/
+                    case 0: //项目中请使用常量代替0 ， 代码可读性更高
+                        url = "https://m.vip.com/?source=www&jump_https=1";
+                        break;
+                    /*下载文件*/
+                    case 1:
+                        url = "http://android.myapp.com/";
+                        break;
+                    /*input标签上传文件*/
+                    case 2:
+                        url = "file:///android_asset/upload_file/uploadfile.html";
+                        break;
+                    /*Js上传文件*/
+                    case 3:
+                        url = "file:///android_asset/upload_file/jsuploadfile.html";
+                        break;
+                    /*Js*/
+                    case 4:
+                        url = "file:///android_asset/js_interaction/hello.html";
+                        break;
+                    /*优酷*/
+                    case 5:
+                        url = "http://m.youku.com/video/id_XODEzMjU1MTI4.html";
+                        break;
+                    /*淘宝*/
+                    case 6:
+                        url = "https://m.taobao.com/?sprefer=sypc00";
+                        break;
+                    /*豌豆荚*/
+                    case 7:
+                        url = "http://www.wandoujia.com/apps";
+                        break;
+                    /*短信*/
+                    case 8:
+                        url = "file:///android_asset/sms/sms.html";
+                        break;
+                    /* 自定义 WebView */
+                    case 9:
+                        url = "http://m.youku.com/video/id_XODEzMjU1MTI4.html";
+                        break;
+                    /*回弹效果*/
+                    case 10:
+                        url = "http://m.mogujie.com/?f=mgjlm&ptp=_qd._cps______3069826.152.1.0";
+                        break;
+                    /*JsBridge 演示*/
+                    case 11:
+                        url = "file:///android_asset/jsbridge/demo.html";
+                        break;
+                    /*SmartRefresh 下拉刷新*/
+                    case 12:
+                        url = "http://www.163.com/";
+                        break;
+                    /*地图*/
+                    case 13:
+                        url = "https://map.baidu.com/mobile/webapp/index/index/#index/index/foo=bar/vt=map";
+                        break;
+                    /*首屏秒开*/
+                    case 14:
+                        url = "http://mc.vip.qq.com/demo/indexv3";
+                        break;
+                    default:
+                        break;
+                }
+                startActivity(new Intent(this, WebViewActivity.class).putExtra("url_key", url));
                 break;
             case R.id.btn_test_share:
                 break;
