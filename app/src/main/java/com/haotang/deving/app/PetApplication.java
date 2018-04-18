@@ -7,6 +7,8 @@ import com.haotang.deving.R;
 import com.haotang.deving.app.constant.UrlConstants;
 import com.haotang.deving.mvp.model.db.greendao.GreenDBManager;
 import com.haotang.deving.mvp.model.imageload.FrescoManager;
+import com.haotang.deving.shareutil.ShareConfig;
+import com.haotang.deving.shareutil.ShareManager;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.FileUtil;
 
@@ -98,5 +100,11 @@ public class PetApplication extends Application {
 
         JPushInterface.setDebugMode(AppConfig.isShowLog); 	// 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);     		// 初始化 JPush
+
+        ShareConfig config = ShareConfig.instance()
+                .qqId(AppConfig.QQ_ID)
+                .wxId(AppConfig.WX_ID)
+                .wxSecret(AppConfig.WX_ID);
+        ShareManager.init(config);
     }
 }

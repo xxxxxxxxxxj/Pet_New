@@ -107,4 +107,11 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile files('libs/jcore-android-1.2.0.jar')
     compile files('libs/jpush-android-3.1.2.jar')
+    compile files('libs/libammsdk.jar')
+    compile files('libs/open_sdk_r5990_lite.jar')
+    compile files('libs/weiboSDKCore_3.1.4.jar')
+    compile 'io.reactivex:rxjava:1.2.3'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.squareup.okhttp3:okhttp:3.4.2'
+    compile 'me.shaohui:bottomdialog:1.1.9'
 }

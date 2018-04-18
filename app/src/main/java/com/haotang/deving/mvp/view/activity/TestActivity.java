@@ -2,15 +2,21 @@ package com.haotang.deving.mvp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.haotang.deving.R;
 import com.haotang.deving.mvp.view.activity.base.BaseActivity;
+import com.haotang.deving.mvp.view.widget.ShareBottomDialog;
+import com.haotang.deving.shareutil.LoginUtil;
+import com.haotang.deving.shareutil.login.LoginListener;
+import com.haotang.deving.shareutil.login.LoginPlatform;
+import com.haotang.deving.shareutil.login.LoginResult;
+import com.haotang.deving.shareutil.login.result.BaseToken;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 
 import butterknife.OnClick;
-
-import static android.R.attr.key;
 
 /**
  * 测试类
@@ -123,8 +129,33 @@ public class TestActivity extends BaseActivity {
                 startActivity(new Intent(this, WebViewActivity.class).putExtra("url_key", url));
                 break;
             case R.id.btn_test_share:
+                ShareBottomDialog dialog = new ShareBottomDialog();
+                dialog.show(getSupportFragmentManager());
                 break;
             case R.id.btn_test_wxlogin:
+                LoginUtil.login(TestActivity.this, LoginPlatform.WX, new LoginListener() {
+                    @Override
+                    public void loginSuccess(LoginResult result) {
+                        RingLog.d(TAG, result.getUserInfo().getNickname());
+                        RingLog.d(TAG, "登录成功");
+                    }
+
+                    @Override
+                    public void beforeFetchUserInfo(BaseToken token) {
+                        Log.i("TAG", "获取用户信息");
+                    }
+
+                    @Override
+                    public void loginFailure(Exception e) {
+                        e.printStackTrace();
+                        RingLog.d(TAG, "登录失败");
+                    }
+
+                    @Override
+                    public void loginCancel() {
+                        RingLog.d(TAG, "登录取消");
+                    }
+                });
                 break;
         }
     }

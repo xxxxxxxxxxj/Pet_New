@@ -207,6 +207,49 @@
             android:name="JPUSH_APPKEY"
             android:value="d4d7032a757ebdfb0dd3ad9d" /> <!--  </>值来自开发者平台取得的AppKey-->
         <!--极光推送end-->
+        <!--第三方登录，分享开始-->
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"></activity>
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="behind"
+            android:taskAffinity="me.shaohui.shareutil"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent${qq_id}" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.haotang.deving.shareutil._ShareActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.haotang.deving"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity-alias
+            android:name="${applicationId}.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.haotang.deving.shareutil._ShareActivity" />
+        <!--第三方登录，分享结束-->
     </application>
 
 </manifest>

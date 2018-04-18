@@ -150,16 +150,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 RingLog.d(TAG, "onTabSelect position = " + position);
                 currentTabIndex = position;
                 vpMainactivity.setCurrentItem(currentTabIndex);
-                if (position == 0 || position == 1) {
-                    setBarColor(getResources().getColor(R.color.aD1494F));
-                } else {
-                    setBarColor(getResources().getColor(R.color.colorPrimary));
-                }
-                if (position == 1) {
-                    ctlMainactivity.hideMsg(1);
-                } else if (position == 2) {
-                    ctlMainactivity.hideMsg(2);
-                }
             }
 
             @Override
@@ -167,16 +157,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 RingLog.d(TAG, "onTabReselect position = " + position);
                 currentTabIndex = position;
                 vpMainactivity.setCurrentItem(currentTabIndex);
-                if (position == 0 || position == 1) {
-                    setBarColor(getResources().getColor(R.color.aD1494F));
-                } else {
-                    setBarColor(getResources().getColor(R.color.colorPrimary));
-                }
-                if (position == 1) {
-                    ctlMainactivity.hideMsg(1);
-                } else if (position == 2) {
-                    ctlMainactivity.hideMsg(2);
-                }
             }
         });
         vpMainactivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
