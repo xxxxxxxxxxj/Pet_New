@@ -30,7 +30,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        DevRing.activityStackManager().pushOneActivity(this);
     }
 
     @Override
@@ -59,6 +59,12 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     @Override
     public void onReq(BaseReq baseReq) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DevRing.activityStackManager().exitActivity(this); //退出activity
     }
 
     @Override

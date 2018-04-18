@@ -1,22 +1,21 @@
 package com.haotang.deving.shareutil;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import com.haotang.deving.mvp.view.activity.base.BaseActivity;
+import com.haotang.deving.util.CountdownUtil;
+import com.ljy.devring.DevRing;
 
 /**
  * Created by shaohui on 2016/11/19.
  */
 
-public class _ShareActivity extends Activity {
-
+public class _ShareActivity extends BaseActivity {
     private int mType;
-
     private boolean isNew;
-
     private static final String TYPE = "share_activity_type";
 
     public static Intent newInstance(Context context, int type) {
@@ -29,11 +28,19 @@ public class _ShareActivity extends Activity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected int getContentLayout() {
+        return 0;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+        DevRing.activityStackManager().pushOneActivity(this);
+    }
+
+    @Override
+    protected void setView(Bundle savedInstanceState) {
         ShareLogger.i(ShareLogger.INFO.ACTIVITY_CREATE);
         isNew = true;
-
         // init data
         mType = getIntent().getIntExtra(TYPE, 0);
         if (mType == ShareUtil.TYPE) {
@@ -48,6 +55,16 @@ public class _ShareActivity extends Activity {
             ShareUtil.handleResult(getIntent());
             finish();
         }
+    }
+
+    @Override
+    protected void initData(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void initEvent() {
+
     }
 
     @Override
@@ -86,4 +103,11 @@ public class _ShareActivity extends Activity {
         }
         finish();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DevRing.activityStackManager().exitActivity(this); //退出activity
+    }
+
 }
