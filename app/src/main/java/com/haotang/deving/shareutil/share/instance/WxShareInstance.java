@@ -12,6 +12,7 @@ import com.haotang.deving.shareutil.share.ImageDecoder;
 import com.haotang.deving.shareutil.share.ShareImageObject;
 import com.haotang.deving.shareutil.share.ShareListener;
 import com.haotang.deving.shareutil.share.SharePlatform;
+import com.ljy.devring.other.RingLog;
 import com.tencent.mm.sdk.openapi.BaseReq;
 import com.tencent.mm.sdk.openapi.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -34,7 +35,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class WxShareInstance implements ShareInstance {
-
+    protected final static String TAG = WxShareInstance.class.getSimpleName();
     /**
      * 微信分享限制thumb image必须小于32Kb，否则点击分享会没有反应
      */
@@ -110,7 +111,7 @@ public class WxShareInstance implements ShareInstance {
 
     @Override
     public void shareImage(final int platform, final ShareImageObject shareImageObject,
-            final Activity activity, final ShareListener listener) {
+                           final Activity activity, final ShareListener listener) {
         Observable.fromEmitter(new Action1<Emitter<Pair<Bitmap, byte[]>>>() {
             @Override
             public void call(Emitter<Pair<Bitmap, byte[]>> emitter) {
@@ -185,6 +186,7 @@ public class WxShareInstance implements ShareInstance {
     }
 
     private void sendMessage(int platform, WXMediaMessage message, String transaction) {
+        RingLog.d(TAG, "title = " + message.title + "summary = " + message.description + "targetUrl = " + message.mediaObject.toString() + "thumbUrl = " + message.thumbData);
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = transaction;
         req.message = message;

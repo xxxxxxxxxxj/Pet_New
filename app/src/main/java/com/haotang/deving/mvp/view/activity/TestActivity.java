@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.haotang.deving.R;
+import com.haotang.deving.app.constant.UrlConstants;
 import com.haotang.deving.mvp.view.activity.base.BaseActivity;
 import com.haotang.deving.mvp.view.widget.ShareBottomDialog;
 import com.haotang.deving.shareutil.LoginUtil;
@@ -60,7 +61,7 @@ public class TestActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_test_webview:
-                int key = 0;
+                int key = 2;
                 String url = "";
                 switch (key) {
                     /*Fragment 使用AgenWeb*/
@@ -130,6 +131,8 @@ public class TestActivity extends BaseActivity {
                 break;
             case R.id.btn_test_share:
                 ShareBottomDialog dialog = new ShareBottomDialog();
+                dialog.setShareInfo("测试", "测试",
+                        "https://www.duba.com", UrlConstants.getServiceBaseUrl() + "/static/icon/shouye.png?3");
                 dialog.show(getSupportFragmentManager());
                 break;
             case R.id.btn_test_wxlogin:
@@ -142,13 +145,13 @@ public class TestActivity extends BaseActivity {
 
                     @Override
                     public void beforeFetchUserInfo(BaseToken token) {
-                        Log.i("TAG", "获取用户信息");
+                        RingLog.d(TAG, "获取用户信息");
                     }
 
                     @Override
                     public void loginFailure(Exception e) {
                         e.printStackTrace();
-                        RingLog.d(TAG, "登录失败");
+                        RingLog.d(TAG, "登录失败e = " + e.toString());
                     }
 
                     @Override

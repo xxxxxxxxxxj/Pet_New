@@ -8,12 +8,14 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.haotang.deving.mvp.view.activity.TestActivity;
 import com.haotang.deving.shareutil.ShareLogger;
 import com.haotang.deving.shareutil.ShareUtil;
 import com.haotang.deving.shareutil.share.ImageDecoder;
 import com.haotang.deving.shareutil.share.ShareImageObject;
 import com.haotang.deving.shareutil.share.ShareListener;
 import com.haotang.deving.shareutil.share.SharePlatform;
+import com.ljy.devring.other.RingLog;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzonePublish;
 import com.tencent.connect.share.QzoneShare;
@@ -33,7 +35,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class QQShareInstance implements ShareInstance {
-
+    protected final static String TAG = QQShareInstance.class.getSimpleName();
     private Tencent mTencent;
 
     public QQShareInstance(Context context, String app_id) {
@@ -94,7 +96,7 @@ public class QQShareInstance implements ShareInstance {
 
     @Override
     public void shareImage(final int platform, final ShareImageObject shareImageObject,
-            final Activity activity, final ShareListener listener) {
+                           final Activity activity, final ShareListener listener) {
         Observable.fromEmitter(new Action1<Emitter<String>>() {
             @Override
             public void call(Emitter<String> emitter) {
@@ -162,7 +164,8 @@ public class QQShareInstance implements ShareInstance {
     }
 
     private void shareToQQForMedia(String title, String summary, String targetUrl, String thumbUrl,
-            Activity activity, ShareListener listener) {
+                                   Activity activity, ShareListener listener) {
+        RingLog.d(TAG, "title = " + title + "summary = " + summary + "targetUrl = " + targetUrl + "thumbUrl = " + thumbUrl);
         final Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
         params.putString(QQShare.SHARE_TO_QQ_TITLE, title);
@@ -188,7 +191,7 @@ public class QQShareInstance implements ShareInstance {
     }
 
     private void shareToQZoneForMedia(String title, String targetUrl, String summary,
-            String imageUrl, Activity activity, ShareListener listener) {
+                                      String imageUrl, Activity activity, ShareListener listener) {
         final Bundle params = new Bundle();
         final ArrayList<String> image = new ArrayList<>();
         image.add(imageUrl);

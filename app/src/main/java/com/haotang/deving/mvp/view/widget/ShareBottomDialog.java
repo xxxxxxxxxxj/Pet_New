@@ -7,6 +7,7 @@ import com.haotang.deving.R;
 import com.haotang.deving.shareutil.ShareUtil;
 import com.haotang.deving.shareutil.share.ShareListener;
 import com.haotang.deving.shareutil.share.SharePlatform;
+import com.ljy.devring.other.RingLog;
 
 import me.shaohui.bottomdialog.BaseBottomDialog;
 
@@ -15,12 +16,23 @@ import me.shaohui.bottomdialog.BaseBottomDialog;
  */
 
 public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickListener {
-
+    protected final static String TAG = ShareBottomDialog.class.getSimpleName();
     private ShareListener mShareListener;
+    private String mTitle;
+    private String mSummary;
+    private String mTargetUrl;
+    private String mThumbUrlOrPath;
 
     @Override
     public int getLayoutRes() {
         return R.layout.layout_bottom_share;
+    }
+
+    public void setShareInfo(String title, String summary, String targetUrl, String thumbUrlOrPath) {
+        this.mTitle = title;
+        this.mSummary = summary;
+        this.mTargetUrl = targetUrl;
+        this.mThumbUrlOrPath = thumbUrlOrPath;
     }
 
     @Override
@@ -39,6 +51,7 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
 
             @Override
             public void shareFailure(Exception e) {
+                RingLog.d(TAG, "分享失败 e = " + e.toString());
                 Toast.makeText(v.getContext(), "分享失败", Toast.LENGTH_SHORT).show();
             }
 
@@ -54,25 +67,28 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.share_qq:
-                ShareUtil.shareImage(getContext(), SharePlatform.QQ,
-                        "http://shaohui.me/images/avatar.gif", mShareListener);
+                ShareUtil.shareMedia(getContext(), SharePlatform.QQ, mTitle, mSummary,
+                        mTargetUrl, mThumbUrlOrPath,
+                        mShareListener);
                 break;
             case R.id.share_qzone:
-                ShareUtil.shareMedia(getContext(), SharePlatform.QZONE, "Title", "summary",
-                        "http://www.google.com", "http://shaohui.me/images/avatar.gif",
+                ShareUtil.shareMedia(getContext(), SharePlatform.QZONE, mTitle, mSummary,
+                        mTargetUrl, mThumbUrlOrPath,
                         mShareListener);
                 break;
             case R.id.share_weibo:
-                ShareUtil.shareImage(getContext(), SharePlatform.WEIBO,
-                        "http://shaohui.me/images/avatar.gif", mShareListener);
+                ShareUtil.shareMedia(getContext(), SharePlatform.WEIBO, mTitle, mSummary,
+                        mTargetUrl, mThumbUrlOrPath,
+                        mShareListener);
                 break;
             case R.id.share_wx_timeline:
-                ShareUtil.shareText(getContext(), SharePlatform.WX_TIMELINE, "测试分享文字",
+                ShareUtil.shareMedia(getContext(), SharePlatform.WX_TIMELINE, mTitle, mSummary,
+                        mTargetUrl, mThumbUrlOrPath,
                         mShareListener);
                 break;
             case R.id.share_wx:
-                ShareUtil.shareMedia(getContext(), SharePlatform.WX, "Title", "summary",
-                        "http://www.google.com", "http://shaohui.me/images/avatar.gif",
+                ShareUtil.shareMedia(getContext(), SharePlatform.WX, mTitle, mSummary,
+                        mTargetUrl, mThumbUrlOrPath,
                         mShareListener);
                 break;
         }
