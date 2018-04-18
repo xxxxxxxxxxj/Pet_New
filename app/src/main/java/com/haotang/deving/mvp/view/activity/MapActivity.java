@@ -44,9 +44,37 @@ public class MapActivity extends BaseActivity {
 
     }
 
+    /**
+     * 方法必须重写
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    /**
+     * 方法必须重写
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    /**
+     * 方法必须重写
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mapView.onDestroy();
         DevRing.activityStackManager().exitActivity(this); //退出activity
     }
 }
