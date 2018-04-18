@@ -33,6 +33,34 @@
             android:layout_marginBottom="10dip"
             android:text="微信登录" />
 
+        <Button
+            android:id="@+id/btn_test_wxpay"
+            android:layout_width="200dip"
+            android:layout_height="50dip"
+            android:layout_marginBottom="10dip"
+            android:text="微信支付" />
+
+        <Button
+            android:id="@+id/btn_test_alipay"
+            android:layout_width="200dip"
+            android:layout_height="50dip"
+            android:layout_marginBottom="10dip"
+            android:text="支付宝支付" />
+
+        <Button
+            android:id="@+id/btn_test_gaodemap"
+            android:layout_width="200dip"
+            android:layout_height="50dip"
+            android:layout_marginBottom="10dip"
+            android:text="高德地图" />
+
+        <Button
+            android:id="@+id/btn_test_qrcode"
+            android:layout_width="200dip"
+            android:layout_height="50dip"
+            android:layout_marginBottom="10dip"
+            android:text="扫描二维码" />
+
     </LinearLayout>
 
 </ScrollView>

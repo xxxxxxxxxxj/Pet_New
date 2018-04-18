@@ -2,10 +2,15 @@ package com.haotang.deving.mvp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.haotang.deving.R;
+import com.haotang.deving.app.AppConfig;
 import com.haotang.deving.app.constant.UrlConstants;
+import com.haotang.deving.mvp.model.entity.res.ALiPayResult;
 import com.haotang.deving.mvp.view.activity.base.BaseActivity;
 import com.haotang.deving.mvp.view.widget.ShareBottomDialog;
 import com.haotang.deving.shareutil.LoginUtil;
@@ -13,11 +18,15 @@ import com.haotang.deving.shareutil.login.LoginListener;
 import com.haotang.deving.shareutil.login.LoginPlatform;
 import com.haotang.deving.shareutil.login.LoginResult;
 import com.haotang.deving.shareutil.login.result.BaseToken;
+import com.haotang.deving.util.PayUtils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RingToast;
 import com.tencent.mm.sdk.openapi.BaseResp;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.Map;
 
 import butterknife.OnClick;
 
@@ -59,7 +68,8 @@ public class TestActivity extends BaseActivity {
         DevRing.activityStackManager().exitActivity(this); //退出activity
     }
 
-    @OnClick({R.id.btn_test_webview, R.id.btn_test_share, R.id.btn_test_wxlogin})
+    @OnClick({R.id.btn_test_webview, R.id.btn_test_share, R.id.btn_test_wxlogin, R.id.btn_test_wxpay, R.id.btn_test_alipay
+            , R.id.btn_test_gaodemap, R.id.btn_test_qrcode})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_test_webview:
@@ -162,8 +172,48 @@ public class TestActivity extends BaseActivity {
                     }
                 });
                 break;
+            case R.id.btn_test_wxpay:
+                break;
+            case R.id.btn_test_alipay:
+                PayUtils.payByAliPay(TestActivity.this, "", mHandler);
+                break;
+            case R.id.btn_test_gaodemap:
+                startActivity(new Intent(this, MapActivity.class));
+                break;
+            case R.id.btn_test_qrcode:
+                break;
         }
     }
+
+    private Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case AppConfig.ALI_SDK_PAY_FLAG: {
+                    @SuppressWarnings("unchecked")
+                    ALiPayResult payResult = new ALiPayResult((Map<String, String>) msg.obj);
+                    /**
+                     对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        RingLog.d(TAG, "支付成功");
+                        RingToast.show("支付成功");
+                    } else {
+                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        RingLog.d(TAG, "支付失败");
+                        RingToast.show("支付失败");
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    };
 
     @Subscribe
     public void onWXPayResult(BaseResp baseResp) {
