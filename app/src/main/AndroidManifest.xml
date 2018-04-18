@@ -250,6 +250,12 @@
             android:exported="true"
             android:targetActivity="com.haotang.deving.shareutil._ShareActivity" />
         <!--第三方登录，分享结束-->
+        <!--微信支付回调页开始-->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop" />
+        <!--微信支付回调页结束-->
     </application>
 
 </manifest>

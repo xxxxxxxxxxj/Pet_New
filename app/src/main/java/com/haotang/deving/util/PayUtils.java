@@ -39,7 +39,7 @@ public class PayUtils {
         payReq.nonceStr = nonceStr;
         payReq.timeStamp = timeStamp;
         payReq.sign = sign;
-        IWXAPI createWXAPI = WXAPIFactory.createWXAPI(activity, null);
+        IWXAPI createWXAPI = WXAPIFactory.createWXAPI(activity, AppConfig.WX_ID);
         createWXAPI.registerApp(appId);
         createWXAPI.sendReq(payReq);
         if (pDialog != null) {

@@ -2,7 +2,6 @@ package com.haotang.deving.mvp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.haotang.deving.R;
@@ -16,6 +15,9 @@ import com.haotang.deving.shareutil.login.LoginResult;
 import com.haotang.deving.shareutil.login.result.BaseToken;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.tencent.mm.sdk.openapi.BaseResp;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.OnClick;
 
@@ -161,5 +163,10 @@ public class TestActivity extends BaseActivity {
                 });
                 break;
         }
+    }
+
+    @Subscribe
+    public void onWXPayResult(BaseResp baseResp) {
+
     }
 }
