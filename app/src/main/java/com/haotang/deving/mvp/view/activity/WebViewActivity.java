@@ -142,7 +142,7 @@ public class WebViewActivity extends BaseActivity {
         String url = getIntent().getStringExtra(URL_KEY);
         if (url != null && !TextUtils.isEmpty(url)) {
             if (!url.startsWith("http:")
-                    && !url.startsWith("https:")) {
+                    && !url.startsWith("https:") && !url.startsWith("file:///")) {
                 url = UrlConstants.getServiceBaseUrl() + url;
             }
             if (url.contains("?")) {

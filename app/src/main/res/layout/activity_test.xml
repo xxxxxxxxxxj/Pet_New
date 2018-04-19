@@ -61,6 +61,13 @@
             android:layout_marginBottom="10dip"
             android:text="扫描二维码" />
 
+        <Button
+            android:id="@+id/btn_test_takephoto"
+            android:layout_width="200dip"
+            android:layout_height="50dip"
+            android:layout_marginBottom="10dip"
+            android:text="图片选择" />
+
     </LinearLayout>
 
 </ScrollView>

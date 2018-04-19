@@ -69,7 +69,7 @@ public class TestActivity extends BaseActivity {
     }
 
     @OnClick({R.id.btn_test_webview, R.id.btn_test_share, R.id.btn_test_wxlogin, R.id.btn_test_wxpay, R.id.btn_test_alipay
-            , R.id.btn_test_gaodemap, R.id.btn_test_qrcode})
+            , R.id.btn_test_gaodemap, R.id.btn_test_qrcode, R.id.btn_test_takephoto})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_test_webview:
@@ -181,6 +181,8 @@ public class TestActivity extends BaseActivity {
                 startActivity(new Intent(this, MapActivity.class));
                 break;
             case R.id.btn_test_qrcode:
+                break;
+            case R.id.btn_test_takephoto:
                 break;
         }
     }

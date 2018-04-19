@@ -1,14 +1,329 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.haotang.deving.mvp.view.activity.MapActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_map_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/stop_animation"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:text="@string/stop_animation" />
+
+            <ToggleButton
+                android:id="@+id/animate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:textOff="@string/animate"
+                android:textOn="@string/animate" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/Lujiazui"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/go_to_lujiazui" />
+
+            <Button
+                android:id="@+id/Zhongguancun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/go_to_zhongguancun" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/scroll_left"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/left_arrow" />
+
+            <Button
+                android:id="@+id/scroll_up"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/scroll_left"
+                android:text="@string/up_arrow" />
+
+            <Button
+                android:id="@+id/scroll_down"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_below="@id/scroll_up"
+                android:layout_toRightOf="@id/scroll_left"
+                android:text="@string/down_arrow" />
+
+            <Button
+                android:id="@+id/scroll_right"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/scroll_down"
+                android:text="@string/right_arrow" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/zoom_in"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:text="@string/zoom_in" />
+
+            <Button
+                android:id="@+id/zoom_out"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:text="@string/zoom_out" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_map_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_map_camera"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tap_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tap_instructions" />
+
+        <TextView
+            android:id="@+id/camera_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/move_the_camera" />
+
+        <TextView
+            android:id="@+id/touch_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/touch_the_map" />
+
+        <Button
+            android:id="@+id/map_screenshot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="getMapScreenShot"
+            android:text="@string/map_screenshot" />
+
+        <TextView
+            android:id="@+id/mark_listenter_text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="拖动marker1" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/sv_map_uisetting"
+        android:layout_width="wrap_content"
+        android:layout_height="170dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="55dip">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#D000"
+            android:orientation="vertical"
+            android:paddingRight="5dp">
+
+            <Button
+                android:id="@+id/buttonScale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/buttonScale" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/scale_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:text="@string/scale" />
+
+                <CheckBox
+                    android:id="@+id/zoom_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/zoom_buttons" />
+
+                <CheckBox
+                    android:id="@+id/compass_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:text="@string/compass" />
+
+                <CheckBox
+                    android:id="@+id/mylocation_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="false"
+                    android:text="@string/mylocation_layer" />
+
+                <CheckBox
+                    android:id="@+id/scroll_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/scroll" />
+
+                <CheckBox
+                    android:id="@+id/zoom_gestures_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/zoom_gestures" />
+
+                <CheckBox
+                    android:id="@+id/tilt_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/tilt" />
+
+                <CheckBox
+                    android:id="@+id/rotate_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/rotate" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/logo_position" />
+
+                <RadioGroup
+                    android:id="@+id/logo_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checkedButton="@+id/bottom_left"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/bottom_left"
+                        android:text="@string/bottom_left" />
+
+                    <RadioButton
+                        android:id="@+id/bottom_center"
+                        android:text="@string/bottom_center" />
+
+                    <RadioButton
+                        android:id="@+id/bottom_right"
+                        android:text="@string/bottom_right" />
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_map_markers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/clearMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/clear_map" />
+
+            <Button
+                android:id="@+id/resetMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/reset_map" />
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/custom_info_window_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/default_info_window"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/default_info_window" />
+
+            <RadioButton
+                android:id="@+id/custom_info_contents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/custom_info_contents" />
+
+            <RadioButton
+                android:id="@+id/custom_info_window"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/custom_info_window" />
+        </RadioGroup>
+    </LinearLayout>
 
     <com.amap.api.maps.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></com.amap.api.maps.MapView>
-</LinearLayout>
+</RelativeLayout>
