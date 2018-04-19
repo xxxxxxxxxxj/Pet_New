@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.haotang.deving.mvp.view.activity.ImagePickerActivity">
+
+    <Button
+        android:id="@+id/btnPickByTake"
+        android:layout_width="200dip"
+        android:layout_height="50dip"
+        android:layout_marginBottom="10dip"
+        android:text="拍照" />
+
+    <Button
+        android:id="@+id/btnPickBySelect"
+        android:layout_width="200dip"
+        android:layout_height="50dip"
+        android:layout_marginBottom="10dip"
+        android:text="选择照片" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_take_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

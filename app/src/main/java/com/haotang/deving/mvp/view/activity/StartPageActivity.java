@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.haotang.deving.R;
 import com.haotang.deving.mvp.view.activity.base.BaseActivity;
 import com.haotang.deving.util.CountdownUtil;
@@ -21,7 +21,7 @@ import butterknife.OnClick;
  */
 public class StartPageActivity extends BaseActivity {
     @BindView(R.id.iv_landingpage)
-    ImageView ivLandingpage;
+    SimpleDraweeView ivLandingpage;
     @BindView(R.id.btn_landing_tg)
     Button btnLandingTg;
     private String img_url;
@@ -76,7 +76,7 @@ public class StartPageActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         CountdownUtil.getInstance().cancel("STARTPAGE_TIMER");
-            DevRing.activityStackManager().exitActivity(this); //退出activity
+        DevRing.activityStackManager().exitActivity(this); //退出activity
     }
 
     @OnClick({R.id.btn_landing_tg, R.id.iv_landingpage})

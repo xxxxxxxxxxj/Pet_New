@@ -121,7 +121,7 @@
         <activity
             android:name=".mvp.view.activity.MapActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <!-- 极光推送start -->
         <!-- Rich push 核心功能 since 2.0.6 -->
@@ -292,6 +292,7 @@
 
         <service android:name="com.amap.api.location.APSService" />
         <!-- 高德地图结束 -->
+        <activity android:name=".mvp.view.activity.ImagePickerActivity"></activity>
     </application>
 
 </manifest>

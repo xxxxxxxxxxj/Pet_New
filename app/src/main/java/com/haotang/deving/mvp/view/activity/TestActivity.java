@@ -181,8 +181,10 @@ public class TestActivity extends BaseActivity {
                 startActivity(new Intent(this, MapActivity.class));
                 break;
             case R.id.btn_test_qrcode:
+
                 break;
             case R.id.btn_test_takephoto:
+                startActivity(new Intent(this, ImagePickerActivity.class));
                 break;
         }
     }

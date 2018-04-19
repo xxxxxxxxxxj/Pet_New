@@ -68,6 +68,20 @@
             android:layout_marginBottom="10dip"
             android:text="图片选择" />
 
+        <Button
+            android:id="@+id/btn_test_adapter"
+            android:layout_width="200dip"
+            android:layout_height="50dip"
+            android:layout_marginBottom="10dip"
+            android:text="BaseRecyclerViewAdapterHelper" />
+
+        <Button
+            android:id="@+id/btn_test_banner"
+            android:layout_width="200dip"
+            android:layout_height="50dip"
+            android:layout_marginBottom="10dip"
+            android:text="banner" />
+
     </LinearLayout>
 
 </ScrollView>
