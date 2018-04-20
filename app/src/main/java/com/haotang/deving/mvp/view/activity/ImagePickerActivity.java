@@ -1,5 +1,6 @@
 package com.haotang.deving.mvp.view.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -15,10 +16,14 @@ import com.haotang.deving.mvp.model.entity.res.ImgInfo;
 import com.haotang.deving.mvp.model.imageload.GlideImageLoader;
 import com.haotang.deving.mvp.view.activity.base.BaseActivity;
 import com.haotang.deving.mvp.view.adapter.TakePhotoImgAdapter;
+import com.haotang.deving.mvp.view.widget.PermissionDialog;
 import com.haotang.deving.util.PathUtils;
+import com.haotang.deving.util.SystemTypeUtil;
 import com.haotang.deving.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.other.permission.PermissionListener;
+import com.ljy.devring.util.RingToast;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.zhihu.matisse.Matisse;
@@ -56,6 +61,7 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
     private List<ImgInfo> imgList = new ArrayList<ImgInfo>();
     private List<String> urlList = new ArrayList<String>();
     private List<String> pressUrlList = new ArrayList<String>();
+    PermissionDialog permissionDialog;
 
     @Override
     protected int getContentLayout() {
@@ -69,6 +75,8 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        permissionDialog = new PermissionDialog(this);
+        permissionDialog.setMessage(R.string.permission_request_WRITE_EXTERNAL_STORAGE);
         setAdapter();
         setBanner();
     }
@@ -102,6 +110,19 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
 
     @Override
     protected void initEvent() {
+        permissionDialog.setPositiveButton(R.string.permission_request_dialog_pos, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                permissionDialog.dismiss();
+                SystemTypeUtil.goToPermissionManager(ImagePickerActivity.this);
+            }
+        });
+        permissionDialog.setNegativeButton(R.string.permission_request_dialog_nav, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                permissionDialog.dismiss();
+            }
+        });
         takePhotoImgAdapter.setOnChildItemListener(new TakePhotoImgAdapter.OnChildItemListener() {
             @Override
             public void OnChildItem(int viewId, int position) {
@@ -124,35 +145,54 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
     }
 
     @OnClick({R.id.zhihu, R.id.dracula})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.zhihu:
-                Matisse.from(ImagePickerActivity.this)
-                        .choose(MimeType.allOf())
-                        .countable(true)
-                        .capture(true)
-                        .captureStrategy(
-                                new CaptureStrategy(true, "com.haotang.deving.mvp.model.fileprovider.MatisseFileProvider"))
-                        .maxSelectable(9)
-                        //.addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-                        .gridExpectedSize(
-                                getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                        .thumbnailScale(0.85f)
-                        .imageEngine(new GlideEngine())
-                        //.setOnSelectedListener()
-                        .forResult(REQUEST_CODE_CHOOSE);
-                break;
-            case R.id.dracula:
-                Matisse.from(ImagePickerActivity.this)
-                        .choose(MimeType.allOf())
-                        .theme(R.style.Matisse_Dracula)
-                        .countable(false)
-                        .maxSelectable(9)
-                        .imageEngine(new GlideEngine())
-                        .forResult(REQUEST_CODE_CHOOSE);
-                break;
-        }
+    public void onViewClicked(final View view) {
+        //申请必要权限
+        DevRing.permissionManager().requestEach(ImagePickerActivity.this, new PermissionListener() {
+            @Override
+            public void onGranted(String permissionName) {
+                //全部权限都被授予的话，则弹出底部选项
+                switch (view.getId()) {
+                    case R.id.zhihu:
+                        Matisse.from(ImagePickerActivity.this)
+                                .choose(MimeType.allOf())
+                                .countable(true)
+                                .capture(true)
+                                .captureStrategy(
+                                        new CaptureStrategy(true, "com.haotang.deving.MatisseFileProvider"))
+                                .maxSelectable(9)
+                                //.addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                                .gridExpectedSize(
+                                        getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                                .thumbnailScale(0.85f)
+                                .imageEngine(new GlideEngine())
+                                //.setOnSelectedListener()
+                                .forResult(REQUEST_CODE_CHOOSE);
+                        break;
+                    case R.id.dracula:
+                        Matisse.from(ImagePickerActivity.this)
+                                .choose(MimeType.allOf())
+                                .theme(R.style.Matisse_Dracula)
+                                .countable(false)
+                                .maxSelectable(9)
+                                .imageEngine(new GlideEngine())
+                                .forResult(REQUEST_CODE_CHOOSE);
+                        break;
+                }
+            }
+
+            @Override
+            public void onDenied(String permissionName) {
+                //如果用户拒绝了其中一个授权请求，则提醒用户
+                RingToast.show(R.string.permission_request_WRITE_EXTERNAL_STORAGE);
+            }
+
+            @Override
+            public void onDeniedWithNeverAsk(String permissionName) {
+                //如果用户拒绝了其中一个授权请求，且勾选了不再提醒，则需要引导用户到权限管理页面开启
+                permissionDialog.show();
+            }
+        }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     @Override
