@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,9 +11,11 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.deving.R;
+import com.haotang.deving.mvp.model.entity.res.ImgInfo;
 import com.haotang.deving.mvp.model.imageload.GlideImageLoader;
 import com.haotang.deving.mvp.view.activity.base.BaseActivity;
 import com.haotang.deving.mvp.view.adapter.TakePhotoImgAdapter;
+import com.haotang.deving.util.PathUtils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.youth.banner.Banner;
@@ -22,16 +23,23 @@ import com.youth.banner.listener.OnBannerListener;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
-import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import top.zibin.luban.Luban;
 
 /**
  * 相册操作
@@ -45,7 +53,7 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
     Banner banner;
     private TakePhotoImgAdapter takePhotoImgAdapter;
     private static final int REQUEST_CODE_CHOOSE = 23;
-    private List<Uri> mDataList = new ArrayList<Uri>();
+    private List<ImgInfo> imgList = new ArrayList<ImgInfo>();
 
     @Override
     protected int getContentLayout() {
@@ -77,8 +85,8 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
 
     private void setAdapter() {
         rvTakePhoto.setHasFixedSize(true);
-        rvTakePhoto.setLayoutManager(new GridLayoutManager(this, 3));
-        takePhotoImgAdapter = new TakePhotoImgAdapter(R.layout.item_takephoto_imginfo, mDataList);
+        rvTakePhoto.setLayoutManager(new GridLayoutManager(this, 1));
+        takePhotoImgAdapter = new TakePhotoImgAdapter(R.layout.item_takephoto_imginfo, imgList);
         takePhotoImgAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         View top = getLayoutInflater().inflate(R.layout.imagepicker_top_view, (ViewGroup) rvTakePhoto.getParent(), false);
         banner = top.findViewById(R.id.banner);
@@ -136,10 +144,46 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            mDataList.clear();
-            mDataList.addAll(Matisse.obtainResult(data));
+            if (data != null) {
+                List<Uri> uris = Matisse.obtainResult(data);
+                if (uris != null && uris.size() > 0) {
+                    List<String> paths = new ArrayList<String>();
+                    imgList.clear();
+                    for (int i = 0; i < uris.size(); i++) {
+                        Uri uri = uris.get(i);
+                        RingLog.d(TAG, "uri =  " + uri.toString());
+                        String path = PathUtils.getPath(this, uris.get(i));
+                        RingLog.d(TAG, "path = " + path);
+                        File file = new File(path);
+                        imgList.add(new ImgInfo(uri, path, file));
+                        paths.add(path);
+                    }
+                    compressWithRx(paths);
+                }
+            }
             takePhotoImgAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void compressWithRx(final List<String> photos) {
+        Flowable.just(photos)
+                .observeOn(Schedulers.io())
+                .map(new Function<List<String>, List<File>>() {
+                    @Override
+                    public List<File> apply(@NonNull List<String> list) throws Exception {
+                        return Luban.with(ImagePickerActivity.this).load(list).get();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<File>>() {
+                    @Override
+                    public void accept(@NonNull List<File> list) throws Exception {
+                        for (int i = 0; i < list.size(); i++) {
+                            imgList.get(i).setPressFile(list.get(i));
+                        }
+                        takePhotoImgAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     @Override

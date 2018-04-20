@@ -11,4 +11,5 @@ import android.support.v4.content.FileProvider;
  * @date XJ on 2018/4/20 11:31
  */
 public class MatisseFileProvider extends FileProvider {
+
 }

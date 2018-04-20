@@ -111,7 +111,7 @@
 
         <provider
             android:name="com.haotang.deving.mvp.model.fileprovider.MatisseFileProvider"
-            android:authorities="com.haotang.deving.mvp.model.fileprovider.MatisseFileProvider"
+            android:authorities="com.haotang.deving.MatisseFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
