@@ -9,18 +9,18 @@
     tools:context="com.haotang.deving.mvp.view.activity.ImagePickerActivity">
 
     <Button
-        android:id="@+id/btnPickByTake"
+        android:id="@+id/zhihu"
         android:layout_width="200dip"
         android:layout_height="50dip"
         android:layout_marginBottom="10dip"
-        android:text="拍照" />
+        android:text="zhihu" />
 
     <Button
-        android:id="@+id/btnPickBySelect"
+        android:id="@+id/dracula"
         android:layout_width="200dip"
         android:layout_height="50dip"
         android:layout_marginBottom="10dip"
-        android:text="选择照片" />
+        android:text="dracula" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_take_photo"

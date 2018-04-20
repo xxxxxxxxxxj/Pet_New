@@ -109,6 +109,16 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <provider
+            android:name="com.haotang.deving.mvp.model.fileprovider.MatisseFileProvider"
+            android:authorities="com.haotang.deving.mvp.model.fileprovider.MatisseFileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths_public"></meta-data>
+        </provider>
+
         <activity
             android:name=".mvp.view.activity.TestActivity"
             android:launchMode="singleTop"

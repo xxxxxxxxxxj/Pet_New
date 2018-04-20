@@ -114,7 +114,7 @@ dependencies {
     compile 'me.shaohui:bottomdialog:1.1.9'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     compile 'com.youth.banner:banner:1.4.10'
-    compile 'com.jph.takephoto:takephoto_library:+'
+    compile 'com.zhihu.android:matisse:0.4.3'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
     annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
