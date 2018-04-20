@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +52,7 @@ public class ImagePickerActivity extends TakePhotoActivity implements OnBannerLi
     private boolean enableRawFile = true;//拍照压缩后是否保存原图
     private boolean withOwnGallery = true;//是否使用TakePhoto自带相册
     private boolean correctImage = true;//是否纠正拍照的照片旋转角度
-    private int limit = 9;//最多选择张数
+    private int limit = 1;//最多选择张数
     private boolean iscrop = false;//是否纠正拍照的照片旋转角度
     private int selectFrom = 2;//从哪选择：1从相册，2从文件
     private boolean withWonCrop = true;//裁切工具：true:TakePhoto自带,false:第三方
@@ -129,7 +129,7 @@ public class ImagePickerActivity extends TakePhotoActivity implements OnBannerLi
 
     private void setAdapter() {
         rvTakePhoto.setHasFixedSize(true);
-        rvTakePhoto.setLayoutManager(new LinearLayoutManager(this));
+        rvTakePhoto.setLayoutManager(new GridLayoutManager(this, 3));
         takePhotoImgAdapter = new TakePhotoImgAdapter(R.layout.item_takephoto_imginfo, mDataList);
         takePhotoImgAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         View top = getLayoutInflater().inflate(R.layout.imagepicker_top_view, (ViewGroup) rvTakePhoto.getParent(), false);
@@ -172,7 +172,7 @@ public class ImagePickerActivity extends TakePhotoActivity implements OnBannerLi
             ArrayList<TImage> images = result.getImages();
             if (images != null && images.size() > 0) {
                 mDataList.addAll(images);
-                takePhotoImgAdapter.addData(mDataList);
+                takePhotoImgAdapter.notifyDataSetChanged();
             }
         }
     }
