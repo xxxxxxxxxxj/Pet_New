@@ -16,6 +16,7 @@ import com.haotang.deving.mvp.model.imageload.GlideImageLoader;
 import com.haotang.deving.mvp.view.activity.base.BaseActivity;
 import com.haotang.deving.mvp.view.adapter.TakePhotoImgAdapter;
 import com.haotang.deving.util.PathUtils;
+import com.haotang.deving.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.youth.banner.Banner;
@@ -24,7 +25,6 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
-import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,6 +54,8 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
     private TakePhotoImgAdapter takePhotoImgAdapter;
     private static final int REQUEST_CODE_CHOOSE = 23;
     private List<ImgInfo> imgList = new ArrayList<ImgInfo>();
+    private List<String> urlList = new ArrayList<String>();
+    private List<String> pressUrlList = new ArrayList<String>();
 
     @Override
     protected int getContentLayout() {
@@ -100,6 +102,19 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
 
     @Override
     protected void initEvent() {
+        takePhotoImgAdapter.setOnChildItemListener(new TakePhotoImgAdapter.OnChildItemListener() {
+            @Override
+            public void OnChildItem(int viewId, int position) {
+                switch (viewId) {
+                    case R.id.iv_item_takephoto_imginfo:
+                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, urlList);
+                        break;
+                    case R.id.iv_item_takephoto_imginfo_press:
+                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, pressUrlList);
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -147,7 +162,7 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
             if (data != null) {
                 List<Uri> uris = Matisse.obtainResult(data);
                 if (uris != null && uris.size() > 0) {
-                    List<String> paths = new ArrayList<String>();
+                    urlList.clear();
                     imgList.clear();
                     for (int i = 0; i < uris.size(); i++) {
                         Uri uri = uris.get(i);
@@ -156,9 +171,9 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
                         RingLog.d(TAG, "path = " + path);
                         File file = new File(path);
                         imgList.add(new ImgInfo(uri, path, file));
-                        paths.add(path);
+                        urlList.add(path);
                     }
-                    compressWithRx(paths);
+                    compressWithRx(urlList);
                 }
             }
             takePhotoImgAdapter.notifyDataSetChanged();
@@ -178,7 +193,9 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
                 .subscribe(new Consumer<List<File>>() {
                     @Override
                     public void accept(@NonNull List<File> list) throws Exception {
+                        pressUrlList.clear();
                         for (int i = 0; i < list.size(); i++) {
+                            pressUrlList.add(list.get(i).getAbsolutePath());
                             imgList.get(i).setPressFile(list.get(i));
                         }
                         takePhotoImgAdapter.notifyDataSetChanged();

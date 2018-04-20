@@ -1,6 +1,8 @@
 package com.haotang.deving.mvp.view.adapter;
 
 import android.net.Uri;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -9,10 +11,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.haotang.deving.R;
 import com.haotang.deving.mvp.model.entity.res.ImgInfo;
 import com.haotang.deving.util.FileSizeUtil;
-import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
 import java.io.File;
-import java.net.URI;
 import java.util.List;
 
 /**
@@ -24,16 +24,40 @@ import java.util.List;
  * @date XJ on 2018/4/19 17:48
  */
 public class TakePhotoImgAdapter extends BaseQuickAdapter<ImgInfo, BaseViewHolder> {
-    private List<ImgInfo> newImgList;
+    public OnChildItemListener onChildItemListener = null;
+
+    public interface OnChildItemListener {
+        public void OnChildItem(int viewId, int position);
+    }
+
+    public void setOnChildItemListener(OnChildItemListener onChildItemListener) {
+        this.onChildItemListener = onChildItemListener;
+    }
 
     public TakePhotoImgAdapter(int layoutResId, List data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ImgInfo item) {
+    protected void convert(BaseViewHolder helper, final ImgInfo item) {
         ImageView iv_item_takephoto_imginfo = helper.getView(R.id.iv_item_takephoto_imginfo);
         ImageView iv_item_takephoto_imginfo_press = helper.getView(R.id.iv_item_takephoto_imginfo_press);
+        iv_item_takephoto_imginfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onChildItemListener != null) {
+                    onChildItemListener.OnChildItem(R.id.iv_item_takephoto_imginfo, mData.indexOf(item));
+                }
+            }
+        });
+        iv_item_takephoto_imginfo_press.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onChildItemListener != null) {
+                    onChildItemListener.OnChildItem(R.id.iv_item_takephoto_imginfo_press, mData.indexOf(item));
+                }
+            }
+        });
         if (item != null) {
             File file = item.getFile();
             String path = item.getPath();

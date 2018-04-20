@@ -108,15 +108,14 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
         <provider
-            android:name="com.haotang.deving.mvp.model.fileprovider.MatisseFileProvider"
+            android:name=".mvp.model.fileprovider.MatisseFileProvider"
             android:authorities="com.haotang.deving.MatisseFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths_public"></meta-data>
+                android:resource="@xml/file_paths_public" />
         </provider>
 
         <activity
@@ -302,7 +301,8 @@
 
         <service android:name="com.amap.api.location.APSService" />
         <!-- 高德地图结束 -->
-        <activity android:name=".mvp.view.activity.ImagePickerActivity"></activity>
+        <activity android:name=".mvp.view.activity.ImagePickerActivity" />
+        <activity android:name=".mvp.view.activity.PhotoViewPagerActivity"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,6 @@
 <resources>
+    <string name="save_picture">保存图片</string>
+    <string name="viewpager_indicator">%1$d/%2$d</string>
     <string name="vista_share_title">分享</string>
     <string name="cancel">取消</string>
     <string name="sure">确认</string>
