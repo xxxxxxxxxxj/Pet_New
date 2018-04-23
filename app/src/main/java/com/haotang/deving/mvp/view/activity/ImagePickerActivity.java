@@ -207,6 +207,7 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
                     for (int i = 0; i < uris.size(); i++) {
                         Uri uri = uris.get(i);
                         RingLog.d(TAG, "uri =  " + uri.toString());
+                        RingLog.d(TAG, "uri.getAuthority() =  " + uri.getAuthority());
                         String path = PathUtils.getPath(this, uris.get(i));
                         RingLog.d(TAG, "path = " + path);
                         File file = new File(path);
