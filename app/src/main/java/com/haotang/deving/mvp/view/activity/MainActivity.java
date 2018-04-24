@@ -104,6 +104,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         mFragments.add(petCircleFragment);
         mFragments.add(myFragment);
         vpMainactivity.setAdapter(new MainActivityPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
+        vpMainactivity.setOffscreenPageLimit(4);
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new ImageTabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }

@@ -14,7 +14,7 @@ import com.haotang.deving.mvp.view.fragment.base.BaseFragment;
 public class PetCircleFragment extends BaseFragment{
     @Override
     protected boolean isLazyLoad() {
-        return false;
+        return true;
     }
 
     @Override

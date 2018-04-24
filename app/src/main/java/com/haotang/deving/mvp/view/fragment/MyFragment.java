@@ -25,7 +25,7 @@ public class MyFragment extends BaseFragment {
 
     @Override
     protected boolean isLazyLoad() {
-        return false;
+        return true;
     }
 
     @Override
