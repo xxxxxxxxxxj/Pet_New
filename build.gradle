@@ -9,6 +9,7 @@ buildscript {
         //用于上传至Jcenter
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.novoda:bintray-release:0.8.0'
     }
 }
 

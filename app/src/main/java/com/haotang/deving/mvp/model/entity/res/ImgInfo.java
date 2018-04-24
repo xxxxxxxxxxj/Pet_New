@@ -18,6 +18,10 @@ public class ImgInfo {
     private File file;
     private File pressFile;
 
+    public ImgInfo(Uri uri) {
+        this.uri = uri;
+    }
+
     public ImgInfo(Uri uri, String path, File file) {
         this.uri = uri;
         this.path = path;

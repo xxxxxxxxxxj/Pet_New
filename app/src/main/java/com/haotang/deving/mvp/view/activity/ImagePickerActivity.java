@@ -46,6 +46,8 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import top.zibin.luban.Luban;
 
+import static rx.plugins.RxJavaHooks.clear;
+
 /**
  * 相册操作
  */
@@ -59,8 +61,8 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
     private TakePhotoImgAdapter takePhotoImgAdapter;
     private static final int REQUEST_CODE_CHOOSE = 23;
     private List<ImgInfo> imgList = new ArrayList<ImgInfo>();
-    private List<String> urlList = new ArrayList<String>();
-    private List<String> pressUrlList = new ArrayList<String>();
+    private List<String> pathList = new ArrayList<String>();
+    private List<String> pressPathList = new ArrayList<String>();
     PermissionDialog permissionDialog;
 
     @Override
@@ -128,10 +130,10 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
             public void OnChildItem(int viewId, int position) {
                 switch (viewId) {
                     case R.id.iv_item_takephoto_imginfo:
-                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, urlList);
+                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, pathList);
                         break;
                     case R.id.iv_item_takephoto_imginfo_press:
-                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, pressUrlList);
+                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, pressPathList);
                         break;
                 }
             }
@@ -154,7 +156,7 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
                 switch (view.getId()) {
                     case R.id.zhihu:
                         Matisse.from(ImagePickerActivity.this)
-                                .choose(MimeType.allOf())
+                                .choose(MimeType.ofAll())
                                 .countable(true)
                                 .capture(true)
                                 .captureStrategy(
@@ -171,7 +173,7 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
                         break;
                     case R.id.dracula:
                         Matisse.from(ImagePickerActivity.this)
-                                .choose(MimeType.allOf())
+                                .choose(MimeType.ofAll())
                                 .theme(R.style.Matisse_Dracula)
                                 .countable(false)
                                 .maxSelectable(9)
@@ -201,28 +203,31 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             if (data != null) {
                 List<Uri> uris = Matisse.obtainResult(data);
+                pathList = Matisse.obtainPathResult(data);
                 if (uris != null && uris.size() > 0) {
-                    urlList.clear();
                     imgList.clear();
                     for (int i = 0; i < uris.size(); i++) {
                         Uri uri = uris.get(i);
                         RingLog.d(TAG, "uri =  " + uri.toString());
                         RingLog.d(TAG, "uri.getAuthority() =  " + uri.getAuthority());
-                        String path = PathUtils.getPath(this, uris.get(i));
-                        RingLog.d(TAG, "path = " + path);
-                        File file = new File(path);
-                        imgList.add(new ImgInfo(uri, path, file));
-                        urlList.add(path);
+                        imgList.add(new ImgInfo(uri));
                     }
-                    compressWithRx(urlList);
                 }
+                if (pathList != null && pathList.size() > 0) {
+                    for (int i = 0; i < pathList.size(); i++) {
+                        String path = pathList.get(i);
+                        RingLog.d(TAG, "path =  " + path);
+                        imgList.get(i).setPath(path);
+                        imgList.get(i).setFile(new File(path));
+                    }
+                }
+                compressWithRx();
             }
-            takePhotoImgAdapter.notifyDataSetChanged();
         }
     }
 
-    private void compressWithRx(final List<String> photos) {
-        Flowable.just(photos)
+    private void compressWithRx() {
+        Flowable.just(pathList)
                 .observeOn(Schedulers.io())
                 .map(new Function<List<String>, List<File>>() {
                     @Override
@@ -234,9 +239,9 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
                 .subscribe(new Consumer<List<File>>() {
                     @Override
                     public void accept(@NonNull List<File> list) throws Exception {
-                        pressUrlList.clear();
+                        pressPathList.clear();
                         for (int i = 0; i < list.size(); i++) {
-                            pressUrlList.add(list.get(i).getAbsolutePath());
+                            pressPathList.add(list.get(i).getAbsolutePath());
                             imgList.get(i).setPressFile(list.get(i));
                         }
                         takePhotoImgAdapter.notifyDataSetChanged();

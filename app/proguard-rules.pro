@@ -247,3 +247,7 @@ public static java.lang.String TABLENAME;
 -dontwarn com.google.**
 -keep class com.google.gson.** {*;}
 -keep class com.google.protobuf.** {*;}
+
+-dontwarn com.squareup.picasso.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn com.bumptech.glide.**

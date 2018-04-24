@@ -34,7 +34,7 @@ public class TakePhotoImgAdapter extends BaseQuickAdapter<ImgInfo, BaseViewHolde
         this.onChildItemListener = onChildItemListener;
     }
 
-    public TakePhotoImgAdapter(int layoutResId, List data) {
+    public TakePhotoImgAdapter(int layoutResId, List<ImgInfo> data) {
         super(layoutResId, data);
     }
 
