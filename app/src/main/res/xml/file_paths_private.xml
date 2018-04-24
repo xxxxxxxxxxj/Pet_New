@@ -17,5 +17,5 @@
 <paths>
     <external-path
         name="my_images"
-        path="Android/data/com.haotang.deving.MatisseFileProvider/files/Pictures"/>
+        path="Android/data/com.haotang.easyshare.MatisseFileProvider/files/Pictures"/>
 </paths>

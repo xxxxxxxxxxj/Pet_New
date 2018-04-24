@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.haotang.deving.mvp.view.widget.HackyViewPager
+    <com.haotang.easyshare.mvp.view.widget.HackyViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

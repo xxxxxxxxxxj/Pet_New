@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.haotang.deving.mvp.view.activity.ImagePickerActivity">
+    tools:context="com.haotang.easyshare.mvp.view.activity.ImagePickerActivity">
 
     <Button
         android:id="@+id/zhihu"
