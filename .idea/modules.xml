@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EasyShare.iml" filepath="$PROJECT_DIR$/EasyShare.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FlycoRoundView_Lib/FlycoRoundView_Lib.iml" filepath="$PROJECT_DIR$/FlycoRoundView_Lib/FlycoRoundView_Lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/FlycoTabLayout_Lib/FlycoTabLayout_Lib.iml" filepath="$PROJECT_DIR$/FlycoTabLayout_Lib/FlycoTabLayout_Lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/matisse/matisse.iml" filepath="$PROJECT_DIR$/matisse/matisse.iml" />

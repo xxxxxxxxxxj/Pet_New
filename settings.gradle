@@ -1,1 +1,1 @@
-include ':app', ':FlycoTabLayout_Lib', ':photoview', ':matisse'
+include ':app', ':FlycoTabLayout_Lib', ':photoview', ':matisse', ':FlycoRoundView_Lib'

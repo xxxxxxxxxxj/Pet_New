@@ -121,4 +121,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile project(':photoview')
     compile project(':matisse')
+    compile project(':FlycoRoundView_Lib')
 }
