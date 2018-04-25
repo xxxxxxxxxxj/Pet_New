@@ -2,8 +2,8 @@ package com.haotang.easyshare.mvp.view.fragment;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -16,16 +16,21 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.roundview.RoundRelativeLayout;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
+import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
+import com.haotang.easyshare.mvp.view.adapter.TakePhotoImgAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.ljy.devring.other.RingLog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * <p>Title:${type_name}</p>
@@ -87,6 +92,8 @@ public class MainFragment extends BaseFragment implements AMap.OnMyLocationChang
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
     private int index;
+    private List<MainFragmentData> list = new ArrayList<MainFragmentData>();
+    private MainLocalAdapter mainLocalAdapter;
 
     @Override
     protected boolean isLazyLoad() {
@@ -111,6 +118,15 @@ public class MainFragment extends BaseFragment implements AMap.OnMyLocationChang
         rllMainfragSerch.bringToFront();
         index = 0;
         setTab();
+        setAdapter();
+    }
+
+    private void setAdapter() {
+        rvMainfragLocalev.setHasFixedSize(true);
+        rvMainfragLocalev.setLayoutManager(new LinearLayoutManager(mActivity));
+        mainLocalAdapter = new MainLocalAdapter(R.layout.item_takephoto_imginfo, list);
+        mainLocalAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        rvMainfragLocalev.setAdapter(mainLocalAdapter);
     }
 
     private void setUpMap() {
