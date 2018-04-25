@@ -127,6 +127,7 @@ public class MainFragment extends BaseFragment implements AMap.OnMyLocationChang
         mainLocalAdapter = new MainLocalAdapter(R.layout.item_takephoto_imginfo, list);
         mainLocalAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         rvMainfragLocalev.setAdapter(mainLocalAdapter);
+        mainLocalAdapter.notifyDataSetChanged();
     }
 
     private void setUpMap() {
