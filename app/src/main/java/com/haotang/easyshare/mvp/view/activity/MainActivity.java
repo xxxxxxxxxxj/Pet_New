@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     PetCircleFragment petCircleFragment;
     @Inject
     MyFragment myFragment;
-    private int currentTabIndex = 1;
+    private int currentTabIndex = 0;
 
     @Override
     protected int getContentLayout() {

@@ -63,6 +63,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Inject
     @Nullable
     protected P mPresenter;
+    protected Bundle savedInstanceState;
 
     protected abstract boolean isLazyLoad();//是否使用懒加载 (Fragment可见时才进行初始化操作(以下四个方法))
 
@@ -82,7 +83,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        this.savedInstanceState = savedInstanceState;
         if (mContentView == null) {
             try {
                 mContentView = inflater.inflate(getContentLayout(), container, false);
