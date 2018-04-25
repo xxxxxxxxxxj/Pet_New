@@ -1,5 +1,8 @@
 package com.haotang.easyshare.util;
 
+import android.text.TextUtils;
+import android.widget.TextView;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -632,5 +635,16 @@ public class StringUtil {
     public static void main(String[] a) {
         String escapeXML = escapeXML("\\");
         System.out.println(escapeXML);
+    }
+
+    public static void setText(TextView tv, String str, String defaultStr,
+                               int visibilt, int defaultVisibilt) {
+        if (str != null && !TextUtils.isEmpty(str)) {
+            tv.setText(str);
+            tv.setVisibility(visibilt);
+        } else {
+            tv.setText(defaultStr);
+            tv.setVisibility(defaultVisibilt);
+        }
     }
 }

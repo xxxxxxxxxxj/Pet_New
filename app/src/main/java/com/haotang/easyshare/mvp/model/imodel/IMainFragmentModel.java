@@ -1,7 +1,10 @@
 package com.haotang.easyshare.mvp.model.imodel;
 
+import android.app.Activity;
+
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
-import com.tencent.mm.sdk.openapi.BaseResp;
+
+import io.reactivex.Observable;
 
 /**
  * <p>Title:${type_name}</p>
@@ -9,8 +12,8 @@ import com.tencent.mm.sdk.openapi.BaseResp;
  * <p>Company:北京昊唐科技有限公司</p>
  *
  * @author 徐俊
- * @date XJ on 2018/4/18 15:20
+ * @date XJ on 2018/4/25 18:11
  */
-public interface IWXPayEntryModel extends IBaseModel {
-    void deleteFromMyCollect(BaseResp resp);
+public interface IMainFragmentModel extends IBaseModel {
+    Observable getMainFragData(Activity activity);
 }
