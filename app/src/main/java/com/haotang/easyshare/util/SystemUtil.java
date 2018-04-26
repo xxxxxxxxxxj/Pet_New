@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -49,6 +50,18 @@ import rx.schedulers.Schedulers;
  * @date XJ on 2018/4/12 17:02
  */
 public class SystemUtil {
+    /**
+     * 获取手机屏幕的宽高
+     *
+     * @param activity
+     * @return
+     */
+    public static int[] getDisplayMetrics(Activity activity) {
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return new int[]{dm.widthPixels, dm.heightPixels};
+    }
+
     /**
      * 隐藏虚拟按键，并且全屏
      */

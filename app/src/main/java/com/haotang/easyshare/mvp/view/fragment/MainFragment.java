@@ -1,42 +1,55 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
+import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.TextureMapView;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.bumptech.glide.Glide;
 import com.flyco.roundview.RoundRelativeLayout;
-import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MainFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.presenter.MainFragmentPresenter;
+import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
+import com.haotang.easyshare.mvp.view.activity.CommentActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
+import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
+import com.haotang.easyshare.mvp.view.viewholder.MainFragmenHeader;
+import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -47,8 +60,10 @@ import butterknife.OnClick;
  * @author 徐俊
  * @date zhoujunxia on 2018/4/14 20:34
  */
-public class MainFragment extends BaseFragment<MainFragmentPresenter> implements AMap.OnMyLocationChangeListener,
-        View.OnClickListener, IMainFragmentView {
+public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
+        AMap.OnMyLocationChangeListener,
+        View.OnClickListener, IMainFragmentView, AMap.OnMarkerClickListener,
+        AMap.OnInfoWindowClickListener, AMap.OnMapLoadedListener, AMap.InfoWindowAdapter {
     private final static String TAG = MainFragment.class.getSimpleName();
     @BindView(R.id.iv_mainfrag_gj)
     ImageView ivMainfragGj;
@@ -74,7 +89,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private int index;
     private List<MainFragmentData> list = new ArrayList<MainFragmentData>();
     private MainLocalAdapter mainLocalAdapter;
-    private HeaderViewHolder headerViewHolder;
+    private MainFragmenHeader mainFragmenHeader;
+    private PopupWindow pWinBottomDialog;
+    private MainFragmenBoDa mainFragmenBoDa;
 
     @Override
     protected boolean isLazyLoad() {
@@ -94,33 +111,65 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 .build()
                 .inject(this);
         setAdapter();
-        headerViewHolder.tmv_mainfrag_map.onCreate(savedInstanceState);// 此方法必须重写
+        mainFragmenHeader.getTmv_mainfrag_map().onCreate(savedInstanceState);// 此方法必须重写
         if (aMap == null) {
-            aMap = headerViewHolder.tmv_mainfrag_map.getMap();
-            mUiSettings = aMap.getUiSettings();
-            setUpMap();
+            aMap = mainFragmenHeader.getTmv_mainfrag_map().getMap();
         }
+        mUiSettings = aMap.getUiSettings();
+        setUpMap();
+        addMarkersToMap();// 往地图上添加marker
         ivMainfragGj.bringToFront();
-        headerViewHolder.rtvMainfragLocal.bringToFront();
+        mainFragmenHeader.getRtvMainfragLocal().bringToFront();
         rllMainfragSerch.bringToFront();
         index = 0;
         setTab();
         mPresenter.getMainFragData(mActivity);
     }
 
-    private void setAdapter() {
-        for (int i = 0; i < 20; i++) {
-            list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                    "测试距离", 3, 4, 5, "00:30-24:00",
-                    "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                    39.989614, 116.481763, "北京"));
+    private void addMarkersToMap() {
+        for (int i = 0; i < list.size(); i++) {
+            MainFragmentData mainFragmentData = list.get(i);
+            if (mainFragmentData != null) {
+                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view))
+                        .position(new LatLng(mainFragmentData.getLat(), mainFragmentData.getLng()))
+                        .draggable(true);
+                Marker marker = aMap.addMarker(markerOptions);
+                marker.setObject(i);
+            }
         }
+    }
+
+    private void setAdapter() {
+        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
+                "测试距离", 3, 4, 5, "00:30-24:00",
+                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
+                39.983456, 116.3154950, "北京", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
+
+        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
+                "测试距离", 3, 4, 5, "00:30-24:00",
+                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
+                31.238068, 121.501654, "上海", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
+
+        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
+                "测试距离", 3, 4, 5, "00:30-24:00",
+                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
+                30.679879, 104.064855, "成都", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
+
+        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
+                "测试距离", 3, 4, 5, "00:30-24:00",
+                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
+                34.341568, 108.940174, "西安", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
+
+        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
+                "测试距离", 3, 4, 5, "00:30-24:00",
+                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
+                34.7466, 113.625367, "郑州", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
         rvMainfragLocalev.setHasFixedSize(true);
         rvMainfragLocalev.setLayoutManager(new LinearLayoutManager(mActivity));
         mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list);
-        mainLocalAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        //mainLocalAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         View top = getLayoutInflater().inflate(R.layout.mainlocal_top_view, (ViewGroup) rvMainfragLocalev.getParent(), false);
-        headerViewHolder = new HeaderViewHolder(top);
+        mainFragmenHeader = new MainFragmenHeader(top);
         mainLocalAdapter.addHeaderView(top);
         rvMainfragLocalev.setAdapter(mainLocalAdapter);
         //添加自定义分割线
@@ -146,14 +195,18 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     protected void initEvent() {
+        aMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
+        aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
+        aMap.setOnInfoWindowClickListener(this);// 设置点击infoWindow事件监听器
+        aMap.setInfoWindowAdapter(this);
         //设置SDK 自带定位消息监听
         aMap.setOnMyLocationChangeListener(this);
-        headerViewHolder.ivMainfragRmht1.setOnClickListener(this);
-        headerViewHolder.ivMainfragRmht2.setOnClickListener(this);
-        headerViewHolder.ivMainfragRmht3.setOnClickListener(this);
-        headerViewHolder.rlMainfragLocalev.setOnClickListener(this);
-        headerViewHolder.rlMainfragLocalevGg.setOnClickListener(this);
-        headerViewHolder.rlMainfragLocalevGr.setOnClickListener(this);
+        mainFragmenHeader.getIvMainfragRmht1().setOnClickListener(this);
+        mainFragmenHeader.getIvMainfragRmht2().setOnClickListener(this);
+        mainFragmenHeader.getIvMainfragRmht3().setOnClickListener(this);
+        mainFragmenHeader.getRlMainfragLocalev().setOnClickListener(this);
+        mainFragmenHeader.getRlMainfragLocalevGg().setOnClickListener(this);
+        mainFragmenHeader.getRlMainfragLocalevGr().setOnClickListener(this);
         //解决上下滑动冲突问题
         aMap.setOnMapTouchListener(new AMap.OnMapTouchListener() {
             @Override
@@ -173,7 +226,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onResume() {
         super.onResume();
-        headerViewHolder.tmv_mainfrag_map.onResume();
+        mainFragmenHeader.getTmv_mainfrag_map().onResume();
     }
 
     /**
@@ -182,7 +235,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onPause() {
         super.onPause();
-        headerViewHolder.tmv_mainfrag_map.onPause();
+        mainFragmenHeader.getTmv_mainfrag_map().onPause();
     }
 
     /**
@@ -191,26 +244,26 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        headerViewHolder.tmv_mainfrag_map.onSaveInstanceState(outState);
+        mainFragmenHeader.getTmv_mainfrag_map().onSaveInstanceState(outState);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        headerViewHolder.tmv_mainfrag_map.onDestroy();
+        mainFragmenHeader.getTmv_mainfrag_map().onDestroy();
     }
 
     private void setTab() {
         if (index == 0) {
-            headerViewHolder.tvMainfragLocalevGg.setTextColor(getResources().getColor(R.color.a0271F0));
-            headerViewHolder.tvMainfragLocalevGr.setTextColor(getResources().getColor(R.color.a333333));
-            headerViewHolder.vwMainfragLocalevGg.setVisibility(View.VISIBLE);
-            headerViewHolder.vwMainfragLocalevGr.setVisibility(View.GONE);
+            mainFragmenHeader.getTvMainfragLocalevGg().setTextColor(getResources().getColor(R.color.a0271F0));
+            mainFragmenHeader.getTvMainfragLocalevGr().setTextColor(getResources().getColor(R.color.a333333));
+            mainFragmenHeader.getVwMainfragLocalevGg().setVisibility(View.VISIBLE);
+            mainFragmenHeader.getVwMainfragLocalevGr().setVisibility(View.GONE);
         } else if (index == 1) {
-            headerViewHolder.tvMainfragLocalevGg.setTextColor(getResources().getColor(R.color.a333333));
-            headerViewHolder.tvMainfragLocalevGr.setTextColor(getResources().getColor(R.color.a0271F0));
-            headerViewHolder.vwMainfragLocalevGg.setVisibility(View.GONE);
-            headerViewHolder.vwMainfragLocalevGr.setVisibility(View.VISIBLE);
+            mainFragmenHeader.getTvMainfragLocalevGg().setTextColor(getResources().getColor(R.color.a333333));
+            mainFragmenHeader.getTvMainfragLocalevGr().setTextColor(getResources().getColor(R.color.a0271F0));
+            mainFragmenHeader.getVwMainfragLocalevGg().setVisibility(View.GONE);
+            mainFragmenHeader.getVwMainfragLocalevGr().setVisibility(View.VISIBLE);
         }
     }
 
@@ -225,11 +278,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 String errorInfo = bundle.getString(MyLocationStyle.ERROR_INFO);
                 // 定位类型，可能为GPS WIFI等，具体可以参考官网的定位SDK介绍
                 int locationType = bundle.getInt(MyLocationStyle.LOCATION_TYPE);
-                /*
-                errorCode
-                errorInfo
-                locationType
-                */
                 RingLog.d(TAG, "定位信息， code: " + errorCode + " errorInfo: " + errorInfo + " locationType: " + locationType);
             } else {
                 RingLog.d(TAG, "定位信息， bundle is null ");
@@ -287,38 +335,141 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         RingLog.e(TAG, "getMainFragmentFail() status = " + status + "---desc = " + desc);
     }
 
-    class HeaderViewHolder {
-        @BindView(R.id.rtv_mainfrag_local)
-        RoundTextView rtvMainfragLocal;
-        @BindView(R.id.tmv_mainfrag_map)
-        TextureMapView tmv_mainfrag_map;
-        @BindView(R.id.iv_mainfrag_rmht1)
-        ImageView ivMainfragRmht1;
-        @BindView(R.id.iv_mainfrag_rmht2)
-        ImageView ivMainfragRmht2;
-        @BindView(R.id.iv_mainfrag_rmht3)
-        ImageView ivMainfragRmht3;
-        @BindView(R.id.ll_mainfrag_rmht)
-        LinearLayout llMainfragRmht;
-        @BindView(R.id.rl_mainfrag_localev_more)
-        LinearLayout rlMainfragLocalevMore;
-        @BindView(R.id.rl_mainfrag_localev)
-        RelativeLayout rlMainfragLocalev;
-        @BindView(R.id.tv_mainfrag_localev_gg)
-        TextView tvMainfragLocalevGg;
-        @BindView(R.id.vw_mainfrag_localev_gg)
-        View vwMainfragLocalevGg;
-        @BindView(R.id.rl_mainfrag_localev_gg)
-        RelativeLayout rlMainfragLocalevGg;
-        @BindView(R.id.tv_mainfrag_localev_gr)
-        TextView tvMainfragLocalevGr;
-        @BindView(R.id.vw_mainfrag_localev_gr)
-        View vwMainfragLocalevGr;
-        @BindView(R.id.rl_mainfrag_localev_gr)
-        RelativeLayout rlMainfragLocalevGr;
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
+    }
 
-        public HeaderViewHolder(View headerRootView) {
-            ButterKnife.bind(this, headerRootView);
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        int position = (int) marker.getObject();
+        showBottomDialog(position);
+    }
+
+    private void showBottomDialog(int position) {
+        pWinBottomDialog = null;
+        if (pWinBottomDialog == null) {
+            final MainFragmentData mainFragmentData = list.get(position);
+            ViewGroup customView = (ViewGroup) View.inflate(mActivity, R.layout.mainfrag_bottom_dialog, null);
+            mainFragmenBoDa = new MainFragmenBoDa(customView);
+            pWinBottomDialog = new PopupWindow(customView,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT, true);
+            pWinBottomDialog.setFocusable(true);// 取得焦点
+            //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+            pWinBottomDialog.setBackgroundDrawable(new BitmapDrawable());
+            //点击外部消失
+            pWinBottomDialog.setOutsideTouchable(true);
+            //设置可以点击
+            pWinBottomDialog.setTouchable(true);
+            //进入退出的动画
+            pWinBottomDialog.setAnimationStyle(R.style.mypopwindow_anim_style);
+            pWinBottomDialog.setWidth(SystemUtil.getDisplayMetrics(mActivity)[0]);
+            pWinBottomDialog.showAtLocation(customView, Gravity.BOTTOM, 0, 0);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomName(), mainFragmentData.getName(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomJuli(), mainFragmentData.getJuli(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomXxdz(), mainFragmentData.getAddress(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomKfsj(), mainFragmentData.getKfsj(), "", View.VISIBLE, View.VISIBLE);
+            if (mainFragmentData.getGgorgr() == 0) {//公共
+                mainFragmenBoDa.getIvMainbottomGgorgr().setImageResource(R.mipmap.icon_gg);
+            } else if (mainFragmentData.getGgorgr() == 1) {//个人
+                mainFragmenBoDa.getIvMainbottomGgorgr().setImageResource(R.mipmap.icon_gr);
+            }
+            if (mainFragmentData.getKuaichongnum() > 0) {
+                StringUtil.setText(mainFragmenBoDa.getTvMainbottomKuaichongNum(), "快充" + mainFragmentData.getKuaichongnum() + "个", "", View.VISIBLE, View.VISIBLE);
+                mainFragmenBoDa.getLlMainbottomKuaichong().setVisibility(View.VISIBLE);
+            } else {
+                mainFragmenBoDa.getLlMainbottomKuaichong().setVisibility(View.GONE);
+            }
+            if (mainFragmentData.getManchongnum() > 0) {
+                StringUtil.setText(mainFragmenBoDa.getTvMainbottomManchongNum(), "慢充" + mainFragmentData.getManchongnum() + "个", "", View.VISIBLE, View.VISIBLE);
+                mainFragmenBoDa.getLlMainbottomManchong().setVisibility(View.VISIBLE);
+            } else {
+                mainFragmenBoDa.getLlMainbottomManchong().setVisibility(View.GONE);
+            }
+            if (mainFragmentData.getKongxiannum() > 0) {
+                StringUtil.setText(mainFragmenBoDa.getTvMainbottomKongxianNum(), "空闲" + mainFragmentData.getKongxiannum() + "个", "", View.VISIBLE, View.VISIBLE);
+                mainFragmenBoDa.getLlMainbottomKongxian().setVisibility(View.VISIBLE);
+            } else {
+                mainFragmenBoDa.getLlMainbottomKongxian().setVisibility(View.GONE);
+            }
+            mainFragmenBoDa.getIvMainbottomBg().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pWinBottomDialog.dismiss();
+                }
+            });
+            mainFragmenBoDa.getLlMainbottomDaohang().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SystemUtil.goNavigation(mActivity, mainFragmentData.getLat(), mainFragmentData.getLng(), "我的位置",
+                            mainFragmentData.getAddress(), mainFragmentData.getCity());
+                }
+            });
+            mainFragmenBoDa.getLlMainbottomXq().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(mActivity, ChargingPileDetailActivity.class));
+                }
+            });
+            mainFragmenBoDa.getLlMainbottomPl().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(mActivity, CommentActivity.class));
+                }
+            });
+            pWinBottomDialog.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                }
+            });
+        }
+    }
+
+    /**
+     * 监听amap地图加载成功事件回调
+     */
+    @Override
+    public void onMapLoaded() {
+        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
+        for (int i = 0; i < list.size(); i++) {
+            MainFragmentData mainFragmentData = list.get(i);
+            if (mainFragmentData != null) {
+                boundsBuilder.include(new LatLng(mainFragmentData.getLat(), mainFragmentData.getLng()));//把所有点都include进去（LatLng类型）
+            }
+        }
+        aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        View infoWindow = getLayoutInflater().inflate(
+                R.layout.map_custom_info_window, null);
+        render(marker, infoWindow);
+        return infoWindow;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        View infoWindow = getLayoutInflater().inflate(
+                R.layout.map_custom_info_window, null);
+        render(marker, infoWindow);
+        return infoWindow;
+    }
+
+    /**
+     * 自定义infowinfow窗口
+     */
+    public void render(Marker marker, View view) {
+        int position = (int) marker.getObject();
+        TextView tv_map_custom_info = ((TextView) view.findViewById(R.id.tv_map_custom_info));
+        ImageView iv_map_custom_info = ((ImageView) view.findViewById(R.id.iv_map_custom_info));
+        tv_map_custom_info.bringToFront();
+        StringUtil.setText(tv_map_custom_info, String.valueOf(position + 1), "", View.VISIBLE, View.VISIBLE);
+        MainFragmentData mainFragmentData = list.get(position);
+        if (mainFragmentData != null) {
+            Glide.with(this).load(mainFragmentData.getImg()).error(R.mipmap.ic_image_load)
+                    .placeholder(R.mipmap.ic_image_load).into(iv_map_custom_info);
         }
     }
 }
