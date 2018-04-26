@@ -91,6 +91,9 @@ dependencies {
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile files('libs/alipaySdk-20180403.jar')
     compile files('libs/AMap3DMap_6.1.0_AMapSearch_6.1.0_AMapLocation_3.8.0_20180330.jar')
+    compile project(':photoview')
+    compile project(':matisse')
+    compile project(':FlycoRoundView_Lib')
     compile 'com.android.support:appcompat-v7:27.0.2'
     compile 'com.android.support:design:27.0.2'
     compile 'com.android.support:recyclerview-v7:27.0.2'
@@ -119,7 +122,4 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
     annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile project(':photoview')
-    compile project(':matisse')
-    compile project(':FlycoRoundView_Lib')
 }

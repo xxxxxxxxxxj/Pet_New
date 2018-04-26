@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.adapter;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,7 +11,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.flyco.roundview.RoundLinearLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
+import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 
 import java.util.List;
 
@@ -28,7 +31,7 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragmentData, BaseVie
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, MainFragmentData item) {
+    protected void convert(BaseViewHolder helper, final MainFragmentData item) {
         RoundLinearLayout rll_item_mainlocal_root = helper.getView(R.id.rll_item_mainlocal_root);
         ImageView iv_item_mainlocal_ggorgr = helper.getView(R.id.iv_item_mainlocal_ggorgr);
         TextView tv_item_mainlocal_juli = helper.getView(R.id.tv_item_mainlocal_juli);
@@ -73,13 +76,13 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragmentData, BaseVie
             iv_item_mainlocal_daohang.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    SystemUtil.goNavigation(mContext, item.getLat(), item.getLng(), "我的位置", item.getAddress(), item.getCity());
                 }
             });
             rll_item_mainlocal_root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    mContext.startActivity(new Intent(mContext,ChargingPileDetailActivity.class));
                 }
             });
         }

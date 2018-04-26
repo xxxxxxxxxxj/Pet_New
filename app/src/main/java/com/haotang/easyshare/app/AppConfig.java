@@ -16,4 +16,6 @@ public class AppConfig {
     public static final boolean isShowLog = true;
     public static final int environmental = 1;//1.test环境---2.demo环境---3.线上环境
     public static final int ALI_SDK_PAY_FLAG = 1000;
+    public static String GaoDeMapPackageName = "com.autonavi.minimap";
+    public static String BaiDuMapPackageName = "com.baidu.BaiduMap";
 }

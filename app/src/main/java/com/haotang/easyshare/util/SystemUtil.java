@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -24,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.model.entity.res.LngLat;
 import com.haotang.easyshare.mvp.view.activity.PhotoViewPagerActivity;
 
 import java.io.File;
@@ -258,81 +261,41 @@ public class SystemUtil {
         return bitmap;
     }
 
-    /*private void goNavigation(Context context,double lat,double lng,String saddr,
-                              String daddr,String city){
-        if(isInstallByread("com.baidu.BaiduMap")){
+    public static void goNavigation(Context context, double lat, double lng, String saddr,
+                                    String daddr, String city) {
+        if (checkApkExist(context, AppConfig.GaoDeMapPackageName)) {
             try {
-                Intent intent = Intent.getIntent("intent://map/direction?origin=latlng:"+lat+","+lng+"|name:"+saddr+"&destination="+daddr+"&mode=driving&region="+city+"&src=宠物家#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
+                goToNaviActivity(context, context.getResources().getString(R.string.app_name), "", lat + "",
+                        lng + "", "1", "2");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (checkApkExist(context, AppConfig.BaiDuMapPackageName)) {
+            try {
+                LngLat lngLat = CoodinateCovertor.bd_encrypt(new LngLat(lng, lat));
+                Intent intent = Intent.getIntent("intent://map/direction?origin=latlng:" + lngLat.getLantitude()
+                        + "," + lngLat.getLongitude() +
+                        "|name:" + saddr + "&destination=" + daddr + "&mode=driving&region=" + city +
+                        "&src=" + context.getResources().getString(R.string.app_name) + "#Intent;" +
+                        "scheme=bdapp;package=com.baidu.BaiduMap;end");
                 context.startActivity(intent); //启动调用
             } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                //当特定手机调用百度出现 no activity found to handle 时 内部异常尝试调用高德或网页调用
-                Utils.mLogError("==-->swim 2  "+e.getMessage());
-                if (isInstallByread("com.autonavi.minimap")) {
-                    try{
-                        Utils.mLogError("==-->swim 3 shoplat  "+shoplat+" shoplng "+shoplng );
-                        //double[] gglatlng = bd_decrypt(shoplat, shoplng);
-                        double[] bd_decrypt = Utils.bd_decrypt(shoplat, shoplng);
-//					 	double[] gglatlng = bd_decrypt(lat, lng);
-//			            Intent intent = Intent.getIntent("androidamap://navi?sourceApplication=宠物家&poiname="+daddr+"&lat="+shoplat*//*+gglatlng[0]*//*+"&lon="+shoplng*//*gglatlng[1]*//*+"&dev=0&style=2");
-//			            startActivity(intent);
-						*//*if (shopGaodelng!=0||shopGaodelat!=0) {
-							goToNaviActivity(mContext, "宠物家","",shopGaodelat+"", shopGaodelng+"", "1", "2");
-						}else {
-							goToNaviActivity(mContext, "宠物家","", gglatlng[0]+"", gglatlng[1]+"", "1", "2");
-						}*//*
-                        goToNaviActivity(mContext, "宠物家","", bd_decrypt[0]+"", bd_decrypt[1]+"", "1", "2");
-                    } catch (Exception e2){
-                        e2.printStackTrace();
-                    }
-                }else{
-                    String url = "http://api.map.baidu.com/direction?origin=latlng:"+lat+","+lng+
-                            "|name:"+saddr+"&destination="+daddr+"&mode=driving&region="+city+
-                            "&output=html&src=宠物家";
-                    Uri uri = Uri.parse(url);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    intent.putExtra(Global.ANIM_DIRECTION(), Global.ANIM_COVER_FROM_RIGHT());
-                    getIntent().putExtra(Global.ANIM_DIRECTION(), Global.ANIM_COVER_FROM_LEFT());
-                    startActivity(intent);
-                }
-            }
-        }else if(isInstallByread("com.autonavi.minimap")){
-            try{
-                double[] bd_decrypt = bd_decrypt(shoplat, shoplng);
-                goToNaviActivity(mContext, "宠物家","", bd_decrypt[0]+"", bd_decrypt[1]+"", "1", "2");
-            } catch (Exception e){
                 e.printStackTrace();
             }
-        }else{
-            String url = "http://api.map.baidu.com/direction?origin=latlng:"+lat+","+lng+
-                    "|name:"+saddr+"&destination="+daddr+"&mode=driving&region="+city+
-                    "&output=html&src=宠物家";
+        } else {
+            String url = "http://api.map.baidu.com/direction?origin=latlng:" + lat + "," + lng +
+                    "|name:" + saddr + "&destination=" + daddr + "&mode=driving&region=" + city +
+                    "&output=html&src=" + context.getResources().getString(R.string.app_name);
             Uri uri = Uri.parse(url);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            intent.putExtra(Global.ANIM_DIRECTION(), Global.ANIM_COVER_FROM_RIGHT());
-            getIntent().putExtra(Global.ANIM_DIRECTION(), Global.ANIM_COVER_FROM_LEFT());
-            startActivity(intent);
+            context.startActivity(intent);
         }
-    }*/
-
-    private boolean isInstallByread(String packageName) {
-        return new File("/data/data/" + packageName).exists();
     }
 
-    private double[] bd_decrypt(double bd_lat, double bd_lon)
-    {
-        double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
-        double x = bd_lon - 0.0065, y = bd_lat - 0.006;
-        double z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
-        double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
-        return new double[]{z * Math.sin(theta),z * Math.cos(theta)};
-    }
-
-    public void goToNaviActivity(Context context,String sourceApplication , String poiname , String lat , String lon , String dev , String style){
-        StringBuffer stringBuffer  = new StringBuffer("androidamap://navi?sourceApplication=")
+    public static void goToNaviActivity(Context context, String sourceApplication, String poiname, String lat, String lon, String dev, String style) {
+        StringBuffer stringBuffer = new StringBuffer("androidamap://navi?sourceApplication=")
                 .append(sourceApplication);
-        if (!TextUtils.isEmpty(poiname)){
+        if (!TextUtils.isEmpty(poiname)) {
             stringBuffer.append("&poiname=").append(poiname);
         }
         stringBuffer.append("&lat=").append(lat)
@@ -342,5 +305,17 @@ public class SystemUtil {
         Intent intent = new Intent("android.intent.action.VIEW", android.net.Uri.parse(stringBuffer.toString()));
         intent.setPackage("com.autonavi.minimap");
         context.startActivity(intent);
+    }
+
+    public static boolean checkApkExist(Context context, String packageName) {
+        if (packageName == null || "".equals(packageName))
+            return false;
+        try {
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName,
+                    PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }

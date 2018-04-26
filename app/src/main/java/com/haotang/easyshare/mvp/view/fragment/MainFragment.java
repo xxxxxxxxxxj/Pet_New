@@ -110,8 +110,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     private void setAdapter() {
         for (int i = 0; i < 20; i++) {
-            list.add(new MainFragmentData(0, "测试名称", "测试距离", 3, 4, 5, "00:30-24:00", "北京朝阳区石各庄818号平安建材家东侧东侧500米" +
-                    "", 39.989614, 116.481763));
+            list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
+                    "测试距离", 3, 4, 5, "00:30-24:00",
+                    "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
+                    39.989614, 116.481763, "北京"));
         }
         rvMainfragLocalev.setHasFixedSize(true);
         rvMainfragLocalev.setLayoutManager(new LinearLayoutManager(mActivity));

@@ -19,6 +19,15 @@ public class MainFragmentData {
     private String address;
     private double lat;
     private double lng;
+    private String city;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public int getGgorgr() {
         return ggorgr;
@@ -104,7 +113,7 @@ public class MainFragmentData {
     }
 
     public MainFragmentData(int ggorgr, String name, String juli, int kuaichongnum, int manchongnum,
-                            int kongxiannum, String kfsj, String address, double lat, double lng) {
+                            int kongxiannum, String kfsj, String address, double lat, double lng, String city) {
         this.ggorgr = ggorgr;
         this.name = name;
         this.juli = juli;
@@ -115,5 +124,6 @@ public class MainFragmentData {
         this.address = address;
         this.lat = lat;
         this.lng = lng;
+        this.city = city;
     }
 }
