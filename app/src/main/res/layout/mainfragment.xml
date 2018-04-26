@@ -96,6 +96,26 @@
             android:textSize="14sp" />
     </com.flyco.roundview.RoundRelativeLayout>
 
+    <com.flyco.roundview.RoundLinearLayout
+        android:id="@+id/rll_mainfrag_serchresult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rll_mainfrag_serch"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="15dip"
+        android:orientation="vertical"
+        android:visibility="gone"
+        rv:rv_backgroundColor="@color/white"
+        rv:rv_cornerRadius="10dip">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_mainfrag_serchresult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+    </com.flyco.roundview.RoundLinearLayout>
+
     <ImageView
         android:id="@+id/iv_mainfrag_gj"
         android:layout_width="68dip"

@@ -8,6 +8,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,16 +30,24 @@ import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.services.core.AMapException;
+import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.flyco.roundview.RoundLinearLayout;
 import com.flyco.roundview.RoundRelativeLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MainFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
+import com.haotang.easyshare.mvp.model.entity.res.SerchResult;
 import com.haotang.easyshare.mvp.presenter.MainFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.CommentActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
+import com.haotang.easyshare.mvp.view.adapter.MainSerchResultAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
@@ -45,6 +55,7 @@ import com.haotang.easyshare.mvp.view.viewholder.MainFragmenHeader;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RingToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +74,7 @@ import butterknife.OnClick;
 public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         AMap.OnMyLocationChangeListener,
         View.OnClickListener, IMainFragmentView, AMap.OnMarkerClickListener,
-        AMap.OnInfoWindowClickListener, AMap.OnMapLoadedListener, AMap.InfoWindowAdapter {
+        AMap.OnInfoWindowClickListener, AMap.OnMapLoadedListener, AMap.InfoWindowAdapter, PoiSearch.OnPoiSearchListener {
     private final static String TAG = MainFragment.class.getSimpleName();
     @BindView(R.id.iv_mainfrag_gj)
     ImageView ivMainfragGj;
@@ -83,6 +94,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     EditText etMainfragSerch;
     @BindView(R.id.rll_mainfrag_serch)
     RoundRelativeLayout rllMainfragSerch;
+    @BindView(R.id.rll_mainfrag_serchresult)
+    RoundLinearLayout rll_mainfrag_serchresult;
+    @BindView(R.id.rv_mainfrag_serchresult)
+    RecyclerView rv_mainfrag_serchresult;
     private AMap aMap;
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
@@ -92,6 +107,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private MainFragmenHeader mainFragmenHeader;
     private PopupWindow pWinBottomDialog;
     private MainFragmenBoDa mainFragmenBoDa;
+    private PoiSearch.Query query;
+    private PoiSearch poiSearch;
+    private List<SerchResult> serchList = new ArrayList<SerchResult>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -167,7 +185,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         rvMainfragLocalev.setHasFixedSize(true);
         rvMainfragLocalev.setLayoutManager(new LinearLayoutManager(mActivity));
         mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list);
-        //mainLocalAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mainLocalAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         View top = getLayoutInflater().inflate(R.layout.mainlocal_top_view, (ViewGroup) rvMainfragLocalev.getParent(), false);
         mainFragmenHeader = new MainFragmenHeader(top);
         mainLocalAdapter.addHeaderView(top);
@@ -215,6 +233,31 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     rvMainfragLocalev.requestDisallowInterceptTouchEvent(false);
                 } else {
                     rvMainfragLocalev.requestDisallowInterceptTouchEvent(true);
+                }
+            }
+        });
+        etMainfragSerch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                query = new PoiSearch.Query(StringUtil.checkEditText(etMainfragSerch), "", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+                //query.setPageSize(10);// 设置每页最多返回多少条poiitem
+                query.setPageNum(0);// 设置查第一页
+                poiSearch = new PoiSearch(mActivity, query);
+                poiSearch.setOnPoiSearchListener(MainFragment.this);
+                poiSearch.searchPOIAsyn();
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                if (StringUtil.isEmpty(etMainfragSerch.getText().toString())) {
+                    rll_mainfrag_serchresult.setVisibility(View.GONE);
                 }
             }
         });
@@ -471,5 +514,51 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             Glide.with(this).load(mainFragmentData.getImg()).error(R.mipmap.ic_image_load)
                     .placeholder(R.mipmap.ic_image_load).into(iv_map_custom_info);
         }
+    }
+
+    @Override
+    public void onPoiSearched(PoiResult result, int rCode) {
+        if (rCode == AMapException.CODE_AMAP_SUCCESS) {
+            if (result != null && result.getQuery() != null) {// 搜索poi的结果
+                if (result.getQuery().equals(query)) {// 是否是同一条
+                    // 取得搜索到的poiitems有多少页
+                    List<PoiItem> poiItems = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+                    if (poiItems != null && poiItems.size() > 0) {
+                        serchList.clear();
+                        serchList.add(new SerchResult("目的地", "", 0, 0));
+                        for (int i = 0; i < poiItems.size(); i++) {
+                            PoiItem poiItem = poiItems.get(i);
+                            if (poiItem != null) {
+                                serchList.add(new SerchResult(poiItem.getAdName(), poiItem.getDirection(),
+                                        poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude()));
+                            }
+                        }
+                        rll_mainfrag_serchresult.setVisibility(View.VISIBLE);
+                        rv_mainfrag_serchresult.setHasFixedSize(true);
+                        rv_mainfrag_serchresult.setLayoutManager(new LinearLayoutManager(mActivity));
+                        MainSerchResultAdapter mainSerchResultAdapter = new MainSerchResultAdapter(R.layout.item_mainserchresult, serchList);
+                        rv_mainfrag_serchresult.setAdapter(mainSerchResultAdapter);
+                        rv_mainfrag_serchresult.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL));
+                        mainSerchResultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                            }
+                        });
+                    } else {
+                        rll_mainfrag_serchresult.setVisibility(View.GONE);
+                        RingToast.show(R.string.no_result);
+                    }
+                }
+            } else {
+                rll_mainfrag_serchresult.setVisibility(View.GONE);
+                RingToast.show(R.string.no_result);
+            }
+        }
+    }
+
+    @Override
+    public void onPoiItemSearched(PoiItem poiItem, int i) {
+
     }
 }

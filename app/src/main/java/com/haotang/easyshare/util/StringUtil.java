@@ -1,6 +1,7 @@
 package com.haotang.easyshare.util;
 
 import android.text.TextUtils;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.UnsupportedEncodingException;
@@ -645,6 +646,15 @@ public class StringUtil {
         } else {
             tv.setText(defaultStr);
             tv.setVisibility(defaultVisibilt);
+        }
+    }
+
+    public static String checkEditText(EditText editText) {
+        if (editText != null && editText.getText() != null
+                && !(editText.getText().toString().trim().equals(""))) {
+            return editText.getText().toString().trim();
+        } else {
+            return "";
         }
     }
 }

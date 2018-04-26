@@ -59,6 +59,8 @@ public class MainFragmenBoDa {
     TextView tvMainbottomTcf;
     @BindView(R.id.tv_mainbottom_xxdz)
     TextView tvMainbottomXxdz;
+    @BindView(R.id.tv_mainbottom_pl)
+    TextView tv_mainbottom_pl;
 
     public ImageView getIvMainbottomBg() {
         return ivMainbottomBg;
@@ -138,6 +140,10 @@ public class MainFragmenBoDa {
 
     public TextView getTvMainbottomXxdz() {
         return tvMainbottomXxdz;
+    }
+
+    public TextView getTv_mainbottom_pl() {
+        return tv_mainbottom_pl;
     }
 
     public MainFragmenBoDa(View headerRootView) {
