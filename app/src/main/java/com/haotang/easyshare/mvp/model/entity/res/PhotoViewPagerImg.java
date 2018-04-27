@@ -11,26 +11,7 @@ package com.haotang.easyshare.mvp.model.entity.res;
 public class PhotoViewPagerImg {
     private int pagerPosition;
     private String imgUrl;
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public PhotoViewPagerImg() {
-    }
-
-    public PhotoViewPagerImg(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
-
-    public PhotoViewPagerImg(int pagerPosition, String imgUrl) {
-        this.pagerPosition = pagerPosition;
-        this.imgUrl = imgUrl;
-    }
+    private boolean isDeleteAll;
 
     public int getPagerPosition() {
         return pagerPosition;
@@ -40,7 +21,19 @@ public class PhotoViewPagerImg {
         this.pagerPosition = pagerPosition;
     }
 
-    public PhotoViewPagerImg(int pagerPosition) {
-        this.pagerPosition = pagerPosition;
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public boolean isDeleteAll() {
+        return isDeleteAll;
+    }
+
+    public void setDeleteAll(boolean deleteAll) {
+        isDeleteAll = deleteAll;
     }
 }

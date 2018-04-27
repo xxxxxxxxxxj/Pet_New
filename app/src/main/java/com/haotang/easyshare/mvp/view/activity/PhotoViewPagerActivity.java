@@ -95,12 +95,18 @@ public class PhotoViewPagerActivity extends BaseActivity {
                 urls.remove(pagerPosition);
                 if (urls.size() <= 0) {
                     samplePagerAdapter.notifyDataSetChanged();
-                    DevRing.busManager().postEvent(new PhotoViewPagerImg(pagerPosition, urls.get(pagerPosition)));
+                    PhotoViewPagerImg photoViewPagerImg = new PhotoViewPagerImg();
+                    photoViewPagerImg.setDeleteAll(true);
+                    DevRing.busManager().postEvent(photoViewPagerImg);
                     finish();
                 } else {
                     samplePagerAdapter.notifyDataSetChanged();
                     pager.setCurrentItem(position);
-                    DevRing.busManager().postEvent(new PhotoViewPagerImg(pagerPosition, urls.get(pagerPosition)));
+                    PhotoViewPagerImg photoViewPagerImg = new PhotoViewPagerImg();
+                    photoViewPagerImg.setImgUrl(urls.get(pagerPosition));
+                    photoViewPagerImg.setPagerPosition(pagerPosition);
+                    photoViewPagerImg.setDeleteAll(true);
+                    DevRing.busManager().postEvent(photoViewPagerImg);
                 }
                 break;
         }
