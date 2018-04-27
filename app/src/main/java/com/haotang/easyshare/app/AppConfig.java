@@ -18,6 +18,7 @@ public class AppConfig {
     public static final boolean isShowLog = true;
     public static final int environmental = 1;//1.test环境---2.demo环境---3.线上环境
     public static final int ALI_SDK_PAY_FLAG = 1000;
+    public static final int REQUEST_CODE_CHOOSE = 23;
     public static String GaoDeMapPackageName = "com.autonavi.minimap";
     public static String BaiDuMapPackageName = "com.baidu.BaiduMap";
     public static final LatLng FANGHENG = new LatLng(39.989614, 116.481763);// 方恒国际中心经纬度
@@ -26,4 +27,5 @@ public class AppConfig {
     public static final LatLng CHENGDU = new LatLng(30.679879, 104.064855);// 成都市经纬度
     public static final LatLng XIAN = new LatLng(34.341568, 108.940174);// 西安市经纬度
     public static final LatLng ZHENGZHOU = new LatLng(34.7466, 113.625367);// 郑州市经纬度
+    public static final String DiskCache_Name = "diskcache_easydhare";
 }

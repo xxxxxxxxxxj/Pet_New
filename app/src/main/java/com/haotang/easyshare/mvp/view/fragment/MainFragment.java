@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -35,6 +36,10 @@ import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.roundview.RoundLinearLayout;
 import com.flyco.roundview.RoundRelativeLayout;
@@ -52,7 +57,6 @@ import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenHeader;
-import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
@@ -111,6 +115,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private PoiSearch.Query query;
     private PoiSearch poiSearch;
     private List<SerchResult> serchList = new ArrayList<SerchResult>();
+    private List<Bitmap> bitmapList = new ArrayList<Bitmap>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -146,13 +151,37 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     }
 
     private void addMarkersToMap() {
+        bitmapList.clear();
         for (int i = 0; i < list.size(); i++) {
             MainFragmentData mainFragmentData = list.get(i);
             if (mainFragmentData != null) {
+                Glide.with(mActivity)
+                        .load(mainFragmentData.getImg())
+                        .asBitmap()
+                        .placeholder(R.mipmap.ic_image_load_circle).dontAnimate()
+                        .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                bitmapList.add(resource);
+                                if (bitmapList.size() == list.size()) {
+                                    addMarkers();
+                                }
+                            }
+                        });
+            }
+        }
+    }
+
+    private void addMarkers() {
+        for (int i = 0; i < list.size(); i++) {
+            Bitmap bitmap = bitmapList.get(i);
+            MainFragmentData mainFragmentData = list.get(i);
+            if (mainFragmentData != null) {
+                mainFragmentData.setBitmap(SystemUtil.toCircleBitmap(bitmap));
                 View infoWindow = getLayoutInflater().inflate(
                         R.layout.map_custom_info_window, null);
                 ImageView iv_map_custom_info = ((ImageView) infoWindow.findViewById(R.id.iv_map_custom_info));
-                GlideUtil.loadNetCircleImg(mActivity, mainFragmentData.getImg(), iv_map_custom_info, R.mipmap.ic_image_load_circle);
+                iv_map_custom_info.setImageBitmap(mainFragmentData.getBitmap());
                 MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromView(infoWindow))
                         .position(new LatLng(mainFragmentData.getLat(), mainFragmentData.getLng()))
                         .draggable(true);

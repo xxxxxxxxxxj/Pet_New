@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerFlashActivityCommponent;
 import com.haotang.easyshare.di.module.activity.FlashActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.FlashBean;
@@ -21,6 +22,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.other.permission.PermissionListener;
 import com.ljy.devring.util.RingToast;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -48,9 +51,9 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
             imgUrl = flashBean.getImgUrl();
             jumpUrl = flashBean.getJumpUrl();
             point = flashBean.getPoint();
-            if(StringUtil.isNotEmpty(imgUrl)){
+            if (StringUtil.isNotEmpty(imgUrl)) {
                 initTimer(1);
-            }else{
+            } else {
                 initTimer(0);
             }
         } else {

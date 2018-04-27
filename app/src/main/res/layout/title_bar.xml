@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="49dip"
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/rl_pv_titlebar"
         android:layout_width="match_parent"
         android:layout_height="49dip"
         android:background="@color/white"
@@ -13,42 +12,35 @@
         android:paddingRight="15dip">
 
         <ImageView
-            android:id="@+id/iv_pv_titlebar_back"
+            android:id="@+id/iv_titlebar_back"
             android:layout_width="11dip"
             android:layout_height="18dip"
             android:layout_centerVertical="true"
             android:scaleType="fitXY"
             android:src="@mipmap/icon_back" />
 
-        <ImageView
-            android:id="@+id/iv_pv_titlebar_delete"
-            android:layout_width="30dip"
-            android:layout_height="30dip"
+        <TextView
+            android:id="@+id/tv_titlebar_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_launcher"
+            android:text="TextView"
             android:textColor="@color/a666666"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <TextView
-            android:id="@+id/tv_pv_titlebar_indicator"
+            android:id="@+id/tv_titlebar_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:layout_toLeftOf="@id/iv_pv_titlebar_delete"
-            android:layout_toRightOf="@id/iv_pv_titlebar_back"
-            android:background="@android:color/transparent"
+            android:layout_toLeftOf="@id/tv_titlebar_other"
+            android:layout_toRightOf="@id/iv_titlebar_back"
             android:gravity="center"
-            android:text="@string/viewpager_indicator"
-            android:textColor="@color/black"
+            android:text="TextView"
+            android:textColor="@color/a333333"
             android:textSize="18sp" />
     </RelativeLayout>
-
-    <com.haotang.easyshare.mvp.view.widget.HackyViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black" />
-
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.haotang.easyshare.mvp.model.entity.res;
 
+import android.graphics.Bitmap;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -21,6 +23,15 @@ public class MainFragmentData {
     private double lng;
     private String city;
     private String img;
+    private Bitmap bitmap;
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 
     public String getImg() {
         return img;

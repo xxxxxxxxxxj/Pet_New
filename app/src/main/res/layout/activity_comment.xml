@@ -1,9 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:rv="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/af8f8f8"
+    android:orientation="vertical"
     tools:context="com.haotang.easyshare.mvp.view.activity.CommentActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/title_bar" />
+
+    <com.flyco.roundview.RoundLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dip"
+        android:orientation="vertical"
+        android:padding="15dip"
+        rv:rv_backgroundColor="@color/white"
+        rv:rv_cornerRadius="5dip">
+
+        <EditText
+            android:id="@+id/et_comment"
+            android:layout_width="match_parent"
+            android:layout_height="100dip"
+            android:layout_marginBottom="10dip"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:gravity="top|left"
+            android:hint="说说自己的感受，和车友分享胰腺癌吧"
+            android:maxLength="500"
+            android:textColor="@color/a333333"
+            android:textColorHint="@color/aBBBBBB"
+            android:textSize="14sp">
+
+        </EditText>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_comment_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.flyco.roundview.RoundLinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_comment_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip" />
+</LinearLayout>
