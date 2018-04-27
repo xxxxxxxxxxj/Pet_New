@@ -42,8 +42,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import top.zibin.luban.Luban;
 
-import static com.haotang.easyshare.app.AppConfig.REQUEST_CODE_CHOOSE;
-
 public class CommentActivity extends BaseActivity {
     @BindView(R.id.tv_titlebar_other)
     TextView tvTitlebarOther;
@@ -161,6 +159,12 @@ public class CommentActivity extends BaseActivity {
                 .subscribe(new Consumer<List<File>>() {
                     @Override
                     public void accept(@NonNull List<File> list) throws Exception {
+                        for (int i = 0; i < imgList.size(); i++) {
+                            CommentImg commentImg = imgList.get(i);
+                            if (commentImg.isAdd()) {
+                                imgList.remove(i);
+                            }
+                        }
                         for (int i = 0; i < list.size(); i++) {
                             imgPathList.add(list.get(i).getAbsolutePath());
                             imgList.add(new CommentImg(list.get(i).getAbsolutePath(), false));
@@ -171,6 +175,19 @@ public class CommentActivity extends BaseActivity {
                                 if (commentImg.isAdd()) {
                                     imgList.remove(i);
                                 }
+                            }
+                        }
+                        if (imgList.size() < IMG_NUM) {
+                            boolean isAdd = false;
+                            for (int i = 0; i < imgList.size(); i++) {
+                                CommentImg commentImg = imgList.get(i);
+                                if (commentImg.isAdd()) {
+                                    isAdd = true;
+                                    break;
+                                }
+                            }
+                            if (!isAdd) {
+                                imgList.add(new CommentImg("", true));
                             }
                         }
                         commentImgAdapter.notifyDataSetChanged();
@@ -192,12 +209,21 @@ public class CommentActivity extends BaseActivity {
     @Subscribe
     public void getRemovePosition(PhotoViewPagerImg photoViewPagerImg) {
         String imgUrl = photoViewPagerImg.getImgUrl();
+        int pagerPosition = photoViewPagerImg.getPagerPosition();
+        boolean deleteAll = photoViewPagerImg.isDeleteAll();
         RingLog.d(TAG, "getRemovePosition imgUrl = " + imgUrl);
-        for (int i = 0; i < imgList.size(); i++) {
-            CommentImg commentImg = imgList.get(i);
-            if (commentImg.getImgUrl().equals(imgUrl)) {
-                imgList.remove(i);
-                break;
+        RingLog.d(TAG, "getRemovePosition pagerPosition = " + pagerPosition);
+        if (deleteAll) {
+            imgPathList.clear();
+            imgList.clear();
+        } else {
+            for (int i = 0; i < imgList.size(); i++) {
+                CommentImg commentImg = imgList.get(i);
+                if (commentImg.getImgUrl().equals(imgUrl)) {
+                    imgList.remove(i);
+                    imgPathList.remove(i);
+                    break;
+                }
             }
         }
         if (imgList.size() < IMG_NUM) {
@@ -210,7 +236,7 @@ public class CommentActivity extends BaseActivity {
                 }
             }
             if (!isAdd) {
-                imgList.add(0, new CommentImg("", true));
+                imgList.add(new CommentImg("", true));
             }
         }
         commentImgAdapter.notifyDataSetChanged();

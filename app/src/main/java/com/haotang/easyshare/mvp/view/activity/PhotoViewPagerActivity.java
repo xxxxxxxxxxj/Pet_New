@@ -92,6 +92,7 @@ public class PhotoViewPagerActivity extends BaseActivity {
                 int position = getPosition(pagerPosition);
                 RingLog.d(TAG, "pagerPosition = " + pagerPosition);
                 RingLog.d(TAG, "position = " + position);
+                String imgUrl = urls.get(pagerPosition);
                 urls.remove(pagerPosition);
                 if (urls.size() <= 0) {
                     samplePagerAdapter.notifyDataSetChanged();
@@ -100,13 +101,17 @@ public class PhotoViewPagerActivity extends BaseActivity {
                     DevRing.busManager().postEvent(photoViewPagerImg);
                     finish();
                 } else {
+                    PhotoViewPagerImg photoViewPagerImg = new PhotoViewPagerImg();
+                    photoViewPagerImg.setImgUrl(imgUrl);
+                    photoViewPagerImg.setPagerPosition(pagerPosition);
+                    photoViewPagerImg.setDeleteAll(false);
+                    DevRing.busManager().postEvent(photoViewPagerImg);
                     samplePagerAdapter.notifyDataSetChanged();
                     pager.setCurrentItem(position);
-                    PhotoViewPagerImg photoViewPagerImg = new PhotoViewPagerImg();
-                    photoViewPagerImg.setImgUrl(urls.get(pagerPosition));
-                    photoViewPagerImg.setPagerPosition(pagerPosition);
-                    photoViewPagerImg.setDeleteAll(true);
-                    DevRing.busManager().postEvent(photoViewPagerImg);
+                    pagerPosition = position;
+                    CharSequence text = getString(R.string.viewpager_indicator,
+                            position + 1, pager.getAdapter().getCount());
+                    tvPvTitlebarIndicator.setText(text);
                 }
                 break;
         }
@@ -119,8 +124,10 @@ public class PhotoViewPagerActivity extends BaseActivity {
         } else {
             if (removePosition == urls.size() - 1) {
                 position = urls.size() - 2;
+            } else if (removePosition == 0) {
+                position = 0;
             } else {
-                position = urls.size() - 1;
+                position = removePosition;
             }
         }
         return position;
@@ -171,6 +178,11 @@ public class PhotoViewPagerActivity extends BaseActivity {
             return view == object;
         }
 
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
     }
 
     @Override
@@ -193,6 +205,7 @@ public class PhotoViewPagerActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int arg0) {
+                RingLog.d(TAG, "onPageSelected arg0 = " + arg0);
                 pagerPosition = arg0;
                 CharSequence text = getString(R.string.viewpager_indicator,
                         arg0 + 1, pager.getAdapter().getCount());

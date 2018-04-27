@@ -347,19 +347,19 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onMyLocationChange(Location location) {
         // 定位回调监听
         if (location != null) {
-            RingLog.d(TAG, "onMyLocationChange 定位成功， lat: " + location.getLatitude() + " lon: " + location.getLongitude());
+            //RingLog.d(TAG, "onMyLocationChange 定位成功， lat: " + location.getLatitude() + " lon: " + location.getLongitude());
             Bundle bundle = location.getExtras();
             if (bundle != null) {
                 int errorCode = bundle.getInt(MyLocationStyle.ERROR_CODE);
                 String errorInfo = bundle.getString(MyLocationStyle.ERROR_INFO);
                 // 定位类型，可能为GPS WIFI等，具体可以参考官网的定位SDK介绍
                 int locationType = bundle.getInt(MyLocationStyle.LOCATION_TYPE);
-                RingLog.d(TAG, "定位信息， code: " + errorCode + " errorInfo: " + errorInfo + " locationType: " + locationType);
+                //RingLog.d(TAG, "定位信息， code: " + errorCode + " errorInfo: " + errorInfo + " locationType: " + locationType);
             } else {
-                RingLog.d(TAG, "定位信息， bundle is null ");
+                //RingLog.d(TAG, "定位信息， bundle is null ");
             }
         } else {
-            RingLog.d(TAG, "定位失败");
+            //RingLog.d(TAG, "定位失败");
         }
     }
 
