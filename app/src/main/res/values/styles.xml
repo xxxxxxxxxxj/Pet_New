@@ -1,4 +1,9 @@
 <resources>
+    <declare-styleable name="VerticalBannerView">
+        <attr name="gap" format="integer" />
+        <attr name="animDuration" format="integer" />
+    </declare-styleable>
+
     <style name="mypopwindow_anim_style">
 
         <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
@@ -7,6 +12,7 @@
         <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
         <!-- 指定消失的动画xml -->
     </style>
+
     <style name="CustomDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

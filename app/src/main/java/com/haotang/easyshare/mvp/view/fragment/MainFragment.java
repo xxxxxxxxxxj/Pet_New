@@ -25,6 +25,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
@@ -34,7 +35,6 @@ import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.roundview.RoundLinearLayout;
 import com.flyco.roundview.RoundRelativeLayout;
@@ -52,6 +52,7 @@ import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenHeader;
+import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
@@ -74,7 +75,7 @@ import butterknife.OnClick;
 public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         AMap.OnMyLocationChangeListener,
         View.OnClickListener, IMainFragmentView, AMap.OnMarkerClickListener,
-        AMap.OnInfoWindowClickListener, AMap.OnMapLoadedListener, AMap.InfoWindowAdapter, PoiSearch.OnPoiSearchListener {
+        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener {
     private final static String TAG = MainFragment.class.getSimpleName();
     @BindView(R.id.iv_mainfrag_gj)
     ImageView ivMainfragGj;
@@ -148,7 +149,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         for (int i = 0; i < list.size(); i++) {
             MainFragmentData mainFragmentData = list.get(i);
             if (mainFragmentData != null) {
-                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view))
+                View infoWindow = getLayoutInflater().inflate(
+                        R.layout.map_custom_info_window, null);
+                ImageView iv_map_custom_info = ((ImageView) infoWindow.findViewById(R.id.iv_map_custom_info));
+                GlideUtil.loadNetCircleImg(mActivity, mainFragmentData.getImg(), iv_map_custom_info, R.mipmap.ic_image_load_circle);
+                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromView(infoWindow))
                         .position(new LatLng(mainFragmentData.getLat(), mainFragmentData.getLng()))
                         .draggable(true);
                 Marker marker = aMap.addMarker(markerOptions);
@@ -161,7 +166,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
                 "测试距离", 3, 4, 5, "00:30-24:00",
                 "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                39.983456, 116.3154950, "北京", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
+                39.983456, 116.3154950, "北京",
+                "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
 
         list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
                 "测试距离", 3, 4, 5, "00:30-24:00",
@@ -215,8 +221,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     protected void initEvent() {
         aMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
         aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
-        aMap.setOnInfoWindowClickListener(this);// 设置点击infoWindow事件监听器
-        aMap.setInfoWindowAdapter(this);
         //设置SDK 自带定位消息监听
         aMap.setOnMyLocationChangeListener(this);
         mainFragmenHeader.getIvMainfragRmht1().setOnClickListener(this);
@@ -380,13 +384,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        return false;
-    }
-
-    @Override
-    public void onInfoWindowClick(Marker marker) {
+        aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 18, 0, 30)),
+                1000, null);
         int position = (int) marker.getObject();
         showBottomDialog(position);
+        return true;
     }
 
     private void showBottomDialog(int position) {
@@ -482,38 +484,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             }
         }
         aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
-    }
-
-    @Override
-    public View getInfoWindow(Marker marker) {
-        View infoWindow = getLayoutInflater().inflate(
-                R.layout.map_custom_info_window, null);
-        render(marker, infoWindow);
-        return infoWindow;
-    }
-
-    @Override
-    public View getInfoContents(Marker marker) {
-        View infoWindow = getLayoutInflater().inflate(
-                R.layout.map_custom_info_window, null);
-        render(marker, infoWindow);
-        return infoWindow;
-    }
-
-    /**
-     * 自定义infowinfow窗口
-     */
-    public void render(Marker marker, View view) {
-        int position = (int) marker.getObject();
-        TextView tv_map_custom_info = ((TextView) view.findViewById(R.id.tv_map_custom_info));
-        ImageView iv_map_custom_info = ((ImageView) view.findViewById(R.id.iv_map_custom_info));
-        tv_map_custom_info.bringToFront();
-        StringUtil.setText(tv_map_custom_info, String.valueOf(position + 1), "", View.VISIBLE, View.VISIBLE);
-        MainFragmentData mainFragmentData = list.get(position);
-        if (mainFragmentData != null) {
-            Glide.with(this).load(mainFragmentData.getImg()).error(R.mipmap.ic_image_load)
-                    .placeholder(R.mipmap.ic_image_load).into(iv_map_custom_info);
-        }
     }
 
     @Override

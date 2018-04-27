@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.maps.MapView;
 import com.amap.api.maps.TextureMapView;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
@@ -25,7 +26,7 @@ public class MainFragmenHeader {
     @BindView(R.id.rtv_mainfrag_local)
     RoundTextView rtvMainfragLocal;
     @BindView(R.id.tmv_mainfrag_map)
-    TextureMapView tmv_mainfrag_map;
+    MapView tmv_mainfrag_map;
     @BindView(R.id.iv_mainfrag_rmht1)
     ImageView ivMainfragRmht1;
     @BindView(R.id.iv_mainfrag_rmht2)
@@ -55,7 +56,7 @@ public class MainFragmenHeader {
         return rtvMainfragLocal;
     }
 
-    public TextureMapView getTmv_mainfrag_map() {
+    public MapView getTmv_mainfrag_map() {
         return tmv_mainfrag_map;
     }
 

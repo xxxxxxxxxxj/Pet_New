@@ -28,7 +28,7 @@
             rv:rv_backgroundPressColor="#383838"
             rv:rv_cornerRadius="50dip" />
 
-        <com.amap.api.maps.TextureMapView
+        <com.amap.api.maps.MapView
             android:id="@+id/tmv_mainfrag_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
