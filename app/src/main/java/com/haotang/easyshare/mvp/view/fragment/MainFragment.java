@@ -49,8 +49,9 @@ import com.haotang.easyshare.di.module.fragment.MainFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.model.entity.res.SerchResult;
 import com.haotang.easyshare.mvp.presenter.MainFragmentPresenter;
+import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
-import com.haotang.easyshare.mvp.view.activity.CommentActivity;
+import com.haotang.easyshare.mvp.view.activity.CommentDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
 import com.haotang.easyshare.mvp.view.activity.SwitchCityActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
@@ -222,7 +223,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         rvMainfragLocalev.setHasFixedSize(true);
         rvMainfragLocalev.setLayoutManager(new LinearLayoutManager(mActivity));
         mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list);
-        mainLocalAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         View top = getLayoutInflater().inflate(R.layout.mainlocal_top_view, (ViewGroup) rvMainfragLocalev.getParent(), false);
         mainFragmenHeader = new MainFragmenHeader(top);
         mainLocalAdapter.addHeaderView(top);
@@ -369,9 +369,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_mainfrag_gj:
+                startActivity(new Intent(mActivity, ButlerActivity.class));
                 break;
             case R.id.ll_mainfrag_city:
-                startActivity(new Intent(mActivity,SwitchCityActivity.class));
+                startActivity(new Intent(mActivity, SwitchCityActivity.class));
                 break;
             case R.id.rl_mainfrag_send:
                 break;
@@ -388,7 +389,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             case R.id.iv_mainfrag_rmht3:
                 break;
             case R.id.rl_mainfrag_localev:
-                startActivity(new Intent(mActivity,LocalChargingActivity.class));
+                startActivity(new Intent(mActivity, LocalChargingActivity.class));
                 break;
             case R.id.rl_mainfrag_localev_gg:
                 index = 0;
@@ -493,7 +494,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             mainFragmenBoDa.getLlMainbottomPl().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(mActivity, CommentActivity.class));
+                    startActivity(new Intent(mActivity, CommentDetailActivity.class));
                 }
             });
             pWinBottomDialog.setOnDismissListener(new PopupWindow.OnDismissListener() {

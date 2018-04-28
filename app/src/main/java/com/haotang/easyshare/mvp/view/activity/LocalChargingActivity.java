@@ -85,7 +85,6 @@ public class LocalChargingActivity extends BaseActivity {
         rvLocalCharging.setHasFixedSize(true);
         rvLocalCharging.setLayoutManager(new LinearLayoutManager(this));
         mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list);
-        mainLocalAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         rvLocalCharging.setAdapter(mainLocalAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);

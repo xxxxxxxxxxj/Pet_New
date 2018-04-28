@@ -306,7 +306,9 @@
         <activity android:name=".mvp.view.activity.ChargingPileDetailActivity" />
         <activity android:name=".mvp.view.activity.CommentActivity" />
         <activity android:name=".mvp.view.activity.LocalChargingActivity" />
-        <activity android:name=".mvp.view.activity.SwitchCityActivity"></activity>
+        <activity android:name=".mvp.view.activity.SwitchCityActivity" />
+        <activity android:name=".mvp.view.activity.ButlerActivity" />
+        <activity android:name=".mvp.view.activity.CommentDetailActivity"></activity>
     </application>
 
 </manifest>

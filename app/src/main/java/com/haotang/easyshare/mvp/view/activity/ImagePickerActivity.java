@@ -93,7 +93,6 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
         rvTakePhoto.setHasFixedSize(true);
         rvTakePhoto.setLayoutManager(new GridLayoutManager(this, 1));
         takePhotoImgAdapter = new TakePhotoImgAdapter(R.layout.item_takephoto_imginfo, imgList);
-        takePhotoImgAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         View top = getLayoutInflater().inflate(R.layout.imagepicker_top_view, (ViewGroup) rvTakePhoto.getParent(), false);
         banner = top.findViewById(R.id.banner);
         takePhotoImgAdapter.addHeaderView(top);
