@@ -38,14 +38,14 @@ public class TakePhotoImgAdapter extends BaseQuickAdapter<ImgInfo, BaseViewHolde
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, final ImgInfo item) {
+    protected void convert(final BaseViewHolder helper, final ImgInfo item) {
         ImageView iv_item_takephoto_imginfo = helper.getView(R.id.iv_item_takephoto_imginfo);
         ImageView iv_item_takephoto_imginfo_press = helper.getView(R.id.iv_item_takephoto_imginfo_press);
         iv_item_takephoto_imginfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onChildItemListener != null) {
-                    onChildItemListener.OnChildItem(R.id.iv_item_takephoto_imginfo, mData.indexOf(item));
+                    onChildItemListener.OnChildItem(R.id.iv_item_takephoto_imginfo, helper.getLayoutPosition());
                 }
             }
         });
@@ -53,7 +53,7 @@ public class TakePhotoImgAdapter extends BaseQuickAdapter<ImgInfo, BaseViewHolde
             @Override
             public void onClick(View v) {
                 if (onChildItemListener != null) {
-                    onChildItemListener.OnChildItem(R.id.iv_item_takephoto_imginfo_press, mData.indexOf(item));
+                    onChildItemListener.OnChildItem(R.id.iv_item_takephoto_imginfo_press, helper.getLayoutPosition());
                 }
             }
         });

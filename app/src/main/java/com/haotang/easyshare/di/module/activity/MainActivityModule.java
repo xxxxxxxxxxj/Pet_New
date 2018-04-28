@@ -5,10 +5,9 @@ import android.content.Context;
 import com.haotang.easyshare.mvp.model.MainModel;
 import com.haotang.easyshare.mvp.model.imodel.IMainModel;
 import com.haotang.easyshare.mvp.presenter.MainPresenter;
+import com.haotang.easyshare.mvp.view.fragment.HotFragment;
 import com.haotang.easyshare.mvp.view.fragment.MainFragment;
 import com.haotang.easyshare.mvp.view.fragment.MyFragment;
-import com.haotang.easyshare.mvp.view.fragment.PetCircleFragment;
-import com.haotang.easyshare.mvp.view.fragment.ShopMarketFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.di.scope.ActivityScope;
@@ -72,14 +71,8 @@ public class MainActivityModule {
 
     @Provides
     @ActivityScope
-    ShopMarketFragment shopMarketFragment() {
-        return new ShopMarketFragment();
-    }
-
-    @Provides
-    @ActivityScope
-    PetCircleFragment petCircleFragment() {
-        return new PetCircleFragment();
+    HotFragment hotFragment() {
+        return new HotFragment();
     }
 
     @Provides

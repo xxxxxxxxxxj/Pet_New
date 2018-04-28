@@ -18,6 +18,8 @@ import com.haotang.easyshare.mvp.model.entity.res.PhotoViewPagerImg;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CommentImgAdapter;
 import com.haotang.easyshare.mvp.view.adapter.CommentTagAdapter;
+import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
+import com.haotang.easyshare.mvp.view.widget.NoScollGridLayoutManager;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
@@ -59,7 +61,7 @@ public class CommentActivity extends BaseActivity {
     private List<String> imgPathList = new ArrayList<String>();
     private CommentImgAdapter commentImgAdapter;
     private CommentTagAdapter commentTagAdapter;
-    private static final int IMG_NUM = 3;
+    private static final int IMG_NUM = 9;
 
     @Override
     protected int getContentLayout() {
@@ -81,13 +83,25 @@ public class CommentActivity extends BaseActivity {
         }
         imgList.add(new CommentImg("", true));
         rvCommentImg.setHasFixedSize(true);
-        rvCommentImg.setLayoutManager(new GridLayoutManager(this, 3));
+        NoScollGridLayoutManager noScollGridLayoutManager = new NoScollGridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+        noScollGridLayoutManager.setScrollEnabled(false);
+        rvCommentImg.setLayoutManager(noScollGridLayoutManager);
+        rvCommentImg.addItemDecoration(new GridSpacingItemDecoration(3,
+                getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
+                getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
+                false));
         commentImgAdapter = new CommentImgAdapter(R.layout.item_comment_img
                 , imgList);
         rvCommentImg.setAdapter(commentImgAdapter);
 
         rvCommentTag.setHasFixedSize(true);
-        rvCommentTag.setLayoutManager(new GridLayoutManager(this, 4));
+        NoScollGridLayoutManager noScollGridLayoutManager1 = new NoScollGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
+        noScollGridLayoutManager1.setScrollEnabled(false);
+        rvCommentTag.setLayoutManager(noScollGridLayoutManager1);
+        rvCommentTag.addItemDecoration(new GridSpacingItemDecoration(4,
+                getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
+                getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
+                false));
         commentTagAdapter = new CommentTagAdapter(R.layout.item_comment_tag, tagList);
         rvCommentTag.setAdapter(commentTagAdapter);
     }
@@ -118,7 +132,7 @@ public class CommentActivity extends BaseActivity {
                             .imageEngine(new GlideEngine())
                             .forResult(AppConfig.REQUEST_CODE_CHOOSE);
                 } else {
-                    SystemUtil.goPhotoView(CommentActivity.this, position, imgPathList);
+                    SystemUtil.goPhotoView(CommentActivity.this, position, imgPathList, true);
                 }
             }
         });

@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,11 +31,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.haotang.easyshare.R.id.rl_pv_titlebar;
+
 public class PhotoViewPagerActivity extends BaseActivity {
     protected final static String TAG = PhotoViewPagerActivity.class.getSimpleName();
     private static final String STATE_POSITION = "STATE_POSITION";
     public static final String EXTRA_IMAGE_INDEX = "image_index";
     public static final String EXTRA_IMAGE_URLS = "image_urls";
+    public static final String EXTRA_IMAGE_ISDELETE = "image_isdelete";
     @BindView(R.id.pager)
     HackyViewPager pager;
     @BindView(R.id.iv_pv_titlebar_back)
@@ -43,12 +47,13 @@ public class PhotoViewPagerActivity extends BaseActivity {
     ImageView ivPvTitlebarDelete;
     @BindView(R.id.tv_pv_titlebar_indicator)
     TextView tvPvTitlebarIndicator;
-    @BindView(R.id.rl_pv_titlebar)
+    @BindView(rl_pv_titlebar)
     RelativeLayout rlPvTitlebar;
     private int pagerPosition;
     private List<String> urls = new ArrayList<String>();
     private File photoViewFile;
     private SamplePagerAdapter samplePagerAdapter;
+    private boolean isDelete;
 
     @Override
     protected int getContentLayout() {
@@ -57,8 +62,10 @@ public class PhotoViewPagerActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        setBarColor(getResources().getColor(R.color.a3a3636));
         DevRing.activityStackManager().pushOneActivity(this);
         pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
+        isDelete = getIntent().getBooleanExtra(EXTRA_IMAGE_ISDELETE, false);
         urls.clear();
         List<String> strings = Arrays.asList(getIntent().getStringArrayExtra(EXTRA_IMAGE_URLS));
         urls.addAll(strings);
@@ -69,6 +76,15 @@ public class PhotoViewPagerActivity extends BaseActivity {
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        rlPvTitlebar.startAnimation(AnimationUtils.loadAnimation(PhotoViewPagerActivity.this,
+                R.anim.commodity_detail_show));//开始动画
+        rlPvTitlebar.bringToFront();
+        rlPvTitlebar.setVisibility(View.VISIBLE);
+        if (isDelete) {
+            ivPvTitlebarDelete.setVisibility(View.VISIBLE);
+        } else {
+            ivPvTitlebarDelete.setVisibility(View.GONE);
+        }
         samplePagerAdapter = new SamplePagerAdapter();
         pager.setAdapter(samplePagerAdapter);
         CharSequence text = getString(R.string.viewpager_indicator, pagerPosition + 1, pager
@@ -147,8 +163,13 @@ public class PhotoViewPagerActivity extends BaseActivity {
                 @Override
                 public void onPhotoTap(ImageView view, float x, float y) {
                     if (rlPvTitlebar.getVisibility() == View.VISIBLE) {
+                        rlPvTitlebar.startAnimation(AnimationUtils.loadAnimation(PhotoViewPagerActivity.this,
+                                R.anim.commodity_detail_hide));//开始动画
                         rlPvTitlebar.setVisibility(View.GONE);
                     } else {
+                        rlPvTitlebar.startAnimation(AnimationUtils.loadAnimation(PhotoViewPagerActivity.this,
+                                R.anim.commodity_detail_show));//开始动画
+                        rlPvTitlebar.bringToFront();
                         rlPvTitlebar.setVisibility(View.VISIBLE);
                     }
                 }

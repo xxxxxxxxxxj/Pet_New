@@ -34,7 +34,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Flowable;
@@ -50,8 +49,6 @@ import top.zibin.luban.Luban;
  */
 public class ImagePickerActivity extends BaseActivity implements OnBannerListener {
     protected final static String TAG = ImagePickerActivity.class.getSimpleName();
-    @BindColor(R.color.colorPrimary)
-    protected int mColor;
     @BindView(R.id.rv_take_photo)
     RecyclerView rvTakePhoto;
     Banner banner;
@@ -127,10 +124,10 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
             public void OnChildItem(int viewId, int position) {
                 switch (viewId) {
                     case R.id.iv_item_takephoto_imginfo:
-                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, pathList);
+                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, pathList,false);
                         break;
                     case R.id.iv_item_takephoto_imginfo_press:
-                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, pressPathList);
+                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, pressPathList,false);
                         break;
                 }
             }

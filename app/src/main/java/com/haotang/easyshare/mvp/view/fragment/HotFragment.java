@@ -11,7 +11,7 @@ import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
  * @author 徐俊
  * @date zhoujunxia on 2018/4/14 20:59
  */
-public class ShopMarketFragment extends BaseFragment {
+public class HotFragment extends BaseFragment {
 
     @Override
     protected boolean isLazyLoad() {
@@ -20,7 +20,7 @@ public class ShopMarketFragment extends BaseFragment {
 
     @Override
     protected int getContentLayout() {
-        return R.layout.shopmarketfragment;
+        return R.layout.hotfragment;
     }
 
     @Override

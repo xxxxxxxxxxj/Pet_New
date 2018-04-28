@@ -159,11 +159,12 @@ public class SystemUtil {
         return (info != null && info.isConnected());
     }
 
-    public static void goPhotoView(Context context, int position, List<String> urlList) {
+    public static void goPhotoView(Context context, int position, List<String> urlList, boolean isDelete) {
         Intent intent = new Intent(context, PhotoViewPagerActivity.class);
         // 图片url,为了演示这里使用常量，一般从数据库中或网络中获取
         intent.putExtra(PhotoViewPagerActivity.EXTRA_IMAGE_URLS, urlList.toArray(new String[urlList.size()]));
         intent.putExtra(PhotoViewPagerActivity.EXTRA_IMAGE_INDEX, position);
+        intent.putExtra(PhotoViewPagerActivity.EXTRA_IMAGE_ISDELETE, isDelete);
         context.startActivity(intent);
     }
 

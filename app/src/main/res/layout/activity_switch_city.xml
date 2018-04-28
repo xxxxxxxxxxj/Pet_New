@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/af8f8f8"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.youth.banner.Banner
+                android:id="@+id/banner_switch_city"
+                android:layout_width="match_parent"
+                android:layout_height="105dip"
+                app:indicator_drawable_selected="@drawable/selected_radius" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="43dip"
+                android:layout_margin="15dip">
+
+                <ImageView
+                    android:id="@+id/iv_switch_city_serch"
+                    android:layout_width="48dip"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/icon_city_serch" />
+
+                <EditText
+                    android:id="@+id/et_switch_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/iv_switch_city_serch"
+                    android:background="@mipmap/bg_et_serch"
+                    android:cursorVisible="true"
+                    android:hint="搜索城市"
+                    android:paddingLeft="15dip"
+                    android:paddingRight="15dip"
+                    android:textColor="@color/a666666"
+                    android:textColorHint="@color/a999999"
+                    android:textCursorDrawable="@drawable/test_cursor"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:text="热门城市"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_switch_city"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

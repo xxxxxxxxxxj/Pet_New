@@ -2,24 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:rv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="23.5dip"
+    android:layout_height="35dip"
     android:gravity="center"
     android:orientation="vertical">
 
     <com.flyco.roundview.RoundTextView
-        android:id="@+id/rtv_item_comment_tag"
+        android:id="@+id/rtv_item_city"
         android:layout_width="match_parent"
-        android:layout_height="23.5dip"
+        android:layout_height="match_parent"
         android:ellipsize="end"
         android:gravity="center"
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:singleLine="true"
         android:text="TextView"
-        android:textColor="@color/a999999"
-        android:textSize="12sp"
-        rv:rv_backgroundColor="@color/f8f8ff8"
-        rv:rv_cornerRadius="100dip"
-        rv:rv_strokeColor="@color/a999999"
+        android:textColor="@color/a666666"
+        android:textSize="14sp"
+        rv:rv_backgroundColor="@color/white"
+        rv:rv_cornerRadius="4dip"
+        rv:rv_strokeColor="@color/white"
         rv:rv_strokeWidth="0.5dip" />
 </LinearLayout>

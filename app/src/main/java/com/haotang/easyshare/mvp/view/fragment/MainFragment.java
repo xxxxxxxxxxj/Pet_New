@@ -51,6 +51,8 @@ import com.haotang.easyshare.mvp.model.entity.res.SerchResult;
 import com.haotang.easyshare.mvp.presenter.MainFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.CommentActivity;
+import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
+import com.haotang.easyshare.mvp.view.activity.SwitchCityActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainSerchResultAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
@@ -369,6 +371,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             case R.id.iv_mainfrag_gj:
                 break;
             case R.id.ll_mainfrag_city:
+                startActivity(new Intent(mActivity,SwitchCityActivity.class));
                 break;
             case R.id.rl_mainfrag_send:
                 break;
@@ -385,6 +388,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             case R.id.iv_mainfrag_rmht3:
                 break;
             case R.id.rl_mainfrag_localev:
+                startActivity(new Intent(mActivity,LocalChargingActivity.class));
                 break;
             case R.id.rl_mainfrag_localev_gg:
                 index = 0;

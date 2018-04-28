@@ -11,13 +11,13 @@
         android:layout_height="54dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        tl:tl_iconHeight="23dp"
-        tl:tl_iconWidth="23dp"
+        tl:tl_iconHeight="25dp"
+        tl:tl_iconWidth="25dp"
         tl:tl_indicator_color="#2C97DE"
         tl:tl_indicator_height="0dp"
-        tl:tl_textSelectColor="@color/aD1494F"
-        tl:tl_textUnselectColor="@color/tabback"
-        tl:tl_textsize="12sp"
+        tl:tl_textSelectColor="@color/a0063DA"
+        tl:tl_textUnselectColor="@color/a979797"
+        tl:tl_textsize="10sp"
         tl:tl_underline_color="#DDDDDD"
         tl:tl_underline_height="1dp" />
 

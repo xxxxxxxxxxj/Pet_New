@@ -11,42 +11,55 @@
 
     <include layout="@layout/title_bar" />
 
-    <com.flyco.roundview.RoundLinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dip"
-        android:orientation="vertical"
-        android:padding="15dip"
-        rv:rv_backgroundColor="@color/white"
-        rv:rv_cornerRadius="5dip">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-        <EditText
-            android:id="@+id/et_comment"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dip"
-            android:layout_marginBottom="10dip"
-            android:background="@android:color/transparent"
-            android:ems="10"
-            android:gravity="top|left"
-            android:hint="说说自己的感受，和车友分享胰腺癌吧"
-            android:maxLength="500"
-            android:textColor="@color/a333333"
-            android:textColorHint="@color/aBBBBBB"
-            android:textSize="14sp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        </EditText>
+            <com.flyco.roundview.RoundLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dip"
+                android:orientation="vertical"
+                android:padding="15dip"
+                rv:rv_backgroundColor="@color/white"
+                rv:rv_cornerRadius="5dip">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_comment_img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/et_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dip"
+                    android:layout_marginBottom="10dip"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:gravity="top|left"
+                    android:hint="说说自己的感受，和车友分享胰腺癌吧"
+                    android:maxLength="500"
+                    android:textColor="@color/a333333"
+                    android:textColorHint="@color/aBBBBBB"
+                    android:textSize="14sp">
 
-    </com.flyco.roundview.RoundLinearLayout>
+                </EditText>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_comment_tag"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="15dip"
-        android:paddingRight="15dip" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_comment_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.flyco.roundview.RoundLinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_comment_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

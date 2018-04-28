@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="a979797">#979797</color>
+    <color name="a0063DA">#0063DA</color>
 
     <color name="aD8D8D8">#D8D8D8</color>
     <color name="blue_color">#1B9AF7</color>
@@ -11,7 +13,7 @@
     <color name="text_blue">#0076FF</color>
     <color name="text_black">#333333</color>
 
-    <color name="colorPrimary">#3a3636</color>
+    <color name="colorPrimary">@color/a3a3636</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="aD1494F">#D1494F</color>

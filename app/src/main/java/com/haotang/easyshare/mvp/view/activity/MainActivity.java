@@ -24,8 +24,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
 import com.haotang.easyshare.mvp.view.fragment.MainFragment;
 import com.haotang.easyshare.mvp.view.fragment.MyFragment;
-import com.haotang.easyshare.mvp.view.fragment.PetCircleFragment;
-import com.haotang.easyshare.mvp.view.fragment.ShopMarketFragment;
+import com.haotang.easyshare.mvp.view.fragment.HotFragment;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
@@ -41,7 +40,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -62,24 +60,23 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private long mExitTime;
     @Inject
     PermissionDialog permissionDialog;
-    private String[] mTitles = {"宠物家", "商城", "宠圈", "我的"};
+    private String[] mTitles = {"易享", "热点", "我的"};
     private int[] mIconUnselectIds = {
-            R.mipmap.tab_home_normal, R.mipmap.tab_order_normal,
-            R.mipmap.tab_knowledge_normal, R.mipmap.tab_my_normal};
+            R.mipmap.tab_home_normal,
+            R.mipmap.tab_hot_normal, R.mipmap.tab_my_normal};
     private int[] mIconSelectIds = {
-            R.mipmap.tab_home_passed, R.mipmap.tab_order_passed,
-            R.mipmap.tab_knowledge_passed, R.mipmap.tab_my_passed};
+            R.mipmap.tab_home_passed,
+            R.mipmap.tab_hot_passed, R.mipmap.tab_my_passed};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private ArrayList<BaseFragment> mFragments = new ArrayList<>();
     @Inject
     MainFragment mainFragment;
     @Inject
-    ShopMarketFragment shopMarketFragment;
-    @Inject
-    PetCircleFragment petCircleFragment;
+    HotFragment hotFragment;
     @Inject
     MyFragment myFragment;
     private int currentTabIndex = 0;
+    private boolean isRedPoint = true;
 
     @Override
     protected int getContentLayout() {
@@ -101,8 +98,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         permissionDialog.setNegativeButton(R.string.permission_request_dialog_nav);
 
         mFragments.add(mainFragment);
-        mFragments.add(shopMarketFragment);
-        mFragments.add(petCircleFragment);
+        mFragments.add(hotFragment);
         mFragments.add(myFragment);
         vpMainactivity.setAdapter(new MainActivityPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
         vpMainactivity.setOffscreenPageLimit(4);
@@ -112,16 +108,22 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         ctlMainactivity.setTabData(mTabEntities);
         ctlMainactivity.setCurrentTab(currentTabIndex);
         vpMainactivity.setCurrentItem(currentTabIndex);
-        if (currentTabIndex == 0 || currentTabIndex == 1) {
-            setBarColor(getResources().getColor(R.color.aD1494F));
+        setBarColor(getResources().getColor(R.color.transparent));
+        if (isRedPoint) {
+            //设置未读消息红点
+            ctlMainactivity.showDot(1);
+            MsgView rtv_2_2 = ctlMainactivity.getMsgView(1);
+            if (rtv_2_2 != null) {
+                UnreadMsgUtils.setSize(rtv_2_2, DensityUtil.dp2px(this, 7.5f));
+            }
         } else {
-            setBarColor(getResources().getColor(R.color.colorPrimary));
+            ctlMainactivity.hideMsg(1);
         }
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        mPresenter.getBottomBar(MainActivity.this);
+        //mPresenter.getBottomBar(MainActivity.this);
         //申请必要权限
         DevRing.permissionManager().requestEach(MainActivity.this, new PermissionListener() {
             @Override
@@ -171,11 +173,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             public void onPageSelected(int position) {
                 RingLog.d(TAG, "onPageSelected position = " + position);
                 currentTabIndex = position;
-                if (position == 0 || position == 1) {
-                    setBarColor(getResources().getColor(R.color.aD1494F));
-                } else {
-                    setBarColor(getResources().getColor(R.color.colorPrimary));
-                }
                 ctlMainactivity.setCurrentTab(currentTabIndex);
                 if (position == 1) {
                     ctlMainactivity.hideMsg(1);

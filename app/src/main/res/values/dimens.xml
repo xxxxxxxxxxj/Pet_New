@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="grid_expected_size">120dp</dimen>
     <dimen name="default_base_toolbar_height">56dp</dimen>
+    <dimen name="horizontalSpacing">15dip</dimen>
+    <dimen name="verticalSpacing">15dip</dimen>
 </resources>

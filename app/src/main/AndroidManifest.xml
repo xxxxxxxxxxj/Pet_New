@@ -304,7 +304,9 @@
         <activity android:name=".mvp.view.activity.ImagePickerActivity" />
         <activity android:name=".mvp.view.activity.PhotoViewPagerActivity" />
         <activity android:name=".mvp.view.activity.ChargingPileDetailActivity" />
-        <activity android:name=".mvp.view.activity.CommentActivity"></activity>
+        <activity android:name=".mvp.view.activity.CommentActivity" />
+        <activity android:name=".mvp.view.activity.LocalChargingActivity" />
+        <activity android:name=".mvp.view.activity.SwitchCityActivity"></activity>
     </application>
 
 </manifest>
