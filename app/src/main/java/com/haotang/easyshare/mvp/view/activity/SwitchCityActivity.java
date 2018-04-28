@@ -15,7 +15,7 @@ import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CityAdapter;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
-import com.haotang.easyshare.mvp.view.widget.NoScollGridLayoutManager;
+import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.youth.banner.Banner;
@@ -66,9 +66,10 @@ public class SwitchCityActivity extends BaseActivity implements OnBannerListener
             }
         }
         rvSwitchCity.setHasFixedSize(true);
-        NoScollGridLayoutManager noScollGridLayoutManager = new NoScollGridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
-        noScollGridLayoutManager.setScrollEnabled(false);
-        rvSwitchCity.setLayoutManager(noScollGridLayoutManager);
+        rvSwitchCity.setNestedScrollingEnabled(false);
+        NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rvSwitchCity, this, 3, GridLayoutManager.VERTICAL, false);
+        noScollFullGridLayoutManager.setScrollEnabled(false);
+        rvSwitchCity.setLayoutManager(noScollFullGridLayoutManager);
         rvSwitchCity.addItemDecoration(new GridSpacingItemDecoration(3,
                 getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
                 getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),

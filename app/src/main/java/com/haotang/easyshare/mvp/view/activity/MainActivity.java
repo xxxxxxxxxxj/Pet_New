@@ -108,7 +108,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         ctlMainactivity.setTabData(mTabEntities);
         ctlMainactivity.setCurrentTab(currentTabIndex);
         vpMainactivity.setCurrentItem(currentTabIndex);
-        setBarColor(getResources().getColor(R.color.transparent));
         if (isRedPoint) {
             //设置未读消息红点
             ctlMainactivity.showDot(1);

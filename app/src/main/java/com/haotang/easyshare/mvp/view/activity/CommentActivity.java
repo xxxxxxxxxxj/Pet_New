@@ -19,7 +19,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CommentImgAdapter;
 import com.haotang.easyshare.mvp.view.adapter.CommentTagAdapter;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
-import com.haotang.easyshare.mvp.view.widget.NoScollGridLayoutManager;
+import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
@@ -83,9 +83,10 @@ public class CommentActivity extends BaseActivity {
         }
         imgList.add(new CommentImg("", true));
         rvCommentImg.setHasFixedSize(true);
-        NoScollGridLayoutManager noScollGridLayoutManager = new NoScollGridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
-        noScollGridLayoutManager.setScrollEnabled(false);
-        rvCommentImg.setLayoutManager(noScollGridLayoutManager);
+        rvCommentImg.setNestedScrollingEnabled(false);
+        NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rvCommentImg, this, 3, GridLayoutManager.VERTICAL, false);
+        noScollFullGridLayoutManager.setScrollEnabled(false);
+        rvCommentImg.setLayoutManager(noScollFullGridLayoutManager);
         rvCommentImg.addItemDecoration(new GridSpacingItemDecoration(3,
                 getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
                 getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
@@ -95,9 +96,10 @@ public class CommentActivity extends BaseActivity {
         rvCommentImg.setAdapter(commentImgAdapter);
 
         rvCommentTag.setHasFixedSize(true);
-        NoScollGridLayoutManager noScollGridLayoutManager1 = new NoScollGridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
-        noScollGridLayoutManager1.setScrollEnabled(false);
-        rvCommentTag.setLayoutManager(noScollGridLayoutManager1);
+        rvCommentTag.setNestedScrollingEnabled(false);
+        NoScollFullGridLayoutManager noScollFullGridLayoutManager1 = new NoScollFullGridLayoutManager(rvCommentTag, this, 4, GridLayoutManager.VERTICAL, false);
+        noScollFullGridLayoutManager1.setScrollEnabled(false);
+        rvCommentTag.setLayoutManager(noScollFullGridLayoutManager1);
         rvCommentTag.addItemDecoration(new GridSpacingItemDecoration(4,
                 getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
                 getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
