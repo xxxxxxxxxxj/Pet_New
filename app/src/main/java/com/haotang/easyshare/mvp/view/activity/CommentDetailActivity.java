@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
@@ -65,7 +64,7 @@ public class CommentDetailActivity extends BaseActivity {
         }
         for (int i = 0; i < 20; i++) {
             list.add(new CommentBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-                    "139****9696", "09-20", "目前用过一次，感觉还可以", tagList, imgList));
+                    "139****9696", "09-20", "目前用过一次，感觉还可以", tagList, imgList,false,false));
         }
         rvCommentDetail.setHasFixedSize(true);
         rvCommentDetail.setLayoutManager(new LinearLayoutManager(this));

@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.ImgInfo;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
@@ -123,10 +122,10 @@ public class ImagePickerActivity extends BaseActivity implements OnBannerListene
             public void OnChildItem(int viewId, int position) {
                 switch (viewId) {
                     case R.id.iv_item_takephoto_imginfo:
-                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, pathList,false);
+                        SystemUtil.goPhotoView(ImagePickerActivity.this, position, pathList,false);
                         break;
                     case R.id.iv_item_takephoto_imginfo_press:
-                        SystemUtil.goPhotoView(ImagePickerActivity.this, 0, pressPathList,false);
+                        SystemUtil.goPhotoView(ImagePickerActivity.this, position, pressPathList,false);
                         break;
                 }
             }

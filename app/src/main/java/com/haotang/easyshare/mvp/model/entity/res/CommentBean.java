@@ -17,6 +17,24 @@ public class CommentBean {
     private String desc;
     private List<CommentTag> tagList;
     private List<CommentImg> imgList;
+    private boolean isAddImgDev;
+    private boolean isAddTagDev;
+
+    public boolean isAddImgDev() {
+        return isAddImgDev;
+    }
+
+    public void setAddImgDev(boolean addImgDev) {
+        isAddImgDev = addImgDev;
+    }
+
+    public boolean isAddTagDev() {
+        return isAddTagDev;
+    }
+
+    public void setAddTagDev(boolean addTagDev) {
+        isAddTagDev = addTagDev;
+    }
 
     public String getImgUrl() {
         return imgUrl;
@@ -66,13 +84,30 @@ public class CommentBean {
         this.desc = desc;
     }
 
-    public CommentBean(String imgUrl, String name, String date, String desc, List<CommentTag> tagList, List<CommentImg> imgList) {
+    public CommentBean(String imgUrl, String name, String date, String desc, List<CommentTag> tagList,
+                       List<CommentImg> imgList,boolean isAddImgDev,boolean isAddTagDev) {
         this.imgUrl = imgUrl;
         this.name = name;
         this.date = date;
         this.desc = desc;
         this.tagList = tagList;
         this.imgList = imgList;
+        this.isAddImgDev = isAddImgDev;
+        this.isAddTagDev = isAddTagDev;
+    }
+
+    @Override
+    public String toString() {
+        return "CommentBean{" +
+                "imgUrl='" + imgUrl + '\'' +
+                ", name='" + name + '\'' +
+                ", date='" + date + '\'' +
+                ", desc='" + desc + '\'' +
+                ", tagList=" + tagList +
+                ", imgList=" + imgList +
+                ", isAddImgDev=" + isAddImgDev +
+                ", isAddTagDev=" + isAddTagDev +
+                '}';
     }
 
     public CommentBean() {

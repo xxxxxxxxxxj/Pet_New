@@ -16,6 +16,7 @@ import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.ljy.devring.other.RingLog;
 
 import java.util.List;
 
@@ -28,8 +29,6 @@ import java.util.List;
  * @date XJ on 2018/4/28 18:00
  */
 public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean, BaseViewHolder> {
-    private boolean isAdd = false;
-    private boolean isAdd1 = false;
 
     public CommentDetailAdapter(int layoutResId, List<CommentBean> data) {
         super(layoutResId, data);
@@ -37,6 +36,9 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean, BaseView
 
     @Override
     protected void convert(BaseViewHolder helper, final CommentBean item) {
+        RingLog.d("TAG", "helper.getLayoutPosition() = " + helper.getLayoutPosition());
+        RingLog.d("TAG", "mData.size() = " + mData.size());
+        RingLog.d("TAG", "item.toString() = " + item.toString());
         ImageView iv_item_comment = helper.getView(R.id.iv_item_comment);
         TextView tv_item_comment_name = helper.getView(R.id.tv_item_comment_name);
         TextView tv_item_comment_date = helper.getView(R.id.tv_item_comment_date);
@@ -57,15 +59,15 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean, BaseView
                 NoScollFullGridLayoutManager noScollFullGridLayoutManager1 = new NoScollFullGridLayoutManager(rv_item_comment_tag, mContext, 4, GridLayoutManager.VERTICAL, false);
                 noScollFullGridLayoutManager1.setScrollEnabled(false);
                 rv_item_comment_tag.setLayoutManager(noScollFullGridLayoutManager1);
-                if (!isAdd) {
-                    isAdd = true;
+                if (!item.isAddTagDev()) {
+                    item.setAddTagDev(true);
                     rv_item_comment_tag.addItemDecoration(new GridSpacingItemDecoration(4,
                             mContext.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
                             mContext.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
                             false));
                 }
-                CommentTagAdapter commentTagAdapter = new CommentTagAdapter(R.layout.item_comment_tag, tagLIst);
-                rv_item_comment_tag.setAdapter(commentTagAdapter);
+                CommentDetailTagAdapter commentDetailTagAdapter = new CommentDetailTagAdapter(R.layout.item_comment_tag, tagLIst);
+                rv_item_comment_tag.setAdapter(commentDetailTagAdapter);
             } else {
                 rv_item_comment_tag.setVisibility(View.GONE);
             }
@@ -76,16 +78,16 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean, BaseView
                 NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rv_item_comment_img, mContext, 3, GridLayoutManager.VERTICAL, false);
                 noScollFullGridLayoutManager.setScrollEnabled(false);
                 rv_item_comment_img.setLayoutManager(noScollFullGridLayoutManager);
-                if (!isAdd1) {
-                    isAdd1 = true;
+                if (!item.isAddImgDev()) {
+                    item.setAddImgDev(true);
                     rv_item_comment_img.addItemDecoration(new GridSpacingItemDecoration(3,
                             mContext.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
                             mContext.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
                             false));
                 }
-                CommentImgAdapter commentImgAdapter = new CommentImgAdapter(R.layout.item_comment_img
+                CommentDetailImgAdapter commentDetailImgAdapter = new CommentDetailImgAdapter(R.layout.item_comment_img
                         , imgList);
-                rv_item_comment_img.setAdapter(commentImgAdapter);
+                rv_item_comment_img.setAdapter(commentDetailImgAdapter);
             } else {
                 rv_item_comment_img.setVisibility(View.GONE);
             }
