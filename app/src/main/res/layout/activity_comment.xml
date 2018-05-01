@@ -37,12 +37,10 @@
                     android:layout_height="100dip"
                     android:layout_marginBottom="10dip"
                     android:background="@android:color/transparent"
-                    android:ems="10"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:gravity="top|left"
                     android:hint="说说自己的感受，和车友分享胰腺癌吧"
-                    android:maxLength="500"
                     android:textColor="@color/a333333"
                     android:textColorHint="@color/aBBBBBB"
                     android:textSize="14sp">

@@ -222,7 +222,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 34.7466, 113.625367, "郑州", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
         rvMainfragLocalev.setHasFixedSize(true);
         rvMainfragLocalev.setLayoutManager(new LinearLayoutManager(mActivity));
-        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list);
+        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list, false);
         View top = getLayoutInflater().inflate(R.layout.mainlocal_top_view, (ViewGroup) rvMainfragLocalev.getParent(), false);
         mainFragmenHeader = new MainFragmenHeader(top);
         mainLocalAdapter.addHeaderView(top);

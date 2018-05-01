@@ -242,6 +242,10 @@ public class SystemUtil {
         return output;
     }
 
+    public static boolean checkLogin(Context context) {
+        return false;
+    }
+
     private static class SaveObservable implements
             Observable.OnSubscribe<String> {
         private Bitmap drawingCache = null;

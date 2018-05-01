@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="a0063da">#0063da</color>
+    <color name="aF64844">#F64844</color>
     <color name="a979797">#979797</color>
     <color name="a0063DA">#0063DA</color>
 

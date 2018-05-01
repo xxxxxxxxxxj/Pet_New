@@ -8,7 +8,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -84,7 +83,7 @@ public class LocalChargingActivity extends BaseActivity {
                 34.7466, 113.625367, "郑州", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
         rvLocalCharging.setHasFixedSize(true);
         rvLocalCharging.setLayoutManager(new LinearLayoutManager(this));
-        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list);
+        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list,true);
         rvLocalCharging.setAdapter(mainLocalAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);

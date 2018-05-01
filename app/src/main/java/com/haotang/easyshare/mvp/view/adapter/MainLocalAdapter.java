@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.view.adapter;
 
 import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,8 +27,11 @@ import java.util.List;
  * @date XJ on 2018/4/25 14:51
  */
 public class MainLocalAdapter extends BaseQuickAdapter<MainFragmentData, BaseViewHolder> {
-    public MainLocalAdapter(int layoutResId, List<MainFragmentData> data) {
+    private boolean isTopDivider;
+
+    public MainLocalAdapter(int layoutResId, List<MainFragmentData> data, boolean isTopDivider) {
         super(layoutResId, data);
+        this.isTopDivider = isTopDivider;
     }
 
     @Override
@@ -45,6 +49,12 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragmentData, BaseVie
         TextView tv_item_mainlocal_kfsj = helper.getView(R.id.tv_item_mainlocal_kfsj);
         ImageView iv_item_mainlocal_daohang = helper.getView(R.id.iv_item_mainlocal_daohang);
         TextView tv_item_mainlocal_address = helper.getView(R.id.tv_item_mainlocal_address);
+        if (isTopDivider && helper.getLayoutPosition() == 0) {
+            RecyclerView.LayoutParams layoutParams =
+                    (RecyclerView.LayoutParams) rll_item_mainlocal_root.getLayoutParams();
+            layoutParams.topMargin = 30;
+            rll_item_mainlocal_root.setLayoutParams(layoutParams);
+        }
         if (item != null) {
             StringUtil.setText(tv_item_mainlocal_name, item.getName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_mainlocal_juli, item.getJuli(), "", View.VISIBLE, View.VISIBLE);
@@ -82,7 +92,7 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragmentData, BaseVie
             rll_item_mainlocal_root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mContext.startActivity(new Intent(mContext,ChargingPileDetailActivity.class));
+                    mContext.startActivity(new Intent(mContext, ChargingPileDetailActivity.class));
                 }
             });
         }
