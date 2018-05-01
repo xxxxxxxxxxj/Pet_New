@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <com.flyco.roundview.RoundLinearLayout
+        android:id="@+id/rll_item_historymsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dip"

@@ -1,0 +1,38 @@
+package com.haotang.easyshare.mvp.model.entity.res;
+
+/**
+ * <p>Title:${type_name}</p>
+ * <p>Description:</p>
+ * <p>Company:北京昊唐科技有限公司</p>
+ *
+ * @author 徐俊
+ * @date zhoujunxia on 2018/5/1 15:51
+ */
+public class CarBean {
+    private String carImg;
+    private String carName;
+
+    public CarBean() {
+    }
+
+    public CarBean(String carImg, String carName) {
+        this.carImg = carImg;
+        this.carName = carName;
+    }
+
+    public String getCarImg() {
+        return carImg;
+    }
+
+    public void setCarImg(String carImg) {
+        this.carImg = carImg;
+    }
+
+    public String getCarName() {
+        return carName;
+    }
+
+    public void setCarName(String carName) {
+        this.carName = carName;
+    }
+}

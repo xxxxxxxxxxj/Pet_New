@@ -1,10 +1,12 @@
 package com.haotang.easyshare.mvp.view.adapter;
 
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.flyco.roundview.RoundLinearLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.HistoricalMessage;
 import com.haotang.easyshare.util.StringUtil;
@@ -30,7 +32,14 @@ public class HistoricalMessagelAdapter extends BaseQuickAdapter<HistoricalMessag
         TextView tv_problem = helper.getView(R.id.tv_problem);
         TextView tv_reply_date = helper.getView(R.id.tv_reply_date);
         TextView tv_reply = helper.getView(R.id.tv_reply);
+        RoundLinearLayout rll_item_historymsg = helper.getView(R.id.rll_item_historymsg);
         if (item != null) {
+            if(helper.getLayoutPosition() == 0){
+                LinearLayout.LayoutParams layoutParams =
+                        (LinearLayout.LayoutParams) rll_item_historymsg.getLayoutParams();
+                layoutParams.topMargin = 30;
+                rll_item_historymsg.setLayoutParams(layoutParams);
+            }
             StringUtil.setText(tv_problem_date, item.getProblemDate(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_problem, item.getProblem(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_reply_date, item.getReplyDate(), "", View.VISIBLE, View.VISIBLE);

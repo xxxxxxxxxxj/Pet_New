@@ -43,6 +43,7 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
     HistoricalMessageFragment historicalMessageFragment;
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
     private final String[] mTitles = {"当前留言", "历史留言"};
+    private int currentTabIndex;
 
     @Override
     protected int getContentLayout() {
@@ -66,6 +67,7 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
         vpButler.setAdapter(new MainActivityPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
         vpButler.setOffscreenPageLimit(2);
         stlButler.setViewPager(vpButler);
+        vpButler.setCurrentItem(currentTabIndex);
     }
 
     @Override
@@ -75,7 +77,27 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
 
     @Override
     protected void initEvent() {
+        vpButler.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    tvTitlebarOther.setVisibility(View.VISIBLE);
+                } else {
+                    tvTitlebarOther.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
