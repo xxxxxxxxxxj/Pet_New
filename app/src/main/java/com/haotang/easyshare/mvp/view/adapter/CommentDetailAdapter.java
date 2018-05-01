@@ -59,8 +59,7 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean, BaseView
                 NoScollFullGridLayoutManager noScollFullGridLayoutManager1 = new NoScollFullGridLayoutManager(rv_item_comment_tag, mContext, 4, GridLayoutManager.VERTICAL, false);
                 noScollFullGridLayoutManager1.setScrollEnabled(false);
                 rv_item_comment_tag.setLayoutManager(noScollFullGridLayoutManager1);
-                if (!item.isAddTagDev()) {
-                    item.setAddTagDev(true);
+                if (rv_item_comment_tag.getItemDecorationCount() <= 0) {
                     rv_item_comment_tag.addItemDecoration(new GridSpacingItemDecoration(4,
                             mContext.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
                             mContext.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
@@ -78,8 +77,7 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean, BaseView
                 NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rv_item_comment_img, mContext, 3, GridLayoutManager.VERTICAL, false);
                 noScollFullGridLayoutManager.setScrollEnabled(false);
                 rv_item_comment_img.setLayoutManager(noScollFullGridLayoutManager);
-                if (!item.isAddImgDev()) {
-                    item.setAddImgDev(true);
+                if (rv_item_comment_img.getItemDecorationCount() <= 0) {
                     rv_item_comment_img.addItemDecoration(new GridSpacingItemDecoration(3,
                             mContext.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
                             mContext.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),

@@ -1,14 +1,17 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
@@ -32,6 +35,8 @@ public class CommentDetailActivity extends BaseActivity {
     TextView tvTitlebarTitle;
     @BindView(R.id.rv_comment_detail)
     RecyclerView rvCommentDetail;
+    @BindView(R.id.srl_comment_detail)
+    SwipeRefreshLayout srlCommentDetail;
     private List<CommentBean> list = new ArrayList<CommentBean>();
     private List<CommentTag> tagList = new ArrayList<CommentTag>();
     private List<CommentImg> imgList = new ArrayList<CommentImg>();
@@ -42,6 +47,7 @@ public class CommentDetailActivity extends BaseActivity {
             "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
             "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
             "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"};
+    private int mNextRequestPage = 1;
 
     @Override
     protected int getContentLayout() {
@@ -55,6 +61,8 @@ public class CommentDetailActivity extends BaseActivity {
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        srlCommentDetail.setRefreshing(true);
+        srlCommentDetail.setColorSchemeColors(Color.rgb(47, 223, 189));
         tvTitlebarTitle.setText("评论详情");
         for (int i = 0; i < 5; i++) {
             tagList.add(new CommentTag("充电便利", false));
@@ -64,7 +72,7 @@ public class CommentDetailActivity extends BaseActivity {
         }
         for (int i = 0; i < 20; i++) {
             list.add(new CommentBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-                    "139****9696", "09-20", "目前用过一次，感觉还可以", tagList, imgList,false,false));
+                    "139****9696", "09-20", "目前用过一次，感觉还可以", tagList, imgList, false, false));
         }
         rvCommentDetail.setHasFixedSize(true);
         rvCommentDetail.setLayoutManager(new LinearLayoutManager(this));
@@ -83,7 +91,25 @@ public class CommentDetailActivity extends BaseActivity {
 
     @Override
     protected void initEvent() {
+        commentDetailAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                loadMore();
+            }
+        });
+        srlCommentDetail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+    }
 
+    private void refresh() {
+        mNextRequestPage = 1;
+    }
+
+    private void loadMore() {
     }
 
     @Override
@@ -103,4 +129,5 @@ public class CommentDetailActivity extends BaseActivity {
                 break;
         }
     }
+
 }

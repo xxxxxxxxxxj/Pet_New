@@ -258,6 +258,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         mainFragmenHeader.getIvMainfragRmht2().setOnClickListener(this);
         mainFragmenHeader.getIvMainfragRmht3().setOnClickListener(this);
         mainFragmenHeader.getRlMainfragLocalev().setOnClickListener(this);
+        mainFragmenHeader.getRtvMainfragLocal().setOnClickListener(this);
         mainFragmenHeader.getRlMainfragLocalevGg().setOnClickListener(this);
         mainFragmenHeader.getRlMainfragLocalevGr().setOnClickListener(this);
         //解决上下滑动冲突问题
@@ -382,6 +383,16 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.rtv_mainfrag_local:
+                LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
+                for (int i = 0; i < list.size(); i++) {
+                    MainFragmentData mainFragmentData = list.get(i);
+                    if (mainFragmentData != null) {
+                        boundsBuilder.include(new LatLng(mainFragmentData.getLat(), mainFragmentData.getLng()));//把所有点都include进去（LatLng类型）
+                    }
+                }
+                aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
+                break;
             case R.id.iv_mainfrag_rmht1:
                 break;
             case R.id.iv_mainfrag_rmht2:

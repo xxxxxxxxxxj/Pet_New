@@ -2,13 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:background="@color/af8f8f8"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_myfrag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="历史留言" />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_historymsg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ll_comment_detail_add"
+        android:layout_below="@id/comment_detail_titlebar"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_historymsg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
