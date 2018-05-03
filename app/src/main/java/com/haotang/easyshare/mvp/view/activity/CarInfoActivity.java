@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.view.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,8 +37,8 @@ public class CarInfoActivity extends BaseActivity {
     ImageView ivCarinfoCxRight;
     @BindView(R.id.rl_carinfo_cx)
     RelativeLayout rlCarinfoCx;
-    @BindView(R.id.tv_cph_qcpp)
-    TextView tvCphQcpp;
+    @BindView(R.id.et_cph_qcpp)
+    EditText et_cph_qcpp;
     @BindView(R.id.rl_carinfo_cph)
     RelativeLayout rlCarinfoCph;
 

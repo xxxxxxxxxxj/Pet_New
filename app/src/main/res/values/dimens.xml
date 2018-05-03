@@ -6,4 +6,5 @@
     <dimen name="default_base_toolbar_height">56dp</dimen>
     <dimen name="horizontalSpacing">15dip</dimen>
     <dimen name="verticalSpacing">15dip</dimen>
+    <dimen name="dp_90">90dip</dimen>
 </resources>
