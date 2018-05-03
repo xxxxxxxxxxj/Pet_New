@@ -1,6 +1,9 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,6 +16,8 @@ import com.haotang.easyshare.shareutil.login.LoginListener;
 import com.haotang.easyshare.shareutil.login.LoginPlatform;
 import com.haotang.easyshare.shareutil.login.LoginResult;
 import com.haotang.easyshare.shareutil.login.result.BaseToken;
+import com.haotang.easyshare.util.CountdownUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 
@@ -20,7 +25,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity {
-
     @BindView(R.id.iv_titlebar_back)
     ImageView ivTitlebarBack;
     @BindView(R.id.tv_titlebar_other)
@@ -62,12 +66,84 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initEvent() {
+        etLoginYzm.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                ivLoginLogin.setImageResource(R.mipmap.bg_login_no);
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String yzm = s.toString().trim();
+                Log.e("TAG", "yzm = " + yzm);
+                if (yzm.length() == 4 && StringUtil.isNotEmpty(etLoginPhone.getText().toString())
+                        && etLoginPhone.getText().toString().trim().replace(" ", "").length() == 11) {
+                    ivLoginLogin.setImageResource(R.mipmap.bg_login_yes);
+                }
+            }
+        });
+        etLoginPhone.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                ivLoginLogin.setImageResource(R.mipmap.bg_login_no);
+                if (s == null || s.length() == 0) return;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < s.length(); i++) {
+                    if (i != 3 && i != 8 && s.charAt(i) == ' ') {
+                        continue;
+                    } else {
+                        sb.append(s.charAt(i));
+                        if ((sb.length() == 4 || sb.length() == 9) && sb.charAt(sb.length() - 1) != ' ') {
+                            sb.insert(sb.length() - 1, ' ');
+                        }
+                    }
+                }
+                if (!sb.toString().equals(s.toString())) {
+                    int index = start + 1;
+                    if (sb.charAt(start) == ' ') {
+                        if (before == 0) {
+                            index++;
+                        } else {
+                            index--;
+                        }
+                    } else {
+                        if (before == 1) {
+                            index--;
+                        }
+                    }
+                    etLoginPhone.setText(sb.toString());
+                    etLoginPhone.setSelection(index);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String phone = s.toString().trim().replace(" ", "");
+                Log.e("TAG", "phone = " + phone);
+                if (phone.length() == 11 && StringUtil.isNotEmpty(etLoginYzm.getText().toString())) {
+                    ivLoginLogin.setImageResource(R.mipmap.bg_login_yes);
+                }
+            }
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        CountdownUtil.getInstance().cancel("LOGIN_TIMER");
         DevRing.activityStackManager().exitActivity(this); //退出activity
     }
 
@@ -78,6 +154,21 @@ public class LoginActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_login_hqyzm:
+                CountdownUtil.getInstance().newTimer(60000, 1000, new CountdownUtil.ICountDown() {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        tvLoginHqyzm.setBackgroundResource(R.mipmap.bg_sms_no);
+                        tvLoginHqyzm.setEnabled(false);
+                        tvLoginHqyzm.setText((millisUntilFinished / 1000) + "s");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        tvLoginHqyzm.setBackgroundResource(R.mipmap.bg_sms_yes);
+                        tvLoginHqyzm.setEnabled(true);
+                        tvLoginHqyzm.setText("重新获取");
+                    }
+                }, "LOGIN_TIMER");
                 break;
             case R.id.iv_login_login:
                 break;
