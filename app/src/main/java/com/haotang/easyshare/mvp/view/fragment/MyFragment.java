@@ -11,7 +11,15 @@ import com.flyco.roundview.RoundLinearLayout;
 import com.flyco.roundview.RoundRelativeLayout;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.mvp.view.activity.AboutActivity;
+import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
+import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
+import com.haotang.easyshare.mvp.view.activity.CarInfoActivity;
+import com.haotang.easyshare.mvp.view.activity.CollectChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
+import com.haotang.easyshare.mvp.view.activity.MemberActivity;
+import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
+import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.util.SystemUtil;
 
@@ -105,10 +113,10 @@ public class MyFragment extends BaseFragment {
     protected void initView() {
         rllMyfragmentUserinfo.bringToFront();
         ivMyfragmentUserimg.bringToFront();
-        if(SystemUtil.checkLogin(mActivity)){
+        if (SystemUtil.checkLogin(mActivity)) {
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
             ivMyfragmentAdd.setVisibility(View.GONE);
-        }else{
+        } else {
             ivMyfragmentAdd.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.GONE);
         }
@@ -127,37 +135,44 @@ public class MyFragment extends BaseFragment {
     @OnClick({iv_myfragment_add, R.id.tv_myfragment_bjcdz, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
             R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
             R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
-    R.id.tv_myfragment_username})
+            R.id.tv_myfragment_username})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_myfragment_username:
-                if(SystemUtil.checkLogin(mActivity)){
+                if (SystemUtil.checkLogin(mActivity)) {
 
-                }else{
-                    startActivity(new Intent(mActivity,LoginActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case iv_myfragment_add:
+            case R.id.iv_myfragment_add:
+                startActivity(new Intent(mActivity, AddChargeActivity.class));
                 break;
             case R.id.tv_myfragment_bjcdz:
+                startActivity(new Intent(mActivity, AddChargeActivity.class));
                 break;
             case R.id.rl_myfragment_clxx:
-                break;
-            case R.id.rl_myfragment_sycs:
+                startActivity(new Intent(mActivity, CarInfoActivity.class));
                 break;
             case R.id.rl_myfragment_hytq:
+                startActivity(new Intent(mActivity, MemberActivity.class));
                 break;
             case R.id.rl_myfragment_wdtz:
+                startActivity(new Intent(mActivity, MyPostActivity.class));
                 break;
             case R.id.rl_myfragment_scdzd:
+                startActivity(new Intent(mActivity, CollectChargeActivity.class));
                 break;
             case R.id.rl_myfragment_gzdr:
+                startActivity(new Intent(mActivity, MyFollowActivity.class));
                 break;
             case R.id.rl_myfragment_jjdh:
                 break;
             case R.id.rl_myfragment_srgj:
+                startActivity(new Intent(mActivity, ButlerActivity.class));
                 break;
             case R.id.rl_myfragment_gy:
+                startActivity(new Intent(mActivity, AboutActivity.class));
                 break;
             case R.id.rtv_myfragment_tuichu:
                 break;

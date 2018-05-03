@@ -12,6 +12,7 @@ import com.haotang.easyshare.mvp.model.entity.res.HistoricalMessage;
 import com.haotang.easyshare.mvp.view.adapter.HistoricalMessagelAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
+import com.haotang.easyshare.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public class HistoricalMessageFragment extends BaseFragment {
         historicalMessagelAdapter = new HistoricalMessagelAdapter(R.layout.item_historymsg, list);
         rvHistorymsg.setAdapter(historicalMessagelAdapter);
         //添加自定义分割线
-        rvHistorymsg.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, 30,
+        rvHistorymsg.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity,15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
     }
 

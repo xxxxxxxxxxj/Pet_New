@@ -4,6 +4,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -14,11 +15,14 @@ import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
+import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.other.RingLog;
 
 import java.util.List;
+
+import static com.haotang.easyshare.R.id.ll_item_comment_root;
 
 /**
  * <p>Title:${type_name}</p>
@@ -36,15 +40,19 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean, BaseView
 
     @Override
     protected void convert(BaseViewHolder helper, final CommentBean item) {
-        RingLog.d("TAG", "helper.getLayoutPosition() = " + helper.getLayoutPosition());
-        RingLog.d("TAG", "mData.size() = " + mData.size());
-        RingLog.d("TAG", "item.toString() = " + item.toString());
+        LinearLayout ll_item_comment_root = helper.getView(R.id.ll_item_comment_root);
         ImageView iv_item_comment = helper.getView(R.id.iv_item_comment);
         TextView tv_item_comment_name = helper.getView(R.id.tv_item_comment_name);
         TextView tv_item_comment_date = helper.getView(R.id.tv_item_comment_date);
         TextView tv_item_comment_desc = helper.getView(R.id.tv_item_comment_desc);
         RecyclerView rv_item_comment_tag = helper.getView(R.id.rv_item_comment_tag);
         RecyclerView rv_item_comment_img = helper.getView(R.id.rv_item_comment_img);
+        if (helper.getLayoutPosition() == 0) {
+            RecyclerView.LayoutParams layoutParams =
+                    (RecyclerView.LayoutParams) ll_item_comment_root.getLayoutParams();
+            layoutParams.topMargin = DensityUtil.dp2px(mContext,15);
+            ll_item_comment_root.setLayoutParams(layoutParams);
+        }
         if (item != null) {
             GlideUtil.loadNetCircleImg(mContext, item.getImgUrl(), iv_item_comment, R.mipmap.ic_image_load_circle);
             StringUtil.setText(tv_item_comment_name, item.getName(), "", View.VISIBLE, View.VISIBLE);

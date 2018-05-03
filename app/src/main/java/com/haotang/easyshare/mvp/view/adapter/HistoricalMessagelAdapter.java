@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.flyco.roundview.RoundLinearLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.HistoricalMessage;
+import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class HistoricalMessagelAdapter extends BaseQuickAdapter<HistoricalMessag
             if(helper.getLayoutPosition() == 0){
                 LinearLayout.LayoutParams layoutParams =
                         (LinearLayout.LayoutParams) rll_item_historymsg.getLayoutParams();
-                layoutParams.topMargin = 30;
+                layoutParams.topMargin = DensityUtil.dp2px(mContext,15);
                 rll_item_historymsg.setLayoutParams(layoutParams);
             }
             StringUtil.setText(tv_problem_date, item.getProblemDate(), "", View.VISIBLE, View.VISIBLE);

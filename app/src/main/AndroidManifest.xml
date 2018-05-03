@@ -89,6 +89,83 @@
             android:name=".mvp.view.activity.GuideActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.TestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.WebViewActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".mvp.view.activity.MapActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.ImagePickerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.PhotoViewPagerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.ChargingPileDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.CommentActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.LocalChargingActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.SwitchCityActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.ButlerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.CommentDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.AddChargeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.CarInfoActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.MemberActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.MyPostActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.CollectChargeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.MyFollowActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.view.activity.AboutActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".updateapputil.UpdateAppReceiver"
@@ -117,20 +194,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths_public" />
         </provider>
-
-        <activity
-            android:name=".mvp.view.activity.TestActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".mvp.view.activity.WebViewActivity"
-            android:configChanges="orientation|screenSize"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".mvp.view.activity.MapActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
 
         <!-- 极光推送start -->
         <!-- Rich push 核心功能 since 2.0.6 -->
@@ -301,15 +364,7 @@
 
         <service android:name="com.amap.api.location.APSService" />
         <!-- 高德地图结束 -->
-        <activity android:name=".mvp.view.activity.ImagePickerActivity" />
-        <activity android:name=".mvp.view.activity.PhotoViewPagerActivity" />
-        <activity android:name=".mvp.view.activity.ChargingPileDetailActivity" />
-        <activity android:name=".mvp.view.activity.CommentActivity" />
-        <activity android:name=".mvp.view.activity.LocalChargingActivity" />
-        <activity android:name=".mvp.view.activity.SwitchCityActivity" />
-        <activity android:name=".mvp.view.activity.ButlerActivity" />
-        <activity android:name=".mvp.view.activity.CommentDetailActivity" />
-        <activity android:name=".mvp.view.activity.LoginActivity"></activity>
+        <activity android:name=".mvp.view.activity.SendPostActivity"></activity>
     </application>
 
 </manifest>

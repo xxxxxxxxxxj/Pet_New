@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item_mypost_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="15dip">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dip"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_item_mypost"
+            android:layout_width="112.5dip"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dip"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_image_load" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_item_mypost_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="TextView"
+                android:textColor="@color/a333333"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_item_mypost_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/a999999"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip">
+
+        <ImageView
+            android:id="@+id/iv_item_mypost_delete"
+            android:layout_width="65dip"
+            android:layout_height="27dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_post_delete" />
+
+        <ImageView
+            android:id="@+id/iv_item_mypost_share"
+            android:layout_width="65dip"
+            android:layout_height="27dip"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dip"
+            android:layout_toLeftOf="@id/iv_item_mypost_delete"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_post_share" />
+
+    </RelativeLayout>
+</LinearLayout>

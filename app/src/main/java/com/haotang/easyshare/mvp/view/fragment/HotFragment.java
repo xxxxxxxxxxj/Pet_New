@@ -16,6 +16,7 @@ import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.viewholder.HotFragmenHeader;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
+import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.other.RingLog;
 import com.youth.banner.listener.OnBannerListener;
 
@@ -67,7 +68,7 @@ public class HotFragment extends BaseFragment  implements OnBannerListener,View.
         hotPointAdapter.addHeaderView(top);
         rvHotfragment.setAdapter(hotPointAdapter);
         //添加自定义分割线
-        rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, 30,
+        rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity,15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
         setBanner();
 
@@ -81,7 +82,7 @@ public class HotFragment extends BaseFragment  implements OnBannerListener,View.
         hotPointCarAdapter = new HotPointCarAdapter(R.layout.item_hotfrag_top_car, carList);
         hotFragmenHeader.getRvTopHotfrag().setAdapter(hotPointCarAdapter);
         //添加自定义分割线
-        hotFragmenHeader.getRvTopHotfrag().addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL, 30,
+        hotFragmenHeader.getRvTopHotfrag().addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL, DensityUtil.dp2px(mActivity,15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
     }
 

@@ -284,6 +284,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dip">
 
+                    <ImageView
+                        android:id="@+id/iv_myfragment_clxx_right"
+                        android:layout_width="7dip"
+                        android:layout_height="11dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/right_more" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -296,9 +305,9 @@
                         android:id="@+id/tv_myfragment_clxx"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:text="TextView"
+                        android:layout_toLeftOf="@id/iv_myfragment_clxx_right"
                         android:textColor="@color/a666666"
                         android:textSize="14sp" />
 

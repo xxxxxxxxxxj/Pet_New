@@ -24,6 +24,9 @@ import com.ljy.devring.other.RingLog;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 登录页
+ */
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.iv_titlebar_back)
     ImageView ivTitlebarBack;
@@ -70,6 +73,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 ivLoginLogin.setImageResource(R.mipmap.bg_login_no);
+                ivLoginLogin.setEnabled(false);
             }
 
             @Override
@@ -84,6 +88,7 @@ public class LoginActivity extends BaseActivity {
                 if (yzm.length() == 4 && StringUtil.isNotEmpty(etLoginPhone.getText().toString())
                         && etLoginPhone.getText().toString().trim().replace(" ", "").length() == 11) {
                     ivLoginLogin.setImageResource(R.mipmap.bg_login_yes);
+                    ivLoginLogin.setEnabled(true);
                 }
             }
         });
@@ -92,6 +97,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
+                ivLoginLogin.setEnabled(false);
                 ivLoginLogin.setImageResource(R.mipmap.bg_login_no);
                 if (s == null || s.length() == 0) return;
                 StringBuilder sb = new StringBuilder();
@@ -135,6 +141,7 @@ public class LoginActivity extends BaseActivity {
                 Log.e("TAG", "phone = " + phone);
                 if (phone.length() == 11 && StringUtil.isNotEmpty(etLoginYzm.getText().toString())) {
                     ivLoginLogin.setImageResource(R.mipmap.bg_login_yes);
+                    ivLoginLogin.setEnabled(true);
                 }
             }
         });

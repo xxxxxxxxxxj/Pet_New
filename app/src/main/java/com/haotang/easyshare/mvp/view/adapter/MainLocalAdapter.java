@@ -13,6 +13,7 @@ import com.flyco.roundview.RoundLinearLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
+import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 
@@ -52,7 +53,7 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragmentData, BaseVie
         if (isTopDivider && helper.getLayoutPosition() == 0) {
             RecyclerView.LayoutParams layoutParams =
                     (RecyclerView.LayoutParams) rll_item_mainlocal_root.getLayoutParams();
-            layoutParams.topMargin = 30;
+            layoutParams.topMargin = DensityUtil.dp2px(mContext,15);
             rll_item_mainlocal_root.setLayoutParams(layoutParams);
         }
         if (item != null) {
