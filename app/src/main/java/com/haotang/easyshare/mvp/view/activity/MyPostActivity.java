@@ -58,6 +58,7 @@ public class MyPostActivity extends BaseActivity {
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        tvTitlebarOther.setVisibility(View.VISIBLE);
         tvTitlebarOther.setText("发帖");
         tvTitlebarTitle.setText("我的帖子");
         srlMyPost.setRefreshing(true);
