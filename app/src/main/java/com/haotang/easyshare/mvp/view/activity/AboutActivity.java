@@ -11,6 +11,7 @@ import com.ljy.devring.DevRing;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import me.yokeyword.fragmentation.SwipeBackLayout;
 
 /**
  * 关于界面
@@ -29,6 +30,7 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_ALL);
     }
 
     @Override
@@ -60,5 +62,15 @@ public class AboutActivity extends BaseActivity {
                 finish();
                 break;
         }
+    }
+
+    /**
+     * 限制SwipeBack的条件,默认栈内Fragment数 <= 1时 , 优先滑动退出Activity , 而不是Fragment
+     *
+     * @return true: Activity优先滑动退出;  false: Fragment优先滑动退出
+     */
+    @Override
+    public boolean swipeBackPriority() {
+        return super.swipeBackPriority();
     }
 }
