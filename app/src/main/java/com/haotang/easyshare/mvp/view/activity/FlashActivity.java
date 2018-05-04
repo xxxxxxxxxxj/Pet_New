@@ -75,6 +75,7 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        setSwipeBackEnable(false);
         //使用Dagger2对本类中相关变量进行初始化
         DaggerFlashActivityCommponent.builder().flashActivityModule(new FlashActivityModule(this, this)).build().inject(this);
         DevRing.activityStackManager().pushOneActivity(this);

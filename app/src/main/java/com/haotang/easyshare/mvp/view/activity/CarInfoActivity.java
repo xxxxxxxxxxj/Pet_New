@@ -13,6 +13,7 @@ import com.ljy.devring.DevRing;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import me.yokeyword.fragmentation.SwipeBackLayout;
 
 /**
  * 车辆信息界面

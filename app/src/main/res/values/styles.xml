@@ -1,4 +1,15 @@
 <resources>
+
+    <style name="AppTheme.NoActionBar" parent="@style/AppBaseTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.SwipeBack">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
     <declare-styleable name="VerticalBannerView">
         <attr name="gap" format="integer" />
         <attr name="animDuration" format="integer" />

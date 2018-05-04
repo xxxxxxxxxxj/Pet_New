@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.ViewGroup;
 
-import me.yokeyword.fragmentation.ISupportActivity;
 import me.yokeyword.fragmentation.SwipeBackLayout;
 
 /**
@@ -18,8 +17,8 @@ public class SwipeBackActivityDelegate {
     private SwipeBackLayout mSwipeBackLayout;
 
     public SwipeBackActivityDelegate(ISwipeBackActivity swipeBackActivity) {
-        if (!(swipeBackActivity instanceof FragmentActivity) || !(swipeBackActivity instanceof ISupportActivity))
-            throw new RuntimeException("Must extends FragmentActivity/AppCompatActivity and implements ISupportActivity");
+        /*if (!(swipeBackActivity instanceof FragmentActivity) || !(swipeBackActivity instanceof ISupportActivity))
+            throw new RuntimeException("Must extends FragmentActivity/AppCompatActivity and implements ISupportActivity");*/
         mActivity = (FragmentActivity) swipeBackActivity;
     }
 

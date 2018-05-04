@@ -36,7 +36,7 @@ public class StartPageActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        setSwipeBackEnable(false);
     }
 
     @Override

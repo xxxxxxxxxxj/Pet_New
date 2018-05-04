@@ -37,6 +37,7 @@ public class GuideActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        setSwipeBackEnable(false);
         DevRing.activityStackManager().pushOneActivity(this);
     }
 
