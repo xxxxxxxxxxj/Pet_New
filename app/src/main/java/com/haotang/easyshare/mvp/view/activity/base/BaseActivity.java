@@ -16,6 +16,9 @@ import javax.inject.Inject;
 
 import butterknife.BindColor;
 import butterknife.ButterKnife;
+import me.yokeyword.fragmentation.SwipeBackLayout;
+import me.yokeyword.fragmentation_swipeback.core.ISwipeBackActivity;
+import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
 
 /**
  * author:  ljy
@@ -42,8 +45,9 @@ import butterknife.ButterKnife;
  * 这种基类实现方式，参考自JessYan <a>https://www.jianshu.com/p/75a5c24174b2</a>
  */
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IBaseActivity {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IBaseActivity,ISwipeBackActivity {
     protected final static String TAG = BaseActivity.class.getSimpleName();
+    final SwipeBackActivityDelegate mDelegate = new SwipeBackActivityDelegate(this);
     @BindColor(R.color.colorPrimary)
     protected int mColor;
     @Inject
@@ -63,6 +67,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDelegate.onCreate(savedInstanceState);
         if (getContentLayout() != 0) {
             setContentView(getContentLayout());
             ButterKnife.bind(this);
@@ -145,4 +150,45 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             mPresenter = null;
         }
     }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDelegate.onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    public SwipeBackLayout getSwipeBackLayout() {
+        return mDelegate.getSwipeBackLayout();
+    }
+
+    /**
+     * 是否可滑动
+     * @param enable
+     */
+    @Override
+    public void setSwipeBackEnable(boolean enable) {
+        mDelegate.setSwipeBackEnable(enable);
+    }
+
+    @Override
+    public void setEdgeLevel(SwipeBackLayout.EdgeLevel edgeLevel) {
+        mDelegate.setEdgeLevel(edgeLevel);
+    }
+
+    @Override
+    public void setEdgeLevel(int widthPixel) {
+        mDelegate.setEdgeLevel(widthPixel);
+    }
+
+    /**
+     * 限制SwipeBack的条件,默认栈内Fragment数 <= 1时 , 优先滑动退出Activity , 而不是Fragment
+     *
+     * @return true: Activity优先滑动退出;  false: Fragment优先滑动退出
+     */
+    @Override
+    public boolean swipeBackPriority() {
+        return mDelegate.swipeBackPriority();
+    }
+
 }

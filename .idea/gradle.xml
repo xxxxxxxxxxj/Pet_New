@@ -11,6 +11,9 @@
             <option value="$PROJECT_DIR$/FlycoRoundView_Lib" />
             <option value="$PROJECT_DIR$/FlycoTabLayout_Lib" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/fragmentation" />
+            <option value="$PROJECT_DIR$/fragmentation_core" />
+            <option value="$PROJECT_DIR$/fragmentation_swipeback" />
             <option value="$PROJECT_DIR$/matisse" />
             <option value="$PROJECT_DIR$/photoview" />
           </set>
