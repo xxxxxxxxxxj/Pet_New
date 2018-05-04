@@ -62,6 +62,7 @@ public class PhotoViewPagerActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        setSwipeBackEnable(false);
         setBarColor(getResources().getColor(R.color.a3a3636));
         DevRing.activityStackManager().pushOneActivity(this);
         pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
