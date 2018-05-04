@@ -6,4 +6,15 @@
     android:orientation="vertical">
 
     <include layout="@layout/title_bar" />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_my_follow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_my_follow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

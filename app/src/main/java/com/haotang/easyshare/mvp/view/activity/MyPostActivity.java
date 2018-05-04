@@ -63,7 +63,6 @@ public class MyPostActivity extends BaseActivity {
         tvTitlebarTitle.setText("我的帖子");
         srlMyPost.setRefreshing(true);
         srlMyPost.setColorSchemeColors(Color.rgb(47, 223, 189));
-        tvTitlebarTitle.setText("评论详情");
         for (int i = 0; i < 20; i++) {
             list.add(new PostBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"
                     , "e充电的 充电桩速度快，停车方便e充电的 充电桩速度快，停车方便e充电的 充电桩速度快，停车方便e充电的 充电桩速度快，停车方便",
