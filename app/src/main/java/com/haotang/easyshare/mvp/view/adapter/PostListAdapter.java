@@ -25,6 +25,7 @@ import java.util.List;
  * @date XJ on 2018/5/3 14:30
  */
 public class PostListAdapter extends BaseQuickAdapter<PostBean, BaseViewHolder> {
+    private final int flag;
     public OnShareItemListener onShareItemListener = null;
 
     public interface OnShareItemListener {
@@ -45,8 +46,9 @@ public class PostListAdapter extends BaseQuickAdapter<PostBean, BaseViewHolder> 
         this.onDeleteItemListener = onDeleteItemListener;
     }
 
-    public PostListAdapter(int layoutResId, List<PostBean> data) {
+    public PostListAdapter(int layoutResId, List<PostBean> data, int flag) {
         super(layoutResId, data);
+        this.flag = flag;
     }
 
     @Override
@@ -57,7 +59,7 @@ public class PostListAdapter extends BaseQuickAdapter<PostBean, BaseViewHolder> 
         TextView tv_item_mypost_date = helper.getView(R.id.tv_item_mypost_date);
         ImageView iv_item_mypost_delete = helper.getView(R.id.iv_item_mypost_delete);
         ImageView iv_item_mypost_share = helper.getView(R.id.iv_item_mypost_share);
-        if (helper.getLayoutPosition() == 0) {
+        if (helper.getLayoutPosition() == 0 && flag == 0) {
             RecyclerView.LayoutParams layoutParams =
                     (RecyclerView.LayoutParams) ll_item_mypost_root.getLayoutParams();
             layoutParams.topMargin = DensityUtil.dp2px(mContext, 15);

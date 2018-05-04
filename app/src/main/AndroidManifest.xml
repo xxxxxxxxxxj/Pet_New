@@ -364,7 +364,8 @@
 
         <service android:name="com.amap.api.location.APSService" />
         <!-- 高德地图结束 -->
-        <activity android:name=".mvp.view.activity.SendPostActivity"></activity>
+        <activity android:name=".mvp.view.activity.SendPostActivity" />
+        <activity android:name=".mvp.view.activity.FollowDetailActivity"></activity>
     </application>
 
 </manifest>
