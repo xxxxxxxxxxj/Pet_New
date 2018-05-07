@@ -3,7 +3,14 @@ package com.haotang.easyshare.mvp.view.fragment;
 import android.widget.EditText;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.fragment.DaggerCurrentMessageFragmentCommponent;
+import com.haotang.easyshare.di.module.fragment.CurrentMessageFragmentModule;
+import com.haotang.easyshare.mvp.presenter.CurrentMessageFragmentPresenter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
+import com.haotang.easyshare.mvp.view.iview.ICurrentMessageFragmentView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -15,8 +22,9 @@ import butterknife.BindView;
  * @author 徐俊
  * @date XJ on 2018/4/28 15:37
  */
-public class CurrentMessageFragment extends BaseFragment {
-
+public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentPresenter> implements ICurrentMessageFragmentView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.et_currentmsg)
     EditText etCurrentmsg;
 
@@ -32,7 +40,10 @@ public class CurrentMessageFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-
+        DaggerCurrentMessageFragmentCommponent.builder()
+                .currentMessageFragmentModule(new CurrentMessageFragmentModule(this, mActivity))
+                .build()
+                .inject(this);
     }
 
     @Override

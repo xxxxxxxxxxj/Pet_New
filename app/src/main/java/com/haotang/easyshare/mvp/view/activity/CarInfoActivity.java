@@ -8,18 +8,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.activity.DaggerCarInfoActivityCommponent;
+import com.haotang.easyshare.di.module.activity.CarInfoActivityModule;
+import com.haotang.easyshare.mvp.presenter.CarInfoPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
+import com.haotang.easyshare.mvp.view.iview.ICarInfoView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import me.yokeyword.fragmentation.SwipeBackLayout;
 
 /**
  * 车辆信息界面
  */
-public class CarInfoActivity extends BaseActivity {
-
+public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements ICarInfoView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.iv_titlebar_back)
     ImageView ivTitlebarBack;
     @BindView(R.id.tv_titlebar_other)
@@ -51,6 +58,7 @@ public class CarInfoActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        DaggerCarInfoActivityCommponent.builder().carInfoActivityModule(new CarInfoActivityModule(this, this)).build().inject(this);
     }
 
     @Override

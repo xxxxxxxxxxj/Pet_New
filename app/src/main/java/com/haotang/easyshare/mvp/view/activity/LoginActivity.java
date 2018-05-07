@@ -10,7 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent;
+import com.haotang.easyshare.di.module.activity.LoginActivityModule;
+import com.haotang.easyshare.mvp.presenter.LoginPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
+import com.haotang.easyshare.mvp.view.iview.ILoginView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.shareutil.LoginUtil;
 import com.haotang.easyshare.shareutil.login.LoginListener;
 import com.haotang.easyshare.shareutil.login.LoginPlatform;
@@ -21,13 +26,17 @@ import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
  * 登录页
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity<LoginPresenter> implements ILoginView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.iv_titlebar_back)
     ImageView ivTitlebarBack;
     @BindView(R.id.tv_titlebar_other)
@@ -55,6 +64,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        DaggerLoginActivityCommponent.builder().loginActivityModule(new LoginActivityModule(this, this)).build().inject(this);
     }
 
     @Override

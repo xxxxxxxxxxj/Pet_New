@@ -10,12 +10,17 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.activity.DaggerSwitchCityActivityCommponent;
+import com.haotang.easyshare.di.module.activity.SwitchCityActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.CityBean;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
+import com.haotang.easyshare.mvp.presenter.SwitchCityPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CityAdapter;
+import com.haotang.easyshare.mvp.view.iview.ISwitchCityView;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.youth.banner.Banner;
@@ -24,14 +29,18 @@ import com.youth.banner.listener.OnBannerListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
  * 切换城市页面
  */
-public class SwitchCityActivity extends BaseActivity implements OnBannerListener {
+public class SwitchCityActivity extends BaseActivity<SwitchCityPresenter> implements ISwitchCityView, OnBannerListener {
     protected final static String TAG = SwitchCityActivity.class.getSimpleName();
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
     @BindView(R.id.banner_switch_city)
@@ -53,6 +62,7 @@ public class SwitchCityActivity extends BaseActivity implements OnBannerListener
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        DaggerSwitchCityActivityCommponent.builder().switchCityActivityModule(new SwitchCityActivityModule(this, this)).build().inject(this);
     }
 
     @Override

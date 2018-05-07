@@ -13,9 +13,14 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.activity.DaggerCollectChargeActivityCommponent;
+import com.haotang.easyshare.di.module.activity.CollectChargeActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.CollectChargeBean;
+import com.haotang.easyshare.mvp.presenter.CollectChargePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CollectChargeListAdapter;
+import com.haotang.easyshare.mvp.view.iview.ICollectChargeView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge;
@@ -27,15 +32,17 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
-import me.yokeyword.fragmentation.SwipeBackLayout;
 
 /**
  * 收藏的站点
  */
-public class CollectChargeActivity extends BaseActivity {
-
+public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> implements ICollectChargeView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
     @BindView(R.id.smrv_collect_charge)
@@ -54,6 +61,7 @@ public class CollectChargeActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        DaggerCollectChargeActivityCommponent.builder().collectChargeActivityModule(new CollectChargeActivityModule(this, this)).build().inject(this);
     }
 
     @Override

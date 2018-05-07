@@ -60,6 +60,7 @@ import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenHeader;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
@@ -67,6 +68,8 @@ import com.ljy.devring.util.RingToast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -84,6 +87,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         View.OnClickListener, IMainFragmentView, AMap.OnMarkerClickListener,
         AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener {
     private final static String TAG = MainFragment.class.getSimpleName();
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.iv_mainfrag_gj)
     ImageView ivMainfragGj;
     @BindView(R.id.rv_mainfrag_localev)

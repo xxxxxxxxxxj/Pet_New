@@ -13,15 +13,22 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.activity.DaggerCommentDetailActivityCommponent;
+import com.haotang.easyshare.di.module.activity.CommentDetailActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
+import com.haotang.easyshare.mvp.presenter.CommentDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CommentDetailAdapter;
+import com.haotang.easyshare.mvp.view.iview.ICommentDetailView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,8 +36,9 @@ import butterknife.OnClick;
 /**
  * 评论详情页
  */
-public class CommentDetailActivity extends BaseActivity {
-
+public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> implements ICommentDetailView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
     @BindView(R.id.rv_comment_detail)
@@ -57,6 +65,7 @@ public class CommentDetailActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        DaggerCommentDetailActivityCommponent.builder().commentDetailActivityModule(new CommentDetailActivityModule(this, this)).build().inject(this);
     }
 
     @Override

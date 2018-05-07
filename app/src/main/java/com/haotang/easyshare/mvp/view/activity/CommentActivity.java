@@ -12,14 +12,19 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.di.component.activity.DaggerCommentActivityCommponent;
+import com.haotang.easyshare.di.module.activity.CommentActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
 import com.haotang.easyshare.mvp.model.entity.res.PhotoViewPagerImg;
+import com.haotang.easyshare.mvp.presenter.CommentPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CommentImgAdapter;
 import com.haotang.easyshare.mvp.view.adapter.CommentTagAdapter;
+import com.haotang.easyshare.mvp.view.iview.ICommentView;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
@@ -34,6 +39,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Flowable;
@@ -44,7 +51,9 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import top.zibin.luban.Luban;
 
-public class CommentActivity extends BaseActivity {
+public class CommentActivity extends BaseActivity<CommentPresenter> implements ICommentView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_other)
     TextView tvTitlebarOther;
     @BindView(R.id.tv_titlebar_title)
@@ -71,6 +80,7 @@ public class CommentActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        DaggerCommentActivityCommponent.builder().commentActivityModule(new CommentActivityModule(this, this)).build().inject(this);
     }
 
     @Override

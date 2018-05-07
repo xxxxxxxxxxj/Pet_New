@@ -9,29 +9,36 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
+import com.haotang.easyshare.di.component.activity.DaggerFollowDetailActivityCommponent;
+import com.haotang.easyshare.di.module.activity.FollowDetailActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
+import com.haotang.easyshare.mvp.presenter.FollowDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.PostListAdapter;
+import com.haotang.easyshare.mvp.view.iview.IFollowDetailView;
 import com.haotang.easyshare.mvp.view.viewholder.FollowDetailHeader;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.ljy.devring.DevRing;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * 关注的人详情页
  */
-public class FollowDetailActivity extends BaseActivity {
-
+public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> implements IFollowDetailView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
     @BindView(R.id.rv_followdetail)
@@ -50,7 +57,14 @@ public class FollowDetailActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        DevRing.activityStackManager().pushOneActivity(this);
+        DaggerFollowDetailActivityCommponent.builder().followDetailActivityModule(new FollowDetailActivityModule(this, this)).build().inject(this);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DevRing.activityStackManager().exitActivity(this); //退出activity
     }
 
     @Override
@@ -129,12 +143,5 @@ public class FollowDetailActivity extends BaseActivity {
                 finish();
                 break;
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

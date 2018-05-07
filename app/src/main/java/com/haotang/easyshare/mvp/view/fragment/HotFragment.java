@@ -8,20 +8,27 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.fragment.DaggerHotFragmentCommponent;
+import com.haotang.easyshare.di.module.fragment.HotFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.res.CarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
+import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
 import com.haotang.easyshare.mvp.view.adapter.HotPointAdapter;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
+import com.haotang.easyshare.mvp.view.iview.IHotFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.HotFragmenHeader;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.other.RingLog;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -33,8 +40,10 @@ import butterknife.BindView;
  * @author 徐俊
  * @date zhoujunxia on 2018/4/14 20:59
  */
-public class HotFragment extends BaseFragment  implements OnBannerListener,View.OnClickListener {
+public class HotFragment extends BaseFragment<HotFragmentPresenter>  implements OnBannerListener,View.OnClickListener, IHotFragmentView {
     protected final static String TAG = HotFragment.class.getSimpleName();
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.rv_hotfragment)
     RecyclerView rvHotfragment;
     private List<HotPoint> list = new ArrayList<HotPoint>();
@@ -55,6 +64,10 @@ public class HotFragment extends BaseFragment  implements OnBannerListener,View.
 
     @Override
     protected void initView() {
+        DaggerHotFragmentCommponent.builder()
+                .hotFragmentModule(new HotFragmentModule(this, mActivity))
+                .build()
+                .inject(this);
         for (int i = 0; i < 20; i++) {
             list.add(new HotPoint("结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服",
                     "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",

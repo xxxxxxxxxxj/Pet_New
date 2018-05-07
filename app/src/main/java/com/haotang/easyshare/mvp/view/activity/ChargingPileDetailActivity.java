@@ -10,11 +10,18 @@ import android.widget.TextView;
 
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
+import com.haotang.easyshare.di.component.activity.DaggerChargingPileDetailActivityCommponent;
+import com.haotang.easyshare.di.module.activity.ChargingPileDetailActivityModule;
+import com.haotang.easyshare.mvp.presenter.ChargingPileDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
+import com.haotang.easyshare.mvp.view.iview.IChargingPileDetailView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.verticalbanner.VerticalBannerView;
 import com.ljy.devring.DevRing;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -22,8 +29,10 @@ import butterknife.OnClick;
 /**
  * 充电桩详情
  */
-public class ChargingPileDetailActivity extends BaseActivity {
+public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailPresenter> implements IChargingPileDetailView {
     private final static String TAG = ChargingPileDetailActivity.class.getSimpleName();
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.iv_chargingdetail_back)
     ImageView ivChargingdetailBack;
     @BindView(R.id.iv_chargingdetail_sc)
@@ -97,6 +106,8 @@ public class ChargingPileDetailActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        DaggerChargingPileDetailActivityCommponent.builder().
+                chargingPileDetailActivityModule(new ChargingPileDetailActivityModule(this, this)).build().inject(this);
     }
 
     @Override

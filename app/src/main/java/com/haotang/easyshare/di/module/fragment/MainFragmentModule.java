@@ -6,6 +6,7 @@ import com.haotang.easyshare.mvp.model.MainFragmentModel;
 import com.haotang.easyshare.mvp.model.imodel.IMainFragmentModel;
 import com.haotang.easyshare.mvp.presenter.MainFragmentPresenter;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.di.scope.FragmentScope;
 
 import dagger.Module;
@@ -45,6 +46,12 @@ public class MainFragmentModule {
     @FragmentScope
     Context context() {
         return mContext;
+    }
+
+    @Provides
+    @FragmentScope
+    PermissionDialog permissionDialog(Context context) {
+        return new PermissionDialog(context);
     }
 
     @Provides

@@ -8,14 +8,21 @@ import android.support.v7.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.fragment.DaggerHistoricalMessageFragmentCommponent;
+import com.haotang.easyshare.di.module.fragment.HistoricalMessageFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.res.HistoricalMessage;
+import com.haotang.easyshare.mvp.presenter.HistoricalMessageFragmentPresenter;
 import com.haotang.easyshare.mvp.view.adapter.HistoricalMessagelAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
+import com.haotang.easyshare.mvp.view.iview.IHistoricalMessageFragmentView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -27,8 +34,9 @@ import butterknife.BindView;
  * @author 徐俊
  * @date XJ on 2018/4/28 15:37
  */
-public class HistoricalMessageFragment extends BaseFragment {
-
+public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFragmentPresenter> implements IHistoricalMessageFragmentView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.rv_historymsg)
     RecyclerView rvHistorymsg;
     @BindView(R.id.srl_historymsg)
@@ -49,6 +57,10 @@ public class HistoricalMessageFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        DaggerHistoricalMessageFragmentCommponent.builder()
+                .historicalMessageFragmentModule(new HistoricalMessageFragmentModule(this, mActivity))
+                .build()
+                .inject(this);
         srlHistorymsg.setRefreshing(true);
         srlHistorymsg.setColorSchemeColors(Color.rgb(47, 223, 189));
         for (int i = 0; i < 20; i++) {

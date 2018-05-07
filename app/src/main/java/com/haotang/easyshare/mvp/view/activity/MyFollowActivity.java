@@ -14,13 +14,20 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.activity.DaggerMyFollowActivityCommponent;
+import com.haotang.easyshare.di.module.activity.MyFollowActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.FollowBean;
+import com.haotang.easyshare.mvp.presenter.MyFollowPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.FollowListAdapter;
+import com.haotang.easyshare.mvp.view.iview.IMyFollowView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -28,8 +35,9 @@ import butterknife.OnClick;
 /**
  * 我的关注界面
  */
-public class MyFollowActivity extends BaseActivity {
-
+public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements IMyFollowView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.iv_titlebar_back)
     ImageView ivTitlebarBack;
     @BindView(R.id.tv_titlebar_other)
@@ -52,6 +60,7 @@ public class MyFollowActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        DaggerMyFollowActivityCommponent.builder().myFollowActivityModule(new MyFollowActivityModule(this, this)).build().inject(this);
     }
 
     @Override

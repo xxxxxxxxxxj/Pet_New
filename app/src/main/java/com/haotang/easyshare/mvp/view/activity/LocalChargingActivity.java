@@ -12,13 +12,20 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.activity.DaggerLocalChargingActivityCommponent;
+import com.haotang.easyshare.di.module.activity.LocalChargingActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
+import com.haotang.easyshare.mvp.presenter.LocalChargingPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
+import com.haotang.easyshare.mvp.view.iview.ILocalChargingView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -26,7 +33,9 @@ import butterknife.OnClick;
 /**
  * 附近充电桩界面
  */
-public class LocalChargingActivity extends BaseActivity {
+public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> implements ILocalChargingView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
     @BindView(R.id.rv_local_charging)
@@ -45,6 +54,7 @@ public class LocalChargingActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        DaggerLocalChargingActivityCommponent.builder().localChargingActivityModule(new LocalChargingActivityModule(this, this)).build().inject(this);
     }
 
     @Override

@@ -11,6 +11,9 @@ import com.flyco.roundview.RoundLinearLayout;
 import com.flyco.roundview.RoundRelativeLayout;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.fragment.DaggerMyFragmentCommponent;
+import com.haotang.easyshare.di.module.fragment.MyFragmentModule;
+import com.haotang.easyshare.mvp.presenter.MyFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AboutActivity;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
@@ -21,7 +24,11 @@ import com.haotang.easyshare.mvp.view.activity.MemberActivity;
 import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
 import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
+import com.haotang.easyshare.mvp.view.iview.IMyFragmentView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SystemUtil;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,7 +44,9 @@ import static com.haotang.easyshare.R.id.ll_myfragment_mycdz;
  * @author 徐俊
  * @date zhoujunxia on 2018/4/14 21:00
  */
-public class MyFragment extends BaseFragment {
+public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMyFragmentView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.iv_myfragment_userimg)
     ImageView ivMyfragmentUserimg;
     @BindView(R.id.tv_myfragment_yue)
@@ -111,6 +120,10 @@ public class MyFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        DaggerMyFragmentCommponent.builder()
+                .myFragmentModule(new MyFragmentModule(this, mActivity))
+                .build()
+                .inject(this);
         rllMyfragmentUserinfo.bringToFront();
         ivMyfragmentUserimg.bringToFront();
         if (SystemUtil.checkLogin(mActivity)) {

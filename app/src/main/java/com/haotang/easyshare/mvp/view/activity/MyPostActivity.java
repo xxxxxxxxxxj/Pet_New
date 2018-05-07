@@ -15,14 +15,21 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
+import com.haotang.easyshare.di.component.activity.DaggerMyPostActivityCommponent;
+import com.haotang.easyshare.di.module.activity.MyPostActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
+import com.haotang.easyshare.mvp.presenter.MyPostPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.PostListAdapter;
+import com.haotang.easyshare.mvp.view.iview.IMyPostView;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
 import com.ljy.devring.DevRing;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -30,8 +37,9 @@ import butterknife.OnClick;
 /**
  * 我的帖子界面
  */
-public class MyPostActivity extends BaseActivity {
-
+public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMyPostView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.iv_titlebar_back)
     ImageView ivTitlebarBack;
     @BindView(R.id.tv_titlebar_other)
@@ -54,6 +62,7 @@ public class MyPostActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
+        DaggerMyPostActivityCommponent.builder().myPostActivityModule(new MyPostActivityModule(this, this)).build().inject(this);
     }
 
     @Override
