@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_image_load" />
+            android:src="@mipmap/iv_followdetail_top_bg" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,6 +24,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -37,7 +38,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:orientation="vertical">
 
                     <TextView
@@ -51,13 +52,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TextView "
+                            android:text="用户评分  "
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
@@ -79,7 +80,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TextView "
+                            android:text="VIP积分  "
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
@@ -98,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="90dip"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -107,14 +108,14 @@
                     android:layout_height="30dip"
                     android:layout_marginRight="15dip"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/ic_image_load" />
+                    android:src="@mipmap/icon_followdetail_top_guanzhu" />
 
                 <ImageView
                     android:id="@+id/iv_followdetail_top_pingjia"
                     android:layout_width="110dip"
                     android:layout_height="30dip"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/ic_image_load" />
+                    android:src="@mipmap/icon_followdetail_top_pingjia" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -132,7 +133,7 @@
             android:layout_height="15dip"
             android:layout_marginRight="10dip"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_image_load" />
+            android:src="@mipmap/icon_round_fd_top" />
 
         <TextView
             android:layout_width="wrap_content"

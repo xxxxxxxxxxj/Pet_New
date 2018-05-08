@@ -66,6 +66,13 @@ public class PostListAdapter extends BaseQuickAdapter<PostBean, BaseViewHolder> 
             ll_item_mypost_root.setLayoutParams(layoutParams);
         }
         if (item != null) {
+            if (flag == 0) {
+                iv_item_mypost_share.setImageResource(R.mipmap.icon_post_share);
+                iv_item_mypost_delete.setImageResource(R.mipmap.icon_post_delete);
+            } else if (flag == 1) {
+                iv_item_mypost_share.setImageResource(R.mipmap.icon_post_zan);
+                iv_item_mypost_delete.setImageResource(R.mipmap.icon_post_pinglun);
+            }
             StringUtil.setText(tv_item_mypost_desc, item.getDesc(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_mypost_date, item.getDate(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetImg(mContext, item.getImg(), iv_item_mypost, R.mipmap.ic_image_load);
