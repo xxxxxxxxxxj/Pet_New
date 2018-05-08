@@ -118,6 +118,16 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                 }
             }
         });
+        postListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (list.size() > 0 && list.size() > position) {
+                    startActivity(new Intent(MyPostActivity.this, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, "https://192.168.0.252/static/conte" +
+                            "nt/html5/LiveList/LiveList.html?cwj_bannershare=1&system=android_4.9.0&imei=A00000598A8C45&cellPhone=15" +
+                            "717155675&phoneModel=HONOR KIW-CL00&phoneSystemVersion=Android 6.0.1&time=1525775735803"));
+                }
+            }
+        });
         postListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
