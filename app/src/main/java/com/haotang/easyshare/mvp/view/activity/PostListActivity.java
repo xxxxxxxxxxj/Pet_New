@@ -13,14 +13,22 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.activity.DaggerPostListActivityCommponent;
+import com.haotang.easyshare.di.module.activity.PostListActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.presenter.PostListPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointAdapter;
+import com.haotang.easyshare.mvp.view.iview.IPostListView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.ljy.devring.DevRing;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -28,8 +36,9 @@ import butterknife.OnClick;
 /**
  * 帖子列表
  */
-public class PostListActivity extends BaseActivity {
-
+public class PostListActivity extends BaseActivity<PostListPresenter> implements IPostListView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.iv_titlebar_back)
     ImageView ivTitlebarBack;
     @BindView(R.id.tv_titlebar_other)
@@ -57,7 +66,9 @@ public class PostListActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        DevRing.activityStackManager().pushOneActivity(this);
+        DaggerPostListActivityCommponent.builder().
+                postListActivityModule(new PostListActivityModule(this, this)).build().inject(this);
     }
 
     @Override
@@ -141,6 +152,12 @@ public class PostListActivity extends BaseActivity {
             tvPostlistRmt.setTextColor(getResources().getColor(R.color.a666666));
             tvPostlistWtc.setTextColor(getResources().getColor(R.color.white));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DevRing.activityStackManager().exitActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.tv_postlist_zxt, R.id.tv_postlist_rmt, R.id.tv_postlist_wtc})

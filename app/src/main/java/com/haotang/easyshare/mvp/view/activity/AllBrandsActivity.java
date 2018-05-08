@@ -11,19 +11,26 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.di.component.activity.DaggerAllBrandsActivityCommponent;
+import com.haotang.easyshare.di.module.activity.AllBrandsActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.CarBean;
 import com.haotang.easyshare.mvp.model.entity.res.SelectedCarBean;
+import com.haotang.easyshare.mvp.presenter.AllBrandsPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
 import com.haotang.easyshare.mvp.view.adapter.SelectedCarAdapter;
+import com.haotang.easyshare.mvp.view.iview.IAllBrandsView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
-import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
+import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.ljy.devring.DevRing;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,7 +38,9 @@ import butterknife.OnClick;
 /**
  * 所有品牌
  */
-public class AllBrandsActivity extends BaseActivity {
+public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implements IAllBrandsView {
+    @Inject
+    PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
     @BindView(R.id.rv_allbrands_rmpp)
@@ -50,7 +59,9 @@ public class AllBrandsActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        DevRing.activityStackManager().pushOneActivity(this);
+        DaggerAllBrandsActivityCommponent.builder().
+                allBrandsActivityModule(new AllBrandsActivityModule(this, this)).build().inject(this);
     }
 
     @Override
@@ -89,6 +100,12 @@ public class AllBrandsActivity extends BaseActivity {
     @Override
     protected void initData(Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DevRing.activityStackManager().exitActivity(this); //退出activity
     }
 
     @Override
