@@ -92,24 +92,24 @@
         <activity
             android:name=".mvp.view.activity.TestActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.WebViewActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.MapActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.ImagePickerActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.PhotoViewPagerActivity"
             android:launchMode="singleTop"
@@ -117,83 +117,83 @@
         <activity
             android:name=".mvp.view.activity.ChargingPileDetailActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.CommentActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.LocalChargingActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.SwitchCityActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.ButlerActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.CommentDetailActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.LoginActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.AddChargeActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.CarInfoActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.MemberActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.MyPostActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.CollectChargeActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.MyFollowActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.AboutActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.SendPostActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
         <activity
             android:name=".mvp.view.activity.FollowDetailActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
 
         <receiver
             android:name=".updateapputil.UpdateAppReceiver"
@@ -392,6 +392,9 @@
 
         <service android:name="com.amap.api.location.APSService" />
         <!-- 高德地图结束 -->
+        <activity android:name=".mvp.view.activity.BrandAreaActivity" />
+        <activity android:name=".mvp.view.activity.PostListActivity" />
+        <activity android:name=".mvp.view.activity.AllBrandsActivity"></activity>
     </application>
 
 </manifest>

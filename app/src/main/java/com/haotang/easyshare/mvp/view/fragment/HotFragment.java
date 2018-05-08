@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,9 @@ import com.haotang.easyshare.mvp.model.entity.res.CarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
+import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
+import com.haotang.easyshare.mvp.view.activity.BrandAreaActivity;
+import com.haotang.easyshare.mvp.view.activity.PostListActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointAdapter;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
@@ -40,7 +44,7 @@ import butterknife.BindView;
  * @author 徐俊
  * @date zhoujunxia on 2018/4/14 20:59
  */
-public class HotFragment extends BaseFragment<HotFragmentPresenter>  implements OnBannerListener,View.OnClickListener, IHotFragmentView {
+public class HotFragment extends BaseFragment<HotFragmentPresenter> implements OnBannerListener, View.OnClickListener, IHotFragmentView {
     protected final static String TAG = HotFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
@@ -81,12 +85,12 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter>  implements 
         hotPointAdapter.addHeaderView(top);
         rvHotfragment.setAdapter(hotPointAdapter);
         //添加自定义分割线
-        rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity,15),
+        rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity, 15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
         setBanner();
 
         for (int i = 0; i < 20; i++) {
-            carList.add(new CarBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433","奔驰"));
+            carList.add(new CarBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433", "奔驰"));
         }
         hotFragmenHeader.getRvTopHotfrag().setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
@@ -95,7 +99,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter>  implements 
         hotPointCarAdapter = new HotPointCarAdapter(R.layout.item_hotfrag_top_car, carList);
         hotFragmenHeader.getRvTopHotfrag().setAdapter(hotPointCarAdapter);
         //添加自定义分割线
-        hotFragmenHeader.getRvTopHotfrag().addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL, DensityUtil.dp2px(mActivity,15),
+        hotFragmenHeader.getRvTopHotfrag().addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL, DensityUtil.dp2px(mActivity, 15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
     }
 
@@ -125,7 +129,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter>  implements 
     public void onStart() {
         super.onStart();
         //开始轮播
-        if(hotFragmenHeader != null){
+        if (hotFragmenHeader != null) {
             hotFragmenHeader.getBannerTopHotfrag().startAutoPlay();
         }
     }
@@ -134,7 +138,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter>  implements 
     public void onStop() {
         super.onStop();
         //结束轮播
-        if(hotFragmenHeader != null){
+        if (hotFragmenHeader != null) {
             hotFragmenHeader.getBannerTopHotfrag().stopAutoPlay();
         }
     }
@@ -143,15 +147,17 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter>  implements 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_top_hotfrag_htpd:
+                startActivity(new Intent(mActivity, PostListActivity.class));
                 break;
             case R.id.rl_top_hotfrag_rmpp:
+                startActivity(new Intent(mActivity, AllBrandsActivity.class));
                 break;
         }
     }
 
     @Override
     protected void initEvent() {
-        if(hotFragmenHeader != null){
+        if (hotFragmenHeader != null) {
             hotFragmenHeader.getRlTopHotfragHtpd().setOnClickListener(this);
             hotFragmenHeader.getRlTopHotfragRmpp().setOnClickListener(this);
         }
@@ -164,7 +170,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter>  implements 
         hotPointCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                startActivity(new Intent(mActivity, BrandAreaActivity.class));
             }
         });
     }

@@ -19,6 +19,7 @@ import javax.inject.Inject;
 public class MemberActivity extends BaseActivity<MemberPresenter> implements IMemberView {
     @Inject
     PermissionDialog permissionDialog;
+
     @Override
     protected int getContentLayout() {
         return R.layout.activity_member;
@@ -32,7 +33,6 @@ public class MemberActivity extends BaseActivity<MemberPresenter> implements IMe
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-
     }
 
     @Override

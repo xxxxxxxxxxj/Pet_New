@@ -2,8 +2,538 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/af8f8f8"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dip"
+                android:background="@color/af8f8f8">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_addcharge_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="90dip" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <EditText
+                    android:id="@+id/et_addcharge_zmc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="请输入站名称"
+                    android:textColor="@color/a333333"
+                    android:textColorHint="@color/aBBBBBB"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/et_addcharge_zmc"
+                    android:gravity="center_vertical"
+                    android:text="站 名 称"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="15dip"
+                android:background="@color/aEEEEEE" />
+
+            <RelativeLayout
+                android:id="@+id/rl_addcharge_zdz"
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <TextView
+                    android:id="@+id/tv_addcharge_zdz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:text="请选择站地址"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/tv_addcharge_zdz"
+                    android:gravity="center_vertical"
+                    android:text="站 地 址"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="15dip"
+                android:background="@color/aEEEEEE" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <EditText
+                    android:id="@+id/et_addcharge_sl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="请输入充电桩数量"
+                    android:inputType="number"
+                    android:textColor="@color/a333333"
+                    android:textColorHint="@color/aBBBBBB"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/et_addcharge_sl"
+                    android:gravity="center_vertical"
+                    android:text="数      量"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="15dip"
+                android:background="@color/aEEEEEE" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <LinearLayout
+                    android:id="@+id/ll_addcharge_kuaiorman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_addcharge_kuai"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="20dip"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_addcharge_kuai"
+                            android:layout_width="15dip"
+                            android:layout_height="15dip"
+                            android:layout_marginRight="5dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/icon_addcharge_unselect" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="快充"
+                            android:textColor="@color/a666666"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_addcharge_man"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_addcharge_man"
+                            android:layout_width="15dip"
+                            android:layout_height="15dip"
+                            android:layout_marginRight="5dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/icon_addcharge_unselect" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="慢充"
+                            android:textColor="@color/a666666"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/ll_addcharge_kuaiorman"
+                    android:gravity="center_vertical"
+                    android:text="电桩类型"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="15dip"
+                android:background="@color/aEEEEEE" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <EditText
+                    android:id="@+id/et_addcharge_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="请输入联系电话"
+                    android:inputType="number"
+                    android:textColor="@color/a333333"
+                    android:textColorHint="@color/aBBBBBB"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/et_addcharge_phone"
+                    android:gravity="center_vertical"
+                    android:text="联系电话"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dip"
+                android:background="@color/f8f8ff8" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <EditText
+                    android:id="@+id/et_addcharge_cdf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="请输入充电费"
+                    android:inputType="number"
+                    android:textColor="@color/a333333"
+                    android:textColorHint="@color/aBBBBBB"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/et_addcharge_cdf"
+                    android:gravity="center_vertical"
+                    android:text="充 电 费"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="15dip"
+                android:background="@color/aEEEEEE" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <EditText
+                    android:id="@+id/et_addcharge_fwf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="请输入服务费"
+                    android:inputType="number"
+                    android:textColor="@color/a333333"
+                    android:textColorHint="@color/aBBBBBB"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/et_addcharge_fwf"
+                    android:gravity="center_vertical"
+                    android:text="服 务 费"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="15dip"
+                android:background="@color/aEEEEEE" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <EditText
+                    android:id="@+id/et_addcharge_tcf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="请输入停车费"
+                    android:inputType="number"
+                    android:textColor="@color/a333333"
+                    android:textColorHint="@color/aBBBBBB"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/et_addcharge_tcf"
+                    android:gravity="center_vertical"
+                    android:text="停 车 费"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="15dip"
+                android:background="@color/aEEEEEE" />
+
+            <RelativeLayout
+                android:id="@+id/rl_addcharge_zffs"
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <TextView
+                    android:id="@+id/tv_addcharge_zffs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:text="请选择支付方式"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/tv_addcharge_zffs"
+                    android:gravity="center_vertical"
+                    android:text="支付方式"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dip"
+                android:background="@color/f8f8ff8" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <LinearLayout
+                    android:id="@+id/ll_addcharge_upordown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_addcharge_up"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="20dip"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_addcharge_up"
+                            android:layout_width="15dip"
+                            android:layout_height="15dip"
+                            android:layout_marginRight="5dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/icon_addcharge_unselect" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="地上"
+                            android:textColor="@color/a666666"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_addcharge_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_addcharge_down"
+                            android:layout_width="15dip"
+                            android:layout_height="15dip"
+                            android:layout_marginRight="5dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/icon_addcharge_unselect" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="地下"
+                            android:textColor="@color/a666666"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/ll_addcharge_upordown"
+                    android:gravity="center_vertical"
+                    android:text="停车场地"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="15dip"
+                android:background="@color/aEEEEEE" />
+
+            <RelativeLayout
+                android:id="@+id/rl_addcharge_kfsj"
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <TextView
+                    android:id="@+id/tv_addcharge_kfsj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical"
+                    android:text="请选择开放时间"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/tv_addcharge_kfsj"
+                    android:gravity="center_vertical"
+                    android:text="开放时间"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="15dip"
+                android:background="@color/aEEEEEE" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <EditText
+                    android:id="@+id/et_addcharge_bzsm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="请输入备注说明"
+                    android:inputType="number"
+                    android:textColor="@color/a333333"
+                    android:textColorHint="@color/aBBBBBB"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/et_addcharge_bzsm"
+                    android:gravity="center_vertical"
+                    android:text="备注说明"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

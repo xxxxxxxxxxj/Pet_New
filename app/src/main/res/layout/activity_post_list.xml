@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/f8f8ff8"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dip">
+
+        <TextView
+            android:id="@+id/tv_postlist_zxt"
+            android:layout_width="75dip"
+            android:layout_height="30dip"
+            android:layout_marginRight="15dip"
+            android:background="@mipmap/bg_postlist_calss_select"
+            android:gravity="center"
+            android:text="最新帖"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_postlist_rmt"
+            android:layout_width="75dip"
+            android:layout_height="30dip"
+            android:layout_marginRight="15dip"
+            android:background="@mipmap/bg_postlist_calss_unselect"
+            android:gravity="center"
+            android:text="热门贴"
+            android:textColor="@color/a666666"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_postlist_wtc"
+            android:layout_width="75dip"
+            android:layout_height="30dip"
+            android:layout_marginRight="15dip"
+            android:background="@mipmap/bg_postlist_calss_unselect"
+            android:gravity="center"
+            android:text="问题车"
+            android:textColor="@color/a666666"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_postlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_postlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>
