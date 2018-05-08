@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:rv="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/iv_followdetail_bottom_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.7"
+        android:background="@color/black" />
+
+    <com.flyco.roundview.RoundLinearLayout
+        android:id="@+id/rll_followdetail_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="337dip"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:orientation="vertical"
+        rv:rv_backgroundColor="@color/white"
+        rv:rv_cornerRadius="10dip">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip">
+
+            <ImageView
+                android:id="@+id/iv_followdetail_bottom_close"
+                android:layout_width="14dip"
+                android:layout_height="14dip"
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_dia_close" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="评价"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:background="@color/aEEEEEE" />
+
+        <com.haotang.easyshare.materialratingbar.MaterialRatingBar
+            android:id="@+id/mrb_followdetail_bottom"
+            style="@style/Widget.MaterialRatingBar.RatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="25dip"
+            android:layout_marginTop="25dip"
+            android:rating="2.5"
+            android:stepSize="0.01"
+            app:mrb_progressTint="@color/aFFA200"
+            app:mrb_secondaryProgressTint="@color/aFFA200" />
+
+        <TextView
+            android:id="@+id/tv_followdetail_bottom_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="非常不满意，各方面都很差"
+            android:textColor="@color/a666666"
+            android:textSize="15sp" />
+
+    </com.flyco.roundview.RoundLinearLayout>
+</RelativeLayout>

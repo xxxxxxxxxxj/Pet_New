@@ -1,14 +1,17 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -16,13 +19,17 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerFollowDetailActivityCommponent;
 import com.haotang.easyshare.di.module.activity.FollowDetailActivityModule;
+import com.haotang.easyshare.materialratingbar.MaterialRatingBar;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.FollowDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.PostListAdapter;
 import com.haotang.easyshare.mvp.view.iview.IFollowDetailView;
+import com.haotang.easyshare.mvp.view.viewholder.FollowDetailBoDa;
 import com.haotang.easyshare.mvp.view.viewholder.FollowDetailHeader;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 
 import java.util.ArrayList;
@@ -36,7 +43,7 @@ import butterknife.OnClick;
 /**
  * 关注的人详情页
  */
-public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> implements IFollowDetailView {
+public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> implements IFollowDetailView, View.OnClickListener {
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_title)
@@ -49,6 +56,8 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     private List<PostBean> list = new ArrayList<PostBean>();
     private PostListAdapter postListAdapter;
     private FollowDetailHeader followDetailHeader;
+    private FollowDetailBoDa followDetailBoDa;
+    private PopupWindow pWinBottomDialog;
 
     @Override
     protected int getContentLayout() {
@@ -101,10 +110,13 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     protected void initEvent() {
+        followDetailHeader.getIvFollowdetailTopGuanzhu().setOnClickListener(this);
+        followDetailHeader.getIvFollowdetailTopPingjia().setOnClickListener(this);
         postListAdapter.setOnShareItemListener(new PostListAdapter.OnShareItemListener() {
             @Override
             public void OnShareItem(int position) {//赞
                 if (list.size() > 0 && list.size() > position) {
+
                 }
             }
         });
@@ -112,6 +124,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
             @Override
             public void OnDeleteItem(int position) {//评论
                 if (list.size() > 0 && list.size() > position) {
+                    showBottomDialog(position);
                 }
             }
         });
@@ -129,11 +142,76 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         });
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_followdetail_top_guanzhu:
+                break;
+            case R.id.iv_followdetail_top_pingjia:
+                showBottomDialog(0);
+                break;
+        }
+    }
+
     private void refresh() {
         mNextRequestPage = 1;
     }
 
     private void loadMore() {
+    }
+
+    private void showBottomDialog(int position) {
+        pWinBottomDialog = null;
+        if (pWinBottomDialog == null) {
+            ViewGroup customView = (ViewGroup) View.inflate(this, R.layout.followdetail_bottom_dialog
+                    , null);
+            followDetailBoDa = new FollowDetailBoDa(customView);
+            pWinBottomDialog = new PopupWindow(customView,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT, true);
+            pWinBottomDialog.setFocusable(true);// 取得焦点
+            //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+            pWinBottomDialog.setBackgroundDrawable(new BitmapDrawable());
+            //点击外部消失
+            pWinBottomDialog.setOutsideTouchable(true);
+            //设置可以点击
+            pWinBottomDialog.setTouchable(true);
+            //进入退出的动画
+            pWinBottomDialog.setAnimationStyle(R.style.mypopwindow_anim_style);
+            pWinBottomDialog.setWidth(SystemUtil.getDisplayMetrics(this)[0]);
+            pWinBottomDialog.showAtLocation(customView, Gravity.BOTTOM, 0, 0);
+            followDetailBoDa.getRll_followdetail_bottom().bringToFront();
+            followDetailBoDa.getMrbFollowdetailBottom().setNumStars(5);
+            followDetailBoDa.getIv_followdetail_bottom_bg().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pWinBottomDialog.dismiss();
+                }
+            });
+            followDetailBoDa.getIvFollowdetailBottomClose().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pWinBottomDialog.dismiss();
+                }
+            });
+            followDetailBoDa.getRll_followdetail_bottom().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
+            followDetailBoDa.getMrbFollowdetailBottom().setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
+                @Override
+                public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
+                    StringUtil.setText(followDetailBoDa.getTvFollowdetailBottomDesc(), String.valueOf(rating), "",
+                            View.VISIBLE, View.VISIBLE);
+                }
+            });
+            pWinBottomDialog.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                }
+            });
+        }
     }
 
     @OnClick({R.id.iv_titlebar_back})
