@@ -44,7 +44,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
     @BindView(R.id.rv_allbrands_rmpp)
-    RecyclerView rvAllbrandsRmpp;
+    RecyclerView rvAllbrandsRmpp ;
     @BindView(R.id.rv_allbrands_jxtj)
     RecyclerView rvAllbrandsJxtj;
     private List<CarBean> carList = new ArrayList<CarBean>();
