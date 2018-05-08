@@ -62,8 +62,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="25dip"
             android:layout_marginTop="25dip"
-            android:rating="2.5"
-            android:stepSize="0.01"
+            android:rating="1"
+            android:stepSize="1"
             app:mrb_progressTint="@color/aFFA200"
             app:mrb_secondaryProgressTint="@color/aFFA200" />
 

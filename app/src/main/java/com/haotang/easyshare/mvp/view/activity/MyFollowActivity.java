@@ -71,7 +71,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
         for (int i = 0; i < 20; i++) {
             list.add(new FollowBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"
                     , "138****6986",
-                    "5.0分", 5, "积分2800"));
+                    "5.0分", 4, "积分2800"));
         }
         rvMyFollow.setHasFixedSize(true);
         rvMyFollow.setLayoutManager(new LinearLayoutManager(this));

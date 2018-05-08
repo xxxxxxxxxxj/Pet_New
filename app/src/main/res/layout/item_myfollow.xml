@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_item_myfollow_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -64,10 +65,18 @@
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_item_myfollow_star"
+                <com.haotang.easyshare.materialratingbar.MaterialRatingBar
+                    android:id="@+id/mrb_item_myfollow_fenshu"
+                    style="@style/Widget.MaterialRatingBar.RatingBar.Indicator"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:maxHeight="10dip"
+                    android:minHeight="10dip"
+                    android:rating="1"
+                    android:stepSize="1"
+                    app:mrb_progressTint="@color/aFFA200"
+                    app:mrb_secondaryProgressTint="@color/aFFA200" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
