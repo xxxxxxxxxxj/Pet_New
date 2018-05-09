@@ -73,9 +73,11 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 .build()
                 .inject(this);
         for (int i = 0; i < 20; i++) {
-            list.add(new HotPoint("结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服",
+            list.add(new HotPoint("结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，" +
+                    "大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服",
                     "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-                    "地方大V", "25分钟前", "28888阅读", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
+                    "地方大V", "25分钟前", "28888阅读", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/sh" +
+                    "op/imgs/shopyyc.png?v=433"));
         }
         rvHotfragment.setHasFixedSize(true);
         rvHotfragment.setLayoutManager(new LinearLayoutManager(mActivity));

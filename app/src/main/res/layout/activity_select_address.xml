@@ -8,7 +8,7 @@
     <include layout="@layout/title_bar" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_brand_area"
+        android:id="@+id/rv_select_address"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </LinearLayout>

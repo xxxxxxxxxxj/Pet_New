@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rv="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dip"
+        android:background="@color/white"
+        android:paddingRight="15dip">
+
+        <TextView
+            android:id="@+id/tv_serchaddress_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="取消"
+            android:textColor="@color/a666666"
+            android:textSize="16sp" />
+
+        <com.flyco.roundview.RoundRelativeLayout
+            android:id="@+id/rll_serchaddress_serch"
+            android:layout_width="match_parent"
+            android:layout_height="30dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_toLeftOf="@id/tv_serchaddress_other"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            rv:rv_backgroundColor="@color/af8f8f8"
+            rv:rv_cornerRadius="4dip">
+
+            <ImageView
+                android:id="@+id/iv_serchaddress_clear"
+                android:layout_width="15dip"
+                android:layout_height="15dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_image_load" />
+
+            <EditText
+                android:id="@+id/et_serchaddress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_serchaddress_clear"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:gravity="center_vertical"
+                android:hint="搜索地址"
+                android:paddingRight="15dip"
+                android:textColor="@color/a666666"
+                android:textColorHint="@color/a999999"
+                android:textCursorDrawable="@drawable/test_cursor"
+                android:textSize="14sp" />
+        </com.flyco.roundview.RoundRelativeLayout>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_serchaddress_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

@@ -2,13 +2,17 @@ package com.haotang.easyshare.mvp.view.activity;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,16 +23,20 @@ import com.haotang.easyshare.di.component.activity.DaggerAddChargeActivityCommpo
 import com.haotang.easyshare.di.module.activity.AddChargeActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.PhotoViewPagerImg;
+import com.haotang.easyshare.mvp.model.entity.res.SelectAddress;
 import com.haotang.easyshare.mvp.presenter.AddChargePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CommentImgAdapter;
 import com.haotang.easyshare.mvp.view.iview.IAddChargeView;
+import com.haotang.easyshare.mvp.view.viewholder.AddChargeBoDa;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RingToast;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -116,6 +124,9 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     private List<String> imgPathList = new ArrayList<String>();
     private CommentImgAdapter commentImgAdapter;
     private static final int IMG_NUM = 3;
+    private AddChargeBoDa addChargeBoDa;
+    private PopupWindow pWinBottomDialog;
+    private int payWay = 0;
 
     @Override
     protected int getContentLayout() {
@@ -127,6 +138,18 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         DevRing.activityStackManager().pushOneActivity(this);
         DaggerAddChargeActivityCommponent.builder().
                 addChargeActivityModule(new AddChargeActivityModule(this, this)).build().inject(this);
+    }
+
+    @Subscribe
+    public void getAddress(SelectAddress selectAddress) {
+        if (selectAddress != null) {
+            StringUtil.setText(tvAddchargeZdz, selectAddress.getAddress(), "", View.VISIBLE, View.VISIBLE);
+        }
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
     }
 
     @Override
@@ -192,11 +215,6 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 compressWithRx(Matisse.obtainPathResult(data));
             }
         }
-    }
-
-    @Override
-    public boolean isUseEventBus() {
-        return true;
     }
 
     private void compressWithRx(List<String> pathList) {
@@ -319,6 +337,13 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             case R.id.tv_titlebar_other:
                 break;
             case R.id.rl_addcharge_zdz:
+                startActivity(new Intent(AddChargeActivity.this, SelectAddressActivity.class));
+                break;
+            case R.id.rl_addcharge_zffs:
+                showBottomDialog(1);
+                break;
+            case R.id.rl_addcharge_kfsj:
+                showBottomDialog(2);
                 break;
             case R.id.ll_addcharge_kuai:
                 setKuaiOrMan(0);
@@ -326,16 +351,115 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             case R.id.ll_addcharge_man:
                 setKuaiOrMan(1);
                 break;
-            case R.id.rl_addcharge_zffs:
-                break;
             case R.id.ll_addcharge_up:
                 setUpOrDown(0);
                 break;
             case R.id.ll_addcharge_down:
                 setUpOrDown(1);
                 break;
-            case R.id.rl_addcharge_kfsj:
-                break;
+        }
+    }
+
+    private void setWxOrZfb(int flag) {
+        if (flag == 1) {//微信
+            payWay = 1;
+            addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_select);
+            addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_unselect);
+        } else if (flag == 2) {//支付宝
+            payWay = 2;
+            addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_unselect);
+            addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_select);
+        }
+    }
+
+    private void showBottomDialog(final int flag) {
+        pWinBottomDialog = null;
+        if (pWinBottomDialog == null) {
+            ViewGroup customView = (ViewGroup) View.inflate(this, R.layout.addcharge_bottom_dialog
+
+                    , null);
+            addChargeBoDa = new AddChargeBoDa(customView);
+            pWinBottomDialog = new PopupWindow(customView,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT, true);
+            pWinBottomDialog.setFocusable(true);// 取得焦点
+            //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+            pWinBottomDialog.setBackgroundDrawable(new BitmapDrawable());
+            //点击外部消失
+            pWinBottomDialog.setOutsideTouchable(true);
+            //设置可以点击
+            pWinBottomDialog.setTouchable(true);
+            //进入退出的动画
+            pWinBottomDialog.setAnimationStyle(R.style.mypopwindow_anim_style);
+            pWinBottomDialog.setWidth(SystemUtil.getDisplayMetrics(this)[0]);
+            pWinBottomDialog.showAtLocation(customView, Gravity.BOTTOM, 0, 0);
+            if (flag == 1) {//支付方式
+                addChargeBoDa.getTvAddchargeBottomTitle().setText("支付方式");
+                addChargeBoDa.getLlAddchargeBottomSelectpayway().setVisibility(View.VISIBLE);
+                addChargeBoDa.getLlAddchargeBottomSelecttime().setVisibility(View.GONE);
+                if (payWay == 1) {//微信
+                    addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_select);
+                    addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_unselect);
+                } else if (payWay == 2) {//支付宝
+                    addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_unselect);
+                    addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_select);
+                }
+            } else if (flag == 2) {//开放时间
+                addChargeBoDa.getTvAddchargeBottomTitle().setText("选择时间");
+                addChargeBoDa.getLlAddchargeBottomSelectpayway().setVisibility(View.GONE);
+                addChargeBoDa.getLlAddchargeBottomSelecttime().setVisibility(View.VISIBLE);
+            }
+            addChargeBoDa.getRlAddchargeBottomWx().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setWxOrZfb(1);
+                }
+            });
+            addChargeBoDa.getRlAddchargeBottomZfb().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setWxOrZfb(2);
+                }
+            });
+            addChargeBoDa.getTvAddchargeBottomOther().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (flag == 1) {//支付方式
+                        if (payWay == 0) {//未选择
+                            RingToast.show("请选择支付方式");
+                        } else if (payWay == 1) {//微信
+                            pWinBottomDialog.dismiss();
+                            tvAddchargeZffs.setText("微信支付");
+                        } else if (payWay == 2) {//支付宝
+                            pWinBottomDialog.dismiss();
+                            tvAddchargeZffs.setText("支付宝支付");
+                        }
+                    } else if (flag == 2) {//开放时间
+                    }
+                }
+            });
+            addChargeBoDa.getIvAddchargeBottomClose().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pWinBottomDialog.dismiss();
+                }
+            });
+            addChargeBoDa.getIvAddchargeBottomBg().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pWinBottomDialog.dismiss();
+                }
+            });
+            addChargeBoDa.getRllAddchargeBottom().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
+            pWinBottomDialog.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                }
+            });
         }
     }
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/af8f8f8"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dip"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:paddingTop="5dip">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="广告"
+            android:textColor="@color/a999999"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:id="@+id/iv_brand_area_ad_close"
+            android:layout_width="14dip"
+            android:layout_height="14dip"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_dia_close" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_brand_area_ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip" />
+</LinearLayout>
+

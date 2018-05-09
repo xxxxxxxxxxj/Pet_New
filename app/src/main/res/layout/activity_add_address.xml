@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rv="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/af8f8f8"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_bar" />
+
+    <com.flyco.roundview.RoundLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dip"
+        android:orientation="vertical"
+        rv:rv_backgroundColor="@color/white"
+        rv:rv_cornerRadius="5dip">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dip"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip">
+
+            <EditText
+                android:id="@+id/et_addaddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="请选择"
+                android:textColor="@color/a333333"
+                android:textColorHint="@color/aBBBBBB"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="电桩地址："
+                android:textColor="@color/a666666"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_marginLeft="15dip"
+            android:background="@color/aEEEEEE" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dip"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip">
+
+            <EditText
+                android:id="@+id/et_addaddress_xxdz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="例：A区地下车库72号"
+                android:textColor="@color/a333333"
+                android:textColorHint="@color/aBBBBBB"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="详细地址："
+                android:textColor="@color/a666666"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </com.flyco.roundview.RoundLinearLayout>
+</LinearLayout>

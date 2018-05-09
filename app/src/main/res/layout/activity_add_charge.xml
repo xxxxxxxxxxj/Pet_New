@@ -70,20 +70,35 @@
                 android:paddingLeft="15dip"
                 android:paddingRight="15dip">
 
-                <TextView
-                    android:id="@+id/tv_addcharge_zdz"
+                <LinearLayout
+                    android:id="@+id/ll_addcharge_zdz"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical"
-                    android:text="请选择站地址"
-                    android:textColor="@color/a666666"
-                    android:textSize="15sp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_addcharge_zdz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="5dip"
+                        android:gravity="center_vertical"
+                        android:text="请选择站地址"
+                        android:textColor="@color/a666666"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="7dip"
+                        android:layout_height="11dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/right_more" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@id/tv_addcharge_zdz"
+                    android:layout_toLeftOf="@id/ll_addcharge_zdz"
                     android:gravity="center_vertical"
                     android:text="站 地 址"
                     android:textColor="@color/a666666"
@@ -364,25 +379,39 @@
                 android:paddingLeft="15dip"
                 android:paddingRight="15dip">
 
-                <TextView
-                    android:id="@+id/tv_addcharge_zffs"
+                <LinearLayout
+                    android:id="@+id/ll_addcharge_zffs"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical"
-                    android:text="请选择支付方式"
-                    android:textColor="@color/a666666"
-                    android:textSize="15sp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_addcharge_zffs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="5dip"
+                        android:gravity="center_vertical"
+                        android:text="请选择支付方式"
+                        android:textColor="@color/a666666"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="7dip"
+                        android:layout_height="11dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/right_more" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@id/tv_addcharge_zffs"
+                    android:layout_toLeftOf="@id/ll_addcharge_zffs"
                     android:gravity="center_vertical"
                     android:text="支付方式"
                     android:textColor="@color/a666666"
                     android:textSize="15sp" />
-
             </RelativeLayout>
 
             <View
@@ -478,20 +507,35 @@
                 android:paddingLeft="15dip"
                 android:paddingRight="15dip">
 
-                <TextView
-                    android:id="@+id/tv_addcharge_kfsj"
+                <LinearLayout
+                    android:id="@+id/ll_addcharge_kfsj"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical"
-                    android:text="请选择开放时间"
-                    android:textColor="@color/a666666"
-                    android:textSize="15sp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_addcharge_kfsj"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="5dip"
+                        android:gravity="center_vertical"
+                        android:text="请选择开放时间"
+                        android:textColor="@color/a666666"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="7dip"
+                        android:layout_height="11dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/right_more" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@id/tv_addcharge_kfsj"
+                    android:layout_toLeftOf="@id/ll_addcharge_kfsj"
                     android:gravity="center_vertical"
                     android:text="开放时间"
                     android:textColor="@color/a666666"

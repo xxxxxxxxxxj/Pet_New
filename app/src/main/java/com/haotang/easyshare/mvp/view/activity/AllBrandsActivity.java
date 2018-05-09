@@ -128,6 +128,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_titlebar_back:
+                finish();
                 break;
         }
     }
