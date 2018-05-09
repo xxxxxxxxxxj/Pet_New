@@ -17,6 +17,7 @@
         rv:rv_cornerRadius="5dip">
 
         <RelativeLayout
+            android:id="@+id/rl_addaddress"
             android:layout_width="match_parent"
             android:layout_height="40dip"
             android:paddingLeft="15dip"
@@ -52,6 +53,7 @@
             android:background="@color/aEEEEEE" />
 
         <RelativeLayout
+            android:id="@+id/rl_addaddress_xxdz"
             android:layout_width="match_parent"
             android:layout_height="40dip"
             android:paddingLeft="15dip"

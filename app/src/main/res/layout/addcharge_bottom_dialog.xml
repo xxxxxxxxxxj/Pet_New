@@ -92,12 +92,12 @@
 
                     <ImageView
                         android:id="@+id/iv_addcharge_bottom_wxicon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="26dip"
+                        android:layout_height="23dip"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dip"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_image_load" />
+                        android:src="@mipmap/icon_wx" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -133,12 +133,12 @@
 
                     <ImageView
                         android:id="@+id/iv_addcharge_bottom_zfbicon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="23.5dip"
+                        android:layout_height="23.5dip"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dip"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_image_load" />
+                        android:src="@mipmap/icon_zfb" />
 
                     <TextView
                         android:layout_width="wrap_content"

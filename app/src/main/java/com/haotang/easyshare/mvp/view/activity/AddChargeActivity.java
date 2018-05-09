@@ -376,7 +376,6 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         pWinBottomDialog = null;
         if (pWinBottomDialog == null) {
             ViewGroup customView = (ViewGroup) View.inflate(this, R.layout.addcharge_bottom_dialog
-
                     , null);
             addChargeBoDa = new AddChargeBoDa(customView);
             pWinBottomDialog = new PopupWindow(customView,
@@ -435,6 +434,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                             tvAddchargeZffs.setText("支付宝支付");
                         }
                     } else if (flag == 2) {//开放时间
+
                     }
                 }
             });

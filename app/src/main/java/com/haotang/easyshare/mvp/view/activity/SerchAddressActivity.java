@@ -69,7 +69,12 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-
+        rvSerchaddressResult.setHasFixedSize(true);
+        rvSerchaddressResult.setLayoutManager(new LinearLayoutManager(SerchAddressActivity.this));
+        mainSerchResultAdapter = new MainSerchResultAdapter(R.layout.item_mainserchresult, serchList);
+        rvSerchaddressResult.setAdapter(mainSerchResultAdapter);
+        rvSerchaddressResult.addItemDecoration(new DividerItemDecoration(SerchAddressActivity.this,
+                DividerItemDecoration.VERTICAL));
     }
 
     @Override
@@ -146,17 +151,7 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
                                         poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude()));
                             }
                         }
-                        rvSerchaddressResult.setHasFixedSize(true);
-                        rvSerchaddressResult.setLayoutManager(new LinearLayoutManager(SerchAddressActivity.this));
-                        mainSerchResultAdapter = new MainSerchResultAdapter(R.layout.item_mainserchresult, serchList);
-                        rvSerchaddressResult.setAdapter(mainSerchResultAdapter);
-                        rvSerchaddressResult.addItemDecoration(new DividerItemDecoration(SerchAddressActivity.this, DividerItemDecoration.VERTICAL));
-                        mainSerchResultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-                            }
-                        });
+                        mainSerchResultAdapter.notifyDataSetChanged();
                     } else {
                         RingToast.show(R.string.no_result);
                     }

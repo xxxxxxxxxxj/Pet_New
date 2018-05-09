@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
@@ -17,7 +18,9 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IAddAddressView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -43,6 +46,10 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
     EditText etAddaddress;
     @BindView(R.id.et_addaddress_xxdz)
     EditText etAddaddressXxdz;
+    @BindView(R.id.rl_addaddress)
+    RelativeLayout rlAddaddress;
+    @BindView(R.id.rl_addaddress_xxdz)
+    RelativeLayout rlAddaddressXxdz;
     private double lat;
     private double lng;
 
@@ -79,7 +86,6 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
 
     @Override
     protected void initEvent() {
-
     }
 
     @Override
@@ -103,12 +109,16 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
                 finish();
                 break;
             case R.id.tv_titlebar_other:
-                if (StringUtil.isNotEmpty(etAddaddress.getText().toString())) {
+                int stackSize = DevRing.activityStackManager().getStackSize();
+                RingLog.d("stackSize = " + stackSize);
+                if (StringUtil.isEmpty(etAddaddress.getText().toString())) {
                     RingToast.show("请填写电桩地址");
+                    rlAddaddress.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
-                if (StringUtil.isNotEmpty(etAddaddressXxdz.getText().toString())) {
+                if (StringUtil.isEmpty(etAddaddressXxdz.getText().toString())) {
                     RingToast.show("请填写详细地址");
+                    rlAddaddressXxdz.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
                 DevRing.busManager().postEvent(new SelectAddress(etAddaddress.getText().toString().trim()
