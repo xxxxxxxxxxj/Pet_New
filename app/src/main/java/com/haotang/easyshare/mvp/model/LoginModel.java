@@ -1,8 +1,5 @@
 package com.haotang.easyshare.mvp.model;
 
-import android.app.Activity;
-
-import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.http.LoginApiService;
 import com.haotang.easyshare.mvp.model.imodel.ILoginModel;
 import com.ljy.devring.DevRing;
@@ -25,5 +22,14 @@ public class LoginModel implements ILoginModel {
     public Observable sendVerifyCode(String phone) {
         return DevRing.httpManager().getService(LoginApiService.class).
                 sendVerifyCode(phone);
+    }
+
+    /**
+     * 登陆
+     */
+    @Override
+    public Observable login(String phone, String wxOpenId, double lng, double lat, String registrationId, String code) {
+        return DevRing.httpManager().getService(LoginApiService.class).
+                login(phone, wxOpenId, lng, lat, registrationId, code);
     }
 }

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.haotang.easyshare.mvp.view.activity.TestActivity;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.other.RingLog;
 
 import org.json.JSONException;
@@ -33,6 +35,9 @@ public class MyJPushReceiver extends BroadcastReceiver {
             RingLog.d(TAG, "[MyJPushReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
             if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
                 String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
+                if (StringUtil.isNotEmpty(regId)) {
+                    SharedPreferenceUtil.getInstance(context).saveString("jpush_id", regId);
+                }
                 RingLog.d(TAG, "[MyJPushReceiver] 接收Registration Id : " + regId);
                 //send the Registration Id to your server...
             } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {

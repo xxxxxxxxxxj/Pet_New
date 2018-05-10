@@ -1,7 +1,5 @@
 package com.haotang.easyshare.mvp.model.imodel;
 
-import android.app.Activity;
-
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
 import io.reactivex.Observable;
@@ -19,4 +17,9 @@ public interface ILoginModel extends IBaseModel{
      * 下发验证码
      */
     Observable sendVerifyCode(String phone);
+
+    /**
+     * 登陆
+     */
+    Observable login(String phone, String wxOpenId, double lng, double lat, String registrationId, String code);
 }

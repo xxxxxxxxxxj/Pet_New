@@ -22,13 +22,14 @@ import com.haotang.easyshare.mvp.model.entity.table.MovieCollect;
 import com.haotang.easyshare.mvp.presenter.MainPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
+import com.haotang.easyshare.mvp.view.fragment.HotFragment;
 import com.haotang.easyshare.mvp.view.fragment.MainFragment;
 import com.haotang.easyshare.mvp.view.fragment.MyFragment;
-import com.haotang.easyshare.mvp.view.fragment.HotFragment;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UpdateUtil;
 import com.ljy.devring.DevRing;
@@ -94,7 +95,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-        DevRing.cacheManager().spCache().put("guide", true);
+        SharedPreferenceUtil.getInstance(MainActivity.this).saveBoolean("guide", true);
         permissionDialog.setPositiveButton(R.string.permission_request_dialog_pos);
         permissionDialog.setNegativeButton(R.string.permission_request_dialog_nav);
 

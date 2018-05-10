@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.SendVerifyCodeBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
@@ -15,4 +16,8 @@ public interface ILoginView extends IBaseView{
     void sendVerifyCodeSuccess(SendVerifyCodeBean data);
 
     void sendVerifyCodeFail(int status, String desc);
+
+    void loginSuccess(LoginBean data);
+
+    void loginFail(int status, String desc);
 }

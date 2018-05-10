@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LoginActivityModule;
+import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
+import com.haotang.easyshare.mvp.model.entity.res.SendVerifyCodeBean;
 import com.haotang.easyshare.mvp.presenter.LoginPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.ILoginView;
@@ -22,9 +24,11 @@ import com.haotang.easyshare.shareutil.login.LoginPlatform;
 import com.haotang.easyshare.shareutil.login.LoginResult;
 import com.haotang.easyshare.shareutil.login.result.BaseToken;
 import com.haotang.easyshare.util.CountdownUtil;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RingToast;
 
 import javax.inject.Inject;
 
@@ -55,6 +59,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     TextView tvLoginQita;
     @BindView(R.id.iv_login_wxlogin)
     ImageView ivLoginWxlogin;
+    private String wxOpenId;
+    private double lng;
+    private double lat;
 
     @Override
     protected int getContentLayout() {
@@ -171,24 +178,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 finish();
                 break;
             case R.id.tv_login_hqyzm:
-                mPresenter.sendVerifyCode(LoginActivity.this, etLoginPhone.getText().toString().trim().replace(" ", ""));
-                CountdownUtil.getInstance().newTimer(60000, 1000, new CountdownUtil.ICountDown() {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        tvLoginHqyzm.setBackgroundResource(R.mipmap.bg_sms_no);
-                        tvLoginHqyzm.setEnabled(false);
-                        tvLoginHqyzm.setText((millisUntilFinished / 1000) + "s");
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        tvLoginHqyzm.setBackgroundResource(R.mipmap.bg_sms_yes);
-                        tvLoginHqyzm.setEnabled(true);
-                        tvLoginHqyzm.setText("重新获取");
-                    }
-                }, "LOGIN_TIMER");
+                mPresenter.sendVerifyCode(etLoginPhone.getText().toString().trim().replace(" ", ""));
                 break;
             case R.id.iv_login_login:
+                mPresenter.login(etLoginPhone.getText().toString().trim().replace(" ", ""), wxOpenId, lng, lat,
+                        SharedPreferenceUtil.getInstance(LoginActivity.this).getString("jpush_id", ""),
+                        etLoginYzm.getText().toString().trim().replace(" ", ""));
                 break;
             case R.id.iv_login_wxlogin:
                 LoginUtil.login(LoginActivity.this, LoginPlatform.WX, new LoginListener() {
@@ -216,5 +211,41 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 });
                 break;
         }
+    }
+
+    @Override
+    public void sendVerifyCodeSuccess(SendVerifyCodeBean data) {
+        CountdownUtil.getInstance().newTimer(60000, 1000, new CountdownUtil.ICountDown() {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                tvLoginHqyzm.setBackgroundResource(R.mipmap.bg_sms_no);
+                tvLoginHqyzm.setEnabled(false);
+                tvLoginHqyzm.setText((millisUntilFinished / 1000) + "s");
+            }
+
+            @Override
+            public void onFinish() {
+                tvLoginHqyzm.setBackgroundResource(R.mipmap.bg_sms_yes);
+                tvLoginHqyzm.setEnabled(true);
+                tvLoginHqyzm.setText("重新获取");
+            }
+        }, "LOGIN_TIMER");
+    }
+
+    @Override
+    public void sendVerifyCodeFail(int status, String desc) {
+        RingLog.e(TAG, "LoginActivity sendVerifyCodeFail() status = " + status + "---desc = " + desc);
+        RingToast.show("LoginActivity sendVerifyCodeFail() status = " + status + "---desc = " + desc);
+    }
+
+    @Override
+    public void loginSuccess(LoginBean data) {
+
+    }
+
+    @Override
+    public void loginFail(int status, String desc) {
+        RingLog.e(TAG, "LoginActivity loginFail() status = " + status + "---desc = " + desc);
+        RingToast.show("LoginActivity loginFail() status = " + status + "---desc = " + desc);
     }
 }

@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -32,6 +34,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.webview.MiddlewareChromeClient;
 import com.haotang.easyshare.mvp.view.webview.MiddlewareWebViewClient;
 import com.haotang.easyshare.mvp.view.webview.UIController;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.just.agentweb.AbsAgentWebSettings;
 import com.just.agentweb.AgentWeb;
@@ -151,7 +154,7 @@ public class WebViewActivity extends BaseActivity {
                         + "&imei="
                         + SystemUtil.getIMEI(this)
                         + "&cellPhone="
-                        + DevRing.cacheManager().spCache().getString("cellphone", "") + "&phoneModel="
+                        + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "&phoneModel="
                         + android.os.Build.BRAND + " " + android.os.Build.MODEL
                         + "&phoneSystemVersion=" + "Android "
                         + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
@@ -162,7 +165,7 @@ public class WebViewActivity extends BaseActivity {
                         + "&imei="
                         + SystemUtil.getIMEI(this)
                         + "&cellPhone="
-                        + DevRing.cacheManager().spCache().getString("cellphone", "") + "&phoneModel="
+                        + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "&phoneModel="
                         + android.os.Build.BRAND + " " + android.os.Build.MODEL
                         + "&phoneSystemVersion=" + "Android "
                         + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
@@ -358,6 +361,7 @@ public class WebViewActivity extends BaseActivity {
             super.onReceivedError(view, request, error);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             return shouldOverrideUrlLoading(view, request.getUrl() + "");

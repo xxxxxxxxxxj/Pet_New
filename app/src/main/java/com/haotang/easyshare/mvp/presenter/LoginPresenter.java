@@ -1,8 +1,7 @@
 package com.haotang.easyshare.mvp.presenter;
 
-import android.app.Activity;
-
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.SendVerifyCodeBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.ILoginModel;
@@ -54,6 +53,39 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
                     public void onError(int errType, String errMessage) {
                         if (mIView != null) {
                             mIView.sendVerifyCodeFail(errType, errMessage);
+                        }
+                    }
+                }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 登陆
+     */
+    public void login(String phone, String wxOpenId, double lng, double lat, String registrationId, String code) {
+        DevRing.httpManager().commonRequest(mIModel.login(phone, wxOpenId, lng, lat, registrationId, code),
+                new CommonObserver<HttpResult<LoginBean>>() {
+                    @Override
+                    public void onResult(HttpResult<LoginBean> result) {
+                        if (mIView != null) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    mIView.loginSuccess(result.getData());
+                                } else {
+                                    if (!StringUtil.isNotEmpty(result.getMsg())) {
+                                        mIView.loginFail(AppConfig.SERVER_ERROR, result.getMsg());
+                                    } else {
+                                        mIView.loginFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG
+                                                + "-code=" + result.getCode());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int errType, String errMessage) {
+                        if (mIView != null) {
+                            mIView.loginFail(errType, errMessage);
                         }
                     }
                 }, RxLifecycleUtil.bindUntilDestroy(mIView));
