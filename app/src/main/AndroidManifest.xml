@@ -366,7 +366,7 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="d4d7032a757ebdfb0dd3ad9d" /> <!-- </>值来自开发者平台取得的AppKey -->
+            android:value="98d9a6b39c733d318b9b0559" /> <!-- </>值来自开发者平台取得的AppKey -->
         <!-- 极光推送end -->
         <!-- 第三方登录，分享开始 -->
         <activity
@@ -418,7 +418,7 @@
         <!-- 高德地图开始 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="您的Key" />
+            android:value="74e4d37a922304ce21d5e3bbf0b596c2" />
 
         <service android:name="com.amap.api.location.APSService" />
         <!-- 高德地图结束 -->

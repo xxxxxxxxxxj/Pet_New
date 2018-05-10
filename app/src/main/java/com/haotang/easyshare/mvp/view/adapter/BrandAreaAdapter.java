@@ -22,6 +22,7 @@ import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerClickListener;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,13 +96,13 @@ public class BrandAreaAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == BANNER_BANNER1) {
-            return new BannerViewHolder(mContext, mLayoutInflater.inflate(R.layout.brandarea_banner_viewpager, parent,false));
+            return new BannerViewHolder(mContext, mLayoutInflater.inflate(R.layout.brandarea_banner_viewpager, parent, false));
         } else if (viewType == REXIAO_TV2) {
-            return new ReXiaoTvViewHolder(mContext, mLayoutInflater.inflate(R.layout.brandarea_rexiao_tv, parent,false));
+            return new ReXiaoTvViewHolder(mContext, mLayoutInflater.inflate(R.layout.brandarea_rexiao_tv, parent, false));
         } else if (viewType == REXIAOCAR_LL3) {
-            return new ReXiaoCarLlViewHolder(mContext, mLayoutInflater.inflate(R.layout.brandarea_rexiao_ll, parent,false));
+            return new ReXiaoCarLlViewHolder(mContext, mLayoutInflater.inflate(R.layout.brandarea_rexiao_ll, parent, false));
         } else if (viewType == AD_GV4) {
-            return new AdGvViewHolder(mContext, mLayoutInflater.inflate(R.layout.brandarea_ad_gv, parent,false));
+            return new AdGvViewHolder(mContext, mLayoutInflater.inflate(R.layout.brandarea_ad_gv, parent, false));
         }
         return null;
     }
@@ -288,15 +289,16 @@ public class BrandAreaAdapter extends RecyclerView.Adapter {
 
         public void setData(List<BrandAreaBean.BannerBean> module0data) {
             //得到图片地址的集合
-            List<String> imageUrls=new ArrayList<>();
-            for (int i=0;i<module0data.size();i++){
-                String image=module0data.get(i).getImg();
+            List<String> imageUrls = new ArrayList<>();
+            for (int i = 0; i < module0data.size(); i++) {
+                String image = module0data.get(i).getImg();
                 imageUrls.add(image);
             }
             banner.setImages(imageUrls).setImageLoader(new GlideImageLoader()).start();
-            banner.setOnBannerClickListener(new OnBannerClickListener() {
+            banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
+
                 }
             });
         }

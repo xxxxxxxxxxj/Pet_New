@@ -13,6 +13,7 @@
         android:background="@color/black" />
 
     <LinearLayout
+        android:id="@+id/ll_mainbottom"
         android:layout_width="match_parent"
         android:layout_height="367dip"
         android:layout_alignParentBottom="true"

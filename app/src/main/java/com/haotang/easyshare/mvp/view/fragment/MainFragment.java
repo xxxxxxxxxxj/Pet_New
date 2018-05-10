@@ -463,6 +463,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             pWinBottomDialog.setAnimationStyle(R.style.mypopwindow_anim_style);
             pWinBottomDialog.setWidth(SystemUtil.getDisplayMetrics(mActivity)[0]);
             pWinBottomDialog.showAtLocation(customView, Gravity.BOTTOM, 0, 0);
+            mainFragmenBoDa.getLl_mainbottom().bringToFront();
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomName(), mainFragmentData.getName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomJuli(), mainFragmentData.getJuli(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomXxdz(), mainFragmentData.getAddress(), "", View.VISIBLE, View.VISIBLE);
@@ -494,6 +495,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 @Override
                 public void onClick(View v) {
                     pWinBottomDialog.dismiss();
+                }
+            });
+            mainFragmenBoDa.getLl_mainbottom().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
                 }
             });
             mainFragmenBoDa.getLlMainbottomDaohang().setOnClickListener(new View.OnClickListener() {

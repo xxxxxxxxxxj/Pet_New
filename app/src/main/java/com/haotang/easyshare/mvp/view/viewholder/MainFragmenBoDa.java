@@ -61,6 +61,16 @@ public class MainFragmenBoDa {
     TextView tvMainbottomXxdz;
     @BindView(R.id.tv_mainbottom_pl)
     TextView tv_mainbottom_pl;
+    @BindView(R.id.ll_mainbottom)
+    LinearLayout ll_mainbottom;
+
+    public LinearLayout getLl_mainbottom() {
+        return ll_mainbottom;
+    }
+
+    public void setLl_mainbottom(LinearLayout ll_mainbottom) {
+        this.ll_mainbottom = ll_mainbottom;
+    }
 
     public ImageView getIvMainbottomBg() {
         return ivMainbottomBg;
