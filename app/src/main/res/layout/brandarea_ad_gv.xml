@@ -22,8 +22,8 @@
 
         <ImageView
             android:id="@+id/iv_brand_area_ad_close"
-            android:layout_width="14dip"
-            android:layout_height="14dip"
+            android:layout_width="11dip"
+            android:layout_height="11dip"
             android:layout_alignParentRight="true"
             android:scaleType="fitXY"
             android:src="@mipmap/icon_dia_close" />
