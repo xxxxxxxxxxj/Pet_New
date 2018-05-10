@@ -414,22 +414,20 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 addChargeBoDa.getLlAddchargeBottomSelectpayway().setVisibility(View.GONE);
                 addChargeBoDa.getRlAddchargeBottomSelecttime().setVisibility(View.VISIBLE);
 
-                RingLog.d(TAG,"density = " + getResources().getDisplayMetrics().density);
-                RingLog.d(TAG,"textsize = " + addChargeBoDa.getTvAddchargeBottomTitle().getTextSize());
+                RingLog.d(TAG, "density = " + getResources().getDisplayMetrics().density);
+                RingLog.d(TAG, "textsize = " + addChargeBoDa.getTvAddchargeBottomTitle().getTextSize());
 
-                addChargeBoDa.getWv_addcharge_bottom_starttime().setTextSize(addChargeBoDa.getTvAddchargeBottomTitle().getTextSize());
+                addChargeBoDa.getWv_addcharge_bottom_starttime().setTextSize(16 * getResources().getDisplayMetrics().density / 3);
                 addChargeBoDa.getWv_addcharge_bottom_starttime().setTextColorCenter(getResources().getColor(R.color.a333333));
                 addChargeBoDa.getWv_addcharge_bottom_starttime().setTextColorOut(getResources().getColor(R.color.a999999));
                 addChargeBoDa.getWv_addcharge_bottom_starttime().setAdapter(new ArrayWheelAdapter<String>(Arrays.asList(time)));
                 addChargeBoDa.getWv_addcharge_bottom_starttime().setCyclic(true);//循环滚动
                 addChargeBoDa.getWv_addcharge_bottom_starttime().setCurrentItem(0);
-                addChargeBoDa.getWv_addcharge_bottom_starttime().setGravity(Gravity.CENTER);
                 addChargeBoDa.getWv_addcharge_bottom_starttime().setDividerColor(getResources().getColor(R.color.a979797));
 
-                addChargeBoDa.getWv_addcharge_bottom_endtime().setTextSize(addChargeBoDa.getTvAddchargeBottomTitle().getTextSize());
+                addChargeBoDa.getWv_addcharge_bottom_endtime().setTextSize(16 * getResources().getDisplayMetrics().density / 3);
                 addChargeBoDa.getWv_addcharge_bottom_endtime().setAdapter(new ArrayWheelAdapter<String>(Arrays.asList(time)));
                 addChargeBoDa.getWv_addcharge_bottom_endtime().setCyclic(true);//循环滚动
-                addChargeBoDa.getWv_addcharge_bottom_starttime().setGravity(Gravity.CENTER);
                 addChargeBoDa.getWv_addcharge_bottom_endtime().setTextColorCenter(getResources().getColor(R.color.a333333));
                 addChargeBoDa.getWv_addcharge_bottom_endtime().setTextColorOut(getResources().getColor(R.color.a999999));
                 addChargeBoDa.getWv_addcharge_bottom_endtime().setCurrentItem(0);
