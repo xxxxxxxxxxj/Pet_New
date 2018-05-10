@@ -282,8 +282,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2,
                                       int arg3) {
-                query = new PoiSearch.Query(StringUtil.checkEditText(etMainfragSerch), "", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
-                //query.setPageSize(10);// 设置每页最多返回多少条poiitem
+                query = new PoiSearch.Query(StringUtil.checkEditText(etMainfragSerch), "", "027");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+                query.setPageSize(100);// 设置每页最多返回多少条poiitem
                 query.setPageNum(0);// 设置查第一页
                 poiSearch = new PoiSearch(mActivity, query);
                 poiSearch.setOnPoiSearchListener(MainFragment.this);
@@ -356,19 +356,19 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onMyLocationChange(Location location) {
         // 定位回调监听
         if (location != null) {
-            //RingLog.d(TAG, "onMyLocationChange 定位成功， lat: " + location.getLatitude() + " lon: " + location.getLongitude());
+            RingLog.d(TAG, "onMyLocationChange 定位成功， lat: " + location.getLatitude() + " lon: " + location.getLongitude());
             Bundle bundle = location.getExtras();
             if (bundle != null) {
                 int errorCode = bundle.getInt(MyLocationStyle.ERROR_CODE);
                 String errorInfo = bundle.getString(MyLocationStyle.ERROR_INFO);
                 // 定位类型，可能为GPS WIFI等，具体可以参考官网的定位SDK介绍
                 int locationType = bundle.getInt(MyLocationStyle.LOCATION_TYPE);
-                //RingLog.d(TAG, "定位信息， code: " + errorCode + " errorInfo: " + errorInfo + " locationType: " + locationType);
+                RingLog.d(TAG, "定位信息， code: " + errorCode + " errorInfo: " + errorInfo + " locationType: " + locationType);
             } else {
-                //RingLog.d(TAG, "定位信息， bundle is null ");
+                RingLog.d(TAG, "定位信息， bundle is null ");
             }
         } else {
-            //RingLog.d(TAG, "定位失败");
+            RingLog.d(TAG, "定位失败");
         }
     }
 
@@ -558,10 +558,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         for (int i = 0; i < poiItems.size(); i++) {
                             PoiItem poiItem = poiItems.get(i);
                             if (poiItem != null) {
-                                serchList.add(new SerchResult(poiItem.getAdName(), poiItem.getDirection(),
+                                serchList.add(new SerchResult(poiItem.getTitle(), poiItem.getAdName(),
                                         poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude()));
                             }
                         }
+                        rll_mainfrag_serchresult.bringToFront();
                         rll_mainfrag_serchresult.setVisibility(View.VISIBLE);
                         rv_mainfrag_serchresult.setHasFixedSize(true);
                         rv_mainfrag_serchresult.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -571,7 +572,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         mainSerchResultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                                rll_mainfrag_serchresult.setVisibility(View.GONE);
                             }
                         });
                     } else {

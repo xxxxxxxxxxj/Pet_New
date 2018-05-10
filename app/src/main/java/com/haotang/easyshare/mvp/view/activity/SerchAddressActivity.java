@@ -102,7 +102,7 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
                 RingLog.d(TAG, "关键字 = " + StringUtil.checkEditText(etSerchaddress));
                 query = new PoiSearch.Query(StringUtil.checkEditText(etSerchaddress), "", "027");// 第一个参数表示搜索字符串，
                 // 第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
-                query.setPageSize(10);// 设置每页最多返回多少条poiitem
+                query.setPageSize(100);// 设置每页最多返回多少条poiitem
                 query.setPageNum(0);// 设置查第一页
                 poiSearch = new PoiSearch(SerchAddressActivity.this, query);
                 poiSearch.setOnPoiSearchListener(SerchAddressActivity.this);
@@ -155,8 +155,11 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
                     for (int i = 0; i < poiItems.size(); i++) {
                         PoiItem poiItem = poiItems.get(i);
                         if (poiItem != null) {
-                            RingLog.d(TAG, "poiItem = " + poiItem.toString());
-                            serchList.add(new SerchResult(poiItem.getTitle(), poiItem.getDirection(),
+                            RingLog.d(TAG, "poiItem.getTitle() = " + poiItem.getTitle());
+                            RingLog.d(TAG, "poiItem.getAdName() = " + poiItem.getAdName());
+                            RingLog.d(TAG, "poiItem.getLatLonPoint().getLatitude() = " + poiItem.getLatLonPoint().getLatitude());
+                            RingLog.d(TAG, "poiItem.getLatLonPoint().getLongitude() = " + poiItem.getLatLonPoint().getLongitude());
+                            serchList.add(new SerchResult(poiItem.getTitle(), poiItem.getAdName(),
                                     poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude()));
                         }
                     }

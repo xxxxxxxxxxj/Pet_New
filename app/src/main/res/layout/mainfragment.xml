@@ -100,6 +100,7 @@
         android:id="@+id/rll_mainfrag_serchresult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="15dip"
         android:layout_below="@id/rll_mainfrag_serch"
         android:layout_marginLeft="15dip"
         android:layout_marginRight="15dip"
