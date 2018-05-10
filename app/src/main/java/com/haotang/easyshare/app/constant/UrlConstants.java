@@ -1,10 +1,14 @@
 package com.haotang.easyshare.app.constant;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>Title:${type_name}</p>
@@ -15,6 +19,7 @@ import com.ljy.devring.DevRing;
  * @date XJ on 2018/4/11 11:30
  */
 public class UrlConstants {
+
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境
     }
@@ -34,7 +39,7 @@ public class UrlConstants {
                 url = "http://demo.cwjia.cn/";
                 break;
             case 3://线上环境
-                url = "https://api.cwjia.cn/";
+                url = "https://api.sayiyinxiang.com/api";
                 break;
             default:
                 break;
@@ -52,7 +57,7 @@ public class UrlConstants {
                 url = "http://demo.cwjia.cn/pet-api/";
                 break;
             case 3://线上环境
-                url = "https://api.ichongwujia.com/";
+                url = "https://api.sayiyinxiang.com/api";
                 break;
             default:
                 break;
@@ -70,7 +75,7 @@ public class UrlConstants {
                 url = "http://192.168.0.248/";
                 break;
             case 3://线上环境
-                url = "https://m.cwjia.cn/";
+                url = "https://api.sayiyinxiang.com/api";
                 break;
             default:
                 break;
@@ -84,7 +89,7 @@ public class UrlConstants {
                     + "&system=android_" + SystemUtil.getCurrentVersion(activity)
                     + "&imei="
                     + SystemUtil.getIMEI(activity)
-                    + "&cellPhone="
+                    + "&phone="
                     + DevRing.cacheManager().spCache().getString("cellphone", "") + "&phoneModel="
                     + android.os.Build.BRAND + " " + android.os.Build.MODEL
                     + "&phoneSystemVersion=" + "Android "
@@ -95,7 +100,7 @@ public class UrlConstants {
                     + "?system=android_" + SystemUtil.getCurrentVersion(activity)
                     + "&imei="
                     + SystemUtil.getIMEI(activity)
-                    + "&cellPhone="
+                    + "&phone="
                     + DevRing.cacheManager().spCache().getString("cellphone", "") + "&phoneModel="
                     + android.os.Build.BRAND + " " + android.os.Build.MODEL
                     + "&phoneSystemVersion=" + "Android "
@@ -109,4 +114,20 @@ public class UrlConstants {
     public static final String GET_LASTVERSION_DATA = getServiceBaseUrlNew() + "user/checkversion?";
     public static final String GET_BOTTOMBAR_DATA = getServiceBaseUrl() + "pet/user/index?";
     public static final String GET_MAINFRAG_DATA = getServiceBaseUrl() + "pet/user/index?";
+    /**
+     * 下发验证码
+     */
+    public static final String SENDVERIFYCODE = "/user/info/sendVerifyCode";
+
+    public static Map<String, String> getMapHeader(Context context) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("system", "android_" + SystemUtil.getCurrentVersion(context));
+        map.put("imei", SystemUtil.getIMEI(context));
+        map.put("phone", DevRing.cacheManager().spCache().getString("cellphone", ""));
+        map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
+        map.put("phoneSystemVersion", "Android "
+                + android.os.Build.VERSION.RELEASE);
+        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));
+        return map;
+    }
 }

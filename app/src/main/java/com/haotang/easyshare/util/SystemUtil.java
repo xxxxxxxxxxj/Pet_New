@@ -43,6 +43,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -106,7 +107,7 @@ public class SystemUtil {
      * @param activity
      * @return
      */
-    public static String getIMEI(final Activity activity) {
+    public static String getIMEI(final Context activity) {
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(activity.TELEPHONY_SERVICE);
         return tm.getDeviceId();
     }

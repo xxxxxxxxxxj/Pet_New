@@ -171,6 +171,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 finish();
                 break;
             case R.id.tv_login_hqyzm:
+                mPresenter.sendVerifyCode(LoginActivity.this, etLoginPhone.getText().toString().trim().replace(" ", ""));
                 CountdownUtil.getInstance().newTimer(60000, 1000, new CountdownUtil.ICountDown() {
                     @Override
                     public void onTick(long millisUntilFinished) {
