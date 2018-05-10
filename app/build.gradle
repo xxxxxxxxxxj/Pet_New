@@ -30,10 +30,10 @@ android {
         config {
             //签名文件在项目根目录下
             //KEY_ALIAS，KEY_PASSWORD，STORE_PASSWORD写在项目根目录下的gradle.properties里
-            keyAlias KEY_ALIAS
-            keyPassword KEY_PASSWORD
+            keyAlias 'easyshare'
+            keyPassword 'easyshare'
             storeFile file('../easyshare.jks')
-            storePassword STORE_PASSWORD
+            storePassword 'easyshare'
         }
     }
 
