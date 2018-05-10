@@ -27,6 +27,7 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import butterknife.OnClick;
  * 搜索地址页
  */
 public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> implements ISerchAddressView, PoiSearch.OnPoiSearchListener {
+    protected final static String TAG = SerchAddressActivity.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.et_serchaddress)
@@ -87,16 +89,20 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
         mainSerchResultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                DevRing.busManager().postEvent(serchList.get(position));
-                finish();
+                if (!serchList.get(position).isFake()) {
+                    DevRing.busManager().postEvent(serchList.get(position));
+                    finish();
+                }
             }
         });
         etSerchaddress.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2,
                                       int arg3) {
-                query = new PoiSearch.Query(StringUtil.checkEditText(etSerchaddress), "", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
-                //query.setPageSize(10);// 设置每页最多返回多少条poiitem
+                RingLog.d(TAG, "关键字 = " + StringUtil.checkEditText(etSerchaddress));
+                query = new PoiSearch.Query(StringUtil.checkEditText(etSerchaddress), "", "027");// 第一个参数表示搜索字符串，
+                // 第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+                query.setPageSize(10);// 设置每页最多返回多少条poiitem
                 query.setPageNum(0);// 设置查第一页
                 poiSearch = new PoiSearch(SerchAddressActivity.this, query);
                 poiSearch.setOnPoiSearchListener(SerchAddressActivity.this);
@@ -138,24 +144,27 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
     public void onPoiSearched(PoiResult result, int rCode) {
         if (rCode == AMapException.CODE_AMAP_SUCCESS) {
             if (result != null && result.getQuery() != null) {// 搜索poi的结果
-                if (result.getQuery().equals(query)) {// 是否是同一条
-                    // 取得搜索到的poiitems有多少页
-                    List<PoiItem> poiItems = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
-                    if (poiItems != null && poiItems.size() > 0) {
-                        serchList.clear();
-                        serchList.add(new SerchResult("目的地", "", 0, 0));
-                        for (int i = 0; i < poiItems.size(); i++) {
-                            PoiItem poiItem = poiItems.get(i);
-                            if (poiItem != null) {
-                                serchList.add(new SerchResult(poiItem.getAdName(), poiItem.getDirection(),
-                                        poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude()));
-                            }
+                //if (result.getQuery().equals(query)) {// 是否是同一条
+                // 取得搜索到的poiitems有多少页
+                List<PoiItem> poiItems = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+                if (poiItems != null && poiItems.size() > 0) {
+                    RingLog.d(TAG, "poiItems.size() = " + poiItems.size());
+                    RingLog.d(TAG, "poiItems = " + poiItems.toString());
+                    serchList.clear();
+                    serchList.add(new SerchResult("目的地", "", 0, 0, true));
+                    for (int i = 0; i < poiItems.size(); i++) {
+                        PoiItem poiItem = poiItems.get(i);
+                        if (poiItem != null) {
+                            RingLog.d(TAG, "poiItem = " + poiItem.toString());
+                            serchList.add(new SerchResult(poiItem.getTitle(), poiItem.getDirection(),
+                                    poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude()));
                         }
-                        mainSerchResultAdapter.notifyDataSetChanged();
-                    } else {
-                        RingToast.show(R.string.no_result);
                     }
+                    mainSerchResultAdapter.notifyDataSetChanged();
+                } else {
+                    RingToast.show(R.string.no_result);
                 }
+                //}
             } else {
                 RingToast.show(R.string.no_result);
             }

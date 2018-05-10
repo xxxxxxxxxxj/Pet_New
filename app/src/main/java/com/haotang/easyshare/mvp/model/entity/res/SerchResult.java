@@ -13,8 +13,25 @@ public class SerchResult {
     private String desc;
     private double lat;
     private double lng;
+    private boolean isFake;
+
+    public boolean isFake() {
+        return isFake;
+    }
+
+    public void setFake(boolean fake) {
+        isFake = fake;
+    }
 
     public SerchResult() {
+    }
+
+    public SerchResult(String name, String desc, double lat, double lng, boolean isFake) {
+        this.name = name;
+        this.desc = desc;
+        this.lat = lat;
+        this.lng = lng;
+        this.isFake = isFake;
     }
 
     public SerchResult(String name, String desc, double lat, double lng) {
