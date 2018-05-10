@@ -16,6 +16,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.adapter.ArrayWheelAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
@@ -46,6 +47,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -64,6 +66,7 @@ import top.zibin.luban.Luban;
  * 添加充电站界面
  */
 public class AddChargeActivity extends BaseActivity<AddChargePresenter> implements IAddChargeView {
+    protected final static String TAG = AddChargeActivity.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.iv_titlebar_back)
@@ -127,6 +130,9 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     private AddChargeBoDa addChargeBoDa;
     private PopupWindow pWinBottomDialog;
     private int payWay = 0;
+    private String[] time =
+            {"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00"
+                    , "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
 
     @Override
     protected int getContentLayout() {
@@ -395,7 +401,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             if (flag == 1) {//支付方式
                 addChargeBoDa.getTvAddchargeBottomTitle().setText("支付方式");
                 addChargeBoDa.getLlAddchargeBottomSelectpayway().setVisibility(View.VISIBLE);
-                addChargeBoDa.getLlAddchargeBottomSelecttime().setVisibility(View.GONE);
+                addChargeBoDa.getRlAddchargeBottomSelecttime().setVisibility(View.GONE);
                 if (payWay == 1) {//微信
                     addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_select);
                     addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_unselect);
@@ -406,7 +412,29 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             } else if (flag == 2) {//开放时间
                 addChargeBoDa.getTvAddchargeBottomTitle().setText("选择时间");
                 addChargeBoDa.getLlAddchargeBottomSelectpayway().setVisibility(View.GONE);
-                addChargeBoDa.getLlAddchargeBottomSelecttime().setVisibility(View.VISIBLE);
+                addChargeBoDa.getRlAddchargeBottomSelecttime().setVisibility(View.VISIBLE);
+
+                RingLog.d(TAG,"density = " + getResources().getDisplayMetrics().density);
+                RingLog.d(TAG,"textsize = " + addChargeBoDa.getTvAddchargeBottomTitle().getTextSize());
+
+                addChargeBoDa.getWv_addcharge_bottom_starttime().setTextSize(addChargeBoDa.getTvAddchargeBottomTitle().getTextSize());
+                addChargeBoDa.getWv_addcharge_bottom_starttime().setTextColorCenter(getResources().getColor(R.color.a333333));
+                addChargeBoDa.getWv_addcharge_bottom_starttime().setTextColorOut(getResources().getColor(R.color.a999999));
+                addChargeBoDa.getWv_addcharge_bottom_starttime().setAdapter(new ArrayWheelAdapter<String>(Arrays.asList(time)));
+                addChargeBoDa.getWv_addcharge_bottom_starttime().setCyclic(true);//循环滚动
+                addChargeBoDa.getWv_addcharge_bottom_starttime().setCurrentItem(0);
+                addChargeBoDa.getWv_addcharge_bottom_starttime().setGravity(Gravity.CENTER);
+                addChargeBoDa.getWv_addcharge_bottom_starttime().setDividerColor(getResources().getColor(R.color.a979797));
+
+                addChargeBoDa.getWv_addcharge_bottom_endtime().setTextSize(addChargeBoDa.getTvAddchargeBottomTitle().getTextSize());
+                addChargeBoDa.getWv_addcharge_bottom_endtime().setAdapter(new ArrayWheelAdapter<String>(Arrays.asList(time)));
+                addChargeBoDa.getWv_addcharge_bottom_endtime().setCyclic(true);//循环滚动
+                addChargeBoDa.getWv_addcharge_bottom_starttime().setGravity(Gravity.CENTER);
+                addChargeBoDa.getWv_addcharge_bottom_endtime().setTextColorCenter(getResources().getColor(R.color.a333333));
+                addChargeBoDa.getWv_addcharge_bottom_endtime().setTextColorOut(getResources().getColor(R.color.a999999));
+                addChargeBoDa.getWv_addcharge_bottom_endtime().setCurrentItem(0);
+                addChargeBoDa.getWv_addcharge_bottom_endtime().setDividerColor(getResources().getColor(R.color.a979797));
+
             }
             addChargeBoDa.getRlAddchargeBottomWx().setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -427,14 +455,17 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                         if (payWay == 0) {//未选择
                             RingToast.show("请选择支付方式");
                         } else if (payWay == 1) {//微信
-                            pWinBottomDialog.dismiss();
                             tvAddchargeZffs.setText("微信支付");
-                        } else if (payWay == 2) {//支付宝
                             pWinBottomDialog.dismiss();
+                        } else if (payWay == 2) {//支付宝
                             tvAddchargeZffs.setText("支付宝支付");
+                            pWinBottomDialog.dismiss();
                         }
                     } else if (flag == 2) {//开放时间
-
+                        tvAddchargeKfsj.setText(
+                                time[addChargeBoDa.getWv_addcharge_bottom_starttime().getCurrentItem()]
+                                        + " - " + time[addChargeBoDa.getWv_addcharge_bottom_endtime().getCurrentItem()]);
+                        pWinBottomDialog.dismiss();
                     }
                 }
             });

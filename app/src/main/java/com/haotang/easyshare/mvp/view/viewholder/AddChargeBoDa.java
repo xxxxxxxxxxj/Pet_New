@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.contrarywind.view.WheelView;
 import com.flyco.roundview.RoundLinearLayout;
 import com.haotang.easyshare.R;
 
@@ -43,10 +44,30 @@ public class AddChargeBoDa {
     RelativeLayout rlAddchargeBottomZfb;
     @BindView(R.id.ll_addcharge_bottom_selectpayway)
     LinearLayout llAddchargeBottomSelectpayway;
-    @BindView(R.id.ll_addcharge_bottom_selecttime)
-    LinearLayout llAddchargeBottomSelecttime;
+    @BindView(R.id.rl_addcharge_bottom_selecttime)
+    RelativeLayout rlAddchargeBottomSelecttime;
     @BindView(R.id.rll_addcharge_bottom)
     RoundLinearLayout rllAddchargeBottom;
+    @BindView(R.id.wv_addcharge_bottom_starttime)
+    WheelView wv_addcharge_bottom_starttime;
+    @BindView(R.id.wv_addcharge_bottom_endtime)
+    WheelView wv_addcharge_bottom_endtime;
+
+    public WheelView getWv_addcharge_bottom_starttime() {
+        return wv_addcharge_bottom_starttime;
+    }
+
+    public void setWv_addcharge_bottom_starttime(WheelView wv_addcharge_bottom_starttime) {
+        this.wv_addcharge_bottom_starttime = wv_addcharge_bottom_starttime;
+    }
+
+    public WheelView getWv_addcharge_bottom_endtime() {
+        return wv_addcharge_bottom_endtime;
+    }
+
+    public void setWv_addcharge_bottom_endtime(WheelView wv_addcharge_bottom_endtime) {
+        this.wv_addcharge_bottom_endtime = wv_addcharge_bottom_endtime;
+    }
 
     public ImageView getIvAddchargeBottomBg() {
         return ivAddchargeBottomBg;
@@ -136,12 +157,12 @@ public class AddChargeBoDa {
         this.llAddchargeBottomSelectpayway = llAddchargeBottomSelectpayway;
     }
 
-    public LinearLayout getLlAddchargeBottomSelecttime() {
-        return llAddchargeBottomSelecttime;
+    public RelativeLayout getRlAddchargeBottomSelecttime() {
+        return rlAddchargeBottomSelecttime;
     }
 
-    public void setLlAddchargeBottomSelecttime(LinearLayout llAddchargeBottomSelecttime) {
-        this.llAddchargeBottomSelecttime = llAddchargeBottomSelecttime;
+    public void setRlAddchargeBottomSelecttime(RelativeLayout rlAddchargeBottomSelecttime) {
+        this.rlAddchargeBottomSelecttime = rlAddchargeBottomSelecttime;
     }
 
     public RoundLinearLayout getRllAddchargeBottom() {

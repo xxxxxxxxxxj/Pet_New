@@ -16,6 +16,8 @@
             <option value="$PROJECT_DIR$/fragmentation_swipeback" />
             <option value="$PROJECT_DIR$/matisse" />
             <option value="$PROJECT_DIR$/photoview" />
+            <option value="$PROJECT_DIR$/pickerview" />
+            <option value="$PROJECT_DIR$/wheelview" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
