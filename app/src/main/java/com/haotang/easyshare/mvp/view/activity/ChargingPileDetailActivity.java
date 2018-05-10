@@ -146,7 +146,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 dialog.show(getSupportFragmentManager());
                 break;
             case R.id.ll_chargingdetail_pl:
-                startActivity(new Intent(ChargingPileDetailActivity.this,CommentActivity.class));
+                startActivity(new Intent(ChargingPileDetailActivity.this,CommentDetailActivity.class));
                 break;
             case R.id.iv_chargingdetail_lt:
                 break;

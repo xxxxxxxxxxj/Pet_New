@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.haotang.easyshare.R;
-import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerFlashActivityCommponent;
 import com.haotang.easyshare.di.module.activity.FlashActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.FlashBean;
@@ -14,6 +13,7 @@ import com.haotang.easyshare.mvp.presenter.FlashPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IFlashView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.ChannelUtil;
 import com.haotang.easyshare.util.CountdownUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemTypeUtil;
@@ -22,8 +22,6 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.other.permission.PermissionListener;
 import com.ljy.devring.util.RingToast;
-
-import java.util.Map;
 
 import javax.inject.Inject;
 
