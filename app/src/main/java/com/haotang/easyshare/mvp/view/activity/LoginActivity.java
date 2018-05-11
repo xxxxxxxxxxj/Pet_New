@@ -222,13 +222,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
-                DevRing.configureHttp()//配置retrofit
-                        .setMapHeader(UrlConstants.getMapHeader(getApplicationContext(),
-                                etLoginPhone.getText().toString().trim().replace(" ", "")));//设置全局的header信息
-                Map<String, String> mapHeader =
-                        DevRing.configureHttp().getMapHeader();
-                RingLog.d(TAG, " mapHeader = " + mapHeader.toString());
-                mPresenter.sendVerifyCode();
+                mPresenter.sendVerifyCode(etLoginPhone.getText().toString().trim().replace(" ", ""));
                 break;
             case R.id.iv_login_login:
                 if (StringUtil.isEmpty(StringUtil.checkEditText(etLoginPhone))) {
@@ -244,13 +238,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     etLoginYzm.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
-                DevRing.configureHttp()//配置retrofit
-                        .setMapHeader(UrlConstants.getMapHeader(getApplicationContext(),
-                                etLoginPhone.getText().toString().trim().replace(" ", "")));//设置全局的header信息
-                Map<String, String> mapHeader1 =
-                        DevRing.configureHttp().getMapHeader();
-                RingLog.d(TAG, " mapHeader1 = " + mapHeader1.toString());
-                mPresenter.login(wxOpenId, lng, lat,
+                mPresenter.login(etLoginPhone.getText().toString().trim().replace(" ", ""), wxOpenId, lng, lat,
                         SharedPreferenceUtil.getInstance(LoginActivity.this).getString("jpush_id", ""),
                         etLoginYzm.getText().toString().trim().replace(" ", ""));
                 break;
@@ -311,6 +299,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     public void loginSuccess(LoginBean data) {
         RingLog.e(TAG, "loginSuccess");
+        SharedPreferenceUtil.getInstance(LoginActivity.this).saveString("cellphone", etLoginPhone.getText().toString().trim().replace(" ", ""));
+        finish();
     }
 
     @Override

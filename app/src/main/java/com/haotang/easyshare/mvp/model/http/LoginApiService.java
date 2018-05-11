@@ -7,6 +7,7 @@ import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 /**
@@ -22,13 +23,13 @@ public interface LoginApiService {
      * 下发验证码
      */
     @GET(UrlConstants.SENDVERIFYCODE)
-    Observable<HttpResult<SendVerifyCodeBean>> sendVerifyCode();
+    Observable<HttpResult<SendVerifyCodeBean>> sendVerifyCode(@Header("phone") String phone);
 
     /**
      * 登陆
      */
     @GET(UrlConstants.LOGIN)
-    Observable<HttpResult<LoginBean>> login(@Query("wxOpenId") String wxOpenId,
+    Observable<HttpResult<LoginBean>> login(@Header("phone") String phone, @Query("wxOpenId") String wxOpenId,
                                             @Query("lng") double lng, @Query("lat") double lat,
                                             @Query("registrationId") String registrationId,
                                             @Query("code") String code);

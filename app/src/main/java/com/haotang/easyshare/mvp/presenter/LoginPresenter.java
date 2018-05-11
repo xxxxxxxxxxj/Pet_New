@@ -28,8 +28,8 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
     /**
      * 下发验证码
      */
-    public void sendVerifyCode() {
-        DevRing.httpManager().commonRequest(mIModel.sendVerifyCode(),
+    public void sendVerifyCode(String phone) {
+        DevRing.httpManager().commonRequest(mIModel.sendVerifyCode(phone),
                 new CommonObserver<HttpResult<SendVerifyCodeBean>>() {
                     @Override
                     public void onResult(HttpResult<SendVerifyCodeBean> result) {
@@ -61,8 +61,8 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
     /**
      * 登陆
      */
-    public void login(String wxOpenId, double lng, double lat, String registrationId, String code) {
-        DevRing.httpManager().commonRequest(mIModel.login(wxOpenId, lng, lat, registrationId, code),
+    public void login(String phone,String wxOpenId, double lng, double lat, String registrationId, String code) {
+        DevRing.httpManager().commonRequest(mIModel.login(phone,wxOpenId, lng, lat, registrationId, code),
                 new CommonObserver<HttpResult<LoginBean>>() {
                     @Override
                     public void onResult(HttpResult<LoginBean> result) {

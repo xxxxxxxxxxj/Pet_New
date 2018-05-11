@@ -16,10 +16,10 @@ public interface ILoginModel extends IBaseModel{
     /**
      * 下发验证码
      */
-    Observable sendVerifyCode();
+    Observable sendVerifyCode(String phone);
 
     /**
      * 登陆
      */
-    Observable login(String wxOpenId, double lng, double lat, String registrationId, String code);
+    Observable login(String phone,String wxOpenId, double lng, double lat, String registrationId, String code);
 }
