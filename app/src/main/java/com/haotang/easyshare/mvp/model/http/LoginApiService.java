@@ -22,13 +22,13 @@ public interface LoginApiService {
      * 下发验证码
      */
     @GET(UrlConstants.SENDVERIFYCODE)
-    Observable<HttpResult<SendVerifyCodeBean>> sendVerifyCode(@Query("phone") String phone);
+    Observable<HttpResult<SendVerifyCodeBean>> sendVerifyCode();
 
     /**
      * 登陆
      */
     @GET(UrlConstants.LOGIN)
-    Observable<HttpResult<LoginBean>> login(@Query("phone") String phone, @Query("wxOpenId") String wxOpenId,
+    Observable<HttpResult<LoginBean>> login(@Query("wxOpenId") String wxOpenId,
                                             @Query("lng") double lng, @Query("lat") double lat,
                                             @Query("registrationId") String registrationId,
                                             @Query("code") String code);

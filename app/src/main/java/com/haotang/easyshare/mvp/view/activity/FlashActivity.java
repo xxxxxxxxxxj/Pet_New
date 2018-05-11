@@ -78,7 +78,7 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
         //使用Dagger2对本类中相关变量进行初始化
         DaggerFlashActivityCommponent.builder().flashActivityModule(new FlashActivityModule(this, this)).build().inject(this);
         DevRing.activityStackManager().pushOneActivity(this);
-        permissionDialog.setMessage(R.string.permission_request_READ_PHONE_STATE);
+        permissionDialog.setMessage("该功能需您授予\"获取手机信息和位置权限\"权限才可正常使用");
     }
 
     @Override
@@ -88,10 +88,8 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
-
         //申请必要权限
-        DevRing.permissionManager().requestEach(FlashActivity.this, new PermissionListener() {
+        DevRing.permissionManager().requestEachCombined(FlashActivity.this, new PermissionListener() {
             @Override
             public void onGranted(String permissionName) {
                 DevRing.configureHttp()//配置retrofit
@@ -109,7 +107,7 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
                 DevRing.configureHttp()//配置retrofit
                         .setMapHeader(UrlConstants.getMapHeaderNoImei(getApplicationContext()));//设置全局的header信息
                 //如果用户拒绝了其中一个授权请求，则提醒用户
-                RingToast.show(R.string.permission_request_READ_PHONE_STATE);
+                RingToast.show("该功能需您授予\"获取手机信息和位置权限\"权限才可正常使用");
                 if (SharedPreferenceUtil.getInstance(FlashActivity.this).getBoolean("guide", false)) {
                     mPresenter.startPageConfig(FlashActivity.this);
                 } else {
@@ -124,7 +122,7 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
                 //如果用户拒绝了其中一个授权请求，且勾选了不再提醒，则需要引导用户到权限管理页面开启
                 permissionDialog.show();
             }
-        }, Manifest.permission.READ_PHONE_STATE);
+        }, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_COARSE_LOCATION);
     }
 
     private void initTimer(final int flag) {

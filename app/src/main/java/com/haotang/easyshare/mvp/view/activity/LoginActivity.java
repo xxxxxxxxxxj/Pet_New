@@ -14,6 +14,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LoginActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
@@ -34,6 +35,8 @@ import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -214,10 +217,26 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
-                mPresenter.sendVerifyCode(etLoginPhone.getText().toString().trim().replace(" ", ""));
+                String replace = etLoginPhone.getText().toString().trim().replace(" ", "");
+                if (replace.length() != 11) {
+                    etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
+                    return;
+                }
+                DevRing.configureHttp()//配置retrofit
+                        .setMapHeader(UrlConstants.getMapHeader(getApplicationContext(),
+                                etLoginPhone.getText().toString().trim().replace(" ", "")));//设置全局的header信息
+                Map<String, String> mapHeader =
+                        DevRing.configureHttp().getMapHeader();
+                RingLog.d(TAG, " mapHeader = " + mapHeader.toString());
+                mPresenter.sendVerifyCode();
                 break;
             case R.id.iv_login_login:
                 if (StringUtil.isEmpty(StringUtil.checkEditText(etLoginPhone))) {
+                    etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
+                    return;
+                }
+                String replace1 = etLoginPhone.getText().toString().trim().replace(" ", "");
+                if (replace1.length() != 11) {
                     etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
@@ -225,7 +244,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     etLoginYzm.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
-                mPresenter.login(etLoginPhone.getText().toString().trim().replace(" ", ""), wxOpenId, lng, lat,
+                DevRing.configureHttp()//配置retrofit
+                        .setMapHeader(UrlConstants.getMapHeader(getApplicationContext(),
+                                etLoginPhone.getText().toString().trim().replace(" ", "")));//设置全局的header信息
+                Map<String, String> mapHeader1 =
+                        DevRing.configureHttp().getMapHeader();
+                RingLog.d(TAG, " mapHeader1 = " + mapHeader1.toString());
+                mPresenter.login(wxOpenId, lng, lat,
                         SharedPreferenceUtil.getInstance(LoginActivity.this).getString("jpush_id", ""),
                         etLoginYzm.getText().toString().trim().replace(" ", ""));
                 break;
@@ -259,6 +284,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void sendVerifyCodeSuccess(SendVerifyCodeBean data) {
+        etLoginYzm.requestFocus();
         CountdownUtil.getInstance().newTimer(60000, 1000, new CountdownUtil.ICountDown() {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -297,12 +323,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     public void onLocationChanged(AMapLocation amapLocation) {
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
-                RingLog.d(TAG, "定位成功lat = "
-                        + lat + ", lng = "
-                        + lng);
                 //定位成功回调信息，设置相关消息
                 lat = amapLocation.getLatitude();//获取纬度
                 lng = amapLocation.getLongitude();//获取经度
+                RingLog.d(TAG, "定位成功lat = "
+                        + lat + ", lng = "
+                        + lng);
                 if (lat > 0 && lng > 0) {
                     mlocationClient.stopLocation();
                 }

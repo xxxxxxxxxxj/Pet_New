@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 
 import java.util.HashMap;
@@ -121,11 +122,25 @@ public class UrlConstants {
      */
     public static final String SENDVERIFYCODE = "user/info/sendVerifyCode";
 
+    public static Map<String, String> getMapHeader(Context context, String phone) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("system", "android_" + SystemUtil.getCurrentVersion(context));
+        map.put("imei", SystemUtil.getIMEI(context));
+        map.put("phone", phone);
+        map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
+        map.put("phoneSystemVersion", "Android "
+                + android.os.Build.VERSION.RELEASE);
+        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));
+        return map;
+    }
+
     public static Map<String, String> getMapHeader(Context context) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("system", "android_" + SystemUtil.getCurrentVersion(context));
         map.put("imei", SystemUtil.getIMEI(context));
-        map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
+        if(StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))){
+            map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
+        }
         map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
         map.put("phoneSystemVersion", "Android "
                 + android.os.Build.VERSION.RELEASE);
@@ -136,7 +151,9 @@ public class UrlConstants {
     public static Map<String, String> getMapHeaderNoImei(Context context) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("system", "android_" + SystemUtil.getCurrentVersion(context));
-        map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
+        if(StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))){
+            map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
+        }
         map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
         map.put("phoneSystemVersion", "Android "
                 + android.os.Build.VERSION.RELEASE);

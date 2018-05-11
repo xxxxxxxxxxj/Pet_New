@@ -19,17 +19,17 @@ public class LoginModel implements ILoginModel {
      * 下发验证码
      */
     @Override
-    public Observable sendVerifyCode(String phone) {
+    public Observable sendVerifyCode() {
         return DevRing.httpManager().getService(LoginApiService.class).
-                sendVerifyCode(phone);
+                sendVerifyCode();
     }
 
     /**
      * 登陆
      */
     @Override
-    public Observable login(String phone, String wxOpenId, double lng, double lat, String registrationId, String code) {
+    public Observable login(String wxOpenId, double lng, double lat, String registrationId, String code) {
         return DevRing.httpManager().getService(LoginApiService.class).
-                login(phone, wxOpenId, lng, lat, registrationId, code);
+                login(wxOpenId, lng, lat, registrationId, code);
     }
 }
