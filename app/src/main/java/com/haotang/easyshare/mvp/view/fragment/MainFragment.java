@@ -6,8 +6,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.ArraySet;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -29,6 +29,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
@@ -41,16 +42,14 @@ import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.roundview.RoundLinearLayout;
 import com.flyco.roundview.RoundRelativeLayout;
+import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MainFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.res.BrandAreaBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.model.entity.res.SerchResult;
@@ -61,12 +60,16 @@ import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.CommentDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
 import com.haotang.easyshare.mvp.view.activity.SwitchCityActivity;
+import com.haotang.easyshare.mvp.view.adapter.BrandAreaAdAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainSerchResultAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
-import com.haotang.easyshare.mvp.view.viewholder.MainFragmenHeader;
+import com.haotang.easyshare.mvp.view.widget.CircleImageView;
+import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
+import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
+import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -80,8 +83,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static cn.jpush.android.api.JPushInterface.a.p;
 
 /**
  * <p>Title:${type_name}</p>
@@ -120,6 +121,32 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     RoundLinearLayout rll_mainfrag_serchresult;
     @BindView(R.id.rv_mainfrag_serchresult)
     RecyclerView rv_mainfrag_serchresult;
+
+    @BindView(R.id.rtv_mainfrag_local)
+    RoundTextView rtvMainfragLocal;
+    @BindView(R.id.tmv_mainfrag_map)
+    MapView tmv_mainfrag_map;
+    @BindView(R.id.ll_mainfrag_rmht)
+    LinearLayout llMainfragRmht;
+    @BindView(R.id.rl_mainfrag_localev_more)
+    LinearLayout rlMainfragLocalevMore;
+    @BindView(R.id.rl_mainfrag_localev)
+    RelativeLayout rlMainfragLocalev;
+    @BindView(R.id.tv_mainfrag_localev_gg)
+    TextView tvMainfragLocalevGg;
+    @BindView(R.id.vw_mainfrag_localev_gg)
+    View vwMainfragLocalevGg;
+    @BindView(R.id.rl_mainfrag_localev_gg)
+    RelativeLayout rlMainfragLocalevGg;
+    @BindView(R.id.tv_mainfrag_localev_gr)
+    TextView tvMainfragLocalevGr;
+    @BindView(R.id.vw_mainfrag_localev_gr)
+    View vwMainfragLocalevGr;
+    @BindView(R.id.rl_mainfrag_localev_gr)
+    RelativeLayout rlMainfragLocalevGr;
+    @BindView(R.id.rv_mainfrag_ad)
+    RecyclerView rv_mainfrag_ad;
+
     private AMap aMap;
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
@@ -127,7 +154,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private List<MainFragChargeBean> list = new ArrayList<MainFragChargeBean>();
     private List<MainFragmentData.PersonalBean> personalList = new ArrayList<MainFragmentData.PersonalBean>();
     private MainLocalAdapter mainLocalAdapter;
-    private MainFragmenHeader mainFragmenHeader;
     private PopupWindow pWinBottomDialog;
     private MainFragmenBoDa mainFragmenBoDa;
     private PoiSearch.Query query;
@@ -143,6 +169,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private AMapLocationClientOption mLocationOption;
     private String cityCode;
     private List<MainFragmentData.PublishBean> publishList = new ArrayList<MainFragmentData.PublishBean>();
+    private List<BrandAreaBean.AdBean> adList = new ArrayList<BrandAreaBean.AdBean>();
+    private BrandAreaAdAdapter brandAreaAdAdapter;
 
     @Override
     protected boolean isLazyLoad() {
@@ -163,14 +191,14 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 .inject(this);
         setAdapter();
         RingLog.d(TAG, "savedInstanceState = " + savedInstanceState);
-        mainFragmenHeader.getTmv_mainfrag_map().onCreate(savedInstanceState);// 此方法必须重写
+        tmv_mainfrag_map.onCreate(savedInstanceState);// 此方法必须重写
         if (aMap == null) {
-            aMap = mainFragmenHeader.getTmv_mainfrag_map().getMap();
+            aMap = tmv_mainfrag_map.getMap();
         }
         mUiSettings = aMap.getUiSettings();
         setUpMap();
         ivMainfragGj.bringToFront();
-        mainFragmenHeader.getRtvMainfragLocal().bringToFront();
+        rtvMainfragLocal.bringToFront();
         rllMainfragSerch.bringToFront();
         setLocation();
     }
@@ -196,9 +224,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     }
 
     private void addMarkersToMap() {
+        RingLog.d(TAG, "list.size() = " + list.size());
         aMap.clear();
         bitmapList.clear();
-        for (int i = 0; i < list.size(); i++) {
+        /*for (int i = 0; i < list.size(); i++) {
             MainFragChargeBean stationsBean = list.get(i);
             if (stationsBean != null) {
                 Glide.with(mActivity)
@@ -208,6 +237,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                RingLog.d(TAG, "onResourceReady bitmapList.size() = " + bitmapList.size());
                                 bitmapList.add(resource);
                                 if (bitmapList.size() == list.size()) {
                                     addMarkers();
@@ -215,18 +245,36 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                             }
                         });
             }
+        }*/
+        for (int i = 0; i < list.size(); i++) {
+            //Bitmap bitmap = bitmapList.get(i);
+            MainFragChargeBean stationsBean = list.get(i);
+            if (stationsBean != null) {
+                //stationsBean.setBitmap(bitmap);
+                View infoWindow = getLayoutInflater().inflate(
+                        R.layout.map_custom_info_window, null);
+                CircleImageView iv_map_custom_info = ((CircleImageView) infoWindow.findViewById(R.id.iv_map_custom_info));
+                //iv_map_custom_info.setImageBitmap(stationsBean.getBitmap());
+                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromView(infoWindow))
+                        .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
+                        .draggable(true);
+                Marker marker = aMap.addMarker(markerOptions);
+                marker.setObject(i);
+            }
         }
     }
 
     private void addMarkers() {
+        RingLog.d(TAG, "list.size() = " + list.size());
+        RingLog.d(TAG, "bitmapList.size() = " + bitmapList.size());
         for (int i = 0; i < list.size(); i++) {
             Bitmap bitmap = bitmapList.get(i);
             MainFragChargeBean stationsBean = list.get(i);
             if (stationsBean != null) {
-                stationsBean.setBitmap(SystemUtil.toCircleBitmap(bitmap));
+                stationsBean.setBitmap(bitmap);
                 View infoWindow = getLayoutInflater().inflate(
                         R.layout.map_custom_info_window, null);
-                ImageView iv_map_custom_info = ((ImageView) infoWindow.findViewById(R.id.iv_map_custom_info));
+                CircleImageView iv_map_custom_info = ((CircleImageView) infoWindow.findViewById(R.id.iv_map_custom_info));
                 iv_map_custom_info.setImageBitmap(stationsBean.getBitmap());
                 MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromView(infoWindow))
                         .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
@@ -239,16 +287,32 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     private void setAdapter() {
         rvMainfragLocalev.setHasFixedSize(true);
-        rvMainfragLocalev.setLayoutManager(new LinearLayoutManager(mActivity));
+        rvMainfragLocalev.setNestedScrollingEnabled(false);
+        NoScollFullLinearLayoutManager noScollFullLinearLayoutManager = new NoScollFullLinearLayoutManager(mActivity);
+        noScollFullLinearLayoutManager.setScrollEnabled(false);
+        rvMainfragLocalev.setLayoutManager(noScollFullLinearLayoutManager);
         mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list, false, city);
-        View top = getLayoutInflater().inflate(R.layout.mainlocal_top_view, (ViewGroup) rvMainfragLocalev.getParent(), false);
-        mainFragmenHeader = new MainFragmenHeader(top);
-        mainLocalAdapter.addHeaderView(top);
         rvMainfragLocalev.setAdapter(mainLocalAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(mActivity, R.drawable.divider_f8_15));
         rvMainfragLocalev.addItemDecoration(divider);
+
+        rv_mainfrag_ad.setHasFixedSize(true);
+        rv_mainfrag_ad.setNestedScrollingEnabled(false);
+        NoScollFullGridLayoutManager noScollFullGridLayoutManager = new
+                NoScollFullGridLayoutManager(rv_mainfrag_ad, mActivity, 3, GridLayoutManager.VERTICAL, false);
+        noScollFullGridLayoutManager.setScrollEnabled(false);
+        rv_mainfrag_ad.setLayoutManager(new GridLayoutManager(mActivity, 3, GridLayoutManager.VERTICAL, false));
+        if (rv_mainfrag_ad.getItemDecorationCount() <= 0) {
+            rv_mainfrag_ad.addItemDecoration(new GridSpacingItemDecoration(3,
+                    mActivity.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
+                    mActivity.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
+                    false));
+        }
+        brandAreaAdAdapter = new BrandAreaAdAdapter(R.layout.item_brandarea_ad
+                , adList);
+        rv_mainfrag_ad.setAdapter(brandAreaAdAdapter);
     }
 
     private void setUpMap() {
@@ -271,13 +335,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         aMap.setOnMyLocationChangeListener(this);
         aMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
         aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
-        mainFragmenHeader.getIvMainfragRmht1().setOnClickListener(this);
-        mainFragmenHeader.getIvMainfragRmht2().setOnClickListener(this);
-        mainFragmenHeader.getIvMainfragRmht3().setOnClickListener(this);
-        mainFragmenHeader.getRlMainfragLocalev().setOnClickListener(this);
-        mainFragmenHeader.getRtvMainfragLocal().setOnClickListener(this);
-        mainFragmenHeader.getRlMainfragLocalevGg().setOnClickListener(this);
-        mainFragmenHeader.getRlMainfragLocalevGr().setOnClickListener(this);
+        rlMainfragLocalev.setOnClickListener(this);
+        rtvMainfragLocal.setOnClickListener(this);
+        rlMainfragLocalevGg.setOnClickListener(this);
+        rlMainfragLocalevGr.setOnClickListener(this);
         //解决上下滑动冲突问题
         aMap.setOnMapTouchListener(new AMap.OnMapTouchListener() {
             @Override
@@ -293,7 +354,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2,
                                       int arg3) {
-                query = new PoiSearch.Query(StringUtil.checkEditText(etMainfragSerch), "", "027");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+                query = new PoiSearch.Query(StringUtil.checkEditText(etMainfragSerch), "", cityCode);// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
                 query.setPageSize(100);// 设置每页最多返回多少条poiitem
                 query.setPageNum(0);// 设置查第一页
                 poiSearch = new PoiSearch(mActivity, query);
@@ -322,7 +383,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onResume() {
         super.onResume();
-        mainFragmenHeader.getTmv_mainfrag_map().onResume();
+        tmv_mainfrag_map.onResume();
     }
 
     /**
@@ -331,7 +392,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onPause() {
         super.onPause();
-        mainFragmenHeader.getTmv_mainfrag_map().onPause();
+        tmv_mainfrag_map.onPause();
     }
 
     /**
@@ -340,49 +401,54 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mainFragmenHeader.getTmv_mainfrag_map().onSaveInstanceState(outState);
+        tmv_mainfrag_map.onSaveInstanceState(outState);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mainFragmenHeader.getTmv_mainfrag_map().onDestroy();
+        tmv_mainfrag_map.onDestroy();
     }
 
     private void setTab() {
         list.clear();
-        if (index == 0 && publishList.size() > 0) {
-            for (int i = 0; i < publishList.size(); i++) {
-                MainFragmentData.PublishBean publishBean = publishList.get(i);
-                if (publishBean != null) {
-                    list.add(new MainFragChargeBean(publishBean.getImg(), publishBean.getAddress(),
-                            publishBean.getDistance()
-                            , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
-                            publishBean.getIsPrivate(),
-                            publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
-                            publishBean.getSlowNum(), publishBean.getLat()));
+        if (index == 0) {
+            if (publishList.size() > 0) {
+                for (int i = 0; i < publishList.size(); i++) {
+                    MainFragmentData.PublishBean publishBean = publishList.get(i);
+                    if (publishBean != null) {
+                        list.add(new MainFragChargeBean(publishBean.getImg(), publishBean.getAddress(),
+                                publishBean.getDistance()
+                                , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
+                                publishBean.getIsPrivate(),
+                                publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
+                                publishBean.getSlowNum(), publishBean.getLat()));
+                    }
                 }
             }
-            mainFragmenHeader.getTvMainfragLocalevGg().setTextColor(getResources().getColor(R.color.a0271F0));
-            mainFragmenHeader.getTvMainfragLocalevGr().setTextColor(getResources().getColor(R.color.a333333));
-            mainFragmenHeader.getVwMainfragLocalevGg().setVisibility(View.VISIBLE);
-            mainFragmenHeader.getVwMainfragLocalevGr().setVisibility(View.GONE);
-        } else if (index == 1 && personalList.size() > 0) {
-            for (int i = 0; i < personalList.size(); i++) {
-                MainFragmentData.PersonalBean publishBean = personalList.get(i);
-                if (publishBean != null) {
-                    list.add(new MainFragChargeBean(publishBean.getImg(), publishBean.getAddress(),
-                            publishBean.getDistance()
-                            , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
-                            publishBean.getIsPrivate(),
-                            publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
-                            publishBean.getSlowNum(), publishBean.getLat()));
+            tvMainfragLocalevGg.setTextColor(getResources().getColor(R.color.a0271F0));
+            tvMainfragLocalevGr.setTextColor(getResources().getColor(R.color.a333333));
+            vwMainfragLocalevGg.setVisibility(View.VISIBLE);
+            vwMainfragLocalevGr.setVisibility(View.GONE);
+        } else if (index == 1) {
+            if (personalList.size() > 0) {
+                for (int i = 0; i < personalList.size(); i++) {
+                    MainFragmentData.PersonalBean publishBean = personalList.get(i);
+                    if (publishBean != null) {
+                        list.add(new MainFragChargeBean(publishBean.getImg(), publishBean.getAddress(),
+                                publishBean.getDistance()
+                                , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
+                                publishBean.getIsPrivate(),
+                                publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
+                                publishBean.getSlowNum(), publishBean.getLat()));
+                    }
                 }
+
             }
-            mainFragmenHeader.getTvMainfragLocalevGg().setTextColor(getResources().getColor(R.color.a333333));
-            mainFragmenHeader.getTvMainfragLocalevGr().setTextColor(getResources().getColor(R.color.a0271F0));
-            mainFragmenHeader.getVwMainfragLocalevGg().setVisibility(View.GONE);
-            mainFragmenHeader.getVwMainfragLocalevGr().setVisibility(View.VISIBLE);
+            tvMainfragLocalevGg.setTextColor(getResources().getColor(R.color.a333333));
+            tvMainfragLocalevGr.setTextColor(getResources().getColor(R.color.a0271F0));
+            vwMainfragLocalevGg.setVisibility(View.GONE);
+            vwMainfragLocalevGr.setVisibility(View.VISIBLE);
         }
         addMarkersToMap();// 往地图上添加marker
         mainLocalAdapter.notifyDataSetChanged();
@@ -444,14 +510,24 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             List<MainFragmentData.AdsBean> ads = mainFragmentData.getAds();
             List<MainFragmentData.PersonalBean> personal = mainFragmentData.getPersonal();
             List<MainFragmentData.PublishBean> publish = mainFragmentData.getPublish();
-            StringUtil.setText(mainFragmenHeader.getRtvMainfragLocal(), mainFragmentData.getDistanceTip(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(rtvMainfragLocal, mainFragmentData.getDistanceTip(), "", View.VISIBLE, View.VISIBLE);
             if (ads != null && ads.size() > 0) {//广告
-
+                adList.clear();
+                llMainfragRmht.setVisibility(View.VISIBLE);
+                for (int i = 0; i < ads.size(); i++) {
+                    MainFragmentData.AdsBean adsBean = ads.get(i);
+                    if (adsBean != null) {
+                        adList.add(new BrandAreaBean.AdBean(adsBean.getImg(), adsBean.getDisplay(), adsBean.getDestination()));
+                    }
+                }
+                brandAreaAdAdapter.notifyDataSetChanged();
+            } else {
+                llMainfragRmht.setVisibility(View.GONE);
             }
-            if (publish != null && publish.size() > 0) {//附近充电桩
+            if (publish != null && publish.size() > 0) {//公共充电桩
                 publishList.addAll(publish);
             }
-            if (personal != null && personal.size() > 0) {//热门话题
+            if (personal != null && personal.size() > 0) {//私人充电桩
                 personalList.addAll(personal);
             }
             index = 0;

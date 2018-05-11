@@ -153,6 +153,17 @@ public class BrandAreaBean {
 
     public static class AdBean {
         private String img;
+        private int display;
+        private String destination;
+
+        public AdBean() {
+        }
+
+        public AdBean(String img, int display, String destination) {
+            this.img = img;
+            this.display = display;
+            this.destination = destination;
+        }
 
         public String getImg() {
             return img;
@@ -162,11 +173,20 @@ public class BrandAreaBean {
             this.img = img;
         }
 
-        public AdBean() {
+        public int getDisplay() {
+            return display;
         }
 
-        public AdBean(String img) {
-            this.img = img;
+        public void setDisplay(int display) {
+            this.display = display;
+        }
+
+        public String getDestination() {
+            return destination;
+        }
+
+        public void setDestination(String destination) {
+            this.destination = destination;
         }
     }
 }

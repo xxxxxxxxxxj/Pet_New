@@ -73,7 +73,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
             bannerList.add(new BrandAreaBean.BannerBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
         }
         for (int i = 0; i < 5; i++) {
-            adList.add(new BrandAreaBean.AdBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
+            adList.add(new BrandAreaBean.AdBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",2,"http://www.baidu.com"));
         }
         for (int i = 0; i < 50; i++) {
             int itemType = 1;
