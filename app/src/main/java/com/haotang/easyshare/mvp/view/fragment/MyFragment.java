@@ -1,6 +1,8 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,6 +15,8 @@ import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMyFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MyFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
+import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.presenter.MyFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AboutActivity;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
@@ -23,10 +27,20 @@ import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.MemberActivity;
 import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
 import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
+import com.haotang.easyshare.mvp.view.adapter.MyFragChargePagerAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMyFragmentView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.GlideUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RingToast;
+
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -34,7 +48,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.haotang.easyshare.R.id.iv_myfragment_add;
-import static com.haotang.easyshare.R.id.ll_myfragment_mycdz;
+
 
 /**
  * <p>Title:${type_name}</p>
@@ -45,6 +59,7 @@ import static com.haotang.easyshare.R.id.ll_myfragment_mycdz;
  * @date zhoujunxia on 2018/4/14 21:00
  */
 public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMyFragmentView {
+    private final static String TAG = MyFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.iv_myfragment_userimg)
@@ -59,23 +74,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     TextView tvMyfragmentUsername;
     @BindView(iv_myfragment_add)
     ImageView ivMyfragmentAdd;
-    @BindView(R.id.iv_myfragment_cdcs)
-    TextView ivMyfragmentCdcs;
-    @BindView(R.id.iv_myfragment_img)
-    ImageView ivMyfragmentImg;
-    @BindView(R.id.rl_myfragment_img)
-    RelativeLayout rlMyfragmentImg;
-    @BindView(R.id.tv_myfragment_bjcdz)
-    TextView tvMyfragmentBjcdz;
-    @BindView(R.id.iv_myfragment_ggorgr)
-    ImageView ivMyfragmentGgorgr;
-    @BindView(R.id.tv_myfragment_name)
-    TextView tvMyfragmentName;
-    @BindView(R.id.tv_myfragment_cdf)
-    TextView tvMyfragmentCdf;
-    @BindView(R.id.tv_myfragment_fwf)
     TextView tvMyfragmentFwf;
-    @BindView(ll_myfragment_mycdz)
+    @BindView(R.id.ll_myfragment_mycdz)
     LinearLayout llMyfragmentMycdz;
     @BindView(R.id.ll_myfragment_jqqd)
     RoundLinearLayout llMyfragmentJqqd;
@@ -107,6 +107,19 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     TextView tvMyfragmentSycs;
     @BindView(R.id.tv_myfragment_jjdh)
     TextView tvMyfragmentJjdh;
+    @BindView(R.id.vp_myfragment_mycdz)
+    ViewPager vpMyfragmentMycdz;
+    private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void getLoginInfo(LoginBean data) {
+        mPresenter.home();
+    }
 
     @Override
     protected boolean isLazyLoad() {
@@ -137,7 +150,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     protected void initData() {
-
+        mPresenter.home();
     }
 
     @Override
@@ -145,7 +158,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     }
 
-    @OnClick({iv_myfragment_add, R.id.tv_myfragment_bjcdz, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
+    @OnClick({iv_myfragment_add, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
             R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
             R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
             R.id.tv_myfragment_username})
@@ -158,10 +171,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case R.id.iv_myfragment_add:
-                startActivity(new Intent(mActivity, AddChargeActivity.class));
-                break;
-            case R.id.tv_myfragment_bjcdz:
+            case iv_myfragment_add:
                 startActivity(new Intent(mActivity, AddChargeActivity.class));
                 break;
             case R.id.rl_myfragment_clxx:
@@ -190,5 +200,39 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             case R.id.rtv_myfragment_tuichu:
                 break;
         }
+    }
+
+    @Override
+    public void homeSuccess(HomeBean data) {
+        RingLog.e(TAG, "MyFragment homeSuccess()");
+        if (data != null) {
+            StringUtil.setText(tvMyfragmentUsername, data.getUserName(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvMyfragmentYue, String.valueOf(data.getBalance()), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvMyfragmentVipjf, String.valueOf(data.getCoins()), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvMyfragmentClxx, data.getCar(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvMyfragmentSycs, data.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvMyfragmentJjdh, data.getKf_phone(), "", View.VISIBLE, View.VISIBLE);
+            GlideUtil.loadNetCircleImg(mActivity, data.getHeadImg(), ivMyfragmentUserimg, R.mipmap.ic_image_load_circle);
+            List<HomeBean.StationsBean> stations = data.getStations();
+            if (stations != null && stations.size() > 0) {
+                llMyfragmentMycdz.setVisibility(View.VISIBLE);
+                for (HomeBean.StationsBean stationsBean : stations) {
+                    ChargeFragment chargeFragment = new ChargeFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("stationsBean", stationsBean);
+                    chargeFragment.setArguments(bundle);
+                    mFragments.add(chargeFragment);
+                }
+                vpMyfragmentMycdz.setAdapter(new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments));
+            } else {
+                llMyfragmentMycdz.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    public void homeFail(int code, String msg) {
+        RingLog.e(TAG, "MyFragment homeFail() status = " + code + "---desc = " + msg);
+        RingToast.show("MyFragment homeFail() status = " + code + "---desc = " + msg);
     }
 }

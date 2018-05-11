@@ -299,7 +299,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     public void loginSuccess(LoginBean data) {
         RingLog.e(TAG, "loginSuccess");
-        SharedPreferenceUtil.getInstance(LoginActivity.this).saveString("cellphone", etLoginPhone.getText().toString().trim().replace(" ", ""));
+        SharedPreferenceUtil.getInstance(LoginActivity.this).saveString("cellphone",
+                etLoginPhone.getText().toString().trim().replace(" ", ""));
+        if (data != null) {
+            DevRing.busManager().postEvent(data);
+        }
         finish();
     }
 

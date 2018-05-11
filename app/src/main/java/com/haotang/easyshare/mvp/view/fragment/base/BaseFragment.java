@@ -1,6 +1,5 @@
 package com.haotang.easyshare.mvp.view.fragment.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.haotang.easyshare.BuildConfig;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
+import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.ljy.devring.base.fragment.FragmentLifeCallback;
 import com.ljy.devring.base.fragment.IBaseFragment;
 import com.ljy.devring.other.RingLog;
@@ -49,7 +49,7 @@ import butterknife.Unbinder;
 public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements IBaseFragment {
     private final static String TAG = BaseFragment.class.getSimpleName();
     private final static boolean DEBUG = BuildConfig.DEBUG;
-    protected Activity mActivity;
+    protected BaseActivity mActivity;
     //根布局视图
     private View mContentView;
     //视图是否已经初始化完毕
@@ -78,7 +78,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivity = (Activity) context;
+        mActivity = (BaseActivity) context;
     }
 
     @Override

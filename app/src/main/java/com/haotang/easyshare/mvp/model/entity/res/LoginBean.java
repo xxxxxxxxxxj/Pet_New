@@ -9,4 +9,13 @@ package com.haotang.easyshare.mvp.model.entity.res;
  * @date zhoujunxia on 2018/5/10 21:36
  */
 public class LoginBean {
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

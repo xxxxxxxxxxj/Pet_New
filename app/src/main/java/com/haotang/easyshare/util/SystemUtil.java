@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.LngLat;
+import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.PhotoViewPagerActivity;
 
 import java.io.File;
@@ -43,7 +44,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -247,7 +247,11 @@ public class SystemUtil {
     }
 
     public static boolean checkLogin(Context context) {
-        return false;
+        boolean isLogin = false;
+        if (StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))) {
+            isLogin = true;
+        }
+        return isLogin;
     }
 
     /**

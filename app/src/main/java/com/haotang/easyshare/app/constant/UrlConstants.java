@@ -22,6 +22,7 @@ import java.util.Map;
 public class UrlConstants {
 
     public static final String LOGIN = "user/info/login";
+    public static final String HOME = "user/info/home";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境
@@ -138,7 +139,7 @@ public class UrlConstants {
         Map<String, String> map = new HashMap<String, String>();
         map.put("system", "android_" + SystemUtil.getCurrentVersion(context));
         map.put("imei", SystemUtil.getIMEI(context));
-        if(StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))){
+        if (StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))) {
             map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
         }
         map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
@@ -151,7 +152,7 @@ public class UrlConstants {
     public static Map<String, String> getMapHeaderNoImei(Context context) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("system", "android_" + SystemUtil.getCurrentVersion(context));
-        if(StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))){
+        if (StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))) {
             map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
         }
         map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);

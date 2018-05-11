@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
 /**
@@ -10,5 +11,8 @@ import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
  * @author 徐俊
  * @date XJ on 2018/5/7 18:33
  */
-public interface IMyFragmentView extends IBaseView{
+public interface IMyFragmentView extends IBaseView {
+    void homeSuccess(HomeBean data);
+
+    void homeFail(int code, String msg);
 }
