@@ -11,6 +11,7 @@ import com.amap.api.maps.model.LatLng;
  * @date XJ on 2018/4/12 11:22
  */
 public class AppConfig {
+    public static final String SERVER_KEY = "A16EF76FA2D6B5A1A743A489D9332D9A";
     public static final int SERVER_ERROR = 5201314;
     public static final String SERVER_ERROR_MSG = "服务器错误";
     public static final String QQ_ID = "1104724367";

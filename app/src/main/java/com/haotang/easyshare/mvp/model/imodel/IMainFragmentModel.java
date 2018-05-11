@@ -15,5 +15,8 @@ import io.reactivex.Observable;
  * @date XJ on 2018/4/25 18:11
  */
 public interface IMainFragmentModel extends IBaseModel {
-    Observable getMainFragData(Activity activity);
+    /**
+     * 获取首页数据
+     */
+    Observable homeIndex(double lng, double lat);
 }

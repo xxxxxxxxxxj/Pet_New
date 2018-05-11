@@ -42,9 +42,10 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> 
     RecyclerView rvLocalCharging;
     @BindView(R.id.srl_local_charging)
     SwipeRefreshLayout srlLocalCharging;
-    private List<MainFragmentData> list = new ArrayList<MainFragmentData>();
+    private List<MainFragmentData.StationsBean> list = new ArrayList<MainFragmentData.StationsBean>();
     private MainLocalAdapter mainLocalAdapter;
     private int mNextRequestPage = 1;
+    private String city;
 
     @Override
     protected int getContentLayout() {
@@ -55,6 +56,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> 
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
         DaggerLocalChargingActivityCommponent.builder().localChargingActivityModule(new LocalChargingActivityModule(this, this)).build().inject(this);
+        city = getIntent().getStringExtra("city");
     }
 
     @Override
@@ -66,34 +68,9 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> 
     }
 
     private void setAdapter() {
-        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                "测试距离", 3, 4, 5, "00:30-24:00",
-                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                39.983456, 116.3154950, "北京",
-                "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
-
-        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                "测试距离", 3, 4, 5, "00:30-24:00",
-                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                31.238068, 121.501654, "上海", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
-
-        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                "测试距离", 3, 4, 5, "00:30-24:00",
-                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                30.679879, 104.064855, "成都", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
-
-        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                "测试距离", 3, 4, 5, "00:30-24:00",
-                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                34.341568, 108.940174, "西安", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
-
-        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                "测试距离", 3, 4, 5, "00:30-24:00",
-                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                34.7466, 113.625367, "郑州", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
         rvLocalCharging.setHasFixedSize(true);
         rvLocalCharging.setLayoutManager(new LinearLayoutManager(this));
-        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list,true);
+        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list, true, city);
         rvLocalCharging.setAdapter(mainLocalAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);

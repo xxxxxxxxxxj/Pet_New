@@ -1,9 +1,6 @@
 package com.haotang.easyshare.mvp.presenter;
 
-import android.app.Activity;
-
 import com.haotang.easyshare.app.AppConfig;
-import com.haotang.easyshare.mvp.model.entity.res.FlashBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.IMainFragmentModel;
@@ -13,8 +10,6 @@ import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
-
-import java.util.List;
 
 /**
  * <p>Title:${type_name}</p>
@@ -30,19 +25,19 @@ public class MainFragmentPresenter extends BasePresenter<IMainFragmentView, IMai
     }
 
     /**
-     * 获取广告页数据
+     * 获取首页数据
      */
-    public void getMainFragData(Activity activity) {
-        DevRing.httpManager().commonRequest(mIModel.getMainFragData(activity), new CommonObserver<HttpResult<List<MainFragmentData>>>() {
+    public void homeIndex(double lng, double lat) {
+        DevRing.httpManager().commonRequest(mIModel.homeIndex(lng, lat), new CommonObserver<HttpResult<MainFragmentData>>() {
             @Override
-            public void onResult(HttpResult<List<MainFragmentData>> result) {
+            public void onResult(HttpResult<MainFragmentData> result) {
                 if (mIView != null) {
                     if (result != null) {
                         if (result.getCode() == 0) {
                             mIView.getMainFragmentSuccess(result.getData());
                         } else {
-                            if (!StringUtil.isNotEmpty(result.getMsg())) {
-                                mIView.getMainFragmentFail(AppConfig.SERVER_ERROR, result.getMsg());
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.getMainFragmentFail(result.getCode(), result.getMsg());
                             } else {
                                 mIView.getMainFragmentFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
                             }

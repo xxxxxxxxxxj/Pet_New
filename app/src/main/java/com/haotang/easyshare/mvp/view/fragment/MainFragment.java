@@ -22,6 +22,10 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.UiSettings;
@@ -84,9 +88,9 @@ import butterknife.OnClick;
  * @date zhoujunxia on 2018/4/14 20:34
  */
 public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
-        AMap.OnMyLocationChangeListener,
+        AMapLocationListener,
         View.OnClickListener, IMainFragmentView, AMap.OnMarkerClickListener,
-        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener {
+        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener {
     private final static String TAG = MainFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
@@ -116,7 +120,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
     private int index;
-    private List<MainFragmentData> list = new ArrayList<MainFragmentData>();
+    private List<MainFragmentData.StationsBean> list = new ArrayList<MainFragmentData.StationsBean>();
     private MainLocalAdapter mainLocalAdapter;
     private MainFragmenHeader mainFragmenHeader;
     private PopupWindow pWinBottomDialog;
@@ -125,6 +129,14 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private PoiSearch poiSearch;
     private List<SerchResult> serchList = new ArrayList<SerchResult>();
     private List<Bitmap> bitmapList = new ArrayList<Bitmap>();
+    private double lat;
+    private double lng;
+    private String city = "";
+    //声明mlocationClient对象
+    private AMapLocationClient mlocationClient;
+    //声明mLocationOption对象
+    private AMapLocationClientOption mLocationOption;
+    private String cityCode;
 
     @Override
     protected boolean isLazyLoad() {
@@ -150,22 +162,42 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         }
         mUiSettings = aMap.getUiSettings();
         setUpMap();
-        addMarkersToMap();// 往地图上添加marker
         ivMainfragGj.bringToFront();
         mainFragmenHeader.getRtvMainfragLocal().bringToFront();
         rllMainfragSerch.bringToFront();
         index = 0;
         setTab();
-        mPresenter.getMainFragData(mActivity);
+        setLocation();
+    }
+
+    private void setLocation() {
+        mlocationClient = new AMapLocationClient(mActivity);
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位监听
+        mlocationClient.setLocationListener(this);
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+        // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+        // 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+        // 在定位结束后，在合适的生命周期调用onDestroy()方法
+        // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+        //启动定位
+        mlocationClient.startLocation();
     }
 
     private void addMarkersToMap() {
+        aMap.clear();
         bitmapList.clear();
         for (int i = 0; i < list.size(); i++) {
-            MainFragmentData mainFragmentData = list.get(i);
-            if (mainFragmentData != null) {
+            MainFragmentData.StationsBean stationsBean = list.get(i);
+            if (stationsBean != null) {
                 Glide.with(mActivity)
-                        .load(mainFragmentData.getImg())
+                        .load(stationsBean.getImg())
                         .asBitmap()
                         .placeholder(R.mipmap.ic_image_load_circle).dontAnimate()
                         .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
@@ -184,15 +216,15 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private void addMarkers() {
         for (int i = 0; i < list.size(); i++) {
             Bitmap bitmap = bitmapList.get(i);
-            MainFragmentData mainFragmentData = list.get(i);
-            if (mainFragmentData != null) {
-                mainFragmentData.setBitmap(SystemUtil.toCircleBitmap(bitmap));
+            MainFragmentData.StationsBean stationsBean = list.get(i);
+            if (stationsBean != null) {
+                stationsBean.setBitmap(SystemUtil.toCircleBitmap(bitmap));
                 View infoWindow = getLayoutInflater().inflate(
                         R.layout.map_custom_info_window, null);
                 ImageView iv_map_custom_info = ((ImageView) infoWindow.findViewById(R.id.iv_map_custom_info));
-                iv_map_custom_info.setImageBitmap(mainFragmentData.getBitmap());
+                iv_map_custom_info.setImageBitmap(stationsBean.getBitmap());
                 MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromView(infoWindow))
-                        .position(new LatLng(mainFragmentData.getLat(), mainFragmentData.getLng()))
+                        .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
                         .draggable(true);
                 Marker marker = aMap.addMarker(markerOptions);
                 marker.setObject(i);
@@ -201,34 +233,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     }
 
     private void setAdapter() {
-        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                "测试距离", 3, 4, 5, "00:30-24:00",
-                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                39.983456, 116.3154950, "北京",
-                "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
-
-        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                "测试距离", 3, 4, 5, "00:30-24:00",
-                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                31.238068, 121.501654, "上海", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
-
-        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                "测试距离", 3, 4, 5, "00:30-24:00",
-                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                30.679879, 104.064855, "成都", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
-
-        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                "测试距离", 3, 4, 5, "00:30-24:00",
-                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                34.341568, 108.940174, "西安", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
-
-        list.add(new MainFragmentData(0, "测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称",
-                "测试距离", 3, 4, 5, "00:30-24:00",
-                "北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米北京朝阳区石各庄818号平安建材家东侧东侧500米",
-                34.7466, 113.625367, "郑州", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
         rvMainfragLocalev.setHasFixedSize(true);
         rvMainfragLocalev.setLayoutManager(new LinearLayoutManager(mActivity));
-        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list, false);
+        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list, false, city);
         View top = getLayoutInflater().inflate(R.layout.mainlocal_top_view, (ViewGroup) rvMainfragLocalev.getParent(), false);
         mainFragmenHeader = new MainFragmenHeader(top);
         mainLocalAdapter.addHeaderView(top);
@@ -245,22 +252,21 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         myLocationStyle = new MyLocationStyle();
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
         aMap.setMyLocationStyle(myLocationStyle);
-        mUiSettings.setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
-        aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+        mUiSettings.setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+        aMap.setMyLocationEnabled(false);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         mUiSettings.setZoomControlsEnabled(false);
     }
 
     @Override
     protected void initData() {
-
+        mPresenter.homeIndex(lng, lat);
     }
 
     @Override
     protected void initEvent() {
+        aMap.setOnMyLocationChangeListener(this);
         aMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
         aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
-        //设置SDK 自带定位消息监听
-        aMap.setOnMyLocationChangeListener(this);
         mainFragmenHeader.getIvMainfragRmht1().setOnClickListener(this);
         mainFragmenHeader.getIvMainfragRmht2().setOnClickListener(this);
         mainFragmenHeader.getIvMainfragRmht3().setOnClickListener(this);
@@ -353,26 +359,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         }
     }
 
-    @Override
-    public void onMyLocationChange(Location location) {
-        // 定位回调监听
-        if (location != null) {
-            RingLog.d(TAG, "onMyLocationChange 定位成功， lat: " + location.getLatitude() + " lon: " + location.getLongitude());
-            Bundle bundle = location.getExtras();
-            if (bundle != null) {
-                int errorCode = bundle.getInt(MyLocationStyle.ERROR_CODE);
-                String errorInfo = bundle.getString(MyLocationStyle.ERROR_INFO);
-                // 定位类型，可能为GPS WIFI等，具体可以参考官网的定位SDK介绍
-                int locationType = bundle.getInt(MyLocationStyle.LOCATION_TYPE);
-                RingLog.d(TAG, "定位信息， code: " + errorCode + " errorInfo: " + errorInfo + " locationType: " + locationType);
-            } else {
-                RingLog.d(TAG, "定位信息， bundle is null ");
-            }
-        } else {
-            RingLog.d(TAG, "定位失败");
-        }
-    }
-
     @OnClick({R.id.iv_mainfrag_gj, R.id.ll_mainfrag_city, R.id.rl_mainfrag_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -394,9 +380,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             case R.id.rtv_mainfrag_local:
                 LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
                 for (int i = 0; i < list.size(); i++) {
-                    MainFragmentData mainFragmentData = list.get(i);
-                    if (mainFragmentData != null) {
-                        boundsBuilder.include(new LatLng(mainFragmentData.getLat(), mainFragmentData.getLng()));//把所有点都include进去（LatLng类型）
+                    MainFragmentData.StationsBean stationsBean = list.get(i);
+                    if (stationsBean != null) {
+                        boundsBuilder.include(new LatLng(stationsBean.getLat(), stationsBean.getLng()));//把所有点都include进去（LatLng类型）
                     }
                 }
                 aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
@@ -408,7 +394,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             case R.id.iv_mainfrag_rmht3:
                 break;
             case R.id.rl_mainfrag_localev:
-                startActivity(new Intent(mActivity, LocalChargingActivity.class));
+                startActivity(new Intent(mActivity, LocalChargingActivity.class).putExtra("city", city));
                 break;
             case R.id.rl_mainfrag_localev_gg:
                 index = 0;
@@ -422,11 +408,24 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     }
 
     @Override
-    public void getMainFragmentSuccess(List<MainFragmentData> MainFragmentData) {
-        if (MainFragmentData != null && MainFragmentData.size() > 0) {
+    public void getMainFragmentSuccess(MainFragmentData mainFragmentData) {
+        if (mainFragmentData != null) {
             list.clear();
-            list.addAll(MainFragmentData);
-            mainLocalAdapter.notifyDataSetChanged();
+            List<MainFragmentData.AdsBean> ads = mainFragmentData.getAds();
+            List<MainFragmentData.StationsBean> stations = mainFragmentData.getStations();
+            List<MainFragmentData.ArticlesBean> articles = mainFragmentData.getArticles();
+            StringUtil.setText(mainFragmenHeader.getRtvMainfragLocal(), mainFragmentData.getDistanceTip(), "", View.VISIBLE, View.VISIBLE);
+            if (ads != null && ads.size() > 0) {//广告
+
+            }
+            if (stations != null && stations.size() > 0) {//附近充电桩
+                list.addAll(stations);
+                mainLocalAdapter.notifyDataSetChanged();
+                addMarkersToMap();// 往地图上添加marker
+            }
+            if (articles != null && articles.size() > 0) {//热门话题
+
+            }
         }
     }
 
@@ -447,7 +446,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private void showBottomDialog(int position) {
         pWinBottomDialog = null;
         if (pWinBottomDialog == null) {
-            final MainFragmentData mainFragmentData = list.get(position);
+            final MainFragmentData.StationsBean stationsBean = list.get(position);
             ViewGroup customView = (ViewGroup) View.inflate(mActivity, R.layout.mainfrag_bottom_dialog, null);
             mainFragmenBoDa = new MainFragmenBoDa(customView);
             pWinBottomDialog = new PopupWindow(customView,
@@ -465,33 +464,33 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             pWinBottomDialog.setWidth(SystemUtil.getDisplayMetrics(mActivity)[0]);
             pWinBottomDialog.showAtLocation(customView, Gravity.BOTTOM, 0, 0);
             mainFragmenBoDa.getLl_mainbottom().bringToFront();
-            StringUtil.setText(mainFragmenBoDa.getTvMainbottomName(), mainFragmentData.getName(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(mainFragmenBoDa.getTvMainbottomJuli(), mainFragmentData.getJuli(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(mainFragmenBoDa.getTvMainbottomXxdz(), mainFragmentData.getAddress(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(mainFragmenBoDa.getTvMainbottomKfsj(), mainFragmentData.getKfsj(), "", View.VISIBLE, View.VISIBLE);
-            if (mainFragmentData.getGgorgr() == 0) {//公共
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomName(), stationsBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomJuli(), stationsBean.getDistance(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomXxdz(), stationsBean.getAddress(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomKfsj(), stationsBean.getOpenTime(), "", View.VISIBLE, View.VISIBLE);
+            if (stationsBean.getIsPrivate() == 0) {//公共
                 mainFragmenBoDa.getIvMainbottomGgorgr().setImageResource(R.mipmap.icon_gg);
-            } else if (mainFragmentData.getGgorgr() == 1) {//个人
+            } else if (stationsBean.getIsPrivate() == 1) {//个人
                 mainFragmenBoDa.getIvMainbottomGgorgr().setImageResource(R.mipmap.icon_gr);
             }
-            if (mainFragmentData.getKuaichongnum() > 0) {
-                StringUtil.setText(mainFragmenBoDa.getTvMainbottomKuaichongNum(), "快充" + mainFragmentData.getKuaichongnum() + "个", "", View.VISIBLE, View.VISIBLE);
+            if (stationsBean.getFastNum() > 0) {
+                StringUtil.setText(mainFragmenBoDa.getTvMainbottomKuaichongNum(), "快充" + stationsBean.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
                 mainFragmenBoDa.getLlMainbottomKuaichong().setVisibility(View.VISIBLE);
             } else {
                 mainFragmenBoDa.getLlMainbottomKuaichong().setVisibility(View.GONE);
             }
-            if (mainFragmentData.getManchongnum() > 0) {
-                StringUtil.setText(mainFragmenBoDa.getTvMainbottomManchongNum(), "慢充" + mainFragmentData.getManchongnum() + "个", "", View.VISIBLE, View.VISIBLE);
+            if (stationsBean.getSlowNum() > 0) {
+                StringUtil.setText(mainFragmenBoDa.getTvMainbottomManchongNum(), "慢充" + stationsBean.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
                 mainFragmenBoDa.getLlMainbottomManchong().setVisibility(View.VISIBLE);
             } else {
                 mainFragmenBoDa.getLlMainbottomManchong().setVisibility(View.GONE);
             }
-            if (mainFragmentData.getKongxiannum() > 0) {
+            /*if (mainFragmentData.getKongxiannum() > 0) {
                 StringUtil.setText(mainFragmenBoDa.getTvMainbottomKongxianNum(), "空闲" + mainFragmentData.getKongxiannum() + "个", "", View.VISIBLE, View.VISIBLE);
                 mainFragmenBoDa.getLlMainbottomKongxian().setVisibility(View.VISIBLE);
             } else {
                 mainFragmenBoDa.getLlMainbottomKongxian().setVisibility(View.GONE);
-            }
+            }*/
             mainFragmenBoDa.getIvMainbottomBg().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -507,8 +506,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             mainFragmenBoDa.getLlMainbottomDaohang().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SystemUtil.goNavigation(mActivity, mainFragmentData.getLat(), mainFragmentData.getLng(), "我的位置",
-                            mainFragmentData.getAddress(), mainFragmentData.getCity());
+                    SystemUtil.goNavigation(mActivity, stationsBean.getLat(), stationsBean.getLng(), "我的位置",
+                            stationsBean.getAddress(), city);
                 }
             });
             mainFragmenBoDa.getLlMainbottomXq().setOnClickListener(new View.OnClickListener() {
@@ -538,9 +537,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onMapLoaded() {
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
         for (int i = 0; i < list.size(); i++) {
-            MainFragmentData mainFragmentData = list.get(i);
-            if (mainFragmentData != null) {
-                boundsBuilder.include(new LatLng(mainFragmentData.getLat(), mainFragmentData.getLng()));//把所有点都include进去（LatLng类型）
+            MainFragmentData.StationsBean stationsBean = list.get(i);
+            if (stationsBean != null) {
+                boundsBuilder.include(new LatLng(stationsBean.getLat(), stationsBean.getLng()));//把所有点都include进去（LatLng类型）
             }
         }
         aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
@@ -574,6 +573,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                                 rll_mainfrag_serchresult.setVisibility(View.GONE);
+                                if (serchList != null && serchList.size() > 0 && serchList.size() > position) {
+                                    SerchResult serchResult = serchList.get(position);
+                                    if (serchResult != null) {
+                                        mPresenter.homeIndex(serchResult.getLng(), serchResult.getLat());
+                                    }
+                                }
                             }
                         });
                     } else {
@@ -591,5 +596,51 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onPoiItemSearched(PoiItem poiItem, int i) {
 
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation amapLocation) {
+        if (amapLocation != null) {
+            if (amapLocation.getErrorCode() == 0) {
+                //定位成功回调信息，设置相关消息
+                lat = amapLocation.getLatitude();//获取纬度
+                lng = amapLocation.getLongitude();//获取经度
+                city = amapLocation.getCity();
+                tvMainfragCity.setText(city);
+                cityCode = amapLocation.getCityCode();
+                amapLocation.getAddress();
+                RingLog.d(TAG, "定位成功lat = "
+                        + lat + ", lng = "
+                        + lng + ",city = " + city + ",cityCode = " + cityCode + ",address = " + amapLocation.getAddress());
+                if (lat > 0 && lng > 0) {
+                    mlocationClient.stopLocation();
+                }
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                RingLog.d(TAG, "location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
+            }
+        }
+    }
+
+    @Override
+    public void onMyLocationChange(Location location) {
+        // 定位回调监听
+        if (location != null) {
+            RingLog.d(TAG, "onMyLocationChange 定位成功， lat: " + location.getLatitude() + " lon: " + location.getLongitude());
+            Bundle bundle = location.getExtras();
+            if (bundle != null) {
+                int errorCode = bundle.getInt(MyLocationStyle.ERROR_CODE);
+                String errorInfo = bundle.getString(MyLocationStyle.ERROR_INFO);
+                // 定位类型，可能为GPS WIFI等，具体可以参考官网的定位SDK介绍
+                int locationType = bundle.getInt(MyLocationStyle.LOCATION_TYPE);
+                RingLog.d(TAG, "定位信息， code: " + errorCode + " errorInfo: " + errorInfo + " locationType: " + locationType);
+            } else {
+                RingLog.d(TAG, "定位信息， bundle is null ");
+            }
+        } else {
+            RingLog.d(TAG, "定位失败");
+        }
     }
 }

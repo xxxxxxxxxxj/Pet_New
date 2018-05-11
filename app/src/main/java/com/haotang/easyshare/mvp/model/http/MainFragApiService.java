@@ -1,13 +1,12 @@
 package com.haotang.easyshare.mvp.model.http;
 
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.Url;
+import retrofit2.http.Query;
 
 /**
  * <p>Title:${type_name}</p>
@@ -21,6 +20,6 @@ public interface MainFragApiService {
     /**
      * 获取首页数据
      */
-    @GET
-    Observable<HttpResult<List<MainFragmentData>>> getMainFragData(@Url String url);
+    @GET(UrlConstants.HOMEINDEX)
+    Observable<HttpResult<MainFragmentData>> homeIndex(@Query("lng") double lng, @Query("lat") double lat);
 }

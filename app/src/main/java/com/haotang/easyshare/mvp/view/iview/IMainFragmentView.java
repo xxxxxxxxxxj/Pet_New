@@ -14,7 +14,7 @@ import java.util.List;
  * @date XJ on 2018/4/25 18:06
  */
 public interface IMainFragmentView extends IBaseView {
-    void getMainFragmentSuccess(List<MainFragmentData> MainFragmentData);
+    void getMainFragmentSuccess(MainFragmentData MainFragmentData);
 
     void getMainFragmentFail(int status, String desc);
 }

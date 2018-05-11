@@ -23,6 +23,7 @@ public class UrlConstants {
 
     public static final String LOGIN = "user/info/login";
     public static final String HOME = "user/info/home";
+    public static final String HOMEINDEX = "home/index";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

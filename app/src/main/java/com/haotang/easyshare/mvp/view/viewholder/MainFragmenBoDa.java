@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 
 import butterknife.BindView;
