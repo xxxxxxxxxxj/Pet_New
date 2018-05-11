@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.flyco.roundview.RoundLinearLayout;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.util.DensityUtil;
@@ -27,18 +28,18 @@ import java.util.List;
  * @author 徐俊
  * @date XJ on 2018/4/25 14:51
  */
-public class MainLocalAdapter extends BaseQuickAdapter<MainFragmentData.StationsBean, BaseViewHolder> {
+public class MainLocalAdapter extends BaseQuickAdapter<MainFragChargeBean, BaseViewHolder> {
     private boolean isTopDivider;
     private String city;
 
-    public MainLocalAdapter(int layoutResId, List<MainFragmentData.StationsBean> data, boolean isTopDivider, String city) {
+    public MainLocalAdapter(int layoutResId, List<MainFragChargeBean> data, boolean isTopDivider, String city) {
         super(layoutResId, data);
         this.isTopDivider = isTopDivider;
         this.city = city;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, final MainFragmentData.StationsBean item) {
+    protected void convert(BaseViewHolder helper, final MainFragChargeBean item) {
         RoundLinearLayout rll_item_mainlocal_root = helper.getView(R.id.rll_item_mainlocal_root);
         ImageView iv_item_mainlocal_ggorgr = helper.getView(R.id.iv_item_mainlocal_ggorgr);
         TextView tv_item_mainlocal_juli = helper.getView(R.id.tv_item_mainlocal_juli);
@@ -80,12 +81,12 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragmentData.Stations
             } else {
                 ll_item_mainlocal_manchong.setVisibility(View.GONE);
             }
-            /*if (item.getKongxiannum() > 0) {
-                StringUtil.setText(tv_item_mainlocal_kongxian_num, "空闲" + item.getKongxiannum() + "个", "", View.VISIBLE, View.VISIBLE);
+            if (item.getFreeNum() > 0) {
+                StringUtil.setText(tv_item_mainlocal_kongxian_num, "空闲" + item.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
                 ll_item_mainlocal_kongxian.setVisibility(View.VISIBLE);
             } else {
                 ll_item_mainlocal_kongxian.setVisibility(View.GONE);
-            }*/
+            }
             iv_item_mainlocal_daohang.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

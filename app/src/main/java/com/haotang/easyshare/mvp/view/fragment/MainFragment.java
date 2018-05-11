@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ArraySet;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +51,7 @@ import com.flyco.roundview.RoundRelativeLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MainFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.model.entity.res.SerchResult;
 import com.haotang.easyshare.mvp.presenter.MainFragmentPresenter;
@@ -78,6 +80,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static cn.jpush.android.api.JPushInterface.a.p;
 
 /**
  * <p>Title:${type_name}</p>
@@ -120,7 +124,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
     private int index;
-    private List<MainFragmentData.StationsBean> list = new ArrayList<MainFragmentData.StationsBean>();
+    private List<MainFragChargeBean> list = new ArrayList<MainFragChargeBean>();
+    private List<MainFragmentData.PersonalBean> personalList = new ArrayList<MainFragmentData.PersonalBean>();
     private MainLocalAdapter mainLocalAdapter;
     private MainFragmenHeader mainFragmenHeader;
     private PopupWindow pWinBottomDialog;
@@ -137,6 +142,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
     private String cityCode;
+    private List<MainFragmentData.PublishBean> publishList = new ArrayList<MainFragmentData.PublishBean>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -165,8 +171,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         ivMainfragGj.bringToFront();
         mainFragmenHeader.getRtvMainfragLocal().bringToFront();
         rllMainfragSerch.bringToFront();
-        index = 0;
-        setTab();
         setLocation();
     }
 
@@ -194,7 +198,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         aMap.clear();
         bitmapList.clear();
         for (int i = 0; i < list.size(); i++) {
-            MainFragmentData.StationsBean stationsBean = list.get(i);
+            MainFragChargeBean stationsBean = list.get(i);
             if (stationsBean != null) {
                 Glide.with(mActivity)
                         .load(stationsBean.getImg())
@@ -216,7 +220,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private void addMarkers() {
         for (int i = 0; i < list.size(); i++) {
             Bitmap bitmap = bitmapList.get(i);
-            MainFragmentData.StationsBean stationsBean = list.get(i);
+            MainFragChargeBean stationsBean = list.get(i);
             if (stationsBean != null) {
                 stationsBean.setBitmap(SystemUtil.toCircleBitmap(bitmap));
                 View infoWindow = getLayoutInflater().inflate(
@@ -259,7 +263,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     protected void initData() {
-        mPresenter.homeIndex(lng, lat);
     }
 
     @Override
@@ -346,17 +349,31 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     }
 
     private void setTab() {
-        if (index == 0) {
+        list.clear();
+        if (index == 0 && publishList.size() > 0) {
+            for (int i = 0; i < publishList.size(); i++) {
+                MainFragmentData.PublishBean publishBean = publishList.get(i);
+                if (publishBean != null) {
+                    list.add(new MainFragChargeBean(publishBean.getImg(), publishBean.getAddress(),
+                            publishBean.getDistance()
+                            , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
+                            publishBean.getIsPrivate(),
+                            publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
+                            publishBean.getSlowNum(), publishBean.getLat()));
+                }
+            }
             mainFragmenHeader.getTvMainfragLocalevGg().setTextColor(getResources().getColor(R.color.a0271F0));
             mainFragmenHeader.getTvMainfragLocalevGr().setTextColor(getResources().getColor(R.color.a333333));
             mainFragmenHeader.getVwMainfragLocalevGg().setVisibility(View.VISIBLE);
             mainFragmenHeader.getVwMainfragLocalevGr().setVisibility(View.GONE);
-        } else if (index == 1) {
+        } else if (index == 1 && personalList.size() > 0) {
             mainFragmenHeader.getTvMainfragLocalevGg().setTextColor(getResources().getColor(R.color.a333333));
             mainFragmenHeader.getTvMainfragLocalevGr().setTextColor(getResources().getColor(R.color.a0271F0));
             mainFragmenHeader.getVwMainfragLocalevGg().setVisibility(View.GONE);
             mainFragmenHeader.getVwMainfragLocalevGr().setVisibility(View.VISIBLE);
         }
+        addMarkersToMap();// 往地图上添加marker
+        mainLocalAdapter.notifyDataSetChanged();
     }
 
     @OnClick({R.id.iv_mainfrag_gj, R.id.ll_mainfrag_city, R.id.rl_mainfrag_send})
@@ -380,7 +397,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             case R.id.rtv_mainfrag_local:
                 LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
                 for (int i = 0; i < list.size(); i++) {
-                    MainFragmentData.StationsBean stationsBean = list.get(i);
+                    MainFragChargeBean stationsBean = list.get(i);
                     if (stationsBean != null) {
                         boundsBuilder.include(new LatLng(stationsBean.getLat(), stationsBean.getLng()));//把所有点都include进去（LatLng类型）
                     }
@@ -410,22 +427,23 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void getMainFragmentSuccess(MainFragmentData mainFragmentData) {
         if (mainFragmentData != null) {
-            list.clear();
+            personalList.clear();
+            publishList.clear();
             List<MainFragmentData.AdsBean> ads = mainFragmentData.getAds();
-            List<MainFragmentData.StationsBean> stations = mainFragmentData.getStations();
-            List<MainFragmentData.ArticlesBean> articles = mainFragmentData.getArticles();
+            List<MainFragmentData.PersonalBean> personal = mainFragmentData.getPersonal();
+            List<MainFragmentData.PublishBean> publish = mainFragmentData.getPublish();
             StringUtil.setText(mainFragmenHeader.getRtvMainfragLocal(), mainFragmentData.getDistanceTip(), "", View.VISIBLE, View.VISIBLE);
             if (ads != null && ads.size() > 0) {//广告
 
             }
-            if (stations != null && stations.size() > 0) {//附近充电桩
-                list.addAll(stations);
-                mainLocalAdapter.notifyDataSetChanged();
-                addMarkersToMap();// 往地图上添加marker
+            if (publish != null && publish.size() > 0) {//附近充电桩
+                publishList.addAll(publish);
             }
-            if (articles != null && articles.size() > 0) {//热门话题
-
+            if (personal != null && personal.size() > 0) {//热门话题
+                personalList.addAll(personal);
             }
+            index = 0;
+            setTab();
         }
     }
 
@@ -446,7 +464,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private void showBottomDialog(int position) {
         pWinBottomDialog = null;
         if (pWinBottomDialog == null) {
-            final MainFragmentData.StationsBean stationsBean = list.get(position);
+            final MainFragChargeBean stationsBean = list.get(position);
             ViewGroup customView = (ViewGroup) View.inflate(mActivity, R.layout.mainfrag_bottom_dialog, null);
             mainFragmenBoDa = new MainFragmenBoDa(customView);
             pWinBottomDialog = new PopupWindow(customView,
@@ -485,12 +503,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             } else {
                 mainFragmenBoDa.getLlMainbottomManchong().setVisibility(View.GONE);
             }
-            /*if (mainFragmentData.getKongxiannum() > 0) {
-                StringUtil.setText(mainFragmenBoDa.getTvMainbottomKongxianNum(), "空闲" + mainFragmentData.getKongxiannum() + "个", "", View.VISIBLE, View.VISIBLE);
+            if (stationsBean.getFreeNum() > 0) {
+                StringUtil.setText(mainFragmenBoDa.getTvMainbottomKongxianNum(), "空闲" + stationsBean.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
                 mainFragmenBoDa.getLlMainbottomKongxian().setVisibility(View.VISIBLE);
             } else {
                 mainFragmenBoDa.getLlMainbottomKongxian().setVisibility(View.GONE);
-            }*/
+            }
             mainFragmenBoDa.getIvMainbottomBg().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -537,7 +555,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onMapLoaded() {
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
         for (int i = 0; i < list.size(); i++) {
-            MainFragmentData.StationsBean stationsBean = list.get(i);
+            MainFragChargeBean stationsBean = list.get(i);
             if (stationsBean != null) {
                 boundsBuilder.include(new LatLng(stationsBean.getLat(), stationsBean.getLng()));//把所有点都include进去（LatLng类型）
             }
@@ -613,6 +631,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         + lat + ", lng = "
                         + lng + ",city = " + city + ",cityCode = " + cityCode + ",address = " + amapLocation.getAddress());
                 if (lat > 0 && lng > 0) {
+                    mPresenter.homeIndex(lng, lat);
                     mlocationClient.stopLocation();
                 }
             } else {

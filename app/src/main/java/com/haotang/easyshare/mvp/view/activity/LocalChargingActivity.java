@@ -14,7 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerLocalChargingActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LocalChargingActivityModule;
-import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
+import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.presenter.LocalChargingPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
@@ -42,7 +42,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> 
     RecyclerView rvLocalCharging;
     @BindView(R.id.srl_local_charging)
     SwipeRefreshLayout srlLocalCharging;
-    private List<MainFragmentData.StationsBean> list = new ArrayList<MainFragmentData.StationsBean>();
+    private List<MainFragChargeBean> list = new ArrayList<MainFragChargeBean>();
     private MainLocalAdapter mainLocalAdapter;
     private int mNextRequestPage = 1;
     private String city;
