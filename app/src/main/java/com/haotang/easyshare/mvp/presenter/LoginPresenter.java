@@ -38,8 +38,8 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
                                 if (result.getCode() == 0) {
                                     mIView.sendVerifyCodeSuccess(result.getData());
                                 } else {
-                                    if (!StringUtil.isNotEmpty(result.getMsg())) {
-                                        mIView.sendVerifyCodeFail(AppConfig.SERVER_ERROR, result.getMsg());
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        mIView.sendVerifyCodeFail(result.getCode(), result.getMsg());
                                     } else {
                                         mIView.sendVerifyCodeFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG
                                                 + "-code=" + result.getCode());
@@ -71,8 +71,8 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
                                 if (result.getCode() == 0) {
                                     mIView.loginSuccess(result.getData());
                                 } else {
-                                    if (!StringUtil.isNotEmpty(result.getMsg())) {
-                                        mIView.loginFail(AppConfig.SERVER_ERROR, result.getMsg());
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        mIView.loginFail(result.getCode(), result.getMsg());
                                     } else {
                                         mIView.loginFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG
                                                 + "-code=" + result.getCode());

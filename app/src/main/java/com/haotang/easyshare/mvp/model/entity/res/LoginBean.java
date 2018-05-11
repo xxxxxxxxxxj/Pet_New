@@ -9,5 +9,4 @@ package com.haotang.easyshare.mvp.model.entity.res;
  * @date zhoujunxia on 2018/5/10 21:36
  */
 public class LoginBean {
-
 }

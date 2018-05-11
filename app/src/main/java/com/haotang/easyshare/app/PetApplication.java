@@ -9,7 +9,10 @@ import com.haotang.easyshare.mvp.model.db.greendao.GreenDBManager;
 import com.haotang.easyshare.mvp.model.imageload.FrescoManager;
 import com.haotang.easyshare.shareutil.ShareConfig;
 import com.haotang.easyshare.shareutil.ShareManager;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.FileUtil;
 
 import cn.jpush.android.api.JPushInterface;
@@ -98,8 +101,13 @@ public class PetApplication extends Application {
         //*********3.开始构建**********
         DevRing.create();
 
-        JPushInterface.setDebugMode(AppConfig.isShowLog); 	// 设置开启日志,发布时请关闭日志
-        JPushInterface.init(this);     		// 初始化 JPush
+        JPushInterface.setDebugMode(AppConfig.isShowLog);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);            // 初始化 JPush
+        String regId = JPushInterface.getRegistrationID(getApplicationContext());
+        RingLog.d("regId","regId = " + regId);
+        if (StringUtil.isNotEmpty(regId)) {
+            SharedPreferenceUtil.getInstance(getApplicationContext()).saveString("jpush_id", regId);
+        }
 
         ShareConfig config = ShareConfig.instance()
                 .qqId(AppConfig.QQ_ID)

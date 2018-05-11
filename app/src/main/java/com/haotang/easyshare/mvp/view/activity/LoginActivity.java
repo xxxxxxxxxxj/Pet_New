@@ -9,6 +9,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LoginActivityModule;
@@ -26,6 +30,7 @@ import com.haotang.easyshare.shareutil.login.result.BaseToken;
 import com.haotang.easyshare.util.CountdownUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
@@ -38,7 +43,8 @@ import butterknife.OnClick;
 /**
  * 登录页
  */
-public class LoginActivity extends BaseActivity<LoginPresenter> implements ILoginView {
+public class LoginActivity extends BaseActivity<LoginPresenter> implements ILoginView, AMapLocationListener {
+    private final static String TAG = LoginActivity.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.iv_titlebar_back)
@@ -62,6 +68,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     private String wxOpenId;
     private double lng;
     private double lat;
+    //声明mlocationClient对象
+    private AMapLocationClient mlocationClient;
+    //声明mLocationOption对象
+    private AMapLocationClientOption mLocationOption;
 
     @Override
     protected int getContentLayout() {
@@ -77,6 +87,27 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     protected void setView(Bundle savedInstanceState) {
         tvTitlebarTitle.setText("登陆");
+        setLocation();
+    }
+
+    private void setLocation() {
+        mlocationClient = new AMapLocationClient(this);
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位监听
+        mlocationClient.setLocationListener(this);
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+        // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+        // 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+        // 在定位结束后，在合适的生命周期调用onDestroy()方法
+        // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+        //启动定位
+        mlocationClient.startLocation();
     }
 
     @Override
@@ -102,7 +133,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
             public void afterTextChanged(Editable s) {
                 String yzm = s.toString().trim();
                 Log.e("TAG", "yzm = " + yzm);
-                if (yzm.length() == 4 && StringUtil.isNotEmpty(etLoginPhone.getText().toString())
+                if (StringUtil.isNotEmpty(yzm) && StringUtil.isNotEmpty(etLoginPhone.getText().toString())
                         && etLoginPhone.getText().toString().trim().replace(" ", "").length() == 11) {
                     ivLoginLogin.setImageResource(R.mipmap.bg_login_yes);
                     ivLoginLogin.setEnabled(true);
@@ -167,6 +198,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mlocationClient.stopLocation();
         CountdownUtil.getInstance().cancel("LOGIN_TIMER");
         DevRing.activityStackManager().exitActivity(this); //退出activity
     }
@@ -178,9 +210,21 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 finish();
                 break;
             case R.id.tv_login_hqyzm:
+                if (StringUtil.isEmpty(StringUtil.checkEditText(etLoginPhone))) {
+                    etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
+                    return;
+                }
                 mPresenter.sendVerifyCode(etLoginPhone.getText().toString().trim().replace(" ", ""));
                 break;
             case R.id.iv_login_login:
+                if (StringUtil.isEmpty(StringUtil.checkEditText(etLoginPhone))) {
+                    etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
+                    return;
+                }
+                if (StringUtil.isEmpty(StringUtil.checkEditText(etLoginYzm))) {
+                    etLoginYzm.setAnimation(SystemUtil.shakeAnimation(5));
+                    return;
+                }
                 mPresenter.login(etLoginPhone.getText().toString().trim().replace(" ", ""), wxOpenId, lng, lat,
                         SharedPreferenceUtil.getInstance(LoginActivity.this).getString("jpush_id", ""),
                         etLoginYzm.getText().toString().trim().replace(" ", ""));
@@ -240,12 +284,34 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void loginSuccess(LoginBean data) {
-
+        RingLog.e(TAG, "loginSuccess");
     }
 
     @Override
     public void loginFail(int status, String desc) {
         RingLog.e(TAG, "LoginActivity loginFail() status = " + status + "---desc = " + desc);
         RingToast.show("LoginActivity loginFail() status = " + status + "---desc = " + desc);
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation amapLocation) {
+        if (amapLocation != null) {
+            if (amapLocation.getErrorCode() == 0) {
+                RingLog.d(TAG, "定位成功lat = "
+                        + lat + ", lng = "
+                        + lng);
+                //定位成功回调信息，设置相关消息
+                lat = amapLocation.getLatitude();//获取纬度
+                lng = amapLocation.getLongitude();//获取经度
+                if (lat > 0 && lng > 0) {
+                    mlocationClient.stopLocation();
+                }
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                RingLog.d(TAG, "location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
+            }
+        }
     }
 }
