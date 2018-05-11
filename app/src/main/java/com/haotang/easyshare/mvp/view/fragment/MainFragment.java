@@ -162,6 +162,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 .build()
                 .inject(this);
         setAdapter();
+        RingLog.d(TAG, "savedInstanceState = " + savedInstanceState);
         mainFragmenHeader.getTmv_mainfrag_map().onCreate(savedInstanceState);// 此方法必须重写
         if (aMap == null) {
             aMap = mainFragmenHeader.getTmv_mainfrag_map().getMap();
@@ -367,6 +368,17 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             mainFragmenHeader.getVwMainfragLocalevGg().setVisibility(View.VISIBLE);
             mainFragmenHeader.getVwMainfragLocalevGr().setVisibility(View.GONE);
         } else if (index == 1 && personalList.size() > 0) {
+            for (int i = 0; i < personalList.size(); i++) {
+                MainFragmentData.PersonalBean publishBean = personalList.get(i);
+                if (publishBean != null) {
+                    list.add(new MainFragChargeBean(publishBean.getImg(), publishBean.getAddress(),
+                            publishBean.getDistance()
+                            , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
+                            publishBean.getIsPrivate(),
+                            publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
+                            publishBean.getSlowNum(), publishBean.getLat()));
+                }
+            }
             mainFragmenHeader.getTvMainfragLocalevGg().setTextColor(getResources().getColor(R.color.a333333));
             mainFragmenHeader.getTvMainfragLocalevGr().setTextColor(getResources().getColor(R.color.a0271F0));
             mainFragmenHeader.getVwMainfragLocalevGg().setVisibility(View.GONE);
