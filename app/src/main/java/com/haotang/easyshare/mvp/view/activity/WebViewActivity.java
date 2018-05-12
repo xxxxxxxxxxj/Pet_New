@@ -95,6 +95,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        setSwipeBackEnable(false);
         mAgentWeb = AgentWeb.with(this)//
                 .setAgentWebParent(linearLayout, -1, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))//传入AgentWeb的父控件。
                 .useDefaultIndicator(-1, 3)//设置进度条颜色与高度，-1为默认值，高度为2，单位为dp。

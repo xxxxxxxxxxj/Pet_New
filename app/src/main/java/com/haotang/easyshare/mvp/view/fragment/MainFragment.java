@@ -291,7 +291,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         NoScollFullLinearLayoutManager noScollFullLinearLayoutManager = new NoScollFullLinearLayoutManager(mActivity);
         noScollFullLinearLayoutManager.setScrollEnabled(false);
         rvMainfragLocalev.setLayoutManager(noScollFullLinearLayoutManager);
-        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list, false, city);
+        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list, true, city);
         rvMainfragLocalev.setAdapter(mainLocalAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL);
@@ -413,6 +413,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private void setTab() {
         list.clear();
         if (index == 0) {
+            tvMainfragLocalevGg.setTextColor(getResources().getColor(R.color.a0271F0));
+            tvMainfragLocalevGr.setTextColor(getResources().getColor(R.color.a333333));
+            vwMainfragLocalevGg.setVisibility(View.VISIBLE);
+            vwMainfragLocalevGr.setVisibility(View.GONE);
             if (publishList.size() > 0) {
                 for (int i = 0; i < publishList.size(); i++) {
                     MainFragmentData.PublishBean publishBean = publishList.get(i);
@@ -426,11 +430,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     }
                 }
             }
-            tvMainfragLocalevGg.setTextColor(getResources().getColor(R.color.a0271F0));
-            tvMainfragLocalevGr.setTextColor(getResources().getColor(R.color.a333333));
-            vwMainfragLocalevGg.setVisibility(View.VISIBLE);
-            vwMainfragLocalevGr.setVisibility(View.GONE);
         } else if (index == 1) {
+            tvMainfragLocalevGg.setTextColor(getResources().getColor(R.color.a333333));
+            tvMainfragLocalevGr.setTextColor(getResources().getColor(R.color.a0271F0));
+            vwMainfragLocalevGg.setVisibility(View.GONE);
+            vwMainfragLocalevGr.setVisibility(View.VISIBLE);
             if (personalList.size() > 0) {
                 for (int i = 0; i < personalList.size(); i++) {
                     MainFragmentData.PersonalBean publishBean = personalList.get(i);
@@ -445,13 +449,17 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 }
 
             }
-            tvMainfragLocalevGg.setTextColor(getResources().getColor(R.color.a333333));
-            tvMainfragLocalevGr.setTextColor(getResources().getColor(R.color.a0271F0));
-            vwMainfragLocalevGg.setVisibility(View.GONE);
-            vwMainfragLocalevGr.setVisibility(View.VISIBLE);
         }
-        addMarkersToMap();// 往地图上添加marker
         mainLocalAdapter.notifyDataSetChanged();
+        addMarkersToMap();// 往地图上添加marker
+        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
+        for (int i = 0; i < list.size(); i++) {
+            MainFragChargeBean stationsBean = list.get(i);
+            if (stationsBean != null) {
+                boundsBuilder.include(new LatLng(stationsBean.getLat(), stationsBean.getLng()));//把所有点都include进去（LatLng类型）
+            }
+        }
+        aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
     }
 
     @OnClick({R.id.iv_mainfrag_gj, R.id.ll_mainfrag_city, R.id.rl_mainfrag_send})

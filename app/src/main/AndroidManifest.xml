@@ -98,8 +98,7 @@
             android:name=".mvp.view.activity.WebViewActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
+            android:launchMode="singleTop"/>
         <activity
             android:name=".mvp.view.activity.MapActivity"
             android:launchMode="singleTop"
