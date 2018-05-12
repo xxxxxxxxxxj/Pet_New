@@ -198,8 +198,7 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:descendantFocusability="blocksDescendants">
+                    android:layout_height="wrap_content">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_mainfrag_ad"
@@ -337,8 +336,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants">
+                android:layout_height="wrap_content">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_mainfrag_localev"
