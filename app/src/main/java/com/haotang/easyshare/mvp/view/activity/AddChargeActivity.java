@@ -545,6 +545,6 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void saveFail(int code, String msg) {
-        RingLog.e(TAG, "getMainFragmentFail() status = " + code + "---desc = " + msg);
+        RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
 }

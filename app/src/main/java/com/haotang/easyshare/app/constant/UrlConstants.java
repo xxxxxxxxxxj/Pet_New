@@ -48,6 +48,14 @@ public class UrlConstants {
      * 上传充电桩
      */
     public static final String SAVECHARGE = "charging/info/save";
+    /**
+     * 充电桩评论列表
+     */
+    public static final String COMMENT_LIST = "charging/comment/list";
+    /**
+     * 充电桩评论
+     */
+    public static final String COMMENT_SAVE = "charging/comment/save";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

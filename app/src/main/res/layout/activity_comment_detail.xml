@@ -24,6 +24,7 @@
             android:src="@mipmap/icon_mainbottom_pl" />
 
         <TextView
+            android:id="@+id/tv_comment_plnum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="添加评论"

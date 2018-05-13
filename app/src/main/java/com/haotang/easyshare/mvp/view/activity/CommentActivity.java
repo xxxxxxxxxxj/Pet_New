@@ -14,6 +14,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerCommentActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CommentActivityModule;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
 import com.haotang.easyshare.mvp.model.entity.res.PhotoViewPagerImg;
@@ -37,7 +38,9 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -49,9 +52,14 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import top.zibin.luban.Luban;
 
 public class CommentActivity extends BaseActivity<CommentPresenter> implements ICommentView {
+    protected final static String TAG = CommentActivity.class.getSimpleName();
+    private static final int IMG_NUM = 9;
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_other)
@@ -70,7 +78,9 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     private List<String> imgPathList = new ArrayList<String>();
     private CommentImgAdapter commentImgAdapter;
     private CommentTagAdapter commentTagAdapter;
-    private static final int IMG_NUM = 9;
+    private String uuid;
+    private Map<String, RequestBody> filedMap = new HashMap<String, RequestBody>();
+    private Map<String, String> paramsMap = new HashMap<String, String>();
 
     @Override
     protected int getContentLayout() {
@@ -81,6 +91,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
         DaggerCommentActivityCommponent.builder().commentActivityModule(new CommentActivityModule(this, this)).build().inject(this);
+        uuid = getIntent().getStringExtra("uuid");
     }
 
     @Override
@@ -228,6 +239,33 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
                 finish();
                 break;
             case R.id.tv_titlebar_other:
+                String localTags = "";
+                paramsMap.put("uuid", uuid);
+                for (int i = 0; i < tagList.size(); i++) {
+                    CommentTag commentTag = tagList.get(i);
+                    if (commentTag != null && commentTag.isCheck()) {
+                        if (i == tagList.size() - 1) {
+                            localTags = localTags + commentTag.getTag();
+                        } else {
+                            localTags = localTags + commentTag.getTag() + ",";
+                        }
+                    }
+                }
+                RingLog.d(TAG,"localTags = "+localTags);
+                paramsMap.put("tags", localTags);
+                paramsMap.put("content", etComment.getText().toString().trim());
+                for (int i = 0; i < imgPathList.size(); i++) {
+                    //构建要上传的文件
+                    File file = new File(imgPathList.get(i));
+                    // 创建 RequestBody，用于封装构建RequestBody
+                    RequestBody requestFile =
+                            RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                    // MultipartBody.Part  和后端约定好Key，这里的partName是用image
+                    MultipartBody.Part body =
+                            MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                    filedMap.put("files", requestFile);
+                }
+                mPresenter.save(paramsMap, filedMap);
                 break;
         }
     }
@@ -272,5 +310,15 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     protected void onDestroy() {
         super.onDestroy();
         DevRing.activityStackManager().exitActivity(this); //退出activity
+    }
+
+    @Override
+    public void saveSuccess(AddChargeBean data) {
+        finish();
+    }
+
+    @Override
+    public void saveFail(int code, String msg) {
+        RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
 }

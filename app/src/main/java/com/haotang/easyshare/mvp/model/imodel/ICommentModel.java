@@ -2,6 +2,11 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
+import io.reactivex.Observable;
+import okhttp3.RequestBody;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -11,4 +16,10 @@ import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
  * @date XJ on 2018/5/7 17:32
  */
 public interface ICommentModel extends IBaseModel{
+    /**
+     * 评论充电桩
+     * @param paramsMap
+     * @param filedMap
+     */
+    Observable save(Map<String, String> paramsMap, Map<String, RequestBody> filedMap);
 }

@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
 /**
@@ -11,4 +12,7 @@ import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
  * @date XJ on 2018/5/7 17:36
  */
 public interface ICommentDetailView extends IBaseView{
+    void listSuccess(CommentBean data);
+
+    void listFail(int code, String msg);
 }

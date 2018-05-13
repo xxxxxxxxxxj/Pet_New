@@ -18,11 +18,8 @@ import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
-import com.ljy.devring.other.RingLog;
 
 import java.util.List;
-
-import static com.haotang.easyshare.R.id.ll_item_comment_root;
 
 /**
  * <p>Title:${type_name}</p>
@@ -32,14 +29,14 @@ import static com.haotang.easyshare.R.id.ll_item_comment_root;
  * @author 徐俊
  * @date XJ on 2018/4/28 18:00
  */
-public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean, BaseViewHolder> {
+public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean.Comment, BaseViewHolder> {
 
-    public CommentDetailAdapter(int layoutResId, List<CommentBean> data) {
+    public CommentDetailAdapter(int layoutResId, List<CommentBean.Comment> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, final CommentBean item) {
+    protected void convert(BaseViewHolder helper, final CommentBean.Comment item) {
         LinearLayout ll_item_comment_root = helper.getView(R.id.ll_item_comment_root);
         ImageView iv_item_comment = helper.getView(R.id.iv_item_comment);
         TextView tv_item_comment_name = helper.getView(R.id.tv_item_comment_name);
@@ -54,12 +51,12 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean, BaseView
             ll_item_comment_root.setLayoutParams(layoutParams);
         }
         if (item != null) {
-            GlideUtil.loadNetCircleImg(mContext, item.getImgUrl(), iv_item_comment, R.mipmap.ic_image_load_circle);
-            StringUtil.setText(tv_item_comment_name, item.getName(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_comment_desc, item.getDesc(), "", View.VISIBLE, View.GONE);
-            StringUtil.setText(tv_item_comment_date, item.getDate(), "", View.VISIBLE, View.VISIBLE);
-            List<CommentTag> tagLIst = item.getTagList();
-            List<CommentImg> imgList = item.getImgList();
+            GlideUtil.loadNetCircleImg(mContext, item.getHeadImg(), iv_item_comment, R.mipmap.ic_image_load_circle);
+            //StringUtil.setText(tv_item_comment_name, item.getName(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_comment_desc, item.getContent(), "", View.VISIBLE, View.GONE);
+            StringUtil.setText(tv_item_comment_date, item.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
+            List<CommentTag> tagLIst = item.getTags();
+            List<CommentImg> imgList = item.getMedia();
             if (tagLIst != null && tagLIst.size() > 0) {
                 rv_item_comment_tag.setVisibility(View.VISIBLE);
                 rv_item_comment_tag.setHasFixedSize(true);

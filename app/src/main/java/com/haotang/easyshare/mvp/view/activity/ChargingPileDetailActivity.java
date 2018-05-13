@@ -294,6 +294,6 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     public void detailFail(int code, String msg) {
-        RingLog.e(TAG, "getMainFragmentFail() status = " + code + "---desc = " + msg);
+        RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
     }
 }

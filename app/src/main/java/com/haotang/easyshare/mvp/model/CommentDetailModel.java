@@ -1,6 +1,11 @@
 package com.haotang.easyshare.mvp.model;
 
+import com.haotang.easyshare.mvp.model.http.ChargingPileDetailApiService;
+import com.haotang.easyshare.mvp.model.http.CommentDetailApiService;
 import com.haotang.easyshare.mvp.model.imodel.ICommentDetailModel;
+import com.ljy.devring.DevRing;
+
+import io.reactivex.Observable;
 
 /**
  * <p>Title:${type_name}</p>
@@ -11,4 +16,13 @@ import com.haotang.easyshare.mvp.model.imodel.ICommentDetailModel;
  * @date XJ on 2018/5/7 17:39
  */
 public class CommentDetailModel implements ICommentDetailModel {
+    /**
+     * 充电桩评论列表
+     * @param uuid
+     * @param mNextRequestPage
+     */
+    @Override
+    public Observable list(String uuid, int mNextRequestPage) {
+        return DevRing.httpManager().getService(CommentDetailApiService.class).list(uuid,mNextRequestPage);
+    }
 }

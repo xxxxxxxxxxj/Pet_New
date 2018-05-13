@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import io.reactivex.Observable;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -11,4 +13,10 @@ import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
  * @date XJ on 2018/5/7 17:37
  */
 public interface ICommentDetailModel extends IBaseModel{
+    /**
+     * 充电桩评论列表
+     * @param uuid
+     * @param mNextRequestPage
+     */
+    Observable list(String uuid, int mNextRequestPage);
 }

@@ -16,14 +16,14 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerCommentDetailActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CommentDetailActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
-import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
-import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
 import com.haotang.easyshare.mvp.presenter.CommentDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CommentDetailAdapter;
 import com.haotang.easyshare.mvp.view.iview.ICommentDetailView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,20 +41,14 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
+    @BindView(R.id.tv_comment_plnum)
+    TextView tv_comment_plnum;
     @BindView(R.id.rv_comment_detail)
     RecyclerView rvCommentDetail;
     @BindView(R.id.srl_comment_detail)
     SwipeRefreshLayout srlCommentDetail;
-    private List<CommentBean> list = new ArrayList<CommentBean>();
-    private List<CommentTag> tagList = new ArrayList<CommentTag>();
-    private List<CommentImg> imgList = new ArrayList<CommentImg>();
+    private List<CommentBean.Comment> list = new ArrayList<CommentBean.Comment>();
     private CommentDetailAdapter commentDetailAdapter;
-    private String[] tags = {"充电便利", "停车免费", "不用排队", "价格便宜", "充电快"};
-    private String[] imgs = {"http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-            "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-            "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-            "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-            "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"};
     private int mNextRequestPage = 1;
     private String uuid;
 
@@ -75,16 +69,6 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
         srlCommentDetail.setRefreshing(true);
         srlCommentDetail.setColorSchemeColors(Color.rgb(47, 223, 189));
         tvTitlebarTitle.setText("评论详情");
-        for (int i = 0; i < 5; i++) {
-            tagList.add(new CommentTag("充电便利", false));
-        }
-        for (int i = 0; i < 5; i++) {
-            imgList.add(new CommentImg("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433", false));
-        }
-        for (int i = 0; i < 20; i++) {
-            list.add(new CommentBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-                    "139****9696", "09-20", "目前用过一次，感觉还可以", tagList, imgList, false, false));
-        }
         rvCommentDetail.setHasFixedSize(true);
         rvCommentDetail.setLayoutManager(new LinearLayoutManager(this));
         commentDetailAdapter = new CommentDetailAdapter(R.layout.item_comment, list);
@@ -97,7 +81,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        mPresenter.list(uuid, mNextRequestPage);
     }
 
     @Override
@@ -117,10 +101,13 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     }
 
     private void refresh() {
+        srlCommentDetail.setRefreshing(true);
         mNextRequestPage = 1;
+        mPresenter.list(uuid, mNextRequestPage);
     }
 
     private void loadMore() {
+        mPresenter.list(uuid, mNextRequestPage);
     }
 
     @Override
@@ -136,9 +123,37 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
                 finish();
                 break;
             case R.id.ll_comment_detail_add:
-                startActivity(new Intent(CommentDetailActivity.this, CommentActivity.class));
+                startActivity(new Intent(CommentDetailActivity.this, CommentActivity.class).putExtra("uuid",uuid));
                 break;
         }
     }
 
+    @Override
+    public void listSuccess(CommentBean data) {
+        if (mNextRequestPage == 1) {
+            srlCommentDetail.setRefreshing(false);
+            list.clear();
+        } else {
+            commentDetailAdapter.loadMoreComplete();
+        }
+        if (data != null) {
+            StringUtil.setText(tv_comment_plnum, "添加评论(" + data.getTotal() + ")", "", View.VISIBLE, View.GONE);
+            List<CommentBean.Comment> comments = data.getComments();
+            if (comments != null && comments.size() > 0) {
+                list.addAll(comments);
+                mNextRequestPage++;
+            }
+        }
+        commentDetailAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+        if (mNextRequestPage == 1) {
+            srlCommentDetail.setRefreshing(false);
+        } else {
+            commentDetailAdapter.loadMoreComplete();
+        }
+    }
 }

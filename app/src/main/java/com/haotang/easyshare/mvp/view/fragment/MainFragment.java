@@ -633,7 +633,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             mainFragmenBoDa.getLlMainbottomPl().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(mActivity, CommentDetailActivity.class));
+                    startActivity(new Intent(mActivity, CommentDetailActivity.class).putExtra("uuid", stationsBean.getUuid()));
                 }
             });
             pWinBottomDialog.setOnDismissListener(new PopupWindow.OnDismissListener() {
