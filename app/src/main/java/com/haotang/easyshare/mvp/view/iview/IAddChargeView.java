@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
 /**
@@ -12,4 +13,8 @@ import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
  */
 public interface IAddChargeView extends IBaseView {
 
+    void saveSuccess(AddChargeBean data);
+
+
+    void saveFail(int code, String msg);
 }

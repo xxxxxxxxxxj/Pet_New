@@ -20,10 +20,34 @@ import java.util.Map;
  * @date XJ on 2018/4/11 11:30
  */
 public class UrlConstants {
-
+    /**
+     * 下发验证码
+     */
+    public static final String SENDVERIFYCODE = "user/info/sendVerifyCode";
+    /**
+     * 登陆
+     */
     public static final String LOGIN = "user/info/login";
+    /**
+     * 用户主页信息
+     */
     public static final String HOME = "user/info/home";
+    /**
+     * 首页
+     */
     public static final String HOMEINDEX = "home/index";
+    /**
+     * 附近充电桩
+     */
+    public static final String NEARBY = "charging/info/nearby";
+    /**
+     * 充电桩详情
+     */
+    public static final String CHARGEDETAIL = "charging/info/detail";
+    /**
+     * 上传充电桩
+     */
+    public static final String SAVECHARGE = "charging/info/save";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境
@@ -119,20 +143,17 @@ public class UrlConstants {
     public static final String GET_LASTVERSION_DATA = getServiceBaseUrlNew() + "user/checkversion?";
     public static final String GET_BOTTOMBAR_DATA = getServiceBaseUrl() + "pet/user/index?";
     public static final String GET_MAINFRAG_DATA = getServiceBaseUrl() + "pet/user/index?";
-    /**
-     * 下发验证码
-     */
-    public static final String SENDVERIFYCODE = "user/info/sendVerifyCode";
+
 
     public static Map<String, String> getMapHeader(Context context, String phone) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("system", "android_" + SystemUtil.getCurrentVersion(context));
         map.put("imei", SystemUtil.getIMEI(context));
         map.put("phone", phone);
-        map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
+        /*map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
         map.put("phoneSystemVersion", "Android "
                 + android.os.Build.VERSION.RELEASE);
-        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));
+        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));*/
         return map;
     }
 
@@ -143,10 +164,10 @@ public class UrlConstants {
         if (StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))) {
             map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
         }
-        map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
+        /*map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
         map.put("phoneSystemVersion", "Android "
                 + android.os.Build.VERSION.RELEASE);
-        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));
+        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));*/
         return map;
     }
 
@@ -156,10 +177,10 @@ public class UrlConstants {
         if (StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))) {
             map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
         }
-        map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
+        /*map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
         map.put("phoneSystemVersion", "Android "
                 + android.os.Build.VERSION.RELEASE);
-        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));
+        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));*/
         return map;
     }
 }

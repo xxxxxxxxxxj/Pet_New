@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
 /**
@@ -12,4 +13,7 @@ import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
  */
 public interface IChargingPileDetailView extends IBaseView{
 
+    void detailSuccess(ChargeDetailBean data);
+
+    void detailFail(int code, String msg);
 }

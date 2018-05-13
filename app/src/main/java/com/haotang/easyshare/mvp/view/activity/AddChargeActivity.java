@@ -22,6 +22,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerAddChargeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.AddChargeActivityModule;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.PhotoViewPagerImg;
 import com.haotang.easyshare.mvp.model.entity.res.SelectAddress;
@@ -48,7 +49,9 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -60,6 +63,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import top.zibin.luban.Luban;
 
 /**
@@ -133,6 +139,12 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     private String[] time =
             {"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00"
                     , "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
+    private Map<String, RequestBody> filedMap = new HashMap<String, RequestBody>();
+    private Map<String, String> paramsMap = new HashMap<String, String>();
+    private double lat;
+    private double lng;
+    private int upOrDown;
+    private int kuaiOrMan;
 
     @Override
     protected int getContentLayout() {
@@ -149,6 +161,8 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     @Subscribe
     public void getAddress(SelectAddress selectAddress) {
         if (selectAddress != null) {
+            lat = selectAddress.getLat();
+            lng = selectAddress.getLng();
             StringUtil.setText(tvAddchargeZdz, selectAddress.getAddress(), "", View.VISIBLE, View.VISIBLE);
         }
     }
@@ -316,9 +330,11 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     private void setKuaiOrMan(int flag) {
         if (flag == 0) {//快充
+            kuaiOrMan = 0;
             ivAddchargeKuai.setImageResource(R.mipmap.icon_addcharge_select);
             ivAddchargeMan.setImageResource(R.mipmap.icon_addcharge_unselect);
         } else if (flag == 1) {//慢充
+            kuaiOrMan = 1;
             ivAddchargeKuai.setImageResource(R.mipmap.icon_addcharge_unselect);
             ivAddchargeMan.setImageResource(R.mipmap.icon_addcharge_select);
         }
@@ -326,9 +342,11 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     private void setUpOrDown(int flag) {
         if (flag == 0) {//地上
+            upOrDown = 0;
             ivAddchargeUp.setImageResource(R.mipmap.icon_addcharge_select);
             ivAddchargeDown.setImageResource(R.mipmap.icon_addcharge_unselect);
         } else if (flag == 1) {//地下
+            upOrDown = 1;
             ivAddchargeUp.setImageResource(R.mipmap.icon_addcharge_unselect);
             ivAddchargeDown.setImageResource(R.mipmap.icon_addcharge_select);
         }
@@ -341,6 +359,34 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 finish();
                 break;
             case R.id.tv_titlebar_other:
+                paramsMap.put("lng", String.valueOf(lng));
+                paramsMap.put("lat", String.valueOf(lat));
+                paramsMap.put("telephone", etAddchargePhone.getText().toString().trim());
+                paramsMap.put("title", etAddchargeZmc.getText().toString().trim());
+                paramsMap.put("address", tvAddchargeZdz.getText().toString().trim());
+                paramsMap.put("electricityPrice", etAddchargeCdf.getText().toString().trim() + "_" + tvAddchargeKfsj.getText().toString().trim());
+                paramsMap.put("parkingPrice", etAddchargeTcf.getText().toString().trim() + "_" + upOrDown);
+                paramsMap.put("serviceFee", etAddchargeFwf.getText().toString().trim());
+                paramsMap.put("payWay", tvAddchargeZffs.getText().toString().trim());
+                paramsMap.put("openTime", tvAddchargeKfsj.getText().toString().trim());
+                paramsMap.put("remark", etAddchargeBzsm.getText().toString().trim());
+                if (kuaiOrMan == 0) {//快充
+                    paramsMap.put("fastNum", etAddchargeSl.getText().toString().trim());
+                } else if (kuaiOrMan == 1) {//慢充
+                    paramsMap.put("slowNum", etAddchargeSl.getText().toString().trim());
+                }
+                for(int i=0;i<imgPathList.size();i++){
+                    //构建要上传的文件
+                    File file = new File(imgPathList.get(i));
+                    // 创建 RequestBody，用于封装构建RequestBody
+                    RequestBody requestFile =
+                            RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                    // MultipartBody.Part  和后端约定好Key，这里的partName是用image
+                    MultipartBody.Part body =
+                            MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                    filedMap.put("file",requestFile);
+                }
+                mPresenter.save(paramsMap, filedMap);
                 break;
             case R.id.rl_addcharge_zdz:
                 startActivity(new Intent(AddChargeActivity.this, SelectAddressActivity.class));
@@ -490,5 +536,15 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 }
             });
         }
+    }
+
+    @Override
+    public void saveSuccess(AddChargeBean data) {
+        finish();
+    }
+
+    @Override
+    public void saveFail(int code, String msg) {
+        RingLog.e(TAG, "getMainFragmentFail() status = " + code + "---desc = " + msg);
     }
 }

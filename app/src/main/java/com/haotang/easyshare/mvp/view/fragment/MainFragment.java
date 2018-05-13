@@ -627,7 +627,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             mainFragmenBoDa.getLlMainbottomXq().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(mActivity, ChargingPileDetailActivity.class));
+                    startActivity(new Intent(mActivity, ChargingPileDetailActivity.class).putExtra("uuid",stationsBean.getUuid()));
                 }
             });
             mainFragmenBoDa.getLlMainbottomPl().setOnClickListener(new View.OnClickListener() {

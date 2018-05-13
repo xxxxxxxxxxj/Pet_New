@@ -56,6 +56,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
             "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
             "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"};
     private int mNextRequestPage = 1;
+    private String uuid;
 
     @Override
     protected int getContentLayout() {
@@ -66,6 +67,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
         DaggerCommentDetailActivityCommponent.builder().commentDetailActivityModule(new CommentDetailActivityModule(this, this)).build().inject(this);
+        uuid = getIntent().getStringExtra("uuid");
     }
 
     @Override

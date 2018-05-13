@@ -10,8 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerLocalChargingActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LocalChargingActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
@@ -20,10 +26,13 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
 import com.haotang.easyshare.mvp.view.iview.ILocalChargingView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.SignUtil;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -33,7 +42,8 @@ import butterknife.OnClick;
 /**
  * 附近充电桩界面
  */
-public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> implements ILocalChargingView {
+public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
+        implements ILocalChargingView, AMapLocationListener {
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_title)
@@ -46,6 +56,12 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> 
     private MainLocalAdapter mainLocalAdapter;
     private int mNextRequestPage = 1;
     private String city;
+    private double lat;
+    private double lng;
+    //声明mlocationClient对象
+    private AMapLocationClient mlocationClient;
+    //声明mLocationOption对象
+    private AMapLocationClientOption mLocationOption;
 
     @Override
     protected int getContentLayout() {
@@ -56,7 +72,6 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> 
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
         DaggerLocalChargingActivityCommponent.builder().localChargingActivityModule(new LocalChargingActivityModule(this, this)).build().inject(this);
-        city = getIntent().getStringExtra("city");
     }
 
     @Override
@@ -65,6 +80,27 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> 
         srlLocalCharging.setRefreshing(true);
         srlLocalCharging.setColorSchemeColors(Color.rgb(47, 223, 189));
         setAdapter();
+        setLocation();
+    }
+
+    private void setLocation() {
+        mlocationClient = new AMapLocationClient(this);
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位监听
+        mlocationClient.setLocationListener(this);
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+        // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+        // 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+        // 在定位结束后，在合适的生命周期调用onDestroy()方法
+        // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+        //启动定位
+        mlocationClient.startLocation();
     }
 
     private void setAdapter() {
@@ -100,10 +136,13 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> 
     }
 
     private void refresh() {
+        srlLocalCharging.setRefreshing(true);
         mNextRequestPage = 1;
+        nearBy();
     }
 
     private void loadMore() {
+        nearBy();
     }
 
     @Override
@@ -119,5 +158,67 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter> 
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation amapLocation) {
+        if (amapLocation != null) {
+            if (amapLocation.getErrorCode() == 0) {
+                //定位成功回调信息，设置相关消息
+                lat = amapLocation.getLatitude();//获取纬度
+                lng = amapLocation.getLongitude();//获取经度
+                city = amapLocation.getCity();
+                amapLocation.getAddress();
+                RingLog.d(TAG, "定位成功lat = "
+                        + lat + ", lng = "
+                        + lng + ",city = " + city + ",address = " + amapLocation.getAddress());
+                if (lat > 0 && lng > 0) {
+                    nearBy();
+                    mlocationClient.stopLocation();
+                }
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                RingLog.d(TAG, "location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
+            }
+        }
+    }
+
+    private void nearBy() {
+        Map<String, String> mapHeader = UrlConstants.getMapHeader(LocalChargingActivity.this);
+        mapHeader.put("lng", String.valueOf(lng));
+        mapHeader.put("lat", String.valueOf(lat));
+        mapHeader.put("page", String.valueOf(mNextRequestPage));
+        mapHeader.put("key", AppConfig.SERVER_KEY);
+        RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
+        String md5 = SignUtil.sign(mapHeader, "MD5");
+        RingLog.d(TAG, "md5 =  " + md5);
+        mPresenter.nearby(lng, lat, mNextRequestPage, md5);
+    }
+
+    @Override
+    public void nearbySuccess(List<MainFragChargeBean> data) {
+        if (mNextRequestPage == 1) {
+            srlLocalCharging.setRefreshing(false);
+            list.clear();
+        }else{
+            mainLocalAdapter.loadMoreComplete();
+        }
+        if (data != null && data.size() > 0) {
+            list.addAll(data);
+            mNextRequestPage++;
+        }
+        mainLocalAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void nearbyFail(int code, String msg) {
+        if (mNextRequestPage == 1) {
+            srlLocalCharging.setRefreshing(false);
+        }else{
+            mainLocalAdapter.loadMoreComplete();
+        }
+        RingLog.e(TAG, "getMainFragmentFail() status = " + code + "---desc = " + msg);
     }
 }

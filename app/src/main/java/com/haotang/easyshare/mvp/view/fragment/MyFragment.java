@@ -110,6 +110,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @BindView(R.id.vp_myfragment_mycdz)
     ViewPager vpMyfragmentMycdz;
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
+    private String kf_phone = "";
 
     @Override
     public boolean isUseEventBus() {
@@ -190,6 +191,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 startActivity(new Intent(mActivity, MyFollowActivity.class));
                 break;
             case R.id.rl_myfragment_jjdh:
+                SystemUtil.cellPhone(mActivity, kf_phone);
                 break;
             case R.id.rl_myfragment_srgj:
                 startActivity(new Intent(mActivity, ButlerActivity.class));
@@ -206,6 +208,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void homeSuccess(HomeBean data) {
         RingLog.e(TAG, "MyFragment homeSuccess()");
         if (data != null) {
+            kf_phone = data.getKf_phone();
             StringUtil.setText(tvMyfragmentUsername, data.getUserName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentYue, String.valueOf(data.getBalance()), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentVipjf, String.valueOf(data.getCoins()), "", View.VISIBLE, View.VISIBLE);

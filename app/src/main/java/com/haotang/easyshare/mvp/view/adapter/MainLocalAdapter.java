@@ -12,7 +12,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.flyco.roundview.RoundLinearLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
-import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
@@ -96,7 +95,7 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragChargeBean, BaseV
             rll_item_mainlocal_root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mContext.startActivity(new Intent(mContext, ChargingPileDetailActivity.class));
+                    mContext.startActivity(new Intent(mContext, ChargingPileDetailActivity.class).putExtra("uuid",item.getUuid()));
                 }
             });
         }

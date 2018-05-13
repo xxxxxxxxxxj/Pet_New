@@ -18,8 +18,6 @@ import com.haotang.easyshare.util.StringUtil;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static android.R.attr.data;
-
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -95,7 +93,7 @@ public class ChargeFragment extends BaseFragment {
                 startActivity(new Intent(mActivity, AddChargeActivity.class));
                 break;
             case R.id.rl_chargefrag_root:
-                startActivity(new Intent(mActivity, ChargingPileDetailActivity.class));
+                startActivity(new Intent(mActivity, ChargingPileDetailActivity.class).putExtra("uuid",stationsBean.getUuid()));
                 break;
         }
     }

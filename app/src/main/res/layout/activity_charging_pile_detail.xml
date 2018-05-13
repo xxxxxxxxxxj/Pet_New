@@ -111,11 +111,12 @@
                     android:layout_height="70dip">
 
                     <TextView
-                        android:id="@+id/iv_chargingdetail_cdcs"
+                        android:id="@+id/tv_chargingdetail_cdcs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:alpha="0.7"
+                        android:gravity="center"
                         android:background="@color/black"
                         android:text="TextView"
                         android:textColor="@color/white"

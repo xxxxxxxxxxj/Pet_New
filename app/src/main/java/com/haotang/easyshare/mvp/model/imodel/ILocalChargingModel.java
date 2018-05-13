@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import io.reactivex.Observable;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -11,4 +13,12 @@ import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
  * @date XJ on 2018/5/7 17:49
  */
 public interface ILocalChargingModel extends IBaseModel{
+    /**
+     * 附近充电桩
+     * @param lng
+     * @param lat
+     * @param mNextRequestPage
+     * @param sign
+     */
+    Observable nearby(double lng, double lat, int mNextRequestPage, String sign);
 }
