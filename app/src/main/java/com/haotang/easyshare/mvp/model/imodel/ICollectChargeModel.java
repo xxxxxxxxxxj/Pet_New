@@ -1,7 +1,8 @@
 package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
-import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
+
+import io.reactivex.Observable;
 
 /**
  * <p>Title:${type_name}</p>
@@ -12,4 +13,8 @@ import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
  * @date XJ on 2018/5/7 17:25
  */
 public interface ICollectChargeModel extends IBaseModel{
+    /**
+     * 收藏的充电桩列表
+     */
+    Observable list();
 }

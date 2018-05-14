@@ -17,6 +17,8 @@ import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerChargingPileDetailActivityCommponent;
 import com.haotang.easyshare.di.module.activity.ChargingPileDetailActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.presenter.ChargingPileDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -31,6 +33,7 @@ import com.haotang.easyshare.verticalbanner.VerticalBannerView;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -122,6 +125,8 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     private String address;
     private double chargeLng;
     private double chargeLat;
+    private int is_collect;
+    private Map<String, String> parmMap = new HashMap<String, String>();
 
     @Override
     protected int getContentLayout() {
@@ -217,6 +222,13 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 finish();
                 break;
             case iv_chargingdetail_sc:
+                parmMap.clear();
+                parmMap.put("uuid", uuid);
+                if (is_collect == 0) {//是否已收藏(0:否、1:是)
+                    mPresenter.follow(parmMap);
+                } else if (is_collect == 1) {
+                    mPresenter.cancel(parmMap);
+                }
                 break;
             case R.id.iv_chargingdetail_share:
                 ShareBottomDialog dialog = new ShareBottomDialog();
@@ -241,6 +253,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     @Override
     public void detailSuccess(ChargeDetailBean data) {
         if (data != null) {
+            is_collect = data.getIs_collect();
             uuid = data.getUuid();
             address = data.getAddress();
             chargeLat = data.getLat();
@@ -259,9 +272,9 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             StringUtil.setText(tvChargingdetailZdbz, data.getRemark(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailPl, "评论(" + data.getCommentTotal() + ")", "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetImg(this, data.getHeadImg(), ivChargingdetailImg, R.mipmap.ic_image_load);
-            if (data.getIs_collect() == 0) {//是否已收藏(0:否、1:是)
+            if (is_collect == 0) {//是否已收藏(0:否、1:是)
                 ivChargingdetailSc.setImageResource(R.mipmap.sc_not);
-            } else if (data.getIs_collect() == 1) {
+            } else if (is_collect == 1) {
                 ivChargingdetailSc.setImageResource(R.mipmap.sc);
             }
             if (data.getIsPrivate() == 0) {//公共
@@ -294,6 +307,30 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     public void detailFail(int code, String msg) {
+        RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void followSuccess(AddChargeBean data) {
+        is_collect = 1;
+        ivChargingdetailSc.setImageResource(R.mipmap.sc);
+        DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.COLLECT_OR_CANCEL_CHARGE));
+    }
+
+    @Override
+    public void followFail(int code, String msg) {
+        RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void cancelSuccess(AddChargeBean data) {
+        is_collect = 0;
+        ivChargingdetailSc.setImageResource(R.mipmap.sc_not);
+        DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.COLLECT_OR_CANCEL_CHARGE));
+    }
+
+    @Override
+    public void cancelFail(int code, String msg) {
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
     }
 }

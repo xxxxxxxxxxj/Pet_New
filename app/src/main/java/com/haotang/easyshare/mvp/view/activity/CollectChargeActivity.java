@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerCollectChargeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CollectChargeActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.CollectChargeBean;
 import com.haotang.easyshare.mvp.presenter.CollectChargePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -22,12 +23,15 @@ import com.haotang.easyshare.mvp.view.adapter.CollectChargeListAdapter;
 import com.haotang.easyshare.mvp.view.iview.ICollectChargeView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +53,10 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
     SwipeMenuRecyclerView smrvCollectCharge;
     @BindView(R.id.srl_collect_charge)
     SwipeRefreshLayout srlCollectCharge;
-    private List<CollectChargeBean> list = new ArrayList<CollectChargeBean>();
+    private List<CollectChargeBean.DataBean> list = new ArrayList<CollectChargeBean.DataBean>();
     private int mNextRequestPage = 1;
     private CollectChargeListAdapter collectChargeListAdapter;
+    private int pageSize;
 
     @Override
     protected int getContentLayout() {
@@ -67,17 +72,10 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
     @Override
     protected void setView(Bundle savedInstanceState) {
         tvTitlebarTitle.setText("收藏的站点");
-
         smrvCollectCharge.setSwipeMenuCreator(swipeMenuCreator);
         smrvCollectCharge.setSwipeMenuItemClickListener(mMenuItemClickListener);
-
         srlCollectCharge.setRefreshing(true);
         srlCollectCharge.setColorSchemeColors(Color.rgb(47, 223, 189));
-        for (int i = 0; i < 20; i++) {
-            list.add(new CollectChargeBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"
-                    , "北京市西城区晚风珠宝充电站",
-                    "0.36～0.98元/度", "0.8～0.8元/度"));
-        }
         smrvCollectCharge.setHasFixedSize(true);
         smrvCollectCharge.setLayoutManager(new LinearLayoutManager(this));
         collectChargeListAdapter = new CollectChargeListAdapter(R.layout.item_collectcharge, list);
@@ -125,7 +123,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        mPresenter.list();
     }
 
     @Override
@@ -133,15 +131,20 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
         collectChargeListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(CollectChargeActivity.this, ChargingPileDetailActivity.class).putExtra("uuid",""));
+                if (list != null && list.size() > 0 && list.size() > position) {
+                    CollectChargeBean.DataBean collectChargeBean = list.get(position);
+                    if (collectChargeBean != null) {
+                        startActivity(new Intent(CollectChargeActivity.this, ChargingPileDetailActivity.class).putExtra("uuid", collectChargeBean.getUuid()));
+                    }
+                }
             }
         });
-        collectChargeListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        /*collectChargeListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 loadMore();
             }
-        });
+        });*/
         srlCollectCharge.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -151,10 +154,14 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
     }
 
     private void refresh() {
+        collectChargeListAdapter.setEnableLoadMore(false);
+        srlCollectCharge.setRefreshing(true);
         mNextRequestPage = 1;
+        mPresenter.list();
     }
 
     private void loadMore() {
+        mPresenter.list();
     }
 
     @Override
@@ -171,4 +178,56 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
                 break;
         }
     }
+
+    @Override
+    public void listSuccess(List<CollectChargeBean.DataBean> data) {
+        if (mNextRequestPage == 1) {
+            srlCollectCharge.setRefreshing(false);
+            collectChargeListAdapter.setEnableLoadMore(true);
+            list.clear();
+        }
+        collectChargeListAdapter.loadMoreComplete();
+        if (data != null && data.size() > 0) {
+            if (mNextRequestPage == 1) {
+                pageSize = data.size();
+            } else {
+                if (data.size() < pageSize) {
+                    collectChargeListAdapter.loadMoreEnd(false);
+                }
+            }
+            list.addAll(data);
+            mNextRequestPage++;
+        } else {
+            if (mNextRequestPage == 1) {
+                collectChargeListAdapter.loadMoreEnd(true);
+            } else {
+                collectChargeListAdapter.loadMoreEnd(false);
+            }
+        }
+        collectChargeListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        if (mNextRequestPage == 1) {
+            collectChargeListAdapter.setEnableLoadMore(true);
+            srlCollectCharge.setRefreshing(false);
+        } else {
+            collectChargeListAdapter.loadMoreFail();
+        }
+        RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void refresh(RefreshEvent data) {
+        if (data != null && data.getRefreshIndex() == RefreshEvent.COLLECT_OR_CANCEL_CHARGE) {
+            refresh();
+        }
+    }
+
 }

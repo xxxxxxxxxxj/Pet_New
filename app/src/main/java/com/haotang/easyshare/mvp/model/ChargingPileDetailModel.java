@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.ChargingPileDetailApiService;
 import com.haotang.easyshare.mvp.model.imodel.IChargingPileDetailModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -17,6 +19,7 @@ import io.reactivex.Observable;
 public class ChargingPileDetailModel implements IChargingPileDetailModel {
     /**
      * 充电桩详情
+     *
      * @param lng
      * @param lat
      * @param uuid
@@ -24,6 +27,26 @@ public class ChargingPileDetailModel implements IChargingPileDetailModel {
      */
     @Override
     public Observable detail(double lng, double lat, String uuid, String md5) {
-        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).detail(lng, lat,uuid,md5);
+        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).detail(lng, lat, uuid, md5);
+    }
+
+    /**
+     * 收藏充电桩
+     *
+     * @param parmMap
+     */
+    @Override
+    public Observable follow(Map<String, String> parmMap) {
+        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).follow(parmMap);
+    }
+
+    /**
+     * 取消收藏充电桩
+     *
+     * @param parmMap
+     */
+    @Override
+    public Observable cancel(Map<String, String> parmMap) {
+        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).cancel(parmMap);
     }
 }

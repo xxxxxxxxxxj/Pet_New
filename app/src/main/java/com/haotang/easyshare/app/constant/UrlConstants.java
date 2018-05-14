@@ -21,49 +21,61 @@ import java.util.Map;
  */
 public class UrlConstants {
     /**
-     * 下发验证码
+     * 1.下发验证码
      */
     public static final String SENDVERIFYCODE = "user/info/sendVerifyCode";
     /**
-     * 登陆
+     * 2.登陆
      */
     public static final String LOGIN = "user/info/login";
     /**
-     * 用户主页信息
+     * 3.用户主页信息
      */
     public static final String HOME = "user/info/home";
     /**
-     * 首页
+     * 4.首页
      */
     public static final String HOMEINDEX = "home/index";
     /**
-     * 附近充电桩
+     * 5.附近充电桩
      */
     public static final String NEARBY = "charging/info/nearby";
     /**
-     * 充电桩详情
+     * 6.充电桩详情
      */
     public static final String CHARGEDETAIL = "charging/info/detail";
     /**
-     * 上传充电桩
+     * 7.上传充电桩
      */
     public static final String SAVECHARGE = "charging/info/save";
     /**
-     * 充电桩评论列表
+     * 8.充电桩评论列表
      */
     public static final String COMMENT_LIST = "charging/comment/list";
     /**
-     * 充电桩评论
+     * 9.充电桩评论
      */
     public static final String COMMENT_SAVE = "charging/comment/save";
     /**
-     * 管家留言列表
+     * 10.管家留言列表
      */
     public static final String HISTORYMSG = "user/message/history";
     /**
-     * 发布留言
+     * 11.发布留言
      */
     public static final String SAVEMSG = "user/message/save";
+    /**
+     * 12.收藏的充电桩列表
+     */
+    public static final String COLLECT_CHARGE = "user/charging/list";
+    /**
+     * 13.收藏充电桩
+     */
+    public static final String FOLLOW_CHARGE = "user/charging/follow";
+    /**
+     * 14.取消收藏充电桩
+     */
+    public static final String CANCEL_FOLLOW_CHARGE = "user/charging/cancel";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

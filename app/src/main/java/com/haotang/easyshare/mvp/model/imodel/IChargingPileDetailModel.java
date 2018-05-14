@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -15,10 +17,25 @@ import io.reactivex.Observable;
 public interface IChargingPileDetailModel extends IBaseModel {
     /**
      * 充电桩详情
+     *
      * @param lng
      * @param lat
      * @param uuid
      * @param md5
      */
     Observable detail(double lng, double lat, String uuid, String md5);
+
+    /**
+     * 收藏充电桩
+     *
+     * @param parmMap
+     */
+    Observable follow(Map<String, String> parmMap);
+
+    /**
+     * 取消收藏充电桩
+     *
+     * @param parmMap
+     */
+    Observable cancel(Map<String, String> parmMap);
 }

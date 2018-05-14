@@ -1,12 +1,17 @@
 package com.haotang.easyshare.mvp.model.http;
 
 import com.haotang.easyshare.app.constant.UrlConstants;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 /**
  * <p>Title:${type_name}</p>
@@ -19,6 +24,7 @@ import retrofit2.http.Query;
 public interface ChargingPileDetailApiService {
     /**
      * 充电桩详情
+     *
      * @param lng
      * @param lat
      * @param uuid
@@ -27,4 +33,16 @@ public interface ChargingPileDetailApiService {
     @GET(UrlConstants.CHARGEDETAIL)
     Observable<HttpResult<ChargeDetailBean>> detail(@Query("lng") double lng, @Query("lat") double lat,
                                                     @Query("uuid") String uuid, @Query("sign") String sign);
+
+    /**
+     * 收藏充电桩
+     */
+    @GET(UrlConstants.FOLLOW_CHARGE)
+    Observable<HttpResult<AddChargeBean>> follow(@QueryMap() Map<String, String> parms);
+
+    /**
+     * 取消收藏充电桩
+     */
+    @GET(UrlConstants.CANCEL_FOLLOW_CHARGE)
+    Observable<HttpResult<AddChargeBean>> cancel(@QueryMap() Map<String, String> parms);
 }

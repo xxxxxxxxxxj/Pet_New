@@ -24,13 +24,13 @@ import java.util.List;
  * @author 徐俊
  * @date XJ on 2018/5/3 18:00
  */
-public class CollectChargeListAdapter extends BaseQuickAdapter<CollectChargeBean, BaseViewHolder> {
-    public CollectChargeListAdapter(int layoutResId, List<CollectChargeBean> data) {
+public class CollectChargeListAdapter extends BaseQuickAdapter<CollectChargeBean.DataBean, BaseViewHolder> {
+    public CollectChargeListAdapter(int layoutResId, List<CollectChargeBean.DataBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(final BaseViewHolder helper, CollectChargeBean item) {
+    protected void convert(final BaseViewHolder helper, CollectChargeBean.DataBean item) {
         LinearLayout ll_item_collectcharge_root = helper.getView(R.id.ll_item_collectcharge_root);
         ImageView iv_item_collectcharge_img = helper.getView(R.id.iv_item_collectcharge_img);
         TextView tv_item_collectcharge_name = helper.getView(R.id.tv_item_collectcharge_name);
@@ -43,10 +43,10 @@ public class CollectChargeListAdapter extends BaseQuickAdapter<CollectChargeBean
             ll_item_collectcharge_root.setLayoutParams(layoutParams);
         }
         if (item != null) {
-            StringUtil.setText(tv_item_collectcharge_name, item.getDesc(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_collectcharge_cdf, "充电费：" + item.getCdf(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_collectcharge_fwf, "服务费：" + item.getFwf(), "", View.VISIBLE, View.VISIBLE);
-            GlideUtil.loadNetImg(mContext, item.getImg(), iv_item_collectcharge_img, R.mipmap.ic_image_load);
+            StringUtil.setText(tv_item_collectcharge_name, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_collectcharge_cdf, "充电费：" + item.getPrice(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_collectcharge_fwf, "服务费：" + item.getServiceFee(), "", View.VISIBLE, View.VISIBLE);
+            GlideUtil.loadNetImg(mContext, item.getHeadImg(), iv_item_collectcharge_img, R.mipmap.ic_image_load);
         }
     }
 }

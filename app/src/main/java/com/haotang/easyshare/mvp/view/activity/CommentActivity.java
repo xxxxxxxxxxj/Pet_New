@@ -242,6 +242,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
                 finish();
                 break;
             case R.id.tv_titlebar_other:
+                filedMap.clear();
                 String localTags = "";
                 for (int i = 0; i < tagList.size(); i++) {
                     CommentTag commentTag = tagList.get(i);
