@@ -16,13 +16,19 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.bigkoo.pickerview.adapter.ArrayWheelAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerAddChargeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.AddChargeActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
+import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.PhotoViewPagerImg;
 import com.haotang.easyshare.mvp.model.entity.res.SelectAddress;
@@ -34,6 +40,8 @@ import com.haotang.easyshare.mvp.view.viewholder.AddChargeBoDa;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.GlideUtil;
+import com.haotang.easyshare.util.SignUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
@@ -50,6 +58,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -69,7 +78,7 @@ import top.zibin.luban.Luban;
 /**
  * 添加充电站界面
  */
-public class AddChargeActivity extends BaseActivity<AddChargePresenter> implements IAddChargeView {
+public class AddChargeActivity extends BaseActivity<AddChargePresenter> implements IAddChargeView, AMapLocationListener {
     protected final static String TAG = AddChargeActivity.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
@@ -141,6 +150,13 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     private double lng;
     private int upOrDown;
     private int kuaiOrMan;
+    private String uuid;
+    //声明mlocationClient对象
+    private AMapLocationClient mlocationClient;
+    //声明mLocationOption对象
+    private AMapLocationClientOption mLocationOption;
+    private double localLat;
+    private double localLng;
 
     @Override
     protected int getContentLayout() {
@@ -152,6 +168,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         DevRing.activityStackManager().pushOneActivity(this);
         DaggerAddChargeActivityCommponent.builder().
                 addChargeActivityModule(new AddChargeActivityModule(this, this)).build().inject(this);
+        uuid = getIntent().getStringExtra("uuid");
     }
 
     @Subscribe
@@ -189,6 +206,27 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 , imgList);
         rvAddchargeImg.setAdapter(commentImgAdapter);
 
+        setLocation();
+    }
+
+    private void setLocation() {
+        mlocationClient = new AMapLocationClient(this);
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位监听
+        mlocationClient.setLocationListener(this);
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+        // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+        // 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+        // 在定位结束后，在合适的生命周期调用onDestroy()方法
+        // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+        //启动定位
+        mlocationClient.startLocation();
     }
 
     @Override
@@ -376,7 +414,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 for (int i = 0; i < imgPathList.size(); i++) {
                     //构建要上传的文件
                     File file = new File(imgPathList.get(i));
-                    builder.addFormDataPart("file",file.getName(),RequestBody.create(MediaType.parse("application/octet-stream")
+                    builder.addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
                             , file));
                 }
                 RequestBody build = builder.build();
@@ -540,5 +578,60 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     @Override
     public void saveFail(int code, String msg) {
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void detailSuccess(ChargeDetailBean data) {
+        if (data != null) {
+            uuid = data.getUuid();
+            lat = data.getLat();
+            lng = data.getLng();
+            StringUtil.setText(etAddchargeZmc, data.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvAddchargeZdz, data.getAddress(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvAddchargeKfsj, data.getOpenTime(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(etAddchargeCdf, data.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(etAddchargeFwf, data.getServiceFee() + "", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvAddchargeZffs, data.getPayWay(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(etAddchargeTcf, data.getParkingPrice(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(etAddchargeBzsm, data.getRemark(), "", View.VISIBLE, View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void detailFail(int code, String msg) {
+        RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation amapLocation) {
+        if (amapLocation != null) {
+            if (amapLocation.getErrorCode() == 0) {
+                //定位成功回调信息，设置相关消息
+                localLat = amapLocation.getLatitude();//获取纬度
+                localLng = amapLocation.getLongitude();//获取经度
+                RingLog.d(TAG, "localLat = "
+                        + localLat + ", localLng = "
+                        + localLng);
+                if (localLat > 0 && localLng > 0) {
+                    mlocationClient.stopLocation();
+                    if (StringUtil.isNotEmpty(uuid)) {
+                        Map<String, String> mapHeader = UrlConstants.getMapHeader(AddChargeActivity.this);
+                        mapHeader.put("lng", String.valueOf(localLng));
+                        mapHeader.put("lat", String.valueOf(localLat));
+                        mapHeader.put("key", AppConfig.SERVER_KEY);
+                        mapHeader.put("uuid", uuid);
+                        RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
+                        String md5 = SignUtil.sign(mapHeader, "MD5");
+                        RingLog.d(TAG, "md5 =  " + md5);
+                        mPresenter.detail(localLng, localLat, uuid, md5);
+                    }
+                }
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                RingLog.d(TAG, "location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
+            }
+        }
     }
 }

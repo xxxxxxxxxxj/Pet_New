@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.model;
 
 import com.haotang.easyshare.mvp.model.http.AddChargeApiService;
+import com.haotang.easyshare.mvp.model.http.ChargingPileDetailApiService;
 import com.haotang.easyshare.mvp.model.imodel.IAddChargeModel;
 import com.ljy.devring.DevRing;
 
@@ -22,5 +23,18 @@ public class AddChargeModel implements IAddChargeModel {
     @Override
     public Observable save(RequestBody body) {
         return DevRing.httpManager().getService(AddChargeApiService.class).save(body);
+    }
+
+    /**
+     * 充电桩详情
+     *
+     * @param lng
+     * @param lat
+     * @param uuid
+     * @param md5
+     */
+    @Override
+    public Observable detail(double lng, double lat, String uuid, String md5) {
+        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).detail(lng, lat, uuid, md5);
     }
 }

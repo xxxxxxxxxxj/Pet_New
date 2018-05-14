@@ -47,7 +47,7 @@ public class ChargeFragment extends BaseFragment {
     TextView tvMyfragmentCdf;
     @BindView(R.id.tv_myfragment_fwf)
     TextView tvMyfragmentFwf;
-    private HomeBean.StationsBean stationsBean;
+    private String uuid;
 
     public ChargeFragment() {
     }
@@ -67,6 +67,7 @@ public class ChargeFragment extends BaseFragment {
         Bundle arguments = getArguments();
         HomeBean.StationsBean stationsBean = arguments.getParcelable("stationsBean");
         if (stationsBean != null) {
+            uuid = stationsBean.getUuid();
             tvMyfragmentCdcs.bringToFront();
             StringUtil.setText(tvMyfragmentName, stationsBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentCdcs, "充电" + stationsBean.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
@@ -86,14 +87,14 @@ public class ChargeFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.tv_myfragment_bjcdz})
+    @OnClick({R.id.tv_myfragment_bjcdz, R.id.rl_chargefrag_root})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_myfragment_bjcdz:
-                startActivity(new Intent(mActivity, AddChargeActivity.class));
+                startActivity(new Intent(mActivity, AddChargeActivity.class).putExtra("uuid", uuid));
                 break;
             case R.id.rl_chargefrag_root:
-                startActivity(new Intent(mActivity, ChargingPileDetailActivity.class).putExtra("uuid",stationsBean.getUuid()));
+                startActivity(new Intent(mActivity, ChargingPileDetailActivity.class).putExtra("uuid", uuid));
                 break;
         }
     }

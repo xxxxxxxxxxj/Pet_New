@@ -62,6 +62,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
     private AMapLocationClient mlocationClient;
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
+    private int pageSize;
 
     @Override
     protected int getContentLayout() {
@@ -136,6 +137,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
     }
 
     private void refresh() {
+        mainLocalAdapter.setEnableLoadMore(false);
         srlLocalCharging.setRefreshing(true);
         mNextRequestPage = 1;
         nearBy();
@@ -201,13 +203,26 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
     public void nearbySuccess(List<MainFragChargeBean> data) {
         if (mNextRequestPage == 1) {
             srlLocalCharging.setRefreshing(false);
+            mainLocalAdapter.setEnableLoadMore(true);
             list.clear();
-        }else{
-            mainLocalAdapter.loadMoreComplete();
         }
+        mainLocalAdapter.loadMoreComplete();
         if (data != null && data.size() > 0) {
+            if (mNextRequestPage == 1) {
+                pageSize = data.size();
+            } else {
+                if (data.size() < pageSize) {
+                    mainLocalAdapter.loadMoreEnd(false);
+                }
+            }
             list.addAll(data);
             mNextRequestPage++;
+        }else {
+            if (mNextRequestPage == 1) {
+                mainLocalAdapter.loadMoreEnd(true);
+            } else {
+                mainLocalAdapter.loadMoreEnd(false);
+            }
         }
         mainLocalAdapter.notifyDataSetChanged();
     }
@@ -215,9 +230,10 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
     @Override
     public void nearbyFail(int code, String msg) {
         if (mNextRequestPage == 1) {
+            mainLocalAdapter.setEnableLoadMore(true);
             srlLocalCharging.setRefreshing(false);
-        }else{
-            mainLocalAdapter.loadMoreComplete();
+        } else {
+            mainLocalAdapter.loadMoreFail();
         }
         RingLog.e(TAG, "getMainFragmentFail() status = " + code + "---desc = " + msg);
     }

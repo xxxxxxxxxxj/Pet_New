@@ -14,6 +14,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerCommentActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CommentActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
@@ -56,6 +57,9 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import top.zibin.luban.Luban;
+
+import static com.haotang.easyshare.R.id.refresh;
+import static com.haotang.easyshare.mvp.model.entity.event.RefreshEvent.SAVE_CHARGE_COMMENT;
 
 public class CommentActivity extends BaseActivity<CommentPresenter> implements ICommentView {
     protected final static String TAG = CommentActivity.class.getSimpleName();
@@ -313,6 +317,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.SAVE_CHARGE_COMMENT));
         finish();
     }
 

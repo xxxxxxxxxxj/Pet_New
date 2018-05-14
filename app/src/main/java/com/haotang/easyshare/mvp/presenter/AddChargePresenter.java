@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
+import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.IAddChargeModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
@@ -52,6 +53,41 @@ public class AddChargePresenter extends BasePresenter<IAddChargeView, IAddCharge
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.saveFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 充电桩详情
+     * @param lng
+     * @param lat
+     * @param uuid
+     * @param md5
+     */
+    public void detail(double lng, double lat, String uuid, String md5) {
+        DevRing.httpManager().commonRequest(mIModel.detail(lng, lat, uuid, md5), new CommonObserver<HttpResult<ChargeDetailBean>>() {
+            @Override
+            public void onResult(HttpResult<ChargeDetailBean> result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.detailSuccess(result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.detailFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.detailFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.detailFail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));

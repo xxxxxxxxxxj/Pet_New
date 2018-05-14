@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerCommentDetailActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CommentDetailActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
@@ -27,6 +28,8 @@ import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +37,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.R.attr.data;
 
 /**
  * 评论详情页
@@ -55,6 +56,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     private CommentDetailAdapter commentDetailAdapter;
     private int mNextRequestPage = 1;
     private String uuid;
+    private int pageSize;
 
     @Override
     protected int getContentLayout() {
@@ -145,6 +147,13 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
             StringUtil.setText(tv_comment_plnum, "添加评论(" + data.getTotal() + ")", "", View.VISIBLE, View.GONE);
             List<CommentBean.Comment> comments = data.getComments();
             if (comments != null && comments.size() > 0) {
+                if (mNextRequestPage == 1) {
+                    pageSize = comments.size();
+                } else {
+                    if (comments.size() < pageSize) {
+                        commentDetailAdapter.loadMoreEnd(false);
+                    }
+                }
                 for (int i = 0; i < comments.size(); i++) {
                     CommentBean.Comment comment = comments.get(i);
                     if (comment != null) {
@@ -188,6 +197,18 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
             srlCommentDetail.setRefreshing(false);
         } else {
             commentDetailAdapter.loadMoreFail();
+        }
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void refresh(RefreshEvent data) {
+        if (data != null && data.getRefreshIndex() == RefreshEvent.SAVE_CHARGE_COMMENT) {
+            refresh();
         }
     }
 }

@@ -18,4 +18,14 @@ public interface IAddChargeModel extends IBaseModel {
      * 上传充电桩
      */
     Observable save(RequestBody body);
+
+    /**
+     * 充电桩详情
+     *
+     * @param lng
+     * @param lat
+     * @param uuid
+     * @param md5
+     */
+    Observable detail(double lng, double lat, String uuid, String md5);
 }
