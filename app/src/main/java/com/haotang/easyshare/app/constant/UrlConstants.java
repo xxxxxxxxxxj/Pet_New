@@ -96,6 +96,10 @@ public class UrlConstants {
      * 19.取消关注用户
      */
     public static final String CANCEL_FOLLOW_USER = "user/idol/cancel";
+    /**
+     * 20.广告
+     */
+    public static final String ADVERTISEMENT = "util/ad/list";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

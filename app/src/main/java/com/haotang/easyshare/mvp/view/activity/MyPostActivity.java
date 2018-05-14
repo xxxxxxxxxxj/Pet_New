@@ -22,7 +22,6 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.PostListAdapter;
 import com.haotang.easyshare.mvp.view.iview.IMyPostView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
-import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 
@@ -57,6 +56,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     private PostListAdapter postListAdapter;
     private Map<String, String> parmMap = new HashMap<String, String>();
     private int pageSize;
+    private String uuid;
 
     @Override
     protected int getContentLayout() {
@@ -67,6 +67,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
         DaggerMyPostActivityCommponent.builder().myPostActivityModule(new MyPostActivityModule(this, this)).build().inject(this);
+        uuid = getIntent().getStringExtra("uuid");
     }
 
     @Override
@@ -89,7 +90,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     @Override
     protected void initData(Bundle savedInstanceState) {
         parmMap.clear();
-        parmMap.put("uuid", SharedPreferenceUtil.getInstance(this).getString("uuid", ""));
+        parmMap.put("uuid", uuid);
         parmMap.put("page", String.valueOf(mNextRequestPage));
         mPresenter.list(parmMap);
     }
@@ -148,7 +149,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
         srlMyPost.setRefreshing(true);
         mNextRequestPage = 1;
         parmMap.clear();
-        parmMap.put("uuid", SharedPreferenceUtil.getInstance(this).getString("uuid", ""));
+        parmMap.put("uuid", uuid);
         parmMap.put("page", String.valueOf(mNextRequestPage));
         mPresenter.list(parmMap);
     }

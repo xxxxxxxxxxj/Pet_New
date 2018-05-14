@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerHotFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.HotFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.CarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
@@ -35,6 +36,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -89,8 +92,6 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         //添加自定义分割线
         rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity, 15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
-        setBanner();
-
         for (int i = 0; i < 20; i++) {
             carList.add(new CarBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433", "奔驰"));
         }
@@ -105,12 +106,11 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
     }
 
-    private void setBanner() {
-        //本地图片数据（资源文件）
-        List<Integer> list = new ArrayList<>();
-        list.add(R.mipmap.b1);
-        list.add(R.mipmap.b2);
-        list.add(R.mipmap.b3);
+    private void setBanner(List<AdvertisementBean.DataBean> data) {
+        List<String> list = new ArrayList<String>();
+        for (int i = 0; i < data.size(); i++) {
+            list.add(data.get(i).getImg());
+        }
         hotFragmenHeader.getBannerTopHotfrag().setImages(list)
                 .setImageLoader(new GlideImageLoader())
                 .setOnBannerListener(this)
@@ -119,7 +119,10 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     protected void initData() {
-
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
+        builder.addFormDataPart("category", "2");
+        RequestBody build = builder.build();
+        mPresenter.list(build);
     }
 
     @Override
@@ -175,5 +178,21 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 startActivity(new Intent(mActivity, BrandAreaActivity.class));
             }
         });
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        hotFragmenHeader.getBannerTopHotfrag().setVisibility(View.GONE);
+        RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        if (data != null && data.size() > 0) {
+            hotFragmenHeader.getBannerTopHotfrag().setVisibility(View.VISIBLE);
+            setBanner(data);
+        } else {
+            hotFragmenHeader.getBannerTopHotfrag().setVisibility(View.GONE);
+        }
     }
 }

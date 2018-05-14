@@ -111,6 +111,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     ViewPager vpMyfragmentMycdz;
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
     private String kf_phone = "";
+    private String uuid;
 
     @Override
     public boolean isUseEventBus() {
@@ -182,7 +183,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 startActivity(new Intent(mActivity, MemberActivity.class));
                 break;
             case R.id.rl_myfragment_wdtz:
-                startActivity(new Intent(mActivity, MyPostActivity.class));
+                startActivity(new Intent(mActivity, MyPostActivity.class).putExtra("uuid", uuid));
                 break;
             case R.id.rl_myfragment_scdzd:
                 startActivity(new Intent(mActivity, CollectChargeActivity.class));
@@ -208,6 +209,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void homeSuccess(HomeBean data) {
         RingLog.e(TAG, "MyFragment homeSuccess()");
         if (data != null) {
+            uuid = data.getUuid();
             kf_phone = data.getKf_phone();
             StringUtil.setText(tvMyfragmentUsername, data.getUserName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentYue, String.valueOf(data.getBalance()), "", View.VISIBLE, View.VISIBLE);
