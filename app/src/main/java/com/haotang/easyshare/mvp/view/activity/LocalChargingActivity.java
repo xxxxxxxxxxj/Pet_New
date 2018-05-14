@@ -235,6 +235,6 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         } else {
             mainLocalAdapter.loadMoreFail();
         }
-        RingLog.e(TAG, "getMainFragmentFail() status = " + code + "---desc = " + msg);
+        RingLog.e(TAG, "nearbyFail() status = " + code + "---desc = " + msg);
     }
 }

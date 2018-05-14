@@ -76,6 +76,26 @@ public class UrlConstants {
      * 14.取消收藏充电桩
      */
     public static final String CANCEL_FOLLOW_CHARGE = "user/charging/cancel";
+    /**
+     * 15.关注的人列表
+     */
+    public static final String FOLLOW_LIST = "user/idol/list";
+    /**
+     * 16.用户帖子列表
+     */
+    public static final String USERINFO_POST = "article/info/list";
+    /**
+     * 17.用户信息
+     */
+    public static final String USERINFO_UUID = "user/info";
+    /**
+     * 18.关注用户
+     */
+    public static final String FOLLOW_USER = "user/idol/follow";
+    /**
+     * 19.取消关注用户
+     */
+    public static final String CANCEL_FOLLOW_USER = "user/idol/cancel";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

@@ -24,7 +24,7 @@ import java.util.List;
  * @author 徐俊
  * @date XJ on 2018/5/3 14:30
  */
-public class PostListAdapter extends BaseQuickAdapter<PostBean, BaseViewHolder> {
+public class PostListAdapter extends BaseQuickAdapter<PostBean.DataBean, BaseViewHolder> {
     private final int flag;
     public OnShareItemListener onShareItemListener = null;
 
@@ -46,13 +46,13 @@ public class PostListAdapter extends BaseQuickAdapter<PostBean, BaseViewHolder> 
         this.onDeleteItemListener = onDeleteItemListener;
     }
 
-    public PostListAdapter(int layoutResId, List<PostBean> data, int flag) {
+    public PostListAdapter(int layoutResId, List<PostBean.DataBean> data, int flag) {
         super(layoutResId, data);
         this.flag = flag;
     }
 
     @Override
-    protected void convert(final BaseViewHolder helper, PostBean item) {
+    protected void convert(final BaseViewHolder helper, PostBean.DataBean item) {
         LinearLayout ll_item_mypost_root = helper.getView(R.id.ll_item_mypost_root);
         ImageView iv_item_mypost = helper.getView(R.id.iv_item_mypost);
         TextView tv_item_mypost_desc = helper.getView(R.id.tv_item_mypost_desc);
@@ -70,12 +70,16 @@ public class PostListAdapter extends BaseQuickAdapter<PostBean, BaseViewHolder> 
                 iv_item_mypost_share.setImageResource(R.mipmap.icon_post_share);
                 iv_item_mypost_delete.setImageResource(R.mipmap.icon_post_delete);
             } else if (flag == 1) {
-                iv_item_mypost_share.setImageResource(R.mipmap.icon_post_zan);
+                if (item.getIsPraise() == 0) {//未点赞
+                    iv_item_mypost_share.setImageResource(R.mipmap.icon_post_zan);
+                } else if (item.getIsPraise() == 1) {//已点赞
+                    iv_item_mypost_share.setImageResource(R.mipmap.icon_post_yizan);
+                }
                 iv_item_mypost_delete.setImageResource(R.mipmap.icon_post_pinglun);
             }
-            StringUtil.setText(tv_item_mypost_desc, item.getDesc(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_mypost_date, item.getDate(), "", View.VISIBLE, View.VISIBLE);
-            GlideUtil.loadNetImg(mContext, item.getImg(), iv_item_mypost, R.mipmap.ic_image_load);
+            StringUtil.setText(tv_item_mypost_desc, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_mypost_date, item.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
+            GlideUtil.loadNetImg(mContext, item.getIcon(), iv_item_mypost, R.mipmap.ic_image_load);
         }
         iv_item_mypost_share.setOnClickListener(new View.OnClickListener() {
             @Override

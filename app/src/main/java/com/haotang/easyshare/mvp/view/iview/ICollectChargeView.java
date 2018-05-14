@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.CollectChargeBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
@@ -17,4 +18,8 @@ public interface ICollectChargeView extends IBaseView{
     void listSuccess(List<CollectChargeBean.DataBean> data);
 
     void listFail(int code, String msg);
+
+    void cancelSuccess(AddChargeBean data);
+
+    void cancelFail(int code, String msg);
 }

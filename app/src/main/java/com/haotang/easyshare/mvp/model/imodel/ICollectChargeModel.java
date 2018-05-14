@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -17,4 +19,10 @@ public interface ICollectChargeModel extends IBaseModel{
      * 收藏的充电桩列表
      */
     Observable list();
+    /**
+     * 取消收藏充电桩
+     *
+     * @param parmMap
+     */
+    Observable cancel(Map<String, String> parmMap);
 }

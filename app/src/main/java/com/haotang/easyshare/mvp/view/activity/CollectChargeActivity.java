@@ -16,6 +16,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerCollectChargeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CollectChargeActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.CollectChargeBean;
 import com.haotang.easyshare.mvp.presenter.CollectChargePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -34,7 +35,9 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -57,6 +60,8 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
     private int mNextRequestPage = 1;
     private CollectChargeListAdapter collectChargeListAdapter;
     private int pageSize;
+    private Map<String, String> parmMap = new HashMap<String, String>();
+    private int adapterPosition;
 
     @Override
     protected int getContentLayout() {
@@ -113,10 +118,16 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
         public void onItemClick(SwipeMenuBridge menuBridge) {
             menuBridge.closeMenu();
             int direction = menuBridge.getDirection(); // 左侧还是右侧菜单。
-            int adapterPosition = menuBridge.getAdapterPosition(); // RecyclerView的Item的position。
+            adapterPosition = menuBridge.getAdapterPosition(); // RecyclerView的Item的position。
             if (direction == SwipeMenuRecyclerView.RIGHT_DIRECTION) {
-                list.remove(adapterPosition);
-                collectChargeListAdapter.notifyDataSetChanged();
+                if (list != null && list.size() > 0 && list.size() > adapterPosition) {
+                    CollectChargeBean.DataBean dataBean = list.get(adapterPosition);
+                    if(dataBean != null){
+                        parmMap.clear();
+                        parmMap.put("uuid", dataBean.getUuid());
+                        mPresenter.cancel(parmMap);
+                    }
+                }
             }
         }
     };
@@ -219,6 +230,17 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
     }
 
     @Override
+    public void cancelSuccess(AddChargeBean data) {
+        list.remove(adapterPosition);
+        collectChargeListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void cancelFail(int code, String msg) {
+        RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
     public boolean isUseEventBus() {
         return true;
     }
@@ -229,5 +251,4 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
             refresh();
         }
     }
-
 }

@@ -3,6 +3,8 @@ package com.haotang.easyshare.mvp.presenter.base;
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
+import java.util.Map;
+
 /**
  * author:  ljy
  * date：   2018/3/18

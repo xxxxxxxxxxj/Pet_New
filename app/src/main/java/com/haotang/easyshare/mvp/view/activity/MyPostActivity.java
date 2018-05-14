@@ -51,7 +51,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     @BindView(R.id.srl_my_post)
     SwipeRefreshLayout srlMyPost;
     private int mNextRequestPage = 1;
-    private List<PostBean> list = new ArrayList<PostBean>();
+    private List<PostBean.DataBean> list = new ArrayList<PostBean.DataBean>();
     private PostListAdapter postListAdapter;
 
     @Override
@@ -72,12 +72,6 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
         tvTitlebarTitle.setText("我的帖子");
         srlMyPost.setRefreshing(true);
         srlMyPost.setColorSchemeColors(Color.rgb(47, 223, 189));
-        for (int i = 0; i < 20; i++) {
-            list.add(new PostBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"
-                    , "e充电的 充电桩速度快，停车方便e充电的 充电桩速度快，停车方便e充电的 充电桩速度快，停车方便e充电的 充电桩速度快，停车方便",
-                    "2018年-04-07 11:50:08", "测试", "测试", "https://www.duba.com",
-                    UrlConstants.getServiceBaseUrl() + "/static/icon/shouye.png?3"));
-        }
         rvMyPost.setHasFixedSize(true);
         rvMyPost.setLayoutManager(new LinearLayoutManager(this));
         postListAdapter = new PostListAdapter(R.layout.item_mypost, list, 0);
@@ -99,13 +93,13 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
             @Override
             public void OnShareItem(int position) {
                 if (list.size() > 0 && list.size() > position) {
-                    PostBean postBean = list.get(position);
+                    /*PostBean postBean = list.get(position);
                     if (postBean != null) {
                         ShareBottomDialog dialog = new ShareBottomDialog();
                         dialog.setShareInfo(postBean.getShareTitle(), postBean.getShareSummary(),
                                 postBean.getShareTargetUrl(), postBean.getShareThumbUrlOrPath());
                         dialog.show(getSupportFragmentManager());
-                    }
+                    }*/
                 }
             }
         });

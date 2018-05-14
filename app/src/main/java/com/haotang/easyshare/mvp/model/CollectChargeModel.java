@@ -1,8 +1,11 @@
 package com.haotang.easyshare.mvp.model;
 
+import com.haotang.easyshare.mvp.model.http.ChargingPileDetailApiService;
 import com.haotang.easyshare.mvp.model.http.CollectChargeApiService;
 import com.haotang.easyshare.mvp.model.imodel.ICollectChargeModel;
 import com.ljy.devring.DevRing;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -21,5 +24,15 @@ public class CollectChargeModel implements ICollectChargeModel {
     @Override
     public Observable list() {
         return DevRing.httpManager().getService(CollectChargeApiService.class).list();
+    }
+
+    /**
+     * 取消收藏充电桩
+     *
+     * @param parmMap
+     */
+    @Override
+    public Observable cancel(Map<String, String> parmMap) {
+        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).cancel(parmMap);
     }
 }

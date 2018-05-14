@@ -1,5 +1,7 @@
 package com.haotang.easyshare.mvp.model.entity.res;
 
+import java.util.List;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -9,60 +11,94 @@ package com.haotang.easyshare.mvp.model.entity.res;
  * @date XJ on 2018/5/4 10:55
  */
 public class FollowBean {
-    private String img;
-    private String name;
-    private String fenShu;
-    private int starNum;
-    private String jifen;
 
-    public String getImg() {
-        return img;
+    /**
+     * code : 0
+     * data : [{"headImg":"","coins":0,"stars":0,"userName":"","uuid":"bf492bb5f42d438292241c78b8e63202"},{"headImg":"","coins":0,"stars":0,"userName":"","uuid":"6b58d542790a4865aa09fbae7e5f46a5"}]
+     * msg : 操作成功
+     */
+
+    private int code;
+    private String msg;
+    private List<DataBean> data;
+
+    public int getCode() {
+        return code;
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getName() {
-        return name;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getFenShu() {
-        return fenShu;
+    public List<DataBean> getData() {
+        return data;
     }
 
-    public void setFenShu(String fenShu) {
-        this.fenShu = fenShu;
+    public void setData(List<DataBean> data) {
+        this.data = data;
     }
 
-    public int getStarNum() {
-        return starNum;
-    }
+    public static class DataBean {
+        /**
+         * headImg :
+         * coins : 0
+         * stars : 0
+         * userName :
+         * uuid : bf492bb5f42d438292241c78b8e63202
+         */
 
-    public void setStarNum(int starNum) {
-        this.starNum = starNum;
-    }
+        private String headImg;
+        private int coins;
+        private int stars;
+        private String userName;
+        private String uuid;
 
-    public String getJifen() {
-        return jifen;
-    }
+        public String getHeadImg() {
+            return headImg;
+        }
 
-    public void setJifen(String jifen) {
-        this.jifen = jifen;
-    }
+        public void setHeadImg(String headImg) {
+            this.headImg = headImg;
+        }
 
-    public FollowBean() {
-    }
+        public int getCoins() {
+            return coins;
+        }
 
-    public FollowBean(String img, String name, String fenShu, int starNum, String jifen) {
-        this.img = img;
-        this.name = name;
-        this.fenShu = fenShu;
-        this.starNum = starNum;
-        this.jifen = jifen;
+        public void setCoins(int coins) {
+            this.coins = coins;
+        }
+
+        public int getStars() {
+            return stars;
+        }
+
+        public void setStars(int stars) {
+            this.stars = stars;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public String getUuid() {
+            return uuid;
+        }
+
+        public void setUuid(String uuid) {
+            this.uuid = uuid;
+        }
     }
 }

@@ -23,6 +23,7 @@ import com.haotang.easyshare.mvp.view.adapter.FollowListAdapter;
 import com.haotang.easyshare.mvp.view.iview.IMyFollowView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +50,9 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
     @BindView(R.id.srl_my_follow)
     SwipeRefreshLayout srlMyFollow;
     private int mNextRequestPage = 1;
-    private List<FollowBean> list = new ArrayList<FollowBean>();
+    private List<FollowBean.DataBean> list = new ArrayList<FollowBean.DataBean>();
     private FollowListAdapter followListAdapter;
+    private int pageSize;
 
     @Override
     protected int getContentLayout() {
@@ -68,11 +70,6 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
         tvTitlebarTitle.setText("关注的人");
         srlMyFollow.setRefreshing(true);
         srlMyFollow.setColorSchemeColors(Color.rgb(47, 223, 189));
-        for (int i = 0; i < 20; i++) {
-            list.add(new FollowBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"
-                    , "138****6986",
-                    "5.0分", 4, "积分2800"));
-        }
         rvMyFollow.setHasFixedSize(true);
         rvMyFollow.setLayoutManager(new LinearLayoutManager(this));
         followListAdapter = new FollowListAdapter(R.layout.item_myfollow, list);
@@ -85,7 +82,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        mPresenter.list();
     }
 
     @Override
@@ -93,15 +90,20 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
         followListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(MyFollowActivity.this,FollowDetailActivity.class));
+                if (list != null && list.size() > 0 && list.size() > position) {
+                    FollowBean.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
+                        startActivity(new Intent(MyFollowActivity.this, FollowDetailActivity.class).putExtra("uuid", dataBean.getUuid()));
+                    }
+                }
             }
         });
-        followListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        /*followListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 loadMore();
             }
-        });
+        });*/
         srlMyFollow.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -111,10 +113,14 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
     }
 
     private void refresh() {
+        followListAdapter.setEnableLoadMore(false);
+        srlMyFollow.setRefreshing(true);
         mNextRequestPage = 1;
+        mPresenter.list();
     }
 
     private void loadMore() {
+        mPresenter.list();
     }
 
     @Override
@@ -130,5 +136,44 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        if (mNextRequestPage == 1) {
+            followListAdapter.setEnableLoadMore(true);
+            srlMyFollow.setRefreshing(false);
+        } else {
+            followListAdapter.loadMoreFail();
+        }
+        RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void listSuccess(List<FollowBean.DataBean> data) {
+        if (mNextRequestPage == 1) {
+            srlMyFollow.setRefreshing(false);
+            followListAdapter.setEnableLoadMore(true);
+            list.clear();
+        }
+        followListAdapter.loadMoreComplete();
+        if (data != null && data.size() > 0) {
+            if (mNextRequestPage == 1) {
+                pageSize = data.size();
+            } else {
+                if (data.size() < pageSize) {
+                    followListAdapter.loadMoreEnd(false);
+                }
+            }
+            list.addAll(data);
+            mNextRequestPage++;
+        } else {
+            if (mNextRequestPage == 1) {
+                followListAdapter.loadMoreEnd(true);
+            } else {
+                followListAdapter.loadMoreEnd(false);
+            }
+        }
+        followListAdapter.notifyDataSetChanged();
     }
 }

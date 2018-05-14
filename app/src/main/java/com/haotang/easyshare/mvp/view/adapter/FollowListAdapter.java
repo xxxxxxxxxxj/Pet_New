@@ -31,14 +31,14 @@ import java.util.List;
  * @author 徐俊
  * @date XJ on 2018/5/4 10:59
  */
-public class FollowListAdapter extends BaseQuickAdapter<FollowBean, BaseViewHolder> {
-    public FollowListAdapter(int layoutResId, List<FollowBean> data) {
+public class FollowListAdapter extends BaseQuickAdapter<FollowBean.DataBean, BaseViewHolder> {
+    public FollowListAdapter(int layoutResId, List<FollowBean.DataBean> data) {
         super(layoutResId, data);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    protected void convert(final BaseViewHolder helper, FollowBean item) {
+    protected void convert(final BaseViewHolder helper, FollowBean.DataBean item) {
         RelativeLayout rl_item_myfollow_root = helper.getView(R.id.rl_item_myfollow_root);
         TextView tv_item_myfollow_jf = helper.getView(R.id.tv_item_myfollow_jf);
         ImageView iv_item_myfollow_img = helper.getView(R.id.iv_item_myfollow_img);
@@ -53,11 +53,11 @@ public class FollowListAdapter extends BaseQuickAdapter<FollowBean, BaseViewHold
         }
         if (item != null) {
             mrb_item_myfollow_fenshu.setNumStars(5);
-            mrb_item_myfollow_fenshu.setProgress(item.getStarNum());
-            StringUtil.setText(tv_item_myfollow_jf, item.getJifen(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_myfollow_name, item.getName(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_myfollow_fenshu, item.getFenShu(), "", View.VISIBLE, View.VISIBLE);
-            GlideUtil.loadNetCircleImg(mContext, item.getImg(), iv_item_myfollow_img, R.mipmap.ic_image_load);
+            mrb_item_myfollow_fenshu.setProgress(item.getStars());
+            StringUtil.setText(tv_item_myfollow_jf, item.getCoins() + "", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_myfollow_name, item.getUserName(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_myfollow_fenshu, item.getStars() + "", "", View.VISIBLE, View.VISIBLE);
+            GlideUtil.loadNetCircleImg(mContext, item.getHeadImg(), iv_item_myfollow_img, R.mipmap.ic_image_load);
         }
     }
 }

@@ -39,7 +39,25 @@ public class HomeBean {
     private int times;
     private String userName;
     private String uuid;
+    private int isCollect;
+    private int isEval;
     private List<StationsBean> stations;
+
+    public int getIsCollect() {
+        return isCollect;
+    }
+
+    public void setIsCollect(int isCollect) {
+        this.isCollect = isCollect;
+    }
+
+    public int getIsEval() {
+        return isEval;
+    }
+
+    public void setIsEval(int isEval) {
+        this.isEval = isEval;
+    }
 
     public double getBalance() {
         return balance;
