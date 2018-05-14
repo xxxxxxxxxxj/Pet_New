@@ -59,14 +59,16 @@ public class CommentBean {
     }
 
     public static class Comment {
-        private List<CommentTag> tags;
-        private List<CommentImg> media;
+        private List<String> tags;
+        private List<String> media;
         private String headImg;
         private String createTime;
         private String userName;
         private String content;
+        private List<CommentTag> tagList;
+        private List<CommentImg> mediaList;
 
-        public Comment(List<CommentTag> tags, List<CommentImg> media, String headImg, String createTime, String userName, String content) {
+        public Comment(List<String> tags, List<String> media, String headImg, String createTime, String userName, String content) {
             this.tags = tags;
             this.media = media;
             this.headImg = headImg;
@@ -78,19 +80,35 @@ public class CommentBean {
         public Comment() {
         }
 
-        public List<CommentTag> getTags() {
+        public List<CommentTag> getTagList() {
+            return tagList;
+        }
+
+        public void setTagList(List<CommentTag> tagList) {
+            this.tagList = tagList;
+        }
+
+        public List<CommentImg> getMediaList() {
+            return mediaList;
+        }
+
+        public void setMediaList(List<CommentImg> mediaList) {
+            this.mediaList = mediaList;
+        }
+
+        public List<String> getTags() {
             return tags;
         }
 
-        public void setTags(List<CommentTag> tags) {
+        public void setTags(List<String> tags) {
             this.tags = tags;
         }
 
-        public List<CommentImg> getMedia() {
+        public List<String> getMedia() {
             return media;
         }
 
-        public void setMedia(List<CommentImg> media) {
+        public void setMedia(List<String> media) {
             this.media = media;
         }
 

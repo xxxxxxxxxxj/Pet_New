@@ -30,11 +30,11 @@ public class CommentPresenter extends BasePresenter<ICommentView, ICommentModel>
 
     /**
      * 评论充电桩
-     * @param paramsMap
+     *
      * @param filedMap
      */
-    public void save(Map<String, String> paramsMap, Map<String, RequestBody> filedMap) {
-        DevRing.httpManager().commonRequest(mIModel.save(paramsMap, filedMap), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void save(Map<String, RequestBody> filedMap) {
+        DevRing.httpManager().commonRequest(mIModel.save(filedMap), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {

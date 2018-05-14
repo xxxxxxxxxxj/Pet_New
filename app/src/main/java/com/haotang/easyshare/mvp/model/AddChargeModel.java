@@ -4,8 +4,6 @@ import com.haotang.easyshare.mvp.model.http.AddChargeApiService;
 import com.haotang.easyshare.mvp.model.imodel.IAddChargeModel;
 import com.ljy.devring.DevRing;
 
-import java.util.Map;
-
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -20,11 +18,9 @@ import okhttp3.RequestBody;
 public class AddChargeModel implements IAddChargeModel {
     /**
      * 上传充电桩
-     * @param paramsMap
-     * @param filedMap
      */
     @Override
-    public Observable save(Map<String, String> paramsMap, Map<String, RequestBody> filedMap) {
-        return DevRing.httpManager().getService(AddChargeApiService.class).save(filedMap,paramsMap);
+    public Observable save(RequestBody body) {
+        return DevRing.httpManager().getService(AddChargeApiService.class).save(body);
     }
 }

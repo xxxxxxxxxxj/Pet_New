@@ -55,8 +55,8 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean.Comment, 
             //StringUtil.setText(tv_item_comment_name, item.getName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_comment_desc, item.getContent(), "", View.VISIBLE, View.GONE);
             StringUtil.setText(tv_item_comment_date, item.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
-            List<CommentTag> tagLIst = item.getTags();
-            List<CommentImg> imgList = item.getMedia();
+            List<CommentTag> tagLIst = item.getTagList();
+            List<CommentImg> imgList = item.getMediaList();
             if (tagLIst != null && tagLIst.size() > 0) {
                 rv_item_comment_tag.setVisibility(View.VISIBLE);
                 rv_item_comment_tag.setHasFixedSize(true);

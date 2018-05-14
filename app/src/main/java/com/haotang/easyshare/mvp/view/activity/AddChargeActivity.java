@@ -49,9 +49,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -139,8 +137,6 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     private String[] time =
             {"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00"
                     , "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
-    private Map<String, RequestBody> filedMap = new HashMap<String, RequestBody>();
-    private Map<String, String> paramsMap = new HashMap<String, String>();
     private double lat;
     private double lng;
     private int upOrDown;
@@ -359,34 +355,32 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 finish();
                 break;
             case R.id.tv_titlebar_other:
-                paramsMap.put("lng", String.valueOf(lng));
-                paramsMap.put("lat", String.valueOf(lat));
-                paramsMap.put("telephone", etAddchargePhone.getText().toString().trim());
-                paramsMap.put("title", etAddchargeZmc.getText().toString().trim());
-                paramsMap.put("address", tvAddchargeZdz.getText().toString().trim());
-                paramsMap.put("electricityPrice", etAddchargeCdf.getText().toString().trim() + "_" + tvAddchargeKfsj.getText().toString().trim());
-                paramsMap.put("parkingPrice", etAddchargeTcf.getText().toString().trim() + "_" + upOrDown);
-                paramsMap.put("serviceFee", etAddchargeFwf.getText().toString().trim());
-                paramsMap.put("payWay", tvAddchargeZffs.getText().toString().trim());
-                paramsMap.put("openTime", tvAddchargeKfsj.getText().toString().trim());
-                paramsMap.put("remark", etAddchargeBzsm.getText().toString().trim());
+                //构建body
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                builder.addFormDataPart("lng", String.valueOf(lng));
+                builder.addFormDataPart("lat", String.valueOf(lat));
+                builder.addFormDataPart("telephone", etAddchargePhone.getText().toString().trim());
+                builder.addFormDataPart("title", etAddchargeZmc.getText().toString().trim());
+                builder.addFormDataPart("address", tvAddchargeZdz.getText().toString().trim());
+                builder.addFormDataPart("electricityPrice", etAddchargeCdf.getText().toString().trim() + "_" + tvAddchargeKfsj.getText().toString().trim());
+                builder.addFormDataPart("parkingPrice", etAddchargeTcf.getText().toString().trim() + "_" + upOrDown);
+                builder.addFormDataPart("serviceFee", etAddchargeFwf.getText().toString().trim());
+                builder.addFormDataPart("payWay", tvAddchargeZffs.getText().toString().trim());
+                builder.addFormDataPart("openTime", tvAddchargeKfsj.getText().toString().trim());
+                builder.addFormDataPart("remark", etAddchargeBzsm.getText().toString().trim());
                 if (kuaiOrMan == 0) {//快充
-                    paramsMap.put("fastNum", etAddchargeSl.getText().toString().trim());
+                    builder.addFormDataPart("fastNum", etAddchargeSl.getText().toString().trim());
                 } else if (kuaiOrMan == 1) {//慢充
-                    paramsMap.put("slowNum", etAddchargeSl.getText().toString().trim());
+                    builder.addFormDataPart("slowNum", etAddchargeSl.getText().toString().trim());
                 }
-                for(int i=0;i<imgPathList.size();i++){
+                for (int i = 0; i < imgPathList.size(); i++) {
                     //构建要上传的文件
                     File file = new File(imgPathList.get(i));
-                    // 创建 RequestBody，用于封装构建RequestBody
-                    RequestBody requestFile =
-                            RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                    // MultipartBody.Part  和后端约定好Key，这里的partName是用image
-                    MultipartBody.Part body =
-                            MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-                    filedMap.put("file",requestFile);
+                    builder.addFormDataPart("file",file.getName(),RequestBody.create(MediaType.parse("application/octet-stream")
+                            , file));
                 }
-                mPresenter.save(paramsMap, filedMap);
+                RequestBody build = builder.build();
+                mPresenter.save(build);
                 break;
             case R.id.rl_addcharge_zdz:
                 startActivity(new Intent(AddChargeActivity.this, SelectAddressActivity.class));

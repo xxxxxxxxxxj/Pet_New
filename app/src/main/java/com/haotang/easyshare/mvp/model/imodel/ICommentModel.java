@@ -15,11 +15,11 @@ import okhttp3.RequestBody;
  * @author 徐俊
  * @date XJ on 2018/5/7 17:32
  */
-public interface ICommentModel extends IBaseModel{
+public interface ICommentModel extends IBaseModel {
     /**
      * 评论充电桩
-     * @param paramsMap
+     *
      * @param filedMap
      */
-    Observable save(Map<String, String> paramsMap, Map<String, RequestBody> filedMap);
+    Observable save(Map<String, RequestBody> filedMap);
 }

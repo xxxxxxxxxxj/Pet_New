@@ -16,6 +16,8 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerCommentDetailActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CommentDetailActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
+import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
+import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
 import com.haotang.easyshare.mvp.presenter.CommentDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CommentDetailAdapter;
@@ -32,6 +34,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.R.attr.data;
 
 /**
  * 评论详情页
@@ -101,6 +105,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     }
 
     private void refresh() {
+        commentDetailAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         srlCommentDetail.setRefreshing(true);
         mNextRequestPage = 1;
         mPresenter.list(uuid, mNextRequestPage);
@@ -123,7 +128,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
                 finish();
                 break;
             case R.id.ll_comment_detail_add:
-                startActivity(new Intent(CommentDetailActivity.this, CommentActivity.class).putExtra("uuid",uuid));
+                startActivity(new Intent(CommentDetailActivity.this, CommentActivity.class).putExtra("uuid", uuid));
                 break;
         }
     }
@@ -132,16 +137,44 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     public void listSuccess(CommentBean data) {
         if (mNextRequestPage == 1) {
             srlCommentDetail.setRefreshing(false);
+            commentDetailAdapter.setEnableLoadMore(true);
             list.clear();
-        } else {
-            commentDetailAdapter.loadMoreComplete();
         }
+        commentDetailAdapter.loadMoreComplete();
         if (data != null) {
             StringUtil.setText(tv_comment_plnum, "添加评论(" + data.getTotal() + ")", "", View.VISIBLE, View.GONE);
             List<CommentBean.Comment> comments = data.getComments();
             if (comments != null && comments.size() > 0) {
+                for (int i = 0; i < comments.size(); i++) {
+                    CommentBean.Comment comment = comments.get(i);
+                    if (comment != null) {
+                        List<String> media = comment.getMedia();
+                        List<String> tags = comment.getTags();
+                        if (media != null && media.size() > 0) {
+                            List<CommentImg> mediaList = new ArrayList<CommentImg>();
+                            mediaList.clear();
+                            for (int k = 0; k < media.size(); k++) {
+                                mediaList.add(new CommentImg(media.get(k), false));
+                            }
+                            comment.setMediaList(mediaList);
+                        }
+                        if (tags != null && tags.size() > 0) {
+                            List<CommentTag> tagList = new ArrayList<CommentTag>();
+                            for (int k = 0; k < tags.size(); k++) {
+                                tagList.add(new CommentTag(tags.get(k), false));
+                            }
+                            comment.setTagList(tagList);
+                        }
+                    }
+                }
                 list.addAll(comments);
                 mNextRequestPage++;
+            } else {
+                if (mNextRequestPage == 1) {
+                    commentDetailAdapter.loadMoreEnd(true);
+                } else {
+                    commentDetailAdapter.loadMoreEnd(false);
+                }
             }
         }
         commentDetailAdapter.notifyDataSetChanged();
@@ -151,9 +184,10 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     public void listFail(int code, String msg) {
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
         if (mNextRequestPage == 1) {
+            commentDetailAdapter.setEnableLoadMore(true);
             srlCommentDetail.setRefreshing(false);
         } else {
-            commentDetailAdapter.loadMoreComplete();
+            commentDetailAdapter.loadMoreFail();
         }
     }
 }

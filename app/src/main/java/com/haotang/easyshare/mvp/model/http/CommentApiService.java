@@ -23,10 +23,10 @@ import retrofit2.http.PartMap;
 public interface CommentApiService {
     /**
      * 评论充电桩
+     *
      * @param files
-     * @param params
      */
     @Multipart
     @POST(UrlConstants.COMMENT_SAVE)
-    Observable<HttpResult<AddChargeBean>> save(@PartMap() Map<String, RequestBody> files, @PartMap() Map<String, String> params);
+    Observable<HttpResult<AddChargeBean>> save(@PartMap() Map<String, RequestBody> files);
 }

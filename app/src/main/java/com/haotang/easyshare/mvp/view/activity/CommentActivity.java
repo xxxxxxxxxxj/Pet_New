@@ -80,7 +80,6 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     private CommentTagAdapter commentTagAdapter;
     private String uuid;
     private Map<String, RequestBody> filedMap = new HashMap<String, RequestBody>();
-    private Map<String, String> paramsMap = new HashMap<String, String>();
 
     @Override
     protected int getContentLayout() {
@@ -240,7 +239,6 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
                 break;
             case R.id.tv_titlebar_other:
                 String localTags = "";
-                paramsMap.put("uuid", uuid);
                 for (int i = 0; i < tagList.size(); i++) {
                     CommentTag commentTag = tagList.get(i);
                     if (commentTag != null && commentTag.isCheck()) {
@@ -251,21 +249,22 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
                         }
                     }
                 }
-                RingLog.d(TAG,"localTags = "+localTags);
-                paramsMap.put("tags", localTags);
-                paramsMap.put("content", etComment.getText().toString().trim());
+                RingLog.d(TAG, "localTags = " + localTags);
                 for (int i = 0; i < imgPathList.size(); i++) {
                     //构建要上传的文件
                     File file = new File(imgPathList.get(i));
                     // 创建 RequestBody，用于封装构建RequestBody
                     RequestBody requestFile =
-                            RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                    // MultipartBody.Part  和后端约定好Key，这里的partName是用image
-                    MultipartBody.Part body =
-                            MultipartBody.Part.createFormData("file", file.getName(), requestFile);
-                    filedMap.put("files", requestFile);
+                            RequestBody.create(MediaType.parse("application/octet-stream"), file);
+                    filedMap.put("files\"; filename=\"" + file.getName(), requestFile);
                 }
-                mPresenter.save(paramsMap, filedMap);
+                RequestBody rb_uuid = RequestBody.create(MediaType.parse("text/plain"), uuid);
+                RequestBody rb_tags = RequestBody.create(MediaType.parse("text/plain"), localTags);
+                RequestBody rb_content = RequestBody.create(MediaType.parse("text/plain"), etComment.getText().toString().trim());
+                filedMap.put("uuid", rb_uuid);
+                filedMap.put("tags", rb_tags);
+                filedMap.put("content", rb_content);
+                mPresenter.save(filedMap);
                 break;
         }
     }

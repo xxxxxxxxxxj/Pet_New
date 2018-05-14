@@ -4,13 +4,11 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
-import java.util.Map;
-
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PartMap;
 
 /**
  * <p>Title:${type_name}</p>
@@ -24,11 +22,8 @@ public interface AddChargeApiService {
     /**
      * 上传充电桩
      *
-     * @param files
-     * @param params
      * @return
      */
-    @Multipart
     @POST(UrlConstants.SAVECHARGE)
-    Observable<HttpResult<AddChargeBean>> save(@PartMap() Map<String, RequestBody> files, @PartMap() Map<String, String> params);
+    Observable<HttpResult<AddChargeBean>> save(@Body() RequestBody body);
 }

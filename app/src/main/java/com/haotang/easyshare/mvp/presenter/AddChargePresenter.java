@@ -11,8 +11,6 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
-import java.util.Map;
-
 import okhttp3.RequestBody;
 
 /**
@@ -30,11 +28,9 @@ public class AddChargePresenter extends BasePresenter<IAddChargeView, IAddCharge
 
     /**
      * 上传充电桩
-     * @param paramsMap
-     * @param filedMap
      */
-    public void save(Map<String, String> paramsMap, Map<String, RequestBody> filedMap) {
-        DevRing.httpManager().commonRequest(mIModel.save(paramsMap, filedMap), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void save(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.save(body), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
