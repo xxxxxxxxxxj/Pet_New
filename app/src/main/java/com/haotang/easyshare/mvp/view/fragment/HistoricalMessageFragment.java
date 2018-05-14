@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerHistoricalMessageFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.HistoricalMessageFragmentModule;
-import com.haotang.easyshare.mvp.model.entity.res.HistoricalMessage;
+import com.haotang.easyshare.mvp.model.entity.res.HistoricalMsg;
 import com.haotang.easyshare.mvp.presenter.HistoricalMessageFragmentPresenter;
 import com.haotang.easyshare.mvp.view.adapter.HistoricalMessagelAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
@@ -18,6 +18,7 @@ import com.haotang.easyshare.mvp.view.iview.IHistoricalMessageFragmentView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.ljy.devring.other.RingLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +43,9 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
     @BindView(R.id.srl_historymsg)
     SwipeRefreshLayout srlHistorymsg;
     private int mNextRequestPage = 1;
-    private List<HistoricalMessage> list = new ArrayList<HistoricalMessage>();
+    private List<List<HistoricalMsg.DataBean>> list = new ArrayList<List<HistoricalMsg.DataBean>>();
     private HistoricalMessagelAdapter historicalMessagelAdapter;
+    private int pageSize;
 
     @Override
     protected boolean isLazyLoad() {
@@ -63,32 +65,28 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
                 .inject(this);
         srlHistorymsg.setRefreshing(true);
         srlHistorymsg.setColorSchemeColors(Color.rgb(47, 223, 189));
-        for (int i = 0; i < 20; i++) {
-            list.add(new HistoricalMessage("2013年的保时捷Boxster，一般人找不到发动机在哪",
-                    "04-07  01:55", "04-10  01:55", "这一看就是二十多年，家里的汽车杂志堆积如山。长大后修过车，玩过车，倒过车，年过三旬，而立之年，检车车让老司机的一技之长有了发挥的余地，这里要感谢下检车车和一直以来信赖老司机的车友们。"));
-        }
         rvHistorymsg.setHasFixedSize(true);
         rvHistorymsg.setLayoutManager(new LinearLayoutManager(mActivity));
         historicalMessagelAdapter = new HistoricalMessagelAdapter(R.layout.item_historymsg, list);
         rvHistorymsg.setAdapter(historicalMessagelAdapter);
         //添加自定义分割线
-        rvHistorymsg.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity,15),
+        rvHistorymsg.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity, 15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
     }
 
     @Override
     protected void initData() {
-
+        mPresenter.history();
     }
 
     @Override
     protected void initEvent() {
-        historicalMessagelAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+       /* historicalMessagelAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 loadMore();
             }
-        });
+        });*/
         srlHistorymsg.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -98,9 +96,52 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
     }
 
     private void refresh() {
+        historicalMessagelAdapter.setEnableLoadMore(false);
+        srlHistorymsg.setRefreshing(true);
         mNextRequestPage = 1;
+        mPresenter.history();
     }
 
     private void loadMore() {
+        mPresenter.history();
+    }
+
+    @Override
+    public void historySuccess(List<List<HistoricalMsg.DataBean>> data) {
+        if (mNextRequestPage == 1) {
+            srlHistorymsg.setRefreshing(false);
+            historicalMessagelAdapter.setEnableLoadMore(true);
+            list.clear();
+        }
+        historicalMessagelAdapter.loadMoreComplete();
+        if (data != null && data.size() > 0) {
+            if (mNextRequestPage == 1) {
+                pageSize = data.size();
+            } else {
+                if (data.size() < pageSize) {
+                    historicalMessagelAdapter.loadMoreEnd(false);
+                }
+            }
+            list.addAll(data);
+            mNextRequestPage++;
+        } else {
+            if (mNextRequestPage == 1) {
+                historicalMessagelAdapter.loadMoreEnd(true);
+            } else {
+                historicalMessagelAdapter.loadMoreEnd(false);
+            }
+        }
+        historicalMessagelAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void historyFail(int code, String msg) {
+        if (mNextRequestPage == 1) {
+            historicalMessagelAdapter.setEnableLoadMore(true);
+            srlHistorymsg.setRefreshing(false);
+        } else {
+            historicalMessagelAdapter.loadMoreFail();
+        }
+        RingLog.e(TAG, "historyFail() status = " + code + "---desc = " + msg);
     }
 }

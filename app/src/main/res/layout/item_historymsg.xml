@@ -1,87 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:rv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/ll_item_problem_root"
     android:orientation="vertical">
 
-    <com.flyco.roundview.RoundLinearLayout
-        android:id="@+id/rll_item_historymsg"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_item_problem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dip"
-        android:layout_marginRight="15dip"
-        android:orientation="vertical"
-        rv:rv_backgroundColor="@color/white"
-        rv:rv_cornerRadius="5dip">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="15dip">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dip"
-                android:text="我的问题"
-                android:textColor="@color/a333333"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/tv_problem_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dip"
-                android:text="TextView"
-                android:textColor="@color/a999999"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_problem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/a333333"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dip"
-            android:background="@color/aEEEEEE" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="15dip">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dip"
-                android:text="管家回复"
-                android:textColor="@color/a333333"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/tv_reply_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dip"
-                android:text="TextView"
-                android:textColor="@color/a999999"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_reply"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/a333333"
-                android:textSize="14sp" />
-        </LinearLayout>
-    </com.flyco.roundview.RoundLinearLayout>
+        android:layout_height="wrap_content" />
 </LinearLayout>

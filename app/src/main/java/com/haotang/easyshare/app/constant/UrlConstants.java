@@ -56,6 +56,14 @@ public class UrlConstants {
      * 充电桩评论
      */
     public static final String COMMENT_SAVE = "charging/comment/save";
+    /**
+     * 管家留言列表
+     */
+    public static final String HISTORYMSG = "user/message/history";
+    /**
+     * 发布留言
+     */
+    public static final String SAVEMSG = "user/message/save";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

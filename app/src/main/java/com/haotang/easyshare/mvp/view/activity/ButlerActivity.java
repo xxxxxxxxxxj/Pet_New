@@ -114,6 +114,7 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
                 finish();
                 break;
             case R.id.tv_titlebar_other:
+                currentMessageFragment.saveMsg();
                 break;
         }
     }

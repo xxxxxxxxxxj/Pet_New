@@ -47,7 +47,7 @@ import butterknife.Unbinder;
  * 这种基类实现方式，参考自JessYan
  */
 public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements IBaseFragment {
-    private final static String TAG = BaseFragment.class.getSimpleName();
+    protected final static String TAG = BaseFragment.class.getSimpleName();
     private final static boolean DEBUG = BuildConfig.DEBUG;
     protected BaseActivity mActivity;
     //根布局视图

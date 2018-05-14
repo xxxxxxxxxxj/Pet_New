@@ -1,18 +1,18 @@
 package com.haotang.easyshare.mvp.view.adapter;
 
-import android.view.View;
+import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.flyco.roundview.RoundLinearLayout;
 import com.haotang.easyshare.R;
-import com.haotang.easyshare.mvp.model.entity.res.HistoricalMessage;
+import com.haotang.easyshare.mvp.model.entity.res.HistoricalMsg;
+import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.util.DensityUtil;
-import com.haotang.easyshare.util.StringUtil;
 
 import java.util.List;
+
+import static android.R.attr.data;
 
 /**
  * <p>Title:${type_name}</p>
@@ -22,29 +22,30 @@ import java.util.List;
  * @author 徐俊
  * @date zhoujunxia on 2018/5/1 13:26
  */
-public class HistoricalMessagelAdapter extends BaseQuickAdapter<HistoricalMessage, BaseViewHolder> {
-    public HistoricalMessagelAdapter(int layoutResId, List<HistoricalMessage> data) {
+public class HistoricalMessagelAdapter extends BaseQuickAdapter<List<HistoricalMsg.DataBean>, BaseViewHolder> {
+    public HistoricalMessagelAdapter(int layoutResId, List<List<HistoricalMsg.DataBean>> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, HistoricalMessage item) {
-        TextView tv_problem_date = helper.getView(R.id.tv_problem_date);
-        TextView tv_problem = helper.getView(R.id.tv_problem);
-        TextView tv_reply_date = helper.getView(R.id.tv_reply_date);
-        TextView tv_reply = helper.getView(R.id.tv_reply);
-        RoundLinearLayout rll_item_historymsg = helper.getView(R.id.rll_item_historymsg);
+    protected void convert(BaseViewHolder helper, List<HistoricalMsg.DataBean> item) {
+        RecyclerView rv_item_problem = helper.getView(R.id.rv_item_problem);
+        LinearLayout ll_item_problem_root = helper.getView(R.id.ll_item_problem_root);
         if (item != null) {
-            if(helper.getLayoutPosition() == 0){
-                LinearLayout.LayoutParams layoutParams =
-                        (LinearLayout.LayoutParams) rll_item_historymsg.getLayoutParams();
-                layoutParams.topMargin = DensityUtil.dp2px(mContext,15);
-                rll_item_historymsg.setLayoutParams(layoutParams);
+            if (helper.getLayoutPosition() == 0) {
+                RecyclerView.LayoutParams layoutParams =
+                        (RecyclerView.LayoutParams) ll_item_problem_root.getLayoutParams();
+                layoutParams.topMargin = DensityUtil.dp2px(mContext, 15);
+                ll_item_problem_root.setLayoutParams(layoutParams);
             }
-            StringUtil.setText(tv_problem_date, item.getProblemDate(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_problem, item.getProblem(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_reply_date, item.getReplyDate(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_reply, item.getReply(), "", View.VISIBLE, View.VISIBLE);
+            if (item != null && item.size() > 0) {
+                rv_item_problem.setHasFixedSize(true);
+                rv_item_problem.setNestedScrollingEnabled(false);
+                NoScollFullLinearLayoutManager noScollFullLinearLayoutManager = new NoScollFullLinearLayoutManager(mContext);
+                noScollFullLinearLayoutManager.setScrollEnabled(false);
+                rv_item_problem.setLayoutManager(noScollFullLinearLayoutManager);
+                rv_item_problem.setAdapter(new HistoryMsgItemAdapter(R.layout.item_historymsg_item, item));
+            }
         }
     }
 }

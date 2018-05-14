@@ -1,6 +1,10 @@
 package com.haotang.easyshare.mvp.model;
 
+import com.haotang.easyshare.mvp.model.http.HistoricalMessageApiService;
 import com.haotang.easyshare.mvp.model.imodel.IHistoricalMessageFragmentModel;
+import com.ljy.devring.DevRing;
+
+import io.reactivex.Observable;
 
 /**
  * <p>Title:${type_name}</p>
@@ -11,4 +15,11 @@ import com.haotang.easyshare.mvp.model.imodel.IHistoricalMessageFragmentModel;
  * @date XJ on 2018/5/7 18:28
  */
 public class HistoricalMessageFragmentModel implements IHistoricalMessageFragmentModel {
+    /**
+     * 管家留言列表
+     */
+    @Override
+    public Observable history() {
+        return DevRing.httpManager().getService(HistoricalMessageApiService.class).history();
+    }
 }
