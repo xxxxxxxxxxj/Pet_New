@@ -93,7 +93,6 @@ public class FollowDetailPresenter extends BasePresenter<IFollowDetailView, IFol
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));
-
     }
 
     /**

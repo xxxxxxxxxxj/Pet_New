@@ -627,7 +627,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             mainFragmenBoDa.getLlMainbottomXq().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(mActivity, ChargingPileDetailActivity.class).putExtra("uuid",stationsBean.getUuid()));
+                    startActivity(new Intent(mActivity, ChargingPileDetailActivity.class).putExtra("uuid", stationsBean.getUuid()));
                 }
             });
             mainFragmenBoDa.getLlMainbottomPl().setOnClickListener(new View.OnClickListener() {
@@ -668,7 +668,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     List<PoiItem> poiItems = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
                     if (poiItems != null && poiItems.size() > 0) {
                         serchList.clear();
-                        serchList.add(new SerchResult("目的地", "", 0, 0));
+                        serchList.add(new SerchResult("目的地", "", 0, 0, true));
                         for (int i = 0; i < poiItems.size(); i++) {
                             PoiItem poiItem = poiItems.get(i);
                             if (poiItem != null) {
@@ -686,10 +686,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         mainSerchResultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                rll_mainfrag_serchresult.setVisibility(View.GONE);
                                 if (serchList != null && serchList.size() > 0 && serchList.size() > position) {
                                     SerchResult serchResult = serchList.get(position);
-                                    if (serchResult != null) {
+                                    if (serchResult != null && !serchResult.isFake()) {
+                                        rll_mainfrag_serchresult.setVisibility(View.GONE);
                                         mPresenter.homeIndex(serchResult.getLng(), serchResult.getLat());
                                     }
                                 }

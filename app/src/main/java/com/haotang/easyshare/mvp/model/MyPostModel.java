@@ -1,6 +1,12 @@
 package com.haotang.easyshare.mvp.model;
 
+import com.haotang.easyshare.mvp.model.http.FollowDetailApiService;
 import com.haotang.easyshare.mvp.model.imodel.IMyPostModel;
+import com.ljy.devring.DevRing;
+
+import java.util.Map;
+
+import io.reactivex.Observable;
 
 /**
  * <p>Title:${type_name}</p>
@@ -11,4 +17,11 @@ import com.haotang.easyshare.mvp.model.imodel.IMyPostModel;
  * @date XJ on 2018/5/7 18:07
  */
 public class MyPostModel implements IMyPostModel {
+    /**
+     * 用户帖子列表
+     */
+    @Override
+    public Observable list(Map<String, String> parms) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).list(parms);
+    }
 }

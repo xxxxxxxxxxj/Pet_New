@@ -1,6 +1,9 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
+
+import java.util.List;
 
 /**
  * <p>Title:${type_name}</p>
@@ -11,4 +14,7 @@ import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
  * @date XJ on 2018/5/7 18:04
  */
 public interface IMyPostView extends IBaseView{
+    void listSuccess(List<PostBean.DataBean> data);
+
+    void listFail(int code, String msg);
 }

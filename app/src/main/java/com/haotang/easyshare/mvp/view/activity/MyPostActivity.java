@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
-import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerMyPostActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MyPostActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
@@ -23,11 +22,14 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.PostListAdapter;
 import com.haotang.easyshare.mvp.view.iview.IMyPostView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
-import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -53,6 +55,8 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     private int mNextRequestPage = 1;
     private List<PostBean.DataBean> list = new ArrayList<PostBean.DataBean>();
     private PostListAdapter postListAdapter;
+    private Map<String, String> parmMap = new HashMap<String, String>();
+    private int pageSize;
 
     @Override
     protected int getContentLayout() {
@@ -84,7 +88,10 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        parmMap.clear();
+        parmMap.put("uuid", SharedPreferenceUtil.getInstance(this).getString("uuid", ""));
+        parmMap.put("page", String.valueOf(mNextRequestPage));
+        mPresenter.list(parmMap);
     }
 
     @Override
@@ -137,10 +144,17 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     }
 
     private void refresh() {
+        postListAdapter.setEnableLoadMore(false);
+        srlMyPost.setRefreshing(true);
         mNextRequestPage = 1;
+        parmMap.clear();
+        parmMap.put("uuid", SharedPreferenceUtil.getInstance(this).getString("uuid", ""));
+        parmMap.put("page", String.valueOf(mNextRequestPage));
+        mPresenter.list(parmMap);
     }
 
     private void loadMore() {
+        mPresenter.list(parmMap);
     }
 
     @Override
@@ -159,5 +173,44 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                 startActivity(new Intent(MyPostActivity.this, SendPostActivity.class));
                 break;
         }
+    }
+
+    @Override
+    public void listSuccess(List<PostBean.DataBean> data) {
+        if (mNextRequestPage == 1) {
+            srlMyPost.setRefreshing(false);
+            postListAdapter.setEnableLoadMore(true);
+            list.clear();
+        }
+        postListAdapter.loadMoreComplete();
+        if (data != null && data.size() > 0) {
+            if (mNextRequestPage == 1) {
+                pageSize = data.size();
+            } else {
+                if (data.size() < pageSize) {
+                    postListAdapter.loadMoreEnd(false);
+                }
+            }
+            list.addAll(data);
+            mNextRequestPage++;
+        } else {
+            if (mNextRequestPage == 1) {
+                postListAdapter.loadMoreEnd(true);
+            } else {
+                postListAdapter.loadMoreEnd(false);
+            }
+        }
+        postListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        if (mNextRequestPage == 1) {
+            postListAdapter.setEnableLoadMore(true);
+            srlMyPost.setRefreshing(false);
+        } else {
+            postListAdapter.loadMoreFail();
+        }
+        RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 }

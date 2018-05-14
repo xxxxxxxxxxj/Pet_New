@@ -2,6 +2,10 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
+import io.reactivex.Observable;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -10,5 +14,9 @@ import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
  * @author 徐俊
  * @date XJ on 2018/5/7 18:04
  */
-public interface IMyPostModel extends IBaseModel{
+public interface IMyPostModel extends IBaseModel {
+    /**
+     * 用户帖子列表
+     */
+    Observable list(Map<String, String> parms);
 }
