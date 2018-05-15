@@ -56,7 +56,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     private List<PostBean.DataBean> list = new ArrayList<PostBean.DataBean>();
     private PostListAdapter postListAdapter;
     private int pageSize;
-    private String uuid;
+    private String uuid = "";
 
     @Override
     protected int getContentLayout() {

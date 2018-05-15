@@ -123,7 +123,6 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
                 }
                 DevRing.busManager().postEvent(new SelectAddress(etAddaddress.getText().toString().trim()
                         + etAddaddressXxdz.getText().toString().trim(), lat, lng));
-                DevRing.activityStackManager().exitActivity(SelectAddressActivity.class);
                 finish();
                 break;
             case R.id.et_addaddress:
