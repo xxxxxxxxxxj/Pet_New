@@ -233,7 +233,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             case R.id.iv_chargingdetail_share:
                 ShareBottomDialog dialog = new ShareBottomDialog();
                 dialog.setShareInfo("测试", "测试",
-                        "https://www.duba.com", UrlConstants.getServiceBaseUrl() + "/static/icon/shouye.png?3");
+                        "https://www.duba.com","http://img.sayiyinxiang.com/api/brand/imgs/15246549042921928075.jpg");
                 dialog.show(getSupportFragmentManager());
                 break;
             case R.id.ll_chargingdetail_pl:

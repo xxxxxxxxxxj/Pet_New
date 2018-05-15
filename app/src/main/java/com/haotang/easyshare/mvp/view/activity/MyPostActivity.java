@@ -16,17 +16,16 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerMyPostActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MyPostActivityModule;
-import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.MyPostPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.PostListAdapter;
 import com.haotang.easyshare.mvp.view.iview.IMyPostView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
@@ -105,13 +103,13 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
             @Override
             public void OnShareItem(int position) {
                 if (list.size() > 0 && list.size() > position) {
-                    /*PostBean postBean = list.get(position);
-                    if (postBean != null) {
+                    PostBean.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
                         ShareBottomDialog dialog = new ShareBottomDialog();
-                        dialog.setShareInfo(postBean.getShareTitle(), postBean.getShareSummary(),
-                                postBean.getShareTargetUrl(), postBean.getShareThumbUrlOrPath());
+                        dialog.setShareInfo("测试", "测试",
+                                "https://www.duba.com", "http://img.sayiyinxiang.com/api/brand/imgs/15246549042921928075.jpg");
                         dialog.show(getSupportFragmentManager());
-                    }*/
+                    }
                 }
             }
         });
