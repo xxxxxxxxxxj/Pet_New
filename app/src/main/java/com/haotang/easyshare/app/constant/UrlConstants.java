@@ -128,6 +128,18 @@ public class UrlConstants {
      * 27.发帖
      */
     public static final String SENDPOST = "article/info/save";
+    /**
+     * 28.热门车型
+     */
+    public static final String HOT_SPECIAL_CAR = "brand/car/special";
+    /**
+     * 29.评价用户
+     */
+    public static final String EVAL_USER = "user/eval";
+    /**
+     * 30.点赞
+     */
+    public static final String PRAISE_USER = "article/praise/save";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

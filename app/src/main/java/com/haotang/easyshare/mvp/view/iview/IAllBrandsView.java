@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.view.iview;
 
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
 import java.util.List;
@@ -17,4 +18,8 @@ public interface IAllBrandsView extends IBaseView{
     void listSuccess(List<HotCarBean.DataBean> data);
 
     void listFail(int code, String msg);
+
+    void specialSuccess(List<HotSpecialCarBean.DataBean> data);
+
+    void specialFail(int errType, String errMessage);
 }

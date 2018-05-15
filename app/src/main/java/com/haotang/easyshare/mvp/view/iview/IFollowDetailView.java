@@ -26,10 +26,17 @@ public interface IFollowDetailView extends IBaseView{
 
     void followSuccess(AddChargeBean data);
 
-
     void followFail(int code, String msg);
 
     void cancelSuccess(AddChargeBean data);
 
     void cancelFail(int code, String msg);
+
+    void evalSuccess(AddChargeBean data);
+
+    void evalFail(int errType, String errMessage);
+
+    void praiseSuccess(AddChargeBean data);
+
+    void praiseFail(int code, String msg);
 }

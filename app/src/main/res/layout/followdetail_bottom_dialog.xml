@@ -20,6 +20,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="15dip"
         android:layout_marginRight="15dip"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         rv:rv_backgroundColor="@color/white"
         rv:rv_cornerRadius="10dip">
@@ -75,6 +76,17 @@
             android:text="非常不满意，各方面都很差"
             android:textColor="@color/a666666"
             android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_followdetail_bottom_submit"
+            android:layout_width="200dip"
+            android:layout_height="49dip"
+            android:layout_marginTop="50dip"
+            android:background="@mipmap/bg_sms_yes"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
     </com.flyco.roundview.RoundLinearLayout>
 </RelativeLayout>

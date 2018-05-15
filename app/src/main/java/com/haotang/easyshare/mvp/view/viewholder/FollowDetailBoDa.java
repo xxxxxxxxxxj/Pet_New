@@ -30,6 +30,16 @@ public class FollowDetailBoDa {
     TextView tvFollowdetailBottomDesc;
     @BindView(R.id.rll_followdetail_bottom)
     RoundLinearLayout rll_followdetail_bottom;
+    @BindView(R.id.tv_followdetail_bottom_submit)
+    TextView tv_followdetail_bottom_submit;
+
+    public TextView getTv_followdetail_bottom_submit() {
+        return tv_followdetail_bottom_submit;
+    }
+
+    public void setTv_followdetail_bottom_submit(TextView tv_followdetail_bottom_submit) {
+        this.tv_followdetail_bottom_submit = tv_followdetail_bottom_submit;
+    }
 
     public ImageView getIv_followdetail_bottom_bg() {
         return iv_followdetail_bottom_bg;

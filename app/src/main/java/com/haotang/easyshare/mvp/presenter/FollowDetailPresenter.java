@@ -15,6 +15,7 @@ import com.ljy.devring.util.RxLifecycleUtil;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -156,6 +157,70 @@ public class FollowDetailPresenter extends BasePresenter<IFollowDetailView, IFol
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.cancelFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 评价用户
+     */
+    public void eval(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.eval(body), new CommonObserver<HttpResult<AddChargeBean>>() {
+            @Override
+            public void onResult(HttpResult<AddChargeBean> result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.evalSuccess
+                                    (result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.evalFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.evalFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.evalFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 点赞
+     */
+    public void praise(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.praise(body), new CommonObserver<HttpResult<AddChargeBean>>() {
+            @Override
+            public void onResult(HttpResult<AddChargeBean> result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.praiseSuccess(result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.praiseFail
+                                        (result.getCode(), result.getMsg());
+                            } else {
+                                mIView.praiseFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.praiseFail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));

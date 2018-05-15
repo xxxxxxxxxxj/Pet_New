@@ -12,9 +12,14 @@ import io.reactivex.Observable;
  * @author 徐俊
  * @date XJ on 2018/5/8 16:44
  */
-public interface IAllBrandsModel extends IBaseModel{
+public interface IAllBrandsModel extends IBaseModel {
     /**
      * 所有品牌
      */
     Observable list();
+
+    /**
+     * 热门车型
+     */
+    Observable special();
 }

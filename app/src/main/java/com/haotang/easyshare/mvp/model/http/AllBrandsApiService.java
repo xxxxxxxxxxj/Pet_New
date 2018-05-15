@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.model.http;
 
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.POST;
@@ -20,4 +21,10 @@ public interface AllBrandsApiService {
      */
     @POST(UrlConstants.ALL_CAR_BRAND)
     Observable<HotCarBean> list();
+
+    /**
+     * 所有品牌
+     */
+    @POST(UrlConstants.HOT_SPECIAL_CAR)
+    Observable<HotSpecialCarBean> special();
 }

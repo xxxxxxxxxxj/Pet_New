@@ -23,4 +23,12 @@ public class AllBrandsModel implements IAllBrandsModel {
     public Observable list() {
         return DevRing.httpManager().getService(AllBrandsApiService.class).list();
     }
+
+    /**
+     * 热门车型
+     */
+    @Override
+    public Observable special() {
+        return DevRing.httpManager().getService(AllBrandsApiService.class).special();
+    }
 }

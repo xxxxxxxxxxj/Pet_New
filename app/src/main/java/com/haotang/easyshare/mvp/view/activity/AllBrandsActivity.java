@@ -14,6 +14,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerAllBrandsActivityCommponent;
 import com.haotang.easyshare.di.module.activity.AllBrandsActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.SelectedCarBean;
 import com.haotang.easyshare.mvp.presenter.AllBrandsPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -50,7 +51,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     RecyclerView rvAllbrandsJxtj;
     private List<HotCarBean.DataBean> carList = new ArrayList<HotCarBean.DataBean>();
     private HotPointCarAdapter hotPointCarAdapter;
-    private List<SelectedCarBean> selectedCarList = new ArrayList<SelectedCarBean>();
+    private List<HotSpecialCarBean.DataBean> selectedCarList = new ArrayList<HotSpecialCarBean.DataBean>();
     private SelectedCarAdapter selectedCarAdapter;
 
     @Override
@@ -77,10 +78,6 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
         hotPointCarAdapter = new HotPointCarAdapter(R.layout.item_hotfrag_top_car, carList);
         rvAllbrandsRmpp.setAdapter(hotPointCarAdapter);
 
-        for (int i = 0; i < 20; i++) {
-            selectedCarList.add(new SelectedCarBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-                    "荣威ERX5", "续航310公里", 20.88));
-        }
         rvAllbrandsJxtj.setHasFixedSize(true);
         rvAllbrandsJxtj.setNestedScrollingEnabled(false);
         NoScollFullLinearLayoutManager noScollFullLinearLayoutManager = new NoScollFullLinearLayoutManager(this);
@@ -98,6 +95,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     @Override
     protected void initData(Bundle savedInstanceState) {
         mPresenter.list();
+        mPresenter.special();
     }
 
     @Override
@@ -147,5 +145,18 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     @Override
     public void listFail(int code, String msg) {
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void specialSuccess(List<HotSpecialCarBean.DataBean> data) {
+        if (data != null && data.size() > 0) {
+            selectedCarList.addAll(data);
+            selectedCarAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void specialFail(int code, String msg) {
+        RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
     }
 }

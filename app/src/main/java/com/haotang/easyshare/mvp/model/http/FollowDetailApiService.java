@@ -6,13 +6,10 @@ import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
-import java.util.Map;
-
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
@@ -51,4 +48,16 @@ public interface FollowDetailApiService {
      */
     @POST(UrlConstants.CANCEL_FOLLOW_USER)
     Observable<HttpResult<AddChargeBean>> cancel(@Body() RequestBody body);
+
+    /**
+     * 评价用户
+     */
+    @POST(UrlConstants.EVAL_USER)
+    Observable<HttpResult<AddChargeBean>> eval(@Body() RequestBody body);
+
+    /**
+     * 点赞
+     */
+    @POST(UrlConstants.PRAISE_USER)
+    Observable<HttpResult<AddChargeBean>> praise(@Body() RequestBody body);
 }

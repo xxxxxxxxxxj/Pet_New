@@ -68,6 +68,8 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     private String uuid;
     private int pageSize;
     private int isCollect;
+    private float stars = 1;
+    private int praisePosition = -1;
 
     @Override
     protected int getContentLayout() {
@@ -125,8 +127,16 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         postListAdapter.setOnShareItemListener(new PostListAdapter.OnShareItemListener() {
             @Override
             public void OnShareItem(int position) {//赞
+                RingLog.d(TAG, "position = " + position);
                 if (list.size() > 0 && list.size() > position) {
-
+                    PostBean.DataBean dataBean = list.get(position);
+                    if (dataBean != null && dataBean.getIsPraise() == 0) {
+                        praisePosition = position;
+                        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                        builder.addFormDataPart("uuid", uuid);
+                        RequestBody build = builder.build();
+                        mPresenter.praise(build);
+                    }
                 }
             }
         });
@@ -227,9 +237,21 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 public void onClick(View v) {
                 }
             });
+            followDetailBoDa.getTv_followdetail_bottom_submit().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                            .addFormDataPart("uuid", uuid)
+                            .addFormDataPart("stars", String.valueOf(stars))
+                            .build();
+                    mPresenter.eval(body);
+                    pWinBottomDialog.dismiss();
+                }
+            });
             followDetailBoDa.getMrbFollowdetailBottom().setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
                 @Override
                 public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
+                    stars = rating;
                     StringUtil.setText(followDetailBoDa.getTvFollowdetailBottomDesc(), String.valueOf(rating), "",
                             View.VISIBLE, View.VISIBLE);
                 }
@@ -337,5 +359,31 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     @Override
     public void cancelFail(int code, String msg) {
         RingLog.e(TAG, "cancelFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void evalSuccess(AddChargeBean data) {
+        followDetailHeader.getIvFollowdetailTopPingjia().setImageResource(R.mipmap.icon_followdetail_top_yipingjia);
+    }
+
+    @Override
+    public void evalFail(int code, String msg) {
+        RingLog.e(TAG, "evalFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void praiseSuccess(AddChargeBean data) {
+        if (praisePosition >= 0 && list.size() > praisePosition) {
+            PostBean.DataBean dataBean = list.get(praisePosition);
+            if (dataBean != null) {
+                dataBean.setIsPraise(1);
+                postListAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void praiseFail(int code, String msg) {
+        RingLog.e(TAG, "praiseFail() status = " + code + "---desc = " + msg);
     }
 }

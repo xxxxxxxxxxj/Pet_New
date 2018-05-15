@@ -4,8 +4,6 @@ import com.haotang.easyshare.mvp.model.http.FollowDetailApiService;
 import com.haotang.easyshare.mvp.model.imodel.IFollowDetailModel;
 import com.ljy.devring.DevRing;
 
-import java.util.Map;
-
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -48,11 +46,25 @@ public class FollowDetailModel implements IFollowDetailModel {
 
     /**
      * 取消关注用户
-     *
-     * @param build
      */
     @Override
-    public Observable cancel(RequestBody build) {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).cancel(build);
+    public Observable cancel(RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).cancel(body);
+    }
+
+    /**
+     * 评价用户
+     */
+    @Override
+    public Observable eval(RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).eval(body);
+    }
+
+    /**
+     * 点赞
+     */
+    @Override
+    public Observable praise(RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).praise(body);
     }
 }
