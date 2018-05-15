@@ -66,8 +66,8 @@ public class FollowDetailPresenter extends BasePresenter<IFollowDetailView, IFol
     /**
      * 用户帖子列表
      */
-    public void list(Map<String, String> parms) {
-        DevRing.httpManager().commonRequest(mIModel.list(parms), new CommonObserver<PostBean>() {
+    public void list(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<PostBean>() {
             @Override
             public void onResult(PostBean result) {
                 if (mIView != null) {

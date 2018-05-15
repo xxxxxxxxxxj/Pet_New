@@ -26,7 +26,7 @@ public interface IFollowDetailModel extends IBaseModel {
     /**
      * 用户帖子列表
      */
-    Observable list(Map<String, String> parms);
+    Observable list(RequestBody body);
 
     /**
      * 关注用户

@@ -177,7 +177,12 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         hotPointCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(mActivity, BrandAreaActivity.class));
+                if (carList != null && carList.size() > 0 && carList.size() > position) {
+                    HotCarBean.DataBean dataBean = carList.get(position);
+                    if (dataBean != null) {
+                        startActivity(new Intent(mActivity, BrandAreaActivity.class).putExtra("brandId", dataBean.getId()));
+                    }
+                }
             }
         });
         hotPointAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

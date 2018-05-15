@@ -168,7 +168,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         switch (view.getId()) {
             case R.id.tv_myfragment_username:
                 if (SystemUtil.checkLogin(mActivity)) {
-
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }

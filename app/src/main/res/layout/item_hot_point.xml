@@ -85,7 +85,7 @@
                         android:layout_height="15dip"
                         android:layout_marginRight="5dip"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_image_load" />
+                        android:src="@mipmap/ic_image_load_circle" />
 
                     <TextView
                         android:id="@+id/tv_item_hotpoint_username"

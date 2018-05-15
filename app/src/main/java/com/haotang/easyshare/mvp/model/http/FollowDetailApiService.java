@@ -37,9 +37,8 @@ public interface FollowDetailApiService {
     /**
      * 用户帖子列表
      */
-    @FormUrlEncoded
     @POST(UrlConstants.USERINFO_POST)
-    Observable<PostBean> list(@FieldMap() Map<String, String> parms);
+    Observable<PostBean> list(@Body() RequestBody body);
 
     /**
      * 关注用户

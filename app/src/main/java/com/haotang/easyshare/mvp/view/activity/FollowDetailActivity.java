@@ -67,7 +67,6 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     private PopupWindow pWinBottomDialog;
     private String uuid;
     private int pageSize;
-    private Map<String, String> parmMap = new HashMap<String, String>();
     private int isCollect;
 
     @Override
@@ -112,10 +111,11 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     @Override
     protected void initData(Bundle savedInstanceState) {
         mPresenter.info(uuid);
-        parmMap.clear();
-        parmMap.put("uuid", uuid);
-        parmMap.put("page", String.valueOf(mNextRequestPage));
-        mPresenter.list(parmMap);
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("uuid", uuid);
+        builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
+        RequestBody build = builder.build();
+        mPresenter.list(build);
     }
 
     @Override
@@ -173,14 +173,19 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         srlFollowdetail.setRefreshing(true);
         mNextRequestPage = 1;
         mPresenter.info(uuid);
-        parmMap.clear();
-        parmMap.put("uuid", uuid);
-        parmMap.put("page", String.valueOf(mNextRequestPage));
-        mPresenter.list(parmMap);
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("uuid", uuid);
+        builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
+        RequestBody build = builder.build();
+        mPresenter.list(build);
     }
 
     private void loadMore() {
-        mPresenter.list(parmMap);
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("uuid", uuid);
+        builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
+        RequestBody build = builder.build();
+        mPresenter.list(build);
     }
 
     private void showBottomDialog() {

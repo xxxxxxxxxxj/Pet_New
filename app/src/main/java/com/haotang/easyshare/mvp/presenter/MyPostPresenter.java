@@ -10,7 +10,7 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
-import java.util.Map;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -28,8 +28,8 @@ public class MyPostPresenter extends BasePresenter<IMyPostView, IMyPostModel> {
     /**
      * 用户帖子列表
      */
-    public void list(Map<String, String> parms) {
-        DevRing.httpManager().commonRequest(mIModel.list(parms), new CommonObserver<PostBean>() {
+    public void list(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<PostBean>() {
             @Override
             public void onResult(PostBean result) {
                 if (mIView != null) {

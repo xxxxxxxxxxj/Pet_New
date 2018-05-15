@@ -1,23 +1,24 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerBrandAreaActivityCommponent;
 import com.haotang.easyshare.di.module.activity.BrandAreaActivityModule;
-import com.haotang.easyshare.mvp.model.entity.res.BrandAreaBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
-import com.haotang.easyshare.mvp.model.entity.res.SelectedCarBean;
 import com.haotang.easyshare.mvp.presenter.BrandAreaPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
-import com.haotang.easyshare.mvp.view.adapter.BrandAreaAdapter;
+import com.haotang.easyshare.mvp.view.adapter.BrandAreaHotPointAdapter;
 import com.haotang.easyshare.mvp.view.iview.IBrandAreaView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
 
 /**
  * 品牌专区
@@ -47,10 +49,13 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
     TextView tvTitlebarTitle;
     @BindView(R.id.rv_brand_area)
     RecyclerView rvBrandArea;
-    private List<BrandAreaBean> brandAreaList = new ArrayList<BrandAreaBean>();
-    private List<BrandAreaBean.BannerBean> bannerList = new ArrayList<BrandAreaBean.BannerBean>();
-    private List<BrandAreaBean.AdBean> adList = new ArrayList<BrandAreaBean.AdBean>();
-    private BrandAreaAdapter brandAreaAdapter;
+    @BindView(R.id.srl_brand_area)
+    SwipeRefreshLayout srl_brand_area;
+    private List<HotPoint.DataBean> list = new ArrayList<HotPoint.DataBean>();
+    private BrandAreaHotPointAdapter brandAreaHotPointAdapter;
+    private int brandId;
+    private int mNextRequestPage = 1;
+    private int pageSize;
 
     @Override
     protected int getContentLayout() {
@@ -62,92 +67,33 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
         DevRing.activityStackManager().pushOneActivity(this);
         DaggerBrandAreaActivityCommponent.builder().
                 brandAreaActivityModule(new BrandAreaActivityModule(this, this)).build().inject(this);
+        brandId = getIntent().getIntExtra("brandId", 0);
     }
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        srl_brand_area.setRefreshing(true);
+        srl_brand_area.setColorSchemeColors(Color.rgb(47, 223, 189));
         tvTitlebarTitle.setText("品牌专区");
         tvTitlebarOther.setText("发帖");
         tvTitlebarOther.setVisibility(View.VISIBLE);
-        for (int i = 0; i < 5; i++) {
-            bannerList.add(new BrandAreaBean.BannerBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
-        }
-        for (int i = 0; i < 5; i++) {
-            adList.add(new BrandAreaBean.AdBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",2,"http://www.baidu.com"));
-        }
-        for (int i = 0; i < 50; i++) {
-            int itemType = 1;
-            if (i >= 0 && i <= 3) {
-                itemType = ((i + 1) % 4 == 0) ? 4 : (i + 1);
-            } else if (i >= 4 && i <= 7) {
-                itemType = ((i - 4 * 1 + 1) % 4 == 0) ? 4 : (i - 4 * 1 + 1);
-            } else if (i >= 8 && i <= 11) {
-                itemType = ((i - 4 * 2 + 1) % 4 == 0) ? 4 : (i - 4 * 2 + 1);
-            } else if (i >= 12 && i <= 15) {
-                itemType = ((i - 4 * 3 + 1) % 4 == 0) ? 4 : (i - 4 * 3 + 1);
-            } else if (i >= 16 && i <= 19) {
-                itemType = ((i - 4 * 4 + 1) % 4 == 0) ? 4 : (i - 4 * 4 + 1);
-            } else if (i >= 20 && i <= 23) {
-                itemType = ((i - 4 * 5 + 1) % 4 == 0) ? 4 : (i - 4 * 5 + 1);
-            } else if (i >= 24 && i <= 27) {
-                itemType = ((i - 4 * 6 + 1) % 4 == 0) ? 4 : (i - 4 * 6 + 1);
-            } else if (i >= 28 && i <= 31) {
-                itemType = ((i - 4 * 7 + 1) % 4 == 0) ? 4 : (i - 4 * 7 + 1);
-            } else if (i >= 32 && i <= 35) {
-                itemType = ((i - 4 * 8 + 1) % 4 == 0) ? 4 : (i - 4 * 8 + 1);
-            } else if (i >= 36 && i <= 39) {
-                itemType = ((i - 4 * 9 + 1) % 4 == 0) ? 4 : (i - 4 * 9 + 1);
-            } else if (i >= 40 && i <= 43) {
-                itemType = ((i - 4 * 10 + 1) % 4 == 0) ? 4 : (i - 4 * 10 + 1);
-            } else if (i >= 44 && i <= 47) {
-                itemType = ((i - 4 * 11 + 1) % 4 == 0) ? 4 : (i - 4 * 11 + 1);
-            } else if (i >= 48 && i <= 51) {
-                itemType = ((i - 4 * 12 + 1) % 4 == 0) ? 4 : (i - 4 * 12 + 1);
-            } else if (i >= 52 && i <= 55) {
-                itemType = ((i - 4 * 13 + 1) % 4 == 0) ? 4 : (i - 4 * 13 + 1);
-            } else if (i >= 56 && i <= 59) {
-                itemType = ((i - 4 * 14 + 1) % 4 == 0) ? 4 : (i - 4 * 14 + 1);
-            } else if (i >= 60 && i <= 63) {
-                itemType = ((i - 4 * 15 + 1) % 4 == 0) ? 4 : (i - 4 * 15 + 1);
-            } else if (i >= 64 && i <= 67) {
-                itemType = ((i - 4 * 16 + 1) % 4 == 0) ? 4 : (i - 4 * 16 + 1);
-            } else if (i >= 68 && i <= 71) {
-                itemType = ((i - 4 * 17 + 1) % 4 == 0) ? 4 : (i - 4 * 17 + 1);
-            } else if (i >= 72 && i <= 75) {
-                itemType = ((i - 4 * 18 + 1) % 4 == 0) ? 4 : (i - 4 * 18 + 1);
-            } else if (i >= 76 && i <= 79) {
-                itemType = ((i - 4 * 19 + 1) % 4 == 0) ? 4 : (i - 4 * 19 + 1);
-            } else if (i >= 80 && i <= 83) {
-                itemType = ((i - 4 * 20 + 1) % 4 == 0) ? 4 : (i - 4 * 20 + 1);
-            } else if (i >= 84 && i <= 87) {
-                itemType = ((i - 4 * 21 + 1) % 4 == 0) ? 4 : (i - 4 * 21 + 1);
-            } else if (i >= 88 && i <= 91) {
-                itemType = ((i - 4 * 22 + 1) % 4 == 0) ? 4 : (i - 4 * 22 + 1);
-            } else if (i >= 92 && i <= 95) {
-                itemType = ((i - 4 * 23 + 1) % 4 == 0) ? 4 : (i - 4 * 23 + 1);
-            } else if (i >= 96 && i <= 99) {
-                itemType = ((i - 4 * 24 + 1) % 4 == 0) ? 4 : (i - 4 * 24 + 1);
-            }
-            RingLog.d("itemType = " + itemType);
-        }
-        brandAreaList.add(new BrandAreaBean(2, new BrandAreaBean.ReXiaOBean("比亚迪热销51")));
-        brandAreaList.add(new BrandAreaBean(2, new BrandAreaBean.ReXiaOBean("比亚迪热销52")));
-        brandAreaList.add(new BrandAreaBean(2, new BrandAreaBean.ReXiaOBean("比亚迪热销53")));
-        brandAreaList.add(new BrandAreaBean(2, new BrandAreaBean.ReXiaOBean("比亚迪热销54")));
         rvBrandArea.setHasFixedSize(true);
         rvBrandArea.setLayoutManager(new LinearLayoutManager(this));
         //添加自定义分割线
         rvBrandArea.addItemDecoration(new DividerLinearItemDecoration(this, LinearLayoutManager.VERTICAL,
                 DensityUtil.dp2px(this, 15),
                 ContextCompat.getColor(this, R.color.af8f8f8)));
-        brandAreaAdapter = new BrandAreaAdapter(this
-                , brandAreaList);
-        rvBrandArea.setAdapter(brandAreaAdapter);
+        brandAreaHotPointAdapter = new BrandAreaHotPointAdapter(R.layout.brandarea_rexiao_ll, list);
+        rvBrandArea.setAdapter(brandAreaHotPointAdapter);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("page", String.valueOf(mNextRequestPage))
+                .addFormDataPart("brandId", String.valueOf(brandId))
+                .build();
+        mPresenter.article(body);
     }
 
     @Override
@@ -158,14 +104,45 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     protected void initEvent() {
-        brandAreaAdapter.setOnBannerItemListener(new BrandAreaAdapter.OnBannerItemListener() {
+        /*brandAreaHotPointAdapter.setOnBannerItemListener(new brandAreaHotPointAdapter.OnBannerItemListener() {
             @Override
             public void OnBannerItem(int position) {
                 RingLog.d("position = " + position);
                 brandAreaList.remove(position);
-                brandAreaAdapter.notifyDataSetChanged();
+                brandAreaHotPointAdapter.notifyDataSetChanged();
+            }
+        });*/
+        brandAreaHotPointAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                loadMore();
             }
         });
+        srl_brand_area.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+    }
+
+    private void refresh() {
+        brandAreaHotPointAdapter.setEnableLoadMore(false);
+        srl_brand_area.setRefreshing(true);
+        mNextRequestPage = 1;
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("page", String.valueOf(mNextRequestPage))
+                .addFormDataPart("brandId", String.valueOf(brandId))
+                .build();
+        mPresenter.article(body);
+    }
+
+    private void loadMore() {
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("page", String.valueOf(mNextRequestPage))
+                .addFormDataPart("brandId", String.valueOf(brandId))
+                .build();
+        mPresenter.article(body);
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other})
@@ -175,8 +152,47 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                 finish();
                 break;
             case R.id.tv_titlebar_other:
-                startActivity(new Intent(BrandAreaActivity.this, SendPostActivity.class));
+                startActivity(new Intent(BrandAreaActivity.this, SendPostActivity.class).putExtra("brandId", brandId));
                 break;
         }
+    }
+
+    @Override
+    public void articleSuccess(List<HotPoint.DataBean> data) {
+        if (mNextRequestPage == 1) {
+            srl_brand_area.setRefreshing(false);
+            brandAreaHotPointAdapter.setEnableLoadMore(true);
+            list.clear();
+        }
+        brandAreaHotPointAdapter.loadMoreComplete();
+        if (data != null && data.size() > 0) {
+            if (mNextRequestPage == 1) {
+                pageSize = data.size();
+            } else {
+                if (data.size() < pageSize) {
+                    brandAreaHotPointAdapter.loadMoreEnd(false);
+                }
+            }
+            list.addAll(data);
+            mNextRequestPage++;
+        } else {
+            if (mNextRequestPage == 1) {
+                brandAreaHotPointAdapter.loadMoreEnd(true);
+            } else {
+                brandAreaHotPointAdapter.loadMoreEnd(false);
+            }
+        }
+        brandAreaHotPointAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void articleFail(int code, String msg) {
+        if (mNextRequestPage == 1) {
+            brandAreaHotPointAdapter.setEnableLoadMore(true);
+            srl_brand_area.setRefreshing(false);
+        } else {
+            brandAreaHotPointAdapter.loadMoreFail();
+        }
+        RingLog.e(TAG, "articleFail() status = " + code + "---desc = " + msg);
     }
 }

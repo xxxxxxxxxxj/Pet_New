@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerMyPostActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MyPostActivityModule;
+import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.MyPostPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -25,15 +26,17 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * 我的帖子界面
@@ -54,7 +57,6 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     private int mNextRequestPage = 1;
     private List<PostBean.DataBean> list = new ArrayList<PostBean.DataBean>();
     private PostListAdapter postListAdapter;
-    private Map<String, String> parmMap = new HashMap<String, String>();
     private int pageSize;
     private String uuid;
 
@@ -89,10 +91,12 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        parmMap.clear();
-        parmMap.put("uuid", uuid);
-        parmMap.put("page", String.valueOf(mNextRequestPage));
-        mPresenter.list(parmMap);
+        //构建body
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("uuid", uuid);
+        builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
+        RequestBody build = builder.build();
+        mPresenter.list(build);
     }
 
     @Override
@@ -148,14 +152,21 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
         postListAdapter.setEnableLoadMore(false);
         srlMyPost.setRefreshing(true);
         mNextRequestPage = 1;
-        parmMap.clear();
-        parmMap.put("uuid", uuid);
-        parmMap.put("page", String.valueOf(mNextRequestPage));
-        mPresenter.list(parmMap);
+        //构建body
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("uuid", uuid);
+        builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
+        RequestBody build = builder.build();
+        mPresenter.list(build);
     }
 
     private void loadMore() {
-        mPresenter.list(parmMap);
+        //构建body
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("uuid", uuid);
+        builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
+        RequestBody build = builder.build();
+        mPresenter.list(build);
     }
 
     @Override

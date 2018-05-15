@@ -117,9 +117,17 @@ public class UrlConstants {
      */
     public static final String HOT_POINT = "article/info/hot";
     /**
-     * 24.问题车帖子列表
+     * 25.问题车帖子列表
      */
     public static final String PROBLEM_CAR_POINT = "article/info/hot";
+    /**
+     * 26.品牌热帖
+     */
+    public static final String BRAND_HOT_POINT = "brand/info/article";
+    /**
+     * 27.发帖
+     */
+    public static final String SENDPOST = "article/info/save";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

@@ -111,7 +111,12 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
         hotPointCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startActivity(new Intent(AllBrandsActivity.this, BrandAreaActivity.class));
+                if (carList != null && carList.size() > 0 && carList.size() > position) {
+                    HotCarBean.DataBean dataBean = carList.get(position);
+                    if (dataBean != null) {
+                        startActivity(new Intent(AllBrandsActivity.this, BrandAreaActivity.class).putExtra("brandId", dataBean.getId()));
+                    }
+                }
             }
         });
         selectedCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

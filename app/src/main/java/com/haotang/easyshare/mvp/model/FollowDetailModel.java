@@ -32,8 +32,8 @@ public class FollowDetailModel implements IFollowDetailModel {
      * 用户帖子列表
      */
     @Override
-    public Observable list(Map<String, String> parms) {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).list(parms);
+    public Observable list(RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).list(body);
     }
 
     /**

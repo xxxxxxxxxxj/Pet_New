@@ -14,6 +14,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerSendPostActivityCommponent;
 import com.haotang.easyshare.di.module.activity.SendPostActivityModule;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.PhotoViewPagerImg;
 import com.haotang.easyshare.mvp.presenter.SendPostPresenter;
@@ -26,6 +27,7 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RingToast;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -47,6 +49,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import top.zibin.luban.Luban;
 
 /**
@@ -67,6 +72,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     private List<String> imgPathList = new ArrayList<String>();
     private CommentImgAdapter commentImgAdapter;
     private static final int IMG_NUM = 9;
+    private int brandId;
 
     @Override
     protected int getContentLayout() {
@@ -77,6 +83,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
         DaggerSendPostActivityCommponent.builder().sendPostActivityModule(new SendPostActivityModule(this, this)).build().inject(this);
+        brandId = getIntent().getIntExtra("brandId", 0);
     }
 
     @Override
@@ -245,7 +252,29 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                 finish();
                 break;
             case R.id.tv_titlebar_other:
+                //构建body
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                builder.addFormDataPart("carId", String.valueOf(brandId));
+                builder.addFormDataPart("content", etSendPost.getText().toString().trim());
+                for (int i = 0; i < imgPathList.size(); i++) {
+                    //构建要上传的文件
+                    File file = new File(imgPathList.get(i));
+                    builder.addFormDataPart("files", file.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
+                            , file));
+                }
+                RequestBody build = builder.build();
+                mPresenter.save(build);
                 break;
         }
+    }
+
+    @Override
+    public void saveSuccess(AddChargeBean data) {
+        RingToast.show("发布成功");
+    }
+
+    @Override
+    public void saveFail(int code, String msg) {
+        RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
 }
