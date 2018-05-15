@@ -112,6 +112,14 @@ public class UrlConstants {
      * 23.最新帖子列表
      */
     public static final String NEWEST_POINT = "article/info/new";
+    /**
+     * 24.热门帖子列表
+     */
+    public static final String HOT_POINT = "article/info/hot";
+    /**
+     * 24.问题车帖子列表
+     */
+    public static final String PROBLEM_CAR_POINT = "article/info/hot";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

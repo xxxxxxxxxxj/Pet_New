@@ -24,6 +24,7 @@ import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
 
 /**
  * 帖子列表
@@ -58,6 +60,8 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
     private int mNextRequestPage = 1;
     private List<HotPoint.DataBean> list = new ArrayList<HotPoint.DataBean>();
     private HotPointAdapter hotPointAdapter;
+    private int index = 1;
+    private int pageSize;
 
     @Override
     protected int getContentLayout() {
@@ -73,7 +77,6 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-        setClass(1);
         tvTitlebarTitle.setText("帖子列表");
         tvTitlebarOther.setVisibility(View.VISIBLE);
         tvTitlebarOther.setText("发帖");
@@ -92,7 +95,19 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        setClass(1);
+    }
 
+    private void setRequest() {
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
+                .build();
+        if (index == 1) {//最新帖
+            mPresenter.newest(body);
+        } else if (index == 2) {//热门帖
+            mPresenter.hot(body);
+        } else if (index == 3) {//问题车
+            mPresenter.problemCar(body);
+        }
     }
 
     @Override
@@ -118,14 +133,19 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
     }
 
     private void refresh() {
+        hotPointAdapter.setEnableLoadMore(false);
+        srlPostlist.setRefreshing(true);
         mNextRequestPage = 1;
+        setRequest();
     }
 
     private void loadMore() {
+        setRequest();
     }
 
     private void setClass(int flag) {
         if (flag == 1) {
+            index = 1;
             tvPostlistZxt.setBackgroundResource(R.mipmap.bg_postlist_calss_select);
             tvPostlistRmt.setBackgroundResource(R.mipmap.bg_postlist_calss_unselect);
             tvPostlistWtc.setBackgroundResource(R.mipmap.bg_postlist_calss_unselect);
@@ -133,6 +153,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
             tvPostlistRmt.setTextColor(getResources().getColor(R.color.a666666));
             tvPostlistWtc.setTextColor(getResources().getColor(R.color.a666666));
         } else if (flag == 2) {
+            index = 2;
             tvPostlistZxt.setBackgroundResource(R.mipmap.bg_postlist_calss_unselect);
             tvPostlistRmt.setBackgroundResource(R.mipmap.bg_postlist_calss_select);
             tvPostlistWtc.setBackgroundResource(R.mipmap.bg_postlist_calss_unselect);
@@ -140,6 +161,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
             tvPostlistRmt.setTextColor(getResources().getColor(R.color.white));
             tvPostlistWtc.setTextColor(getResources().getColor(R.color.a666666));
         } else if (flag == 3) {
+            index = 3;
             tvPostlistZxt.setBackgroundResource(R.mipmap.bg_postlist_calss_unselect);
             tvPostlistRmt.setBackgroundResource(R.mipmap.bg_postlist_calss_unselect);
             tvPostlistWtc.setBackgroundResource(R.mipmap.bg_postlist_calss_select);
@@ -147,6 +169,8 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
             tvPostlistRmt.setTextColor(getResources().getColor(R.color.a666666));
             tvPostlistWtc.setTextColor(getResources().getColor(R.color.white));
         }
+        mNextRequestPage = 1;
+        setRequest();
     }
 
     @Override
@@ -174,5 +198,44 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
                 setClass(3);
                 break;
         }
+    }
+
+    @Override
+    public void newestSuccess(List<HotPoint.DataBean> data) {
+        if (mNextRequestPage == 1) {
+            srlPostlist.setRefreshing(false);
+            hotPointAdapter.setEnableLoadMore(true);
+            list.clear();
+        }
+        hotPointAdapter.loadMoreComplete();
+        if (data != null && data.size() > 0) {
+            if (mNextRequestPage == 1) {
+                pageSize = data.size();
+            } else {
+                if (data.size() < pageSize) {
+                    hotPointAdapter.loadMoreEnd(false);
+                }
+            }
+            list.addAll(data);
+            mNextRequestPage++;
+        } else {
+            if (mNextRequestPage == 1) {
+                hotPointAdapter.loadMoreEnd(true);
+            } else {
+                hotPointAdapter.loadMoreEnd(false);
+            }
+        }
+        hotPointAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void newestFail(int code, String msg) {
+        if (mNextRequestPage == 1) {
+            hotPointAdapter.setEnableLoadMore(true);
+            srlPostlist.setRefreshing(false);
+        } else {
+            hotPointAdapter.loadMoreFail();
+        }
+        RingLog.e(TAG, "newestFail() status = " + code + "---desc = " + msg);
     }
 }

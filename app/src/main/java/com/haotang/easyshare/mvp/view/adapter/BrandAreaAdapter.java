@@ -253,7 +253,7 @@ public class BrandAreaAdapter extends RecyclerView.Adapter {
             if (pinpai2data != null) {
                 GlideUtil.loadNetImg(mContext, pinpai2data.getCarIcon(), iv_item_allbands_img, R.mipmap.ic_image_load);
                 StringUtil.setText(tv_item_allbands_name, pinpai2data.getCarName(), "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(tv_item_allbands_xuhang, pinpai2data.getRenewal(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tv_item_allbands_xuhang, pinpai2data.getBatteryLife(), "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(tv_item_allbands_price, "¥" + pinpai2data.getCarPrice() + "万", "", View.VISIBLE, View.VISIBLE);
                 iv_item_allbands_lxgj.setOnClickListener(new View.OnClickListener() {
                     @Override

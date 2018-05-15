@@ -117,16 +117,14 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     protected void initData() {
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
-        builder.addFormDataPart("category", "2");
-        RequestBody build = builder.build();
-        mPresenter.list(build);
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "2").build();
+        mPresenter.list(body);
         mPresenter.hot();
 
-        MultipartBody.Builder builder1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
-        builder1.addFormDataPart("page", String.valueOf(mNextRequestPage));
-        RequestBody build1 = builder.build();
-        mPresenter.newest(build1);
+        MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
+                .build();
+        mPresenter.newest(body1);
     }
 
     @Override
@@ -200,23 +198,20 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         hotPointCarAdapter.setEnableLoadMore(false);
         srl_hotfragment.setRefreshing(true);
         mNextRequestPage = 1;
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
-        builder.addFormDataPart("category", "2");
-        RequestBody build = builder.build();
-        mPresenter.list(build);
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "2").build();
+        mPresenter.list(body);
         mPresenter.hot();
 
-        MultipartBody.Builder builder1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
-        builder1.addFormDataPart("page", String.valueOf(mNextRequestPage));
-        RequestBody build1 = builder.build();
-        mPresenter.newest(build1);
+        MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
+                .build();
+        mPresenter.newest(body1);
     }
 
     private void loadMore() {
-        MultipartBody.Builder builder1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
-        builder1.addFormDataPart("page", String.valueOf(mNextRequestPage));
-        RequestBody build1 = builder1.build();
-        mPresenter.newest(build1);
+        MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
+                .build();
+        mPresenter.newest(body1);
     }
 
     @Override

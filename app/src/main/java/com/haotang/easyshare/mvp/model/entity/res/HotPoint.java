@@ -73,14 +73,14 @@ public class HotPoint {
         private String userName;
         private String createTime;
         private String headImg;
-        private String Renewal;
+        private String batteryLife;
 
-        public String getRenewal() {
-            return Renewal;
+        public String getBatteryLife() {
+            return batteryLife;
         }
 
-        public void setRenewal(String renewal) {
-            Renewal = renewal;
+        public void setBatteryLife(String batteryLife) {
+            this.batteryLife = batteryLife;
         }
 
         public String getUserName() {
