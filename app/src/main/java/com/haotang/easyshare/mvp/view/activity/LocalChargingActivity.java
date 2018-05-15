@@ -56,13 +56,13 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
     private MainLocalAdapter mainLocalAdapter;
     private int mNextRequestPage = 1;
     private String city;
-    private double lat;
-    private double lng;
     //声明mlocationClient对象
     private AMapLocationClient mlocationClient;
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
     private int pageSize;
+    private double serchLat;
+    private double serchLng;
 
     @Override
     protected int getContentLayout() {
@@ -73,6 +73,9 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
     protected void initView(Bundle savedInstanceState) {
         DevRing.activityStackManager().pushOneActivity(this);
         DaggerLocalChargingActivityCommponent.builder().localChargingActivityModule(new LocalChargingActivityModule(this, this)).build().inject(this);
+        city = getIntent().getStringExtra("city");
+        serchLat = getIntent().getDoubleExtra("serchLat", 0);
+        serchLng = getIntent().getDoubleExtra("serchLng", 0);
     }
 
     @Override
@@ -81,7 +84,11 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         srlLocalCharging.setRefreshing(true);
         srlLocalCharging.setColorSchemeColors(Color.rgb(47, 223, 189));
         setAdapter();
-        setLocation();
+        if (serchLat > 0 && serchLng > 0) {
+            nearBy();
+        } else {
+            setLocation();
+        }
     }
 
     private void setLocation() {
@@ -167,14 +174,13 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
                 //定位成功回调信息，设置相关消息
-                lat = amapLocation.getLatitude();//获取纬度
-                lng = amapLocation.getLongitude();//获取经度
-                city = amapLocation.getCity();
+                serchLat = amapLocation.getLatitude();//获取纬度
+                serchLng = amapLocation.getLongitude();//获取经度
                 amapLocation.getAddress();
                 RingLog.d(TAG, "定位成功lat = "
-                        + lat + ", lng = "
-                        + lng + ",city = " + city + ",address = " + amapLocation.getAddress());
-                if (lat > 0 && lng > 0) {
+                        + serchLat + ", lng = "
+                        + serchLng + ",city = " + city + ",address = " + amapLocation.getAddress());
+                if (serchLat > 0 && serchLng > 0) {
                     nearBy();
                     mlocationClient.stopLocation();
                 }
@@ -189,14 +195,14 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
 
     private void nearBy() {
         Map<String, String> mapHeader = UrlConstants.getMapHeader(LocalChargingActivity.this);
-        mapHeader.put("lng", String.valueOf(lng));
-        mapHeader.put("lat", String.valueOf(lat));
+        mapHeader.put("lng", String.valueOf(serchLng));
+        mapHeader.put("lat", String.valueOf(serchLat));
         mapHeader.put("page", String.valueOf(mNextRequestPage));
         mapHeader.put("key", AppConfig.SERVER_KEY);
         RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
         String md5 = SignUtil.sign(mapHeader, "MD5");
         RingLog.d(TAG, "md5 =  " + md5);
-        mPresenter.nearby(lng, lat, mNextRequestPage, md5);
+        mPresenter.nearby(serchLng, serchLat, mNextRequestPage, md5);
     }
 
     @Override
@@ -217,7 +223,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
             }
             list.addAll(data);
             mNextRequestPage++;
-        }else {
+        } else {
             if (mNextRequestPage == 1) {
                 mainLocalAdapter.loadMoreEnd(true);
             } else {
