@@ -1,6 +1,5 @@
 package com.haotang.easyshare.mvp.model;
 
-import com.haotang.easyshare.mvp.model.http.AddChargeApiService;
 import com.haotang.easyshare.mvp.model.http.HotFragmentApiService;
 import com.haotang.easyshare.mvp.model.imodel.IHotFragmentModel;
 import com.ljy.devring.DevRing;
@@ -26,5 +25,22 @@ public class HotFragmentModel implements IHotFragmentModel {
     @Override
     public Observable list(RequestBody body) {
         return DevRing.httpManager().getService(HotFragmentApiService.class).list(body);
+    }
+
+    /**
+     * 热门品牌
+     */
+    @Override
+    public Observable hot() {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).hot();
+    }
+
+
+    /**
+     * 最新帖子列表
+     */
+    @Override
+    public Observable newest(RequestBody body) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).newest(body);
     }
 }

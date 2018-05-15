@@ -129,13 +129,6 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                 itemType = ((i - 4 * 24 + 1) % 4 == 0) ? 4 : (i - 4 * 24 + 1);
             }
             RingLog.d("itemType = " + itemType);
-            brandAreaList.add(new BrandAreaBean(itemType, bannerList, new BrandAreaBean.ReXiaOBean("比亚迪热销" + (i + 1)),
-                    new BrandAreaBean.CarInfoBean(new SelectedCarBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-                            "荣威ERX5", "续航310公里", 20.88), new HotPoint("结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，" +
-                            "大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服",
-                            "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-                            "地方大V", "25分钟前", "28888阅读", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/sh" +
-                            "op/imgs/shopyyc.png?v=433")), adList));
         }
         brandAreaList.add(new BrandAreaBean(2, new BrandAreaBean.ReXiaOBean("比亚迪热销51")));
         brandAreaList.add(new BrandAreaBean(2, new BrandAreaBean.ReXiaOBean("比亚迪热销52")));

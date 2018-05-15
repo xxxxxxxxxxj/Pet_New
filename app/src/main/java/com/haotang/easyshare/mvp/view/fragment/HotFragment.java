@@ -1,7 +1,9 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,7 +14,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerHotFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.HotFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
-import com.haotang.easyshare.mvp.model.entity.res.CarBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
@@ -51,13 +53,17 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     protected final static String TAG = HotFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
+    @BindView(R.id.srl_hotfragment)
+    SwipeRefreshLayout srl_hotfragment;
     @BindView(R.id.rv_hotfragment)
     RecyclerView rvHotfragment;
-    private List<HotPoint> list = new ArrayList<HotPoint>();
-    private List<CarBean> carList = new ArrayList<CarBean>();
+    private List<HotPoint.DataBean> list = new ArrayList<HotPoint.DataBean>();
+    private List<HotCarBean.DataBean> carList = new ArrayList<HotCarBean.DataBean>();
     private HotPointAdapter hotPointAdapter;
     private HotFragmenHeader hotFragmenHeader;
     private HotPointCarAdapter hotPointCarAdapter;
+    private int mNextRequestPage = 1;
+    private int pageSize;
 
     @Override
     protected boolean isLazyLoad() {
@@ -75,13 +81,8 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 .hotFragmentModule(new HotFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
-        for (int i = 0; i < 20; i++) {
-            list.add(new HotPoint("结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，" +
-                    "大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服",
-                    "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-                    "地方大V", "25分钟前", "28888阅读", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/sh" +
-                    "op/imgs/shopyyc.png?v=433"));
-        }
+        srl_hotfragment.setRefreshing(true);
+        srl_hotfragment.setColorSchemeColors(Color.rgb(47, 223, 189));
         rvHotfragment.setHasFixedSize(true);
         rvHotfragment.setLayoutManager(new LinearLayoutManager(mActivity));
         hotPointAdapter = new HotPointAdapter(R.layout.item_hot_point, list);
@@ -92,9 +93,6 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         //添加自定义分割线
         rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity, 15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
-        for (int i = 0; i < 20; i++) {
-            carList.add(new CarBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433", "奔驰"));
-        }
         hotFragmenHeader.getRvTopHotfrag().setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -123,6 +121,12 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         builder.addFormDataPart("category", "2");
         RequestBody build = builder.build();
         mPresenter.list(build);
+        mPresenter.hot();
+
+        MultipartBody.Builder builder1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
+        builder1.addFormDataPart("page", String.valueOf(mNextRequestPage));
+        RequestBody build1 = builder.build();
+        mPresenter.newest(build1);
     }
 
     @Override
@@ -178,6 +182,41 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 startActivity(new Intent(mActivity, BrandAreaActivity.class));
             }
         });
+        hotPointAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                loadMore();
+            }
+        });
+        srl_hotfragment.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+    }
+
+    private void refresh() {
+        hotPointCarAdapter.setEnableLoadMore(false);
+        srl_hotfragment.setRefreshing(true);
+        mNextRequestPage = 1;
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
+        builder.addFormDataPart("category", "2");
+        RequestBody build = builder.build();
+        mPresenter.list(build);
+        mPresenter.hot();
+
+        MultipartBody.Builder builder1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
+        builder1.addFormDataPart("page", String.valueOf(mNextRequestPage));
+        RequestBody build1 = builder.build();
+        mPresenter.newest(build1);
+    }
+
+    private void loadMore() {
+        MultipartBody.Builder builder1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
+        builder1.addFormDataPart("page", String.valueOf(mNextRequestPage));
+        RequestBody build1 = builder1.build();
+        mPresenter.newest(build1);
     }
 
     @Override
@@ -194,5 +233,58 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         } else {
             hotFragmenHeader.getBannerTopHotfrag().setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void hotSuccess(List<HotCarBean.DataBean> data) {
+        if (data != null && data.size() > 0) {
+            carList.clear();
+            carList.addAll(data);
+            hotPointCarAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void hotFail(int code, String msg) {
+        RingLog.e(TAG, "hotFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void newestSuccess(List<HotPoint.DataBean> data) {
+        if (mNextRequestPage == 1) {
+            srl_hotfragment.setRefreshing(false);
+            hotPointAdapter.setEnableLoadMore(true);
+            list.clear();
+        }
+        hotPointAdapter.loadMoreComplete();
+        if (data != null && data.size() > 0) {
+            if (mNextRequestPage == 1) {
+                pageSize = data.size();
+            } else {
+                if (data.size() < pageSize) {
+                    hotPointAdapter.loadMoreEnd(false);
+                }
+            }
+            list.addAll(data);
+            mNextRequestPage++;
+        } else {
+            if (mNextRequestPage == 1) {
+                hotPointAdapter.loadMoreEnd(true);
+            } else {
+                hotPointAdapter.loadMoreEnd(false);
+            }
+        }
+        hotPointAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void newestFail(int code, String msg) {
+        if (mNextRequestPage == 1) {
+            hotPointAdapter.setEnableLoadMore(true);
+            srl_hotfragment.setRefreshing(false);
+        } else {
+            hotPointAdapter.loadMoreFail();
+        }
+        RingLog.e(TAG, "newestFail() status = " + code + "---desc = " + msg);
     }
 }

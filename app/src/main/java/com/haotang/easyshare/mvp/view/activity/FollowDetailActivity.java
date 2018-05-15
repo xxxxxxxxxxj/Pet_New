@@ -133,9 +133,6 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         postListAdapter.setOnDeleteItemListener(new PostListAdapter.OnDeleteItemListener() {
             @Override
             public void OnDeleteItem(int position) {//评论
-                if (list.size() > 0 && list.size() > position) {
-                    showBottomDialog(position);
-                }
             }
         });
         postListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -166,7 +163,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 }
                 break;
             case R.id.iv_followdetail_top_pingjia:
-                showBottomDialog(0);
+                showBottomDialog();
                 break;
         }
     }
@@ -186,7 +183,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         mPresenter.list(parmMap);
     }
 
-    private void showBottomDialog(int position) {
+    private void showBottomDialog() {
         pWinBottomDialog = null;
         if (pWinBottomDialog == null) {
             ViewGroup customView = (ViewGroup) View.inflate(this, R.layout.followdetail_bottom_dialog

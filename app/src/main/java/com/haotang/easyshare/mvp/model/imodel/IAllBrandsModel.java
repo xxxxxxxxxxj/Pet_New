@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import io.reactivex.Observable;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -11,4 +13,8 @@ import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
  * @date XJ on 2018/5/8 16:44
  */
 public interface IAllBrandsModel extends IBaseModel{
+    /**
+     * 所有品牌
+     */
+    Observable list();
 }

@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerAllBrandsActivityCommponent;
 import com.haotang.easyshare.di.module.activity.AllBrandsActivityModule;
-import com.haotang.easyshare.mvp.model.entity.res.CarBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.SelectedCarBean;
 import com.haotang.easyshare.mvp.presenter.AllBrandsPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -26,6 +26,7 @@ import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +45,10 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
     @BindView(R.id.rv_allbrands_rmpp)
-    RecyclerView rvAllbrandsRmpp ;
+    RecyclerView rvAllbrandsRmpp;
     @BindView(R.id.rv_allbrands_jxtj)
     RecyclerView rvAllbrandsJxtj;
-    private List<CarBean> carList = new ArrayList<CarBean>();
+    private List<HotCarBean.DataBean> carList = new ArrayList<HotCarBean.DataBean>();
     private HotPointCarAdapter hotPointCarAdapter;
     private List<SelectedCarBean> selectedCarList = new ArrayList<SelectedCarBean>();
     private SelectedCarAdapter selectedCarAdapter;
@@ -67,9 +68,6 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     @Override
     protected void setView(Bundle savedInstanceState) {
         tvTitlebarTitle.setText("所有品牌");
-        for (int i = 0; i < 20; i++) {
-            carList.add(new CarBean("http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433", "奔驰"));
-        }
         rvAllbrandsRmpp.setHasFixedSize(true);
         rvAllbrandsRmpp.setNestedScrollingEnabled(false);
         NoScollFullGridLayoutManager noScollFullGridLayoutManager = new
@@ -99,7 +97,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        mPresenter.list();
     }
 
     @Override
@@ -131,5 +129,18 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void listSuccess(List<HotCarBean.DataBean> data) {
+        if (data != null && data.size() > 0) {
+            carList.addAll(data);
+            hotPointCarAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 }

@@ -123,7 +123,7 @@ public class BrandAreaAdapter extends RecyclerView.Adapter {
             reXiaoTvViewHolder.setData(brandAreaList.get(position).getReXiaOBean());
         } else if (getItemViewType(position) == REXIAOCAR_LL3) {
             ReXiaoCarLlViewHolder reXiaoCarLlViewHolder = (ReXiaoCarLlViewHolder) holder;
-            reXiaoCarLlViewHolder.setData(brandAreaList.get(position).getCarInfoBean());
+            //reXiaoCarLlViewHolder.setData(brandAreaList.get(position).getCarInfoBean());
         } else if (getItemViewType(position) == AD_GV4) {
             AdGvViewHolder adGvViewHolder = (AdGvViewHolder) holder;
             adGvViewHolder.setData(brandAreaList.get(position).getAdBean());
@@ -249,33 +249,27 @@ public class BrandAreaAdapter extends RecyclerView.Adapter {
             tv_item_hotpoint_name = (TextView) itemView.findViewById(R.id.tv_item_hotpoint_name);
         }
 
-        public void setData(BrandAreaBean.CarInfoBean pinpai2data) {
-            SelectedCarBean item =
-                    pinpai2data.getSelectedCarBean();
-            HotPoint item1 = pinpai2data.getHotPoint();
-            if (item != null) {
-                GlideUtil.loadNetImg(mContext, item.getImg(), iv_item_allbands_img, R.mipmap.ic_image_load);
-                StringUtil.setText(tv_item_allbands_name, item.getName(), "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(tv_item_allbands_xuhang, item.getXuhang(), "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(tv_item_allbands_price, "¥" + item.getPrice() + "万", "", View.VISIBLE, View.VISIBLE);
+        public void setData(HotPoint.DataBean pinpai2data) {
+            if (pinpai2data != null) {
+                GlideUtil.loadNetImg(mContext, pinpai2data.getCarIcon(), iv_item_allbands_img, R.mipmap.ic_image_load);
+                StringUtil.setText(tv_item_allbands_name, pinpai2data.getCarName(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tv_item_allbands_xuhang, pinpai2data.getRenewal(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tv_item_allbands_price, "¥" + pinpai2data.getCarPrice() + "万", "", View.VISIBLE, View.VISIBLE);
                 iv_item_allbands_lxgj.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mContext.startActivity(new Intent(mContext, ButlerActivity.class));
                     }
                 });
-            }
-            if (item1 != null) {
-                GlideUtil.loadNetCircleImg(mContext, item1.getUserImg(), iv_item_hotpoint_userimg, R.mipmap.ic_image_load_circle);
-                GlideUtil.loadNetImg(mContext, item1.getImg(), iv_item_hotpoint_img, R.mipmap.ic_image_load);
-                StringUtil.setText(tv_item_hotpoint_date, item1.getDate(), "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(tv_item_hotpoint_num, item1.getNum(), "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(tv_item_hotpoint_username, item1.getUserName(), "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(tv_item_hotpoint_name, item1.getName(), "", View.VISIBLE, View.VISIBLE);
+                GlideUtil.loadNetCircleImg(mContext, pinpai2data.getHeadImg(), iv_item_hotpoint_userimg, R.mipmap.ic_image_load_circle);
+                GlideUtil.loadNetImg(mContext, pinpai2data.getIcon(), iv_item_hotpoint_img, R.mipmap.ic_image_load);
+                StringUtil.setText(tv_item_hotpoint_date, pinpai2data.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tv_item_hotpoint_num, pinpai2data.getVisitors() + "阅读", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tv_item_hotpoint_username, pinpai2data.getUserName(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tv_item_hotpoint_name, pinpai2data.getTitle(), "", View.VISIBLE, View.VISIBLE);
             }
         }
     }
-
 
     public class BannerViewHolder extends RecyclerView.ViewHolder {
         private final Context mContext;

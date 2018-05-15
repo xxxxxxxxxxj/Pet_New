@@ -1,6 +1,8 @@
 package com.haotang.easyshare.mvp.view.iview;
 
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
 import java.util.List;
@@ -17,4 +19,12 @@ public interface IHotFragmentView extends IBaseView{
     void listFail(int code, String msg);
 
     void listSuccess(List<AdvertisementBean.DataBean> data);
+
+    void hotSuccess(List<HotCarBean.DataBean> data);
+
+    void hotFail(int code, String msg);
+
+    void newestSuccess(List<HotPoint.DataBean> data);
+
+    void newestFail(int code, String msg);
 }

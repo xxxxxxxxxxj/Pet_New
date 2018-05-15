@@ -13,7 +13,7 @@ import okhttp3.RequestBody;
  * @author 徐俊
  * @date XJ on 2018/5/7 18:30
  */
-public interface IHotFragmentModel extends IBaseModel{
+public interface IHotFragmentModel extends IBaseModel {
     /**
      * 广告
      * 广告类别(1:首页活动弹窗、2:热点首页顶部广告、3:车型专区首页顶部广告、4:车型专区首页中间广告)
@@ -21,4 +21,14 @@ public interface IHotFragmentModel extends IBaseModel{
      * @param body
      */
     Observable list(RequestBody body);
+
+    /**
+     * 热门品牌
+     */
+    Observable hot();
+
+    /**
+     * 最新帖子列表
+     */
+    Observable newest(RequestBody body);
 }

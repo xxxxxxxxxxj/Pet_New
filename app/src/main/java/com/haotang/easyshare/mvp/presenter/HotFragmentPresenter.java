@@ -1,9 +1,9 @@
 package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
-import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
-import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
+import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.imodel.IHotFragmentModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
 import com.haotang.easyshare.mvp.view.iview.IHotFragmentView;
@@ -56,6 +56,70 @@ public class HotFragmentPresenter extends BasePresenter<IHotFragmentView, IHotFr
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.listFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 热门品牌
+     */
+    public void hot() {
+        DevRing.httpManager().commonRequest(mIModel.hot(), new CommonObserver<HotCarBean>() {
+            @Override
+            public void onResult(HotCarBean result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.hotSuccess(result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.hotFail
+                                        (result.getCode(), result.getMsg());
+                            } else {
+                                mIView.hotFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.hotFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 最新帖子列表
+     */
+    public void newest(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.newest(body), new CommonObserver<HotPoint>() {
+            @Override
+            public void onResult(HotPoint result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.newestSuccess
+                                    (result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.newestFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.newestFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.newestFail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));

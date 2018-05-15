@@ -21,13 +21,13 @@ import java.util.List;
  * @author 徐俊
  * @date zhoujunxia on 2018/5/1 14:58
  */
-public class HotPointAdapter extends BaseQuickAdapter<HotPoint, BaseViewHolder> {
-    public HotPointAdapter(int layoutResId, List<HotPoint> data) {
+public class HotPointAdapter extends BaseQuickAdapter<HotPoint.DataBean, BaseViewHolder> {
+    public HotPointAdapter(int layoutResId, List<HotPoint.DataBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, HotPoint item) {
+    protected void convert(BaseViewHolder helper, HotPoint.DataBean item) {
         ImageView iv_item_hotpoint_img = helper.getView(R.id.iv_item_hotpoint_img);
         TextView tv_item_hotpoint_date = helper.getView(R.id.tv_item_hotpoint_date);
         TextView tv_item_hotpoint_num = helper.getView(R.id.tv_item_hotpoint_num);
@@ -35,12 +35,12 @@ public class HotPointAdapter extends BaseQuickAdapter<HotPoint, BaseViewHolder> 
         TextView tv_item_hotpoint_username = helper.getView(R.id.tv_item_hotpoint_username);
         TextView tv_item_hotpoint_name = helper.getView(R.id.tv_item_hotpoint_name);
         if (item != null) {
-            GlideUtil.loadNetCircleImg(mContext,item.getUserImg(),iv_item_hotpoint_userimg,R.mipmap.ic_image_load_circle);
-            GlideUtil.loadNetImg(mContext,item.getImg(),iv_item_hotpoint_img,R.mipmap.ic_image_load);
-            StringUtil.setText(tv_item_hotpoint_date, item.getDate(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_hotpoint_num, item.getNum(), "", View.VISIBLE, View.VISIBLE);
+            GlideUtil.loadNetCircleImg(mContext, item.getHeadImg(), iv_item_hotpoint_userimg, R.mipmap.ic_image_load_circle);
+            GlideUtil.loadNetImg(mContext, item.getIcon(), iv_item_hotpoint_img, R.mipmap.ic_image_load);
+            StringUtil.setText(tv_item_hotpoint_date, item.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_hotpoint_num, item.getVisitors() + "阅读", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_hotpoint_username, item.getUserName(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_hotpoint_name, item.getName(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_hotpoint_name, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
         }
     }
 }

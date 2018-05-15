@@ -56,7 +56,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
     @BindView(R.id.srl_postlist)
     SwipeRefreshLayout srlPostlist;
     private int mNextRequestPage = 1;
-    private List<HotPoint> list = new ArrayList<HotPoint>();
+    private List<HotPoint.DataBean> list = new ArrayList<HotPoint.DataBean>();
     private HotPointAdapter hotPointAdapter;
 
     @Override
@@ -80,11 +80,6 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
 
         srlPostlist.setRefreshing(true);
         srlPostlist.setColorSchemeColors(Color.rgb(47, 223, 189));
-        for (int i = 0; i < 20; i++) {
-            list.add(new HotPoint("结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服结婚三周年送给媳妇的小电电，大方的么么哒等哈打了客服",
-                    "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433",
-                    "地方大V", "25分钟前", "28888阅读", "http://dev-pet-avatar.oss-cn-beijing.aliyuncs.com/shop/imgs/shopyyc.png?v=433"));
-        }
         rvPostlist.setHasFixedSize(true);
         rvPostlist.setLayoutManager(new LinearLayoutManager(this));
         hotPointAdapter = new HotPointAdapter(R.layout.item_hot_point, list);

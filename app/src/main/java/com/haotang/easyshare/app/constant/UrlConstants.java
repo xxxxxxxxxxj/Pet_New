@@ -100,6 +100,18 @@ public class UrlConstants {
      * 20.广告
      */
     public static final String ADVERTISEMENT = "util/ad/list";
+    /**
+     * 21.热门品牌
+     */
+    public static final String HOT_CAR_BRAND = "brand/info/hot";
+    /**
+     * 22.所有品牌
+     */
+    public static final String ALL_CAR_BRAND = "brand/info/list";
+    /**
+     * 23.最新帖子列表
+     */
+    public static final String NEWEST_POINT = "article/info/new";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

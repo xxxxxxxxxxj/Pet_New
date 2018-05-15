@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.http;
 
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -25,4 +27,16 @@ public interface HotFragmentApiService {
      */
     @POST(UrlConstants.ADVERTISEMENT)
     Observable<AdvertisementBean> list(@Body() RequestBody body);
+
+    /**
+     * 热门品牌
+     */
+    @POST(UrlConstants.HOT_CAR_BRAND)
+    Observable<HotCarBean> hot();
+
+    /**
+     * 最新帖子列表
+     */
+    @POST(UrlConstants.NEWEST_POINT)
+    Observable<HotPoint> newest(@Body() RequestBody body);
 }
