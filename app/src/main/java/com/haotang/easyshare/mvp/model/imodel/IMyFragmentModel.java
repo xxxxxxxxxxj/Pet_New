@@ -12,9 +12,14 @@ import io.reactivex.Observable;
  * @author 徐俊
  * @date XJ on 2018/5/7 18:34
  */
-public interface IMyFragmentModel extends IBaseModel{
+public interface IMyFragmentModel extends IBaseModel {
     /**
      * 用户主页信息
      */
     Observable home();
+
+    /**
+     * 用户车辆信息
+     */
+    Observable my();
 }

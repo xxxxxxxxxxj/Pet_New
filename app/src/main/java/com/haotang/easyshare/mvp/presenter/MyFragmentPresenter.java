@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
+import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.IMyFragmentModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
@@ -52,6 +53,40 @@ public class MyFragmentPresenter extends BasePresenter<IMyFragmentView, IMyFragm
                     public void onError(int errType, String errMessage) {
                         if (mIView != null) {
                             mIView.homeFail(errType, errMessage);
+                        }
+                    }
+                }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 用户车辆信息
+     */
+    public void my() {
+        DevRing.httpManager().commonRequest(mIModel.my(),
+                new CommonObserver<MyCarBean>() {
+                    @Override
+                    public void onResult(MyCarBean result) {
+                        if (mIView != null) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    mIView.mySuccess(result.getData());
+                                } else {
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        mIView.myFail
+                                                (result.getCode(), result.getMsg());
+                                    } else {
+                                        mIView.myFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG
+                                                + "-code=" + result.getCode());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int errType, String errMessage) {
+                        if (mIView != null) {
+                            mIView.myFail(errType, errMessage);
                         }
                     }
                 }, RxLifecycleUtil.bindUntilDestroy(mIView));

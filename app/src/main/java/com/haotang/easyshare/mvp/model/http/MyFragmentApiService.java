@@ -1,11 +1,16 @@
 package com.haotang.easyshare.mvp.model.http;
 
 import com.haotang.easyshare.app.constant.UrlConstants;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
+import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 /**
  * <p>Title:${type_name}</p>
@@ -21,4 +26,16 @@ public interface MyFragmentApiService {
      */
     @GET(UrlConstants.HOME)
     Observable<HttpResult<HomeBean>> home();
+
+    /**
+     * 用户车辆信息
+     */
+    @POST(UrlConstants.MY_CAR)
+    Observable<MyCarBean> my();
+
+    /**
+     * 保存或修改用户车辆信息
+     */
+    @POST(UrlConstants.SAVE_ORUPDATE_USERCAR)
+    Observable<HttpResult<AddChargeBean>> save(@Body RequestBody body);
 }

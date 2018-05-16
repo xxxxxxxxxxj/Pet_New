@@ -49,6 +49,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </com.flyco.roundview.RoundLinearLayout>
+
+            <TextView
+                android:id="@+id/tv_sendpost_wtc"
+                android:layout_width="75dip"
+                android:layout_height="30dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginTop="15dip"
+                android:background="@mipmap/bg_postlist_calss_unselect"
+                android:gravity="center"
+                android:text="问题车"
+                android:textColor="@color/a666666"
+                android:textSize="15sp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -133,7 +133,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                     if (dataBean != null && dataBean.getIsPraise() == 0) {
                         praisePosition = position;
                         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                        builder.addFormDataPart("uuid", uuid);
+                        builder.addFormDataPart("uuid", dataBean.getUuid());
                         RequestBody build = builder.build();
                         mPresenter.praise(build);
                     }
@@ -173,7 +173,9 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 }
                 break;
             case R.id.iv_followdetail_top_pingjia:
-                showBottomDialog();
+                if (isCollect == 0) {
+                    showBottomDialog();
+                }
                 break;
         }
     }
@@ -242,7 +244,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 public void onClick(View v) {
                     MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                             .addFormDataPart("uuid", uuid)
-                            .addFormDataPart("stars", String.valueOf(stars))
+                            .addFormDataPart("stars", String.valueOf((int) stars))
                             .build();
                     mPresenter.eval(body);
                     pWinBottomDialog.dismiss();

@@ -1,5 +1,7 @@
 package com.haotang.easyshare.mvp.model.entity.res;
 
+import java.util.List;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -45,7 +47,7 @@ public class ChargeDetailBean {
     private String title;
     private String uuid;
     private int slowNum;
-    private int is_collect;
+    private int isCollect;
     private int times;
     private String provider;
     private String phone;
@@ -54,6 +56,32 @@ public class ChargeDetailBean {
     private int freeNum;
     private double serviceFee;
     private String remark;
+    private int parkingIsUnderground;
+    private List<String> detailImgs;
+
+    public List<String> getDetailImgs() {
+        return detailImgs;
+    }
+
+    public void setDetailImgs(List<String> detailImgs) {
+        this.detailImgs = detailImgs;
+    }
+
+    public int getIsCollect() {
+        return isCollect;
+    }
+
+    public void setIsCollect(int isCollect) {
+        this.isCollect = isCollect;
+    }
+
+    public int getParkingIsUnderground() {
+        return parkingIsUnderground;
+    }
+
+    public void setParkingIsUnderground(int parkingIsUnderground) {
+        this.parkingIsUnderground = parkingIsUnderground;
+    }
 
     public double getServiceFee() {
         return serviceFee;
@@ -183,13 +211,6 @@ public class ChargeDetailBean {
         this.slowNum = slowNum;
     }
 
-    public int getIs_collect() {
-        return is_collect;
-    }
-
-    public void setIs_collect(int is_collect) {
-        this.is_collect = is_collect;
-    }
 
     public int getTimes() {
         return times;

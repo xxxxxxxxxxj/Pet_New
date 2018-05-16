@@ -21,7 +21,14 @@ public class MyFragmentModel implements IMyFragmentModel {
      */
     @Override
     public Observable home() {
-        return DevRing.httpManager().getService(MyFragmentApiService.class).
-                home();
+        return DevRing.httpManager().getService(MyFragmentApiService.class).home();
+    }
+
+    /**
+     * 用户车辆信息
+     */
+    @Override
+    public Observable my() {
+        return DevRing.httpManager().getService(MyFragmentApiService.class).my();
     }
 }

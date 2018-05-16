@@ -1,8 +1,18 @@
 package com.haotang.easyshare.mvp.presenter;
 
+import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
+import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.ICarInfoModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
 import com.haotang.easyshare.mvp.view.iview.ICarInfoView;
+import com.haotang.easyshare.util.StringUtil;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.util.RxLifecycleUtil;
+
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -15,5 +25,73 @@ import com.haotang.easyshare.mvp.view.iview.ICarInfoView;
 public class CarInfoPresenter extends BasePresenter<ICarInfoView, ICarInfoModel> {
     public CarInfoPresenter(ICarInfoView iCarInfoView, ICarInfoModel iCarInfoModel) {
         super(iCarInfoView, iCarInfoModel);
+    }
+
+    /**
+     * 用户车辆信息
+     */
+    public void my() {
+        DevRing.httpManager().commonRequest(mIModel.my
+                        (),
+                new CommonObserver<MyCarBean>() {
+                    @Override
+                    public void onResult(MyCarBean result) {
+                        if (mIView != null) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    mIView.mySuccess(result.getData());
+                                } else {
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        mIView.myFail
+                                                (result.getCode(), result.getMsg());
+                                    } else {
+                                        mIView.myFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG
+                                                + "-code=" + result.getCode());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int errType, String errMessage) {
+                        if (mIView != null) {
+                            mIView.myFail(errType, errMessage);
+                        }
+                    }
+                }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 保存或修改用户车辆信息
+     */
+    public void save(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.save(body),
+                new CommonObserver<HttpResult<AddChargeBean>>() {
+                    @Override
+                    public void onResult(HttpResult<AddChargeBean> result) {
+                        if (mIView != null) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    mIView.saveSuccess(result.getData());
+                                } else {
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        mIView.saveFail(result.getCode(), result.getMsg());
+                                    } else {
+                                        mIView.saveFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG
+                                                + "-code=" + result.getCode());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int errType, String errMessage) {
+                        if (mIView != null) {
+                            mIView.saveFail(errType, errMessage);
+                        }
+                    }
+                }, RxLifecycleUtil.bindUntilDestroy(mIView));
     }
 }

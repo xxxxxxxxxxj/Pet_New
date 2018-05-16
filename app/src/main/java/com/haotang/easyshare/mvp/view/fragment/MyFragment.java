@@ -17,6 +17,7 @@ import com.haotang.easyshare.di.component.fragment.DaggerMyFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MyFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
+import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
 import com.haotang.easyshare.mvp.presenter.MyFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AboutActivity;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
@@ -153,6 +154,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @Override
     protected void initData() {
         mPresenter.home();
+        mPresenter.my();
     }
 
     @Override
@@ -237,6 +239,20 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @Override
     public void homeFail(int code, String msg) {
         RingLog.e(TAG, "MyFragment homeFail() status = " + code + "---desc = " + msg);
-        RingToast.show("MyFragment homeFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void mySuccess(List<MyCarBean.DataBean> data) {
+        if (data != null && data.size() > 0) {
+            MyCarBean.DataBean dataBean = data.get(0);
+            if (dataBean != null) {
+                StringUtil.setText(tvMyfragmentClxx, dataBean.getBrand() + dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void myFail(int code, String msg) {
+        RingLog.e(TAG, "MyFragment myFail() status = " + code + "---desc = " + msg);
     }
 }

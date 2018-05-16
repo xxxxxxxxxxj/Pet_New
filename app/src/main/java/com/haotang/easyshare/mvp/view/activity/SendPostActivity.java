@@ -68,11 +68,14 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     EditText etSendPost;
     @BindView(R.id.rv_send_post_img)
     RecyclerView rvSendPostImg;
+    @BindView(R.id.tv_sendpost_wtc)
+    TextView tv_sendpost_wtc;
     private List<CommentImg> imgList = new ArrayList<CommentImg>();
     private List<String> imgPathList = new ArrayList<String>();
     private CommentImgAdapter commentImgAdapter;
     private static final int IMG_NUM = 9;
     private int brandId;
+    private int isWtc;
 
     @Override
     protected int getContentLayout() {
@@ -245,11 +248,14 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
         DevRing.activityStackManager().exitActivity(this); //退出activity
     }
 
-    @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other})
+    @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.tv_sendpost_wtc})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_titlebar_back:
                 finish();
+                break;
+            case R.id.tv_sendpost_wtc:
+                setWtc();
                 break;
             case R.id.tv_titlebar_other:
                 //构建body
@@ -265,6 +271,18 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                 RequestBody build = builder.build();
                 mPresenter.save(build);
                 break;
+        }
+    }
+
+    private void setWtc() {
+        if (isWtc == 0) {
+            isWtc = 1;
+            tv_sendpost_wtc.setBackgroundResource(R.mipmap.bg_postlist_calss_select);
+            tv_sendpost_wtc.setTextColor(getResources().getColor(R.color.white));
+        } else if (isWtc == 1) {
+            isWtc = 0;
+            tv_sendpost_wtc.setBackgroundResource(R.mipmap.bg_postlist_calss_unselect);
+            tv_sendpost_wtc.setTextColor(getResources().getColor(R.color.a666666));
         }
     }
 

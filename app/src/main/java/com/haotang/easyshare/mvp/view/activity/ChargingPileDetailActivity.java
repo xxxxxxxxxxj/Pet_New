@@ -253,7 +253,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     @Override
     public void detailSuccess(ChargeDetailBean data) {
         if (data != null) {
-            is_collect = data.getIs_collect();
+            is_collect = data.getIsCollect();
             uuid = data.getUuid();
             address = data.getAddress();
             chargeLat = data.getLat();

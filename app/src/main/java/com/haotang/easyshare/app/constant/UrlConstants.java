@@ -140,6 +140,14 @@ public class UrlConstants {
      * 30.点赞
      */
     public static final String PRAISE_USER = "article/praise/save";
+    /**
+     * 31.用户车辆信息
+     */
+    public static final String MY_CAR = "user/car/my";
+    /**
+     * 32.保存或修改用户车辆信息
+     */
+    public static final String SAVE_ORUPDATE_USERCAR = "user/car/save";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

@@ -75,6 +75,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import top.zibin.luban.Luban;
 
+import static android.R.id.list;
+
 /**
  * 添加充电站界面
  */
@@ -592,8 +594,54 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             StringUtil.setText(etAddchargeCdf, data.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargeFwf, data.getServiceFee() + "", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvAddchargeZffs, data.getPayWay(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(etAddchargePhone, data.getPhone() + "", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargeTcf, data.getParkingPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargeBzsm, data.getRemark(), "", View.VISIBLE, View.VISIBLE);
+            setUpOrDown(data.getParkingIsUnderground());
+            int fastNum = data.getFastNum();
+            int slowNum = data.getSlowNum();
+            if (fastNum > 0) {
+                StringUtil.setText(etAddchargeSl, fastNum + "", "", View.VISIBLE, View.VISIBLE);
+                setKuaiOrMan(0);
+            } else if (slowNum > 0) {
+                StringUtil.setText(etAddchargeSl, slowNum + "", "", View.VISIBLE, View.VISIBLE);
+                setKuaiOrMan(1);
+            }
+            List<String> detailImgs = data.getDetailImgs();
+            if (detailImgs != null && detailImgs.size() > 0) {
+                for (int i = 0; i < imgList.size(); i++) {
+                    CommentImg commentImg = imgList.get(i);
+                    if (commentImg.isAdd()) {
+                        imgList.remove(i);
+                    }
+                }
+                for (int i = 0; i < detailImgs.size(); i++) {
+                    imgPathList.add(detailImgs.get(i));
+                    imgList.add(new CommentImg(detailImgs.get(i), false));
+                }
+                if (imgList.size() > IMG_NUM) {
+                    for (int i = 0; i < imgList.size(); i++) {
+                        CommentImg commentImg = imgList.get(i);
+                        if (commentImg.isAdd()) {
+                            imgList.remove(i);
+                        }
+                    }
+                }
+                if (imgList.size() < IMG_NUM) {
+                    boolean isAdd = false;
+                    for (int i = 0; i < imgList.size(); i++) {
+                        CommentImg commentImg = imgList.get(i);
+                        if (commentImg.isAdd()) {
+                            isAdd = true;
+                            break;
+                        }
+                    }
+                    if (!isAdd) {
+                        imgList.add(new CommentImg("", true));
+                    }
+                }
+                commentImgAdapter.notifyDataSetChanged();
+            }
         }
     }
 
