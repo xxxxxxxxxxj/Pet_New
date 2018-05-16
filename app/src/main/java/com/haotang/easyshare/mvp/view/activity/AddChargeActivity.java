@@ -268,7 +268,12 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                             .imageEngine(new GlideEngine())
                             .forResult(AppConfig.REQUEST_CODE_CHOOSE);
                 } else {
-                    SystemUtil.goPhotoView(AddChargeActivity.this, position, imgPathList, true);
+                    List<String> photoViewImgList = new ArrayList<String>();
+                    photoViewImgList.clear();
+                    for (int i = 0; i < imgList.size(); i++) {
+                        photoViewImgList.add(imgList.get(i).getImgUrl());
+                    }
+                    SystemUtil.goPhotoView(AddChargeActivity.this, position, photoViewImgList, true);
                 }
             }
         });
