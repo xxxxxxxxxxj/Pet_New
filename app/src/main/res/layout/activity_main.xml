@@ -4,6 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/iv_mainfrag_gj"
+        android:layout_width="68dip"
+        android:layout_height="68dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="69dip"
+        android:layout_marginRight="15dip"
+        android:scaleType="fitXY"
+        android:src="@mipmap/sirenguanjia" />
+
     <com.flyco.tablayout.CommonTabLayout
         android:id="@+id/ctl_mainactivity"
         android:layout_width="match_parent"

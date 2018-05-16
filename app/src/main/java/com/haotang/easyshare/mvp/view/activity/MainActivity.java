@@ -1,11 +1,16 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -46,18 +51,22 @@ import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 首页
  */
 public class MainActivity extends BaseActivity<MainPresenter> implements IMainView {
     private final static String TAG = MainActivity.class.getSimpleName();
+    private static final float BASE_BOTTOM_DESC = 80;
     @BindString(R.string.exit_confirm)
     String mStrExitConfirm;
     @BindView(R.id.vp_mainactivity)
     ViewPager vpMainactivity;
     @BindView(R.id.ctl_mainactivity)
     CommonTabLayout ctlMainactivity;
+    @BindView(R.id.iv_mainfrag_gj)
+    ImageView ivMainfragGj;
     private long mExitTime;
     @Inject
     PermissionDialog permissionDialog;
@@ -78,6 +87,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     MyFragment myFragment;
     private int currentTabIndex = 0;
     private boolean isRedPoint = true;
+    private int sx;
+    private int sy;
+    int screenWidth, screenHeight;
 
     @Override
     protected int getContentLayout() {
@@ -95,6 +107,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        Display dis = this.getWindowManager().getDefaultDisplay();
+        screenWidth = dis.getWidth();
+        screenHeight = dis.getHeight();
         SharedPreferenceUtil.getInstance(MainActivity.this).saveBoolean("guide", true);
         permissionDialog.setPositiveButton(R.string.permission_request_dialog_pos);
         permissionDialog.setNegativeButton(R.string.permission_request_dialog_nav);
@@ -119,6 +134,22 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             }
         } else {
             ctlMainactivity.hideMsg(1);
+        }
+        ivMainfragGj.bringToFront();
+    }
+
+    @Override
+
+    public void onWindowFocusChanged(boolean hasFocus) {
+        RingLog.e("加载完毕");
+        super.onWindowFocusChanged(hasFocus);
+        int lastTop = SharedPreferenceUtil.getInstance(MainActivity.this).getInt("lastTop", -1);
+        int lastLeft = SharedPreferenceUtil.getInstance(MainActivity.this).getInt("lastLeft", -1);
+        int lastRight = SharedPreferenceUtil.getInstance(MainActivity.this).getInt("lastRight", -1);
+        int lastBottom = SharedPreferenceUtil.getInstance(MainActivity.this).getInt("lastBottom", -1);
+        RingLog.e("lastTop = " + lastTop + ",lastLeft = " + lastLeft + ",lastRight = " + lastRight + ",lastBottom = " + lastBottom);
+        if (lastTop != -1 && lastLeft != -1 && lastRight != -1 && lastBottom != -1) {
+            ivMainfragGj.layout(lastLeft, lastTop, lastRight, lastBottom);
         }
     }
 
@@ -180,11 +211,68 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 } else if (position == 2) {
                     ctlMainactivity.hideMsg(2);
                 }
+                if (position == 0) {
+                    ivMainfragGj.setVisibility(View.VISIBLE);
+                } else {
+                    ivMainfragGj.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+        ivMainfragGj.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // event.getRawX(); //获取手指第一次接触屏幕在x方向的坐标
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:// 获取手指第一次接触屏幕
+                        sx = (int) event.getRawX();
+                        sy = (int) event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动对应的事件
+                        int x = (int) event.getRawX();
+                        int y = (int) event.getRawY();
+                        // 获取手指移动的距离
+                        int dx = x - sx;
+                        int dy = y - sy;
+                        int top = v.getTop() + dy;
+                        int left = v.getLeft() + dx;
+                        if (top <= 0) {
+                            top = 0;
+                        }
+
+                        float bottom_desc = BASE_BOTTOM_DESC * getResources().getDisplayMetrics().density / 3;
+                        if (top >= screenHeight - (ivMainfragGj.getHeight() + bottom_desc)) {
+                            top = (int) (screenHeight - (ivMainfragGj.getHeight() + bottom_desc));
+                        }
+                        if (left >= screenWidth - ivMainfragGj.getWidth()) {
+                            left = screenWidth - ivMainfragGj.getWidth();
+                        }
+                        if (left <= 0) {
+                            left = 0;
+                        }
+                        // 更改imageView在窗体的位置
+                        ivMainfragGj.layout(left, top, left + ivMainfragGj.getWidth(), top + ivMainfragGj.getHeight());
+                        // 获取移动后的位置
+                        sx = (int) event.getRawX();
+                        sy = (int) event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_UP:// 手指离开屏幕对应事件
+                        // 记录最后图片在窗体的位置
+                        int lastTop = ivMainfragGj.getTop();
+                        int lastLeft = ivMainfragGj.getLeft();
+                        int lastRight = ivMainfragGj.getRight();
+                        int lastBottom = ivMainfragGj.getBottom();
+                        SharedPreferenceUtil.getInstance(MainActivity.this).saveInt("lastTop", lastTop);
+                        SharedPreferenceUtil.getInstance(MainActivity.this).saveInt("lastLeft", lastLeft);
+                        SharedPreferenceUtil.getInstance(MainActivity.this).saveInt("lastRight", lastRight);
+                        SharedPreferenceUtil.getInstance(MainActivity.this).saveInt("lastBottom", lastBottom);
+                        break;
+                }
+                return true;// 不会中断触摸事件的返回
             }
         });
     }
@@ -313,6 +401,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             } else if (currentTabIndex == 2) {
                 ctlMainactivity.hideMsg(2);
             }
+        }
+    }
+
+    @OnClick({R.id.iv_mainfrag_gj})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_mainfrag_gj:
+                startActivity(new Intent(this, ButlerActivity.class));
+                break;
         }
     }
 }

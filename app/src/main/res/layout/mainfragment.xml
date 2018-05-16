@@ -117,17 +117,6 @@
             android:background="@color/white" />
     </com.flyco.roundview.RoundLinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_mainfrag_gj"
-        android:layout_width="68dip"
-        android:layout_height="68dip"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="15dip"
-        android:layout_marginRight="15dip"
-        android:scaleType="fitXY"
-        android:src="@mipmap/sirenguanjia" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
