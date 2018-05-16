@@ -21,4 +21,8 @@ public interface IAddChargeView extends IBaseView {
     void detailSuccess(ChargeDetailBean data);
 
     void detailFail(int code, String msg);
+
+    void updateSuccess(AddChargeBean data);
+
+    void updateFail(int code, String msg);
 }

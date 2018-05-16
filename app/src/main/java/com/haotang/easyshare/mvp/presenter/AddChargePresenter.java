@@ -28,21 +28,21 @@ public class AddChargePresenter extends BasePresenter<IAddChargeView, IAddCharge
     }
 
     /**
-     * 上传充电桩
+     * 编辑充电桩
      */
-    public void save(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.save(body), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void update(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.update(body), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
                     if (result != null) {
                         if (result.getCode() == 0) {
-                            mIView.saveSuccess(result.getData());
+                            mIView.updateSuccess(result.getData());
                         } else {
                             if (StringUtil.isNotEmpty(result.getMsg())) {
-                                mIView.saveFail(result.getCode(), result.getMsg());
+                                mIView.updateFail(result.getCode(), result.getMsg());
                             } else {
-                                mIView.saveFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                                mIView.updateFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
                             }
                         }
                     }
@@ -52,7 +52,7 @@ public class AddChargePresenter extends BasePresenter<IAddChargeView, IAddCharge
             @Override
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
-                    mIView.saveFail(errType, errMessage);
+                    mIView.updateFail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));
@@ -60,6 +60,7 @@ public class AddChargePresenter extends BasePresenter<IAddChargeView, IAddCharge
 
     /**
      * 充电桩详情
+     *
      * @param lng
      * @param lat
      * @param uuid
@@ -88,6 +89,37 @@ public class AddChargePresenter extends BasePresenter<IAddChargeView, IAddCharge
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.detailFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 上传充电桩
+     */
+    public void save(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.save(body), new CommonObserver<HttpResult<AddChargeBean>>() {
+            @Override
+            public void onResult(HttpResult<AddChargeBean> result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.saveSuccess(result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.saveFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.saveFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.saveFail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));

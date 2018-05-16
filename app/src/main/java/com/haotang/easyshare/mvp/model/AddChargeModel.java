@@ -37,4 +37,12 @@ public class AddChargeModel implements IAddChargeModel {
     public Observable detail(double lng, double lat, String uuid, String md5) {
         return DevRing.httpManager().getService(ChargingPileDetailApiService.class).detail(lng, lat, uuid, md5);
     }
+
+    /**
+     * 编辑充电桩
+     */
+    @Override
+    public Observable update(RequestBody body) {
+        return DevRing.httpManager().getService(AddChargeApiService.class).update(body);
+    }
 }

@@ -36,9 +36,9 @@ import android.widget.Toast;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.LngLat;
-import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.PhotoViewPagerActivity;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -302,6 +302,24 @@ public class SystemUtil {
                 }
             }
         }
+    }
+
+    /**
+     * 保存文件
+     *
+     * @param bm
+     * @param fileName
+     * @throws IOException
+     */
+    public static String saveFile(File file, Bitmap bm, String fileName) throws IOException {
+        File imageFile = new File(file, fileName);
+        FileOutputStream outStream;
+        outStream = new FileOutputStream(imageFile);
+        bm.compress(Bitmap.CompressFormat.JPEG, 100,
+                outStream);
+        outStream.flush();
+        outStream.close();
+        return imageFile.getAbsolutePath();
     }
 
     private static class SaveSubscriber extends Subscriber<String> {

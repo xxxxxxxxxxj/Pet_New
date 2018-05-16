@@ -148,6 +148,10 @@ public class UrlConstants {
      * 32.保存或修改用户车辆信息
      */
     public static final String SAVE_ORUPDATE_USERCAR = "user/car/save";
+    /**
+     * 33.编辑充电桩
+     */
+    public static final String UPDATECHARGE = "charging/info/update";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

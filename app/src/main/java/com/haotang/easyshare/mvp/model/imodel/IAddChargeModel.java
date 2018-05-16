@@ -28,4 +28,9 @@ public interface IAddChargeModel extends IBaseModel {
      * @param md5
      */
     Observable detail(double lng, double lat, String uuid, String md5);
+
+    /**
+     * 编辑充电桩
+     */
+    Observable update(RequestBody body);
 }

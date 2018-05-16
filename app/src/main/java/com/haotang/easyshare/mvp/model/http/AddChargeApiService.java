@@ -7,7 +7,6 @@ import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 
 /**
@@ -26,4 +25,10 @@ public interface AddChargeApiService {
      */
     @POST(UrlConstants.SAVECHARGE)
     Observable<HttpResult<AddChargeBean>> save(@Body() RequestBody body);
+
+    /**
+     * 编辑充电桩
+     */
+    @POST(UrlConstants.UPDATECHARGE)
+    Observable<HttpResult<AddChargeBean>> update(@Body() RequestBody body);
 }

@@ -2,8 +2,10 @@ package com.haotang.easyshare.mvp.view.activity;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -21,6 +23,10 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.bigkoo.pickerview.adapter.ArrayWheelAdapter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
@@ -40,7 +46,6 @@ import com.haotang.easyshare.mvp.view.viewholder.AddChargeBoDa;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
-import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.SignUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -55,6 +60,7 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,9 +79,8 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import rx.Observable;
 import top.zibin.luban.Luban;
-
-import static android.R.id.list;
 
 /**
  * 添加充电站界面
@@ -159,6 +164,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     private AMapLocationClientOption mLocationOption;
     private double localLat;
     private double localLng;
+    private File chargeImgFile;
 
     @Override
     protected int getContentLayout() {
@@ -171,6 +177,11 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         DaggerAddChargeActivityCommponent.builder().
                 addChargeActivityModule(new AddChargeActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
+        chargeImgFile = new File(Environment.getExternalStorageDirectory(),
+                "chargeImgFile");
+        if (!chargeImgFile.exists()) {
+            chargeImgFile.mkdirs();
+        }
     }
 
     @Subscribe
@@ -413,14 +424,24 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 } else if (kuaiOrMan == 1) {//慢充
                     builder.addFormDataPart("slowNum", etAddchargeSl.getText().toString().trim());
                 }
-                for (int i = 0; i < imgPathList.size(); i++) {
-                    //构建要上传的文件
-                    File file = new File(imgPathList.get(i));
-                    builder.addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
-                            , file));
+                RingLog.e(TAG, "imgPathList.size() = " + imgPathList.size());
+                if (imgPathList.size() > 0) {
+                    for (int i = 0; i < imgPathList.size(); i++) {
+                        RingLog.e(TAG, "imgPathList.get(i) = " + imgPathList.get(i));
+                        //构建要上传的文件
+                        File file = new File(imgPathList.get(i));
+                        builder.addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
+                                , file));
+                    }
                 }
-                RequestBody build = builder.build();
-                mPresenter.save(build);
+                if (StringUtil.isNotEmpty(uuid)) {
+                    builder.addFormDataPart("uuid", uuid);
+                    RequestBody build = builder.build();
+                    mPresenter.update(build);
+                } else {
+                    RequestBody build = builder.build();
+                    mPresenter.save(build);
+                }
                 break;
             case R.id.rl_addcharge_zdz:
                 startActivity(new Intent(AddChargeActivity.this, SelectAddressActivity.class));
@@ -609,6 +630,31 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             }
             List<String> detailImgs = data.getDetailImgs();
             if (detailImgs != null && detailImgs.size() > 0) {
+                for (int i = 0; i < detailImgs.size(); i++) {
+                    String imgUrl = detailImgs.get(i);
+                    if (StringUtil.isNotEmpty(imgUrl)) {
+                        Glide.with(AddChargeActivity.this)
+                                .load(imgUrl)
+                                .asBitmap()
+                                .placeholder(R.mipmap.ic_image_load_circle).dontAnimate()
+                                .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                                    @Override
+                                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                        try {
+                                            String fileName = "charge_img_"
+                                                    + String.valueOf(System.currentTimeMillis() + ".jpg");
+                                            String imgPath = SystemUtil.saveFile(chargeImgFile, resource, fileName);
+                                            RingLog.e(TAG, "imgPath = " + imgPath);
+                                            imgPathList.add(imgPath);
+                                        } catch (IOException e) {
+                                            RingLog.e(TAG, "e = " + e.toString());
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                    }
+                }
+
                 for (int i = 0; i < imgList.size(); i++) {
                     CommentImg commentImg = imgList.get(i);
                     if (commentImg.isAdd()) {
@@ -616,7 +662,6 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                     }
                 }
                 for (int i = 0; i < detailImgs.size(); i++) {
-                    imgPathList.add(detailImgs.get(i));
                     imgList.add(new CommentImg(detailImgs.get(i), false));
                 }
                 if (imgList.size() > IMG_NUM) {
@@ -648,6 +693,17 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     @Override
     public void detailFail(int code, String msg) {
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void updateSuccess(AddChargeBean data) {
+        finish();
+        RingLog.e(TAG, "updateSuccess()");
+    }
+
+    @Override
+    public void updateFail(int code, String msg) {
+        RingLog.e(TAG, "updateFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
