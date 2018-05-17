@@ -69,7 +69,7 @@ public class TestActivity extends BaseActivity {
     }
 
     @OnClick({R.id.btn_test_webview, R.id.btn_test_share, R.id.btn_test_wxlogin, R.id.btn_test_wxpay, R.id.btn_test_alipay
-            , R.id.btn_test_gaodemap, R.id.btn_test_qrcode, R.id.btn_test_takephoto})
+            , R.id.btn_test_gaodemap, R.id.btn_test_qrcode, R.id.btn_test_takephoto,R.id.btn_test_jchat})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_test_webview:
@@ -185,6 +185,9 @@ public class TestActivity extends BaseActivity {
                 break;
             case R.id.btn_test_takephoto:
                 startActivity(new Intent(this, ImagePickerActivity.class));
+                break;
+            case R.id.btn_test_jchat:
+                startActivity(new Intent(this, JChatTestActivity.class));
                 break;
         }
     }

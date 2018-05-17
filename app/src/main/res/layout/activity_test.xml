@@ -82,6 +82,13 @@
             android:layout_marginBottom="10dip"
             android:text="banner" />
 
+        <Button
+            android:id="@+id/btn_test_jchat"
+            android:layout_width="200dip"
+            android:layout_height="50dip"
+            android:layout_marginBottom="10dip"
+            android:text="jchat" />
+
     </LinearLayout>
 
 </ScrollView>

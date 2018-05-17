@@ -29,4 +29,8 @@ public class AppConfig {
     public static final LatLng XIAN = new LatLng(34.341568, 108.940174);// 西安市经纬度
     public static final LatLng ZHENGZHOU = new LatLng(34.7466, 113.625367);// 郑州市经纬度
     public static final String DiskCache_Name = "diskcache_easydhare";
+    public final static String ZHOUJUNXIA_USERNAME = "1234567890zhoujunxia";
+    public final static String ZHOUJUNXIA_PASSWORD = "1234567890zhoujunxia";
+    public final static String XUJUN_USERNAME = "1234567890xujun";
+    public final static String XUJUN_PASSWORD = "1234567890xujun";
 }

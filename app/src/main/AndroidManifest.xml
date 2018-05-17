@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-
     <!-- Optional. Required for location feature -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -247,6 +246,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
+        <activity
+            android:name=".mvp.view.activity.JChatTestActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
 
         <receiver
             android:name=".updateapputil.UpdateAppReceiver"
@@ -391,14 +395,15 @@
             android:name="JPUSH_APPKEY"
             android:value="98d9a6b39c733d318b9b0559" /> <!-- </>值来自开发者平台取得的AppKey -->
 
+
         <!-- 极光IM -->
-        <!-- Required JMessage SDK核心功能-->
+        <!-- Required JMessage SDK核心功能 -->
         <receiver
             android:name="cn.jpush.im.android.helpers.IMReceiver"
             android:enabled="true"
-            android:exported="false">
-        </receiver>
+            android:exported="false" />
         <!-- 极光IM -->
+
 
         <!-- 极光推送end -->
         <!-- 第三方登录，分享开始 -->
@@ -455,6 +460,7 @@
 
         <service android:name="com.amap.api.location.APSService" />
         <!-- 高德地图结束 -->
+        <activity android:name=".mvp.view.activity.ChatActivity"></activity>
     </application>
 
 </manifest>
