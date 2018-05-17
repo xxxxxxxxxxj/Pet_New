@@ -14,7 +14,6 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.haotang.easyshare.R;
-import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LoginActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
@@ -36,17 +35,10 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.android.api.callback.RequestCallback;
-import cn.jpush.im.android.api.model.DeviceInfo;
-import cn.jpush.im.android.api.model.UserInfo;
-import cn.jpush.im.api.BasicCallback;
 
 /**
  * 登录页
