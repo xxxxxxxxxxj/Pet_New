@@ -24,6 +24,8 @@ import com.ljy.devring.other.RingLog;
 import com.ljy.devring.other.permission.PermissionListener;
 import com.ljy.devring.util.RingToast;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 /**
@@ -94,6 +96,8 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
             public void onGranted(String permissionName) {
                 DevRing.configureHttp()//配置retrofit
                         .setMapHeader(UrlConstants.getMapHeader(getApplicationContext()));//设置全局的header信息
+                Map<String, String> mapHeader = UrlConstants.getMapHeader(getApplicationContext());
+                RingLog.e("mapHeader = " + mapHeader.toString());
                 //全部权限都被授予的话，则弹出底部选项
                 if (SharedPreferenceUtil.getInstance(FlashActivity.this).getBoolean("guide", false)) {
                     mPresenter.startPageConfig(FlashActivity.this);
