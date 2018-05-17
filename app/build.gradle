@@ -128,4 +128,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile project(':pickerview')
     compile project(':wheelview')
+    compile files('libs/jmessage-sdk-android-2.6.0.jar')
 }

@@ -16,6 +16,7 @@ import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.FileUtil;
 
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.im.android.api.JMessageClient;
 
 /**
  * <p>Title:${type_name}</p>
@@ -104,10 +105,13 @@ public class PetApplication extends Application {
         JPushInterface.setDebugMode(AppConfig.isShowLog);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
         String regId = JPushInterface.getRegistrationID(getApplicationContext());
-        RingLog.d("regId","regId = " + regId);
+        RingLog.d("regId", "regId = " + regId);
         if (StringUtil.isNotEmpty(regId)) {
             SharedPreferenceUtil.getInstance(getApplicationContext()).saveString("jpush_id", regId);
         }
+
+        JMessageClient.setDebugMode(AppConfig.isShowLog);
+        JMessageClient.init(getApplicationContext());
 
         ShareConfig config = ShareConfig.instance()
                 .qqId(AppConfig.QQ_ID)
