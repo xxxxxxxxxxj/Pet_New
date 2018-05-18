@@ -1,4 +1,7 @@
 <resources>
+    <string name="btn_text_speak">按住录音</string>
+    <string name="btn_text_speak_over">松开结束</string>
+    <string name="btn_send">发送</string>
     <string name="save_picture">保存图片</string>
     <string name="viewpager_indicator">%1$d/%2$d</string>
     <string name="vista_share_title">分享</string>
@@ -139,5 +142,15 @@
     <string name="error_network">搜索失败,请检查网络连接！</string>
     <string name="error_key">key验证无效！</string>
     <string name="error_other">未知错误，请稍后重试!错误码为</string>
+    <string name="jmui_cancel">取消</string>
     <string name="no_result">对不起，没有搜索到相关数据！</string>
+    <string name="jmui_sdcard_not_exist_toast">暂无外部存储</string>
+    <string name="jmui_record_voice_hint">按住 说话</string>
+    <string name="jmui_cancel_record_voice_hint">松开手指，取消发送</string>
+    <string name="jmui_send_voice_hint">松开 结束</string>
+    <string name="jmui_move_to_cancel_hint">手指上滑，取消发送</string>
+    <string name="jmui_rest_record_time_hint">还可以说%s秒</string>
+    <string name="jmui_create_file_failed">创建文件失败</string>
+    <string name="jmui_record_voice_permission_request">若要使用语音功能，请选择允许录音</string>
+    <string name="jmui_loading">正在加载</string>
 </resources>
