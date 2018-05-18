@@ -36,42 +36,42 @@ public class MeController implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.setPassword:
-                mContext.startActivity(new Intent(mContext.getContext(), ResetPasswordActivity.class));
-                break;
-            case R.id.opinion://意见反馈
-                mContext.startActivity(new Intent(mContext.getContext(), FeedbackActivity.class));
-                break;
-            case R.id.about:
-                mContext.startActivity(new Intent(mContext.getContext(), AboutJChatActivity.class));
-                break;
-            case R.id.exit:
-                View.OnClickListener listener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        switch (v.getId()) {
-                            case R.id.jmui_cancel_btn:
-                                mDialog.cancel();
-                                break;
-                            case R.id.jmui_commit_btn:
-                                mContext.Logout();
-                                mContext.cancelNotification();
-                                mContext.getActivity().finish();
-                                mDialog.cancel();
-                                break;
-                        }
+        int i = v.getId();
+        if (i == R.id.setPassword) {
+            mContext.startActivity(new Intent(mContext.getContext(), ResetPasswordActivity.class));
+
+        } else if (i == R.id.opinion) {
+            mContext.startActivity(new Intent(mContext.getContext(), FeedbackActivity.class));
+
+        } else if (i == R.id.about) {
+            mContext.startActivity(new Intent(mContext.getContext(), AboutJChatActivity.class));
+
+        } else if (i == R.id.exit) {
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int i1 = v.getId();
+                    if (i1 == R.id.jmui_cancel_btn) {
+                        mDialog.cancel();
+
+                    } else if (i1 == R.id.jmui_commit_btn) {
+                        mContext.Logout();
+                        mContext.cancelNotification();
+                        mContext.getActivity().finish();
+                        mDialog.cancel();
+
                     }
-                };
-                mDialog = DialogCreator.createLogoutDialog(mContext.getActivity(), listener);
-                mDialog.getWindow().setLayout((int) (0.8 * mWidth), WindowManager.LayoutParams.WRAP_CONTENT);
-                mDialog.show();
-                break;
-            case R.id.rl_personal:
-                Intent intent = new Intent(mContext.getContext(), PersonalActivity.class);
-                intent.putExtra(PERSONAL_PHOTO, mBitmap);
-                mContext.startActivity(intent);
-                break;
+                }
+            };
+            mDialog = DialogCreator.createLogoutDialog(mContext.getActivity(), listener);
+            mDialog.getWindow().setLayout((int) (0.8 * mWidth), WindowManager.LayoutParams.WRAP_CONTENT);
+            mDialog.show();
+
+        } else if (i == R.id.rl_personal) {
+            Intent intent = new Intent(mContext.getContext(), PersonalActivity.class);
+            intent.putExtra(PERSONAL_PHOTO, mBitmap);
+            mContext.startActivity(intent);
+
         }
     }
 }

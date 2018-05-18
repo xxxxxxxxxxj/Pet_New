@@ -151,22 +151,21 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_sure:
-                mLoadingDialog = DialogCreator.createLoadingDialog(FeedbackActivity.this,
-                        getString(R.string.creating_msg));
-                mLoadingDialog.show();
-                //发送文字
-                String feedback = mEd_feedback.getText().toString().trim();
-                if (!TextUtils.isEmpty(feedback)) {
-                    Message message = JMessageClient.createSingleTextMessage(JIGUANG_IM_ACCOUNT, feedback);
-                    JMessageClient.sendMessage(message);
-                }
-                //发送图片
-                sendImage();
-                break;
-            default:
-                break;
+        int i1 = v.getId();
+        if (i1 == R.id.btn_sure) {
+            mLoadingDialog = DialogCreator.createLoadingDialog(FeedbackActivity.this,
+                    getString(R.string.creating_msg));
+            mLoadingDialog.show();
+            //发送文字
+            String feedback = mEd_feedback.getText().toString().trim();
+            if (!TextUtils.isEmpty(feedback)) {
+                Message message = JMessageClient.createSingleTextMessage(JIGUANG_IM_ACCOUNT, feedback);
+                JMessageClient.sendMessage(message);
+            }
+            //发送图片
+            sendImage();
+
+        } else {
         }
     }
 

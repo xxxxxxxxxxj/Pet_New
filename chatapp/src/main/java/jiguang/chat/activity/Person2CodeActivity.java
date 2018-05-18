@@ -27,7 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import jiguang.chat.R;
 import jiguang.chat.model.User;
@@ -45,24 +45,24 @@ public class Person2CodeActivity extends BaseActivity {
     private static final String SD_PATH = "/sdcard/dskqxt/pic/";
     private static final String IN_PATH = "/dskqxt/pic/";
 
-    @Bind(R.id.ll_back)
     LinearLayout llBack;
-    @Bind(R.id.iv_avatar)
     ImageView ivAvatar;
-    @Bind(R.id.tv_userName)
     TextView tvUserName;
-    @Bind(R.id.iv_erWeiMa)
     ImageView ivErWeiMa;
-    @Bind(R.id.iv_save)
     ImageView ivSave;
-    @Bind(R.id.ll_copy)
     LinearLayout llCopy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person2code);
-        ButterKnife.bind(this);
+
+        llBack = (LinearLayout) findViewById(R.id.ll_back);
+        ivAvatar = (ImageView) findViewById(R.id.iv_avatar);
+        tvUserName = (TextView) findViewById(R.id.tv_userName);
+        ivErWeiMa = (ImageView) findViewById(R.id.iv_erWeiMa);
+        ivSave = (ImageView) findViewById(R.id.iv_save);
+        llCopy = (LinearLayout) findViewById(R.id.ll_copy);
 
         initData();
     }

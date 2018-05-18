@@ -87,29 +87,28 @@ public class HistoryFileController implements View.OnClickListener, ViewPager.On
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.actionbar_album_btn:
-                mSFView.setCurrentItem(0);
-                break;
-            case R.id.actionbar_file_btn:
-                mSFView.setCurrentItem(1);
-                break;
-            case R.id.actionbar_video_btn:
-                mSFView.setCurrentItem(2);
-                break;
-            case R.id.actionbar_audio_btn:
-                mSFView.setCurrentItem(3);
-                break;
-            case R.id.actionbar_other_btn:
-                mSFView.setCurrentItem(4);
-                break;
-            case R.id.return_btn:
-                mContext.finish();
-                break;
-            case R.id.delete_file_btn:
-                if (idMap.size() == 0) {
-                    break;
-                }
+        int i = view.getId();
+        if (i == R.id.actionbar_album_btn) {
+            mSFView.setCurrentItem(0);
+
+        } else if (i == R.id.actionbar_file_btn) {
+            mSFView.setCurrentItem(1);
+
+        } else if (i == R.id.actionbar_video_btn) {
+            mSFView.setCurrentItem(2);
+
+        } else if (i == R.id.actionbar_audio_btn) {
+            mSFView.setCurrentItem(3);
+
+        } else if (i == R.id.actionbar_other_btn) {
+            mSFView.setCurrentItem(4);
+
+        } else if (i == R.id.return_btn) {
+            mContext.finish();
+
+        } else if (i == R.id.delete_file_btn) {
+            if (idMap.size() == 0) {
+            }else{
                 if (isGroup) {
                     conversation = JMessageClient.getGroupConversation(gid);
                 } else {
@@ -127,15 +126,15 @@ public class HistoryFileController implements View.OnClickListener, ViewPager.On
                 mVideoFragment.notifyListVideo();
                 mAudioFragment.notifyListAudio();
                 mOtherFragment.notifyListOther();
-                break;
-            case R.id.tv_choose:
-                mSFView.setDeleteRl();
-                mImgFragment.notifyImage();
-                mDocumentFragment.notifyDocument();
-                mVideoFragment.notifyVideo();
-                mAudioFragment.notifyAudio();
-                mOtherFragment.notifyOther();
-                break;
+            }
+        } else if (i == R.id.tv_choose) {
+            mSFView.setDeleteRl();
+            mImgFragment.notifyImage();
+            mDocumentFragment.notifyDocument();
+            mVideoFragment.notifyVideo();
+            mAudioFragment.notifyAudio();
+            mOtherFragment.notifyOther();
+
         }
     }
 

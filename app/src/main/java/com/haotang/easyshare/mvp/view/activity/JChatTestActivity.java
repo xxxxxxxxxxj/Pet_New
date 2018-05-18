@@ -2,8 +2,8 @@ package com.haotang.easyshare.mvp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.callback.GetUserInfoCallback;
 import cn.jpush.im.android.api.callback.RequestCallback;
 import cn.jpush.im.android.api.model.DeviceInfo;
 import cn.jpush.im.android.api.model.UserInfo;
@@ -28,6 +29,7 @@ public class JChatTestActivity extends BaseActivity {
 
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
+    private UserInfo mChateUserInfo;
 
     @Override
     protected int getContentLayout() {
@@ -58,7 +60,19 @@ public class JChatTestActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_test_jchat_chat:
-                startActivity(new Intent(JChatTestActivity.this,ChatActivity.class));
+                Intent intent = new Intent(JChatTestActivity.this, ChatActivity.class);
+                //创建会话
+                intent.putExtra("username", mChateUserInfo.getUserName());
+                intent.putExtra("appkey", mChateUserInfo.getAppKey());
+                String notename = mChateUserInfo.getNotename();
+                if (TextUtils.isEmpty(notename)) {
+                    notename = mChateUserInfo.getNickname();
+                    if (TextUtils.isEmpty(notename)) {
+                        notename = mChateUserInfo.getUserName();
+                    }
+                }
+                intent.putExtra("notename", notename);
+                startActivity(intent);
                 break;
             case R.id.iv_titlebar_back:
                 finish();
@@ -66,14 +80,24 @@ public class JChatTestActivity extends BaseActivity {
             case R.id.btn_test_jchat_login:
                 UserInfo myInfo = JMessageClient.getMyInfo();
                 if (myInfo != null) {//说明已登录
+                    //登陆成功获取要聊天的人的信息
                     RingLog.e("myInfo = " + myInfo.toString());
+                    JMessageClient.getUserInfo(AppConfig.XUJUN_USERNAME, new GetUserInfoCallback() {
+                        @Override
+                        public void gotResult(int responseCode, String responseMessage, UserInfo info) {
+                            if (responseCode == 0) {
+                                mChateUserInfo = info;
+                                RingLog.e("mChateUserInfo = " + mChateUserInfo.toString());
+                            }
+                        }
+                    });
                 } else {
-                    JMessageClient.register(AppConfig.XUJUN_USERNAME, AppConfig.XUJUN_PASSWORD, new BasicCallback() {
+                    JMessageClient.register(AppConfig.ZHOUJUNXIA_USERNAME, AppConfig.ZHOUJUNXIA_PASSWORD, new BasicCallback() {
                         @Override
                         public void gotResult(int responseCode, String registerDesc) {
                             if (responseCode == 0) {
                                 RingLog.e("注册成功");
-                                JMessageClient.login(AppConfig.XUJUN_USERNAME, AppConfig.XUJUN_PASSWORD, new RequestCallback<List<DeviceInfo>>() {
+                                JMessageClient.login(AppConfig.ZHOUJUNXIA_USERNAME, AppConfig.ZHOUJUNXIA_PASSWORD, new RequestCallback<List<DeviceInfo>>() {
                                     @Override
                                     public void gotResult(int responseCode, String responseMessage, List<DeviceInfo> result) {
                                         if (responseCode == 0) {
@@ -88,7 +112,7 @@ public class JChatTestActivity extends BaseActivity {
                             } else {
                                 RingLog.e("注册失败 JMessageClient.register " + ", responseCode = " + responseCode + " ; registerDesc = " + registerDesc);
                                 if (responseCode == 898001) {
-                                    JMessageClient.login(AppConfig.XUJUN_USERNAME, AppConfig.XUJUN_PASSWORD, new RequestCallback<List<DeviceInfo>>() {
+                                    JMessageClient.login(AppConfig.ZHOUJUNXIA_USERNAME, AppConfig.ZHOUJUNXIA_PASSWORD, new RequestCallback<List<DeviceInfo>>() {
                                         @Override
                                         public void gotResult(int responseCode, String responseMessage, List<DeviceInfo> result) {
                                             if (responseCode == 0) {

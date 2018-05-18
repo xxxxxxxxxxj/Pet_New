@@ -271,15 +271,14 @@ public class SearchAtMemberActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ac_iv_press_back:
-                finish();
-                break;
-            case R.id.iv_clear:
-                mEtSearch.setText("");
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.ac_iv_press_back) {
+            finish();
+
+        } else if (i == R.id.iv_clear) {
+            mEtSearch.setText("");
+
+        } else {
         }
     }
 

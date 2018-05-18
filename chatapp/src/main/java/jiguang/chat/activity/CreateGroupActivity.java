@@ -136,48 +136,47 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.jmui_cancel_btn:
-                EmoticonsKeyboardUtils.closeSoftKeyboard(this);
-                finish();
-                break;
-            case R.id.finish_btn:
-                //拿到所选择的userName
-                final ArrayList<String> selectedUser = mAdapter.getSelectedUser();
-                mLoadingDialog = DialogCreator.createLoadingDialog(mContext,
-                        mContext.getString(R.string.creating_hint));
-                mLoadingDialog.show();
-                JMessageClient.createGroup("", "", new CreateGroupCallback() {
-                    @Override
-                    public void gotResult(int responseCode, String responseMsg, final long groupId) {
-                        if (responseCode == 0) {
-                            if (selectedUser.size() > 0) {
-                                JMessageClient.addGroupMembers(groupId, selectedUser, new BasicCallback() {
-                                    @Override
-                                    public void gotResult(int responseCode, String responseMessage) {
-                                        mLoadingDialog.dismiss();
-                                        if (responseCode == 0) {
-                                            //如果创建群组时添加了人,那么就在size基础上加上自己
-                                            createGroup(groupId, selectedUser.size() + 1);
-                                        } else if (responseCode == 810007) {
-                                            ToastUtil.shortToast(mContext, "不能添加自己");
-                                        } else {
-                                            ToastUtil.shortToast(mContext, "添加失败");
-                                        }
+        int i = v.getId();
+        if (i == R.id.jmui_cancel_btn) {
+            EmoticonsKeyboardUtils.closeSoftKeyboard(this);
+            finish();
+
+        } else if (i == R.id.finish_btn) {//拿到所选择的userName
+            final ArrayList<String> selectedUser = mAdapter.getSelectedUser();
+            mLoadingDialog = DialogCreator.createLoadingDialog(mContext,
+                    mContext.getString(R.string.creating_hint));
+            mLoadingDialog.show();
+            JMessageClient.createGroup("", "", new CreateGroupCallback() {
+                @Override
+                public void gotResult(int responseCode, String responseMsg, final long groupId) {
+                    if (responseCode == 0) {
+                        if (selectedUser.size() > 0) {
+                            JMessageClient.addGroupMembers(groupId, selectedUser, new BasicCallback() {
+                                @Override
+                                public void gotResult(int responseCode, String responseMessage) {
+                                    mLoadingDialog.dismiss();
+                                    if (responseCode == 0) {
+                                        //如果创建群组时添加了人,那么就在size基础上加上自己
+                                        createGroup(groupId, selectedUser.size() + 1);
+                                    } else if (responseCode == 810007) {
+                                        ToastUtil.shortToast(mContext, "不能添加自己");
+                                    } else {
+                                        ToastUtil.shortToast(mContext, "添加失败");
                                     }
-                                });
-                            } else {
-                                mLoadingDialog.dismiss();
-                                //如果创建群组时候没有选择人,那么size就是1
-                                createGroup(groupId, 1);
-                            }
+                                }
+                            });
                         } else {
                             mLoadingDialog.dismiss();
-                            ToastUtil.shortToast(mContext, responseMsg);
+                            //如果创建群组时候没有选择人,那么size就是1
+                            createGroup(groupId, 1);
                         }
+                    } else {
+                        mLoadingDialog.dismiss();
+                        ToastUtil.shortToast(mContext, responseMsg);
                     }
-                });
-                break;
+                }
+            });
+
         }
     }
 

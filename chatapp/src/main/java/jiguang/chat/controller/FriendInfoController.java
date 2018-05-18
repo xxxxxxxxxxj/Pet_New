@@ -23,24 +23,23 @@ public class FriendInfoController implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_goToChat:
-                mContext.startChatActivity();
-                break;
-            case R.id.iv_friendPhoto:
-                mContext.startBrowserAvatar();
-                break;
-            case R.id.jmui_commit_btn:
-                Intent intent = new Intent(mContext, FriendSettingActivity.class);
-                intent.putExtra("userName", friendInfo.getUserName());
-                intent.putExtra("noteName", friendInfo.getNotename());
-                mContext.startActivity(intent);
-                break;
-            case R.id.return_btn:
-                mContext.finish();
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.btn_goToChat) {
+            mContext.startChatActivity();
+
+        } else if (i == R.id.iv_friendPhoto) {
+            mContext.startBrowserAvatar();
+
+        } else if (i == R.id.jmui_commit_btn) {
+            Intent intent = new Intent(mContext, FriendSettingActivity.class);
+            intent.putExtra("userName", friendInfo.getUserName());
+            intent.putExtra("noteName", friendInfo.getNotename());
+            mContext.startActivity(intent);
+
+        } else if (i == R.id.return_btn) {
+            mContext.finish();
+
+        } else {
         }
     }
 

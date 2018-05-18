@@ -93,15 +93,15 @@ public class ConversationListController implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.create_group_btn:
-                mContext.showPopWindow();
-                break;
-            case R.id.search_title:
-                Intent intent = new Intent();
-                intent.setClass(mContext.getActivity(), SearchContactsActivity.class);
-                mContext.startActivity(intent);
-                break;
+        int i = v.getId();
+        if (i == R.id.create_group_btn) {
+            mContext.showPopWindow();
+
+        } else if (i == R.id.search_title) {
+            Intent intent = new Intent();
+            intent.setClass(mContext.getActivity(), SearchContactsActivity.class);
+            mContext.startActivity(intent);
+
         }
     }
 
@@ -152,36 +152,33 @@ public class ConversationListController implements View.OnClickListener,
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    switch (v.getId()) {
-                        //会话置顶
-                        case R.id.jmui_top_conv_ll:
-                            //已经置顶,去取消
-                            if (!TextUtils.isEmpty(conv.getExtra())) {
-                                mListAdapter.setCancelConvTop(conv);
-                                //没有置顶,去置顶
-                            } else {
-                                mListAdapter.setConvTop(conv);
-                            }
-                            mDialog.dismiss();
-                            break;
+                    int i = v.getId();
+                    if (i == R.id.jmui_top_conv_ll) {//已经置顶,去取消
+                        if (!TextUtils.isEmpty(conv.getExtra())) {
+                            mListAdapter.setCancelConvTop(conv);
+                            //没有置顶,去置顶
+                        } else {
+                            mListAdapter.setConvTop(conv);
+                        }
+                        mDialog.dismiss();
+
                         //删除会话
-                        case R.id.jmui_delete_conv_ll:
-                            if (conv.getType() == ConversationType.group) {
-                                JMessageClient.deleteGroupConversation(((GroupInfo) conv.getTargetInfo()).getGroupID());
-                            } else {
-                                JMessageClient.deleteSingleConversation(((UserInfo) conv.getTargetInfo()).getUserName());
-                            }
-                            mDatas.remove(position - 3);
-                            if (mDatas.size() > 0) {
-                                mConvListView.setNullConversation(true);
-                            } else {
-                                mConvListView.setNullConversation(false);
-                            }
-                            mListAdapter.notifyDataSetChanged();
-                            mDialog.dismiss();
-                            break;
-                        default:
-                            break;
+                    } else if (i == R.id.jmui_delete_conv_ll) {
+                        if (conv.getType() == ConversationType.group) {
+                            JMessageClient.deleteGroupConversation(((GroupInfo) conv.getTargetInfo()).getGroupID());
+                        } else {
+                            JMessageClient.deleteSingleConversation(((UserInfo) conv.getTargetInfo()).getUserName());
+                        }
+                        mDatas.remove(position - 3);
+                        if (mDatas.size() > 0) {
+                            mConvListView.setNullConversation(true);
+                        } else {
+                            mConvListView.setNullConversation(false);
+                        }
+                        mListAdapter.notifyDataSetChanged();
+                        mDialog.dismiss();
+
+                    } else {
                     }
 
                 }

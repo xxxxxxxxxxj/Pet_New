@@ -143,46 +143,43 @@ public class SearchFriendDetailActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.btn_refusal:
-                        //拒绝添加
-                        dialog.show();
-                        ContactManager.declineInvitation(mToUserInfo.getUserName(), mToUserInfo.getAppKey(), "拒绝了您的好友请求", new BasicCallback() {
-                            @Override
-                            public void gotResult(int responseCode, String responseMessage) {
-                                dialog.dismiss();
-                                if (responseCode == 0) {
-                                    //拒绝时候要修改button数据库状态,并更新内存
-                                    Intent btnIntent = new Intent();
-                                    btnIntent.putExtra("position", position);
-                                    btnIntent.putExtra("btn_state", 1);
-                                    setResult(JGApplication.RESULT_BUTTON, btnIntent);
-                                    finish();
-                                }
+                int i = v.getId();
+                if (i == R.id.btn_refusal) {//拒绝添加
+                    dialog.show();
+                    ContactManager.declineInvitation(mToUserInfo.getUserName(), mToUserInfo.getAppKey(), "拒绝了您的好友请求", new BasicCallback() {
+                        @Override
+                        public void gotResult(int responseCode, String responseMessage) {
+                            dialog.dismiss();
+                            if (responseCode == 0) {
+                                //拒绝时候要修改button数据库状态,并更新内存
+                                Intent btnIntent = new Intent();
+                                btnIntent.putExtra("position", position);
+                                btnIntent.putExtra("btn_state", 1);
+                                setResult(JGApplication.RESULT_BUTTON, btnIntent);
+                                finish();
                             }
-                        });
-                        break;
-                    case R.id.btn_agree:
-                        //同意添加
-                        dialog.show();
-                        ContactManager.acceptInvitation(mToUserInfo.getUserName(), mToUserInfo.getAppKey(), new BasicCallback() {
-                            @Override
-                            public void gotResult(int responseCode, String responseMessage) {
-                                dialog.dismiss();
-                                if (responseCode == 0) {
-                                    Intent btnIntent2 = new Intent();
-                                    btnIntent2.putExtra("position", position);
-                                    btnIntent2.putExtra("btn_state", 2);
-                                    setResult(JGApplication.RESULT_BUTTON, btnIntent2);
-                                    EventBus.getDefault().post(new Event.Builder().setType(EventType.addFriend)
-                                            .setFriendId(SharePreferenceManager.getItem()).build());
-                                    finish();
-                                }
+                        }
+                    });
+
+                } else if (i == R.id.btn_agree) {//同意添加
+                    dialog.show();
+                    ContactManager.acceptInvitation(mToUserInfo.getUserName(), mToUserInfo.getAppKey(), new BasicCallback() {
+                        @Override
+                        public void gotResult(int responseCode, String responseMessage) {
+                            dialog.dismiss();
+                            if (responseCode == 0) {
+                                Intent btnIntent2 = new Intent();
+                                btnIntent2.putExtra("position", position);
+                                btnIntent2.putExtra("btn_state", 2);
+                                setResult(JGApplication.RESULT_BUTTON, btnIntent2);
+                                EventBus.getDefault().post(new Event.Builder().setType(EventType.addFriend)
+                                        .setFriendId(SharePreferenceManager.getItem()).build());
+                                finish();
                             }
-                        });
-                        break;
-                    default:
-                        break;
+                        }
+                    });
+
+                } else {
                 }
 
             }

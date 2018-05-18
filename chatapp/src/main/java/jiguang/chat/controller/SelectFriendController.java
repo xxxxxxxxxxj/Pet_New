@@ -62,16 +62,16 @@ public class SelectFriendController implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.jmui_cancel_btn:
-                mContext.finish();
-                break;
-            case R.id.finish_btn:
-                Intent intent = new Intent();
-                intent.putStringArrayListExtra("SelectedUser", mAdapter.getSelectedUser());
-                mContext.setResult(JGApplication.RESULT_CODE_SELECT_FRIEND, intent);
-                mContext.finish();
-                break;
+        int i = v.getId();
+        if (i == R.id.jmui_cancel_btn) {
+            mContext.finish();
+
+        } else if (i == R.id.finish_btn) {
+            Intent intent = new Intent();
+            intent.putStringArrayListExtra("SelectedUser", mAdapter.getSelectedUser());
+            mContext.setResult(JGApplication.RESULT_CODE_SELECT_FRIEND, intent);
+            mContext.finish();
+
         }
     }
 

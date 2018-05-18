@@ -31,8 +31,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetGroupInfoCallback;
 import cn.jpush.im.android.api.content.EventNotificationContent;
@@ -93,9 +91,7 @@ import jiguang.chat.view.listview.DropDownListView;
  */
 
 public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBoardListener, View.OnClickListener {
-    @Bind(R.id.lv_chat)
     DropDownListView lvChat;
-    @Bind(R.id.ek_bar)
     XhsEmoticonsKeyBoard ekBar;
     public static final String JPG = ".jpg";
     private static String MsgIDs = "msgIDs";
@@ -149,13 +145,14 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
 
         setContentView(R.layout.activity_chat);
         mChatView = (ChatView) findViewById(R.id.chat_view);
+        lvChat = (DropDownListView) findViewById(R.id.lv_chat);
+        ekBar = (XhsEmoticonsKeyBoard) findViewById(R.id.ek_bar);
         mChatView.initModule(mDensity, mDensityDpi);
 
         this.mWindow = getWindow();
         this.mImm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         mChatView.setListeners(this);
 
-        ButterKnife.bind(this);
 
         initData();
         initView();
@@ -364,23 +361,22 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.jmui_return_btn:
-                returnBtn();
-                break;
-            case R.id.jmui_right_btn:
-                startChatDetailActivity(mTargetId, mTargetAppKey, mGroupId);
-                break;
-            case R.id.jmui_at_me_btn:
-                if (mUnreadMsgCnt < ChattingListAdapter.PAGE_MESSAGE_COUNT) {
-                    int position = ChattingListAdapter.PAGE_MESSAGE_COUNT + mAtMsgId - mConv.getLatestMessage().getId();
-                    mChatView.setToPosition(position);
-                } else {
-                    mChatView.setToPosition(mAtMsgId + mUnreadMsgCnt - mConv.getLatestMessage().getId());
-                }
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.jmui_return_btn) {
+            returnBtn();
+
+        } else if (i == R.id.jmui_right_btn) {
+            startChatDetailActivity(mTargetId, mTargetAppKey, mGroupId);
+
+        } else if (i == R.id.jmui_at_me_btn) {
+            if (mUnreadMsgCnt < ChattingListAdapter.PAGE_MESSAGE_COUNT) {
+                int position = ChattingListAdapter.PAGE_MESSAGE_COUNT + mAtMsgId - mConv.getLatestMessage().getId();
+                mChatView.setToPosition(position);
+            } else {
+                mChatView.setToPosition(mAtMsgId + mUnreadMsgCnt - mConv.getLatestMessage().getId());
+            }
+
+        } else {
         }
     }
 

@@ -170,56 +170,55 @@ public class GroupNotFriendActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
-        switch (v.getId()) {
-            case R.id.btn_add_friend:
-                if (mUserInfo.isFriend()) {
-                    ToastUtil.shortToast(GroupNotFriendActivity.this, "对方已经是你的好友");
-                } else {
-                    intent.setClass(GroupNotFriendActivity.this, VerificationActivity.class);
-                    //对方信息
-                    intent.putExtra("detail_add_friend", mUserName);
-                    intent.putExtra("detail_add_nick_name", mNickName);
-                    intent.putExtra("detail_add_avatar_path", mAvatarPath);
-                    //自己的昵称或者是用户名
-                    intent.putExtra("detail_add_friend_my_nickname", mMyName);
-                    intent.setFlags(1);
-                    startActivity(intent);
-                }
-                break;
-            case R.id.btn_send_message:
-                intent.setClass(GroupNotFriendActivity.this, ChatActivity.class);
-                //创建会话
-                intent.putExtra(JGApplication.TARGET_ID, mUserInfo.getUserName());
-                intent.putExtra(JGApplication.TARGET_APP_KEY, mUserInfo.getAppKey());
-                String notename = mUserInfo.getNotename();
+        int i = v.getId();
+        if (i == R.id.btn_add_friend) {
+            if (mUserInfo.isFriend()) {
+                ToastUtil.shortToast(GroupNotFriendActivity.this, "对方已经是你的好友");
+            } else {
+                intent.setClass(GroupNotFriendActivity.this, VerificationActivity.class);
+                //对方信息
+                intent.putExtra("detail_add_friend", mUserName);
+                intent.putExtra("detail_add_nick_name", mNickName);
+                intent.putExtra("detail_add_avatar_path", mAvatarPath);
+                //自己的昵称或者是用户名
+                intent.putExtra("detail_add_friend_my_nickname", mMyName);
+                intent.setFlags(1);
+                startActivity(intent);
+            }
+
+        } else if (i == R.id.btn_send_message) {
+            intent.setClass(GroupNotFriendActivity.this, ChatActivity.class);
+            //创建会话
+            intent.putExtra(JGApplication.TARGET_ID, mUserInfo.getUserName());
+            intent.putExtra(JGApplication.TARGET_APP_KEY, mUserInfo.getAppKey());
+            String notename = mUserInfo.getNotename();
+            if (TextUtils.isEmpty(notename)) {
+                notename = mUserInfo.getNickname();
                 if (TextUtils.isEmpty(notename)) {
-                    notename = mUserInfo.getNickname();
-                    if (TextUtils.isEmpty(notename)) {
-                        notename = mUserInfo.getUserName();
-                    }
+                    notename = mUserInfo.getUserName();
                 }
-                intent.putExtra(JGApplication.CONV_TITLE, notename);
-                Conversation conv = JMessageClient.getSingleConversation(mUserInfo.getUserName(), mUserInfo.getAppKey());
-                //如果会话为空，使用EventBus通知会话列表添加新会话
-                if (conv == null) {
-                    conv = Conversation.createSingleConversation(mUserInfo.getUserName(), mUserInfo.getAppKey());
-                    EventBus.getDefault().post(new Event.Builder()
-                            .setType(EventType.createConversation)
-                            .setConversation(conv)
-                            .build());
-                }
-                startActivity(intent);
-                break;
-            case R.id.return_btn:
-                finish();
-                break;
-            case R.id.iv_more:
-                intent.setClass(GroupNotFriendActivity.this, NotFriendSettingActivity.class);
-                intent.putExtra("notFriendUserName", mUserName);
-                startActivity(intent);
-                break;
-            default:
-                break;
+            }
+            intent.putExtra(JGApplication.CONV_TITLE, notename);
+            Conversation conv = JMessageClient.getSingleConversation(mUserInfo.getUserName(), mUserInfo.getAppKey());
+            //如果会话为空，使用EventBus通知会话列表添加新会话
+            if (conv == null) {
+                conv = Conversation.createSingleConversation(mUserInfo.getUserName(), mUserInfo.getAppKey());
+                EventBus.getDefault().post(new Event.Builder()
+                        .setType(EventType.createConversation)
+                        .setConversation(conv)
+                        .build());
+            }
+            startActivity(intent);
+
+        } else if (i == R.id.return_btn) {
+            finish();
+
+        } else if (i == R.id.iv_more) {
+            intent.setClass(GroupNotFriendActivity.this, NotFriendSettingActivity.class);
+            intent.putExtra("notFriendUserName", mUserName);
+            startActivity(intent);
+
+        } else {
         }
     }
 }

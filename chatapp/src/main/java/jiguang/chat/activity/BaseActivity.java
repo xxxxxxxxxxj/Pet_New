@@ -120,22 +120,22 @@ public class BaseActivity extends SwipeBackActivity {
                 View.OnClickListener listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        switch (v.getId()) {
-                            case R.id.jmui_cancel_btn:
-                                Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                                break;
-                            case R.id.jmui_commit_btn:
-                                JMessageClient.login(SharePreferenceManager.getCachedUsername(), SharePreferenceManager.getCachedPsw(), new BasicCallback() {
-                                    @Override
-                                    public void gotResult(int responseCode, String responseMessage) {
-                                        if (responseCode == 0) {
-                                            Intent intent = new Intent(BaseActivity.this, MainActivity.class);
-                                            startActivity(intent);
-                                        }
+                        int i = v.getId();
+                        if (i == R.id.jmui_cancel_btn) {
+                            Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
+                            startActivity(intent);
+
+                        } else if (i == R.id.jmui_commit_btn) {
+                            JMessageClient.login(SharePreferenceManager.getCachedUsername(), SharePreferenceManager.getCachedPsw(), new BasicCallback() {
+                                @Override
+                                public void gotResult(int responseCode, String responseMessage) {
+                                    if (responseCode == 0) {
+                                        Intent intent = new Intent(BaseActivity.this, MainActivity.class);
+                                        startActivity(intent);
                                     }
-                                });
-                                break;
+                                }
+                            });
+
                         }
                     }
                 };

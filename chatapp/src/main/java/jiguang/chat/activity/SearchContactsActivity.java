@@ -406,53 +406,53 @@ public class SearchContactsActivity extends BaseActivity {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.btn_cancel:
-                        mDialog.dismiss();
-                        break;
-                    case R.id.btn_sure:
-                        mDialog.dismiss();
-                        //把名片的userName和appKey通过extra发送给对方
-                        TextContent content = new TextContent("推荐了一张名片");
-                        content.setStringExtra("userName", intent.getStringExtra("userName"));
-                        content.setStringExtra("appKey", intent.getStringExtra("appKey"));
-                        content.setStringExtra("businessCard", "businessCard");
-                        Conversation conversation;
-                        if (userInfo == null) {
-                            conversation = JMessageClient.getGroupConversation(groupInfo.getGroupID());
-                            if (conversation == null) {
-                                conversation = Conversation.createGroupConversation(groupInfo.getGroupID());
-                                EventBus.getDefault().post(new Event.Builder()
-                                        .setType(EventType.createConversation)
-                                        .setConversation(conversation)
-                                        .build());
-                            }
-                        } else {
-                            conversation = JMessageClient.getSingleConversation(userInfo.getUserName(), userInfo.getAppKey());
-                            if (conversation == null) {
-                                conversation = Conversation.createSingleConversation(userInfo.getUserName(), userInfo.getAppKey());
-                                EventBus.getDefault().post(new Event.Builder()
-                                        .setType(EventType.createConversation)
-                                        .setConversation(conversation)
-                                        .build());
+                int i = v.getId();
+                if (i == R.id.btn_cancel) {
+                    mDialog.dismiss();
+
+                } else if (i == R.id.btn_sure) {
+                    mDialog.dismiss();
+                    //把名片的userName和appKey通过extra发送给对方
+                    TextContent content = new TextContent("推荐了一张名片");
+                    content.setStringExtra("userName", intent.getStringExtra("userName"));
+                    content.setStringExtra("appKey", intent.getStringExtra("appKey"));
+                    content.setStringExtra("businessCard", "businessCard");
+                    Conversation conversation;
+                    if (userInfo == null) {
+                        conversation = JMessageClient.getGroupConversation(groupInfo.getGroupID());
+                        if (conversation == null) {
+                            conversation = Conversation.createGroupConversation(groupInfo.getGroupID());
+                            EventBus.getDefault().post(new Event.Builder()
+                                    .setType(EventType.createConversation)
+                                    .setConversation(conversation)
+                                    .build());
+                        }
+                    } else {
+                        conversation = JMessageClient.getSingleConversation(userInfo.getUserName(), userInfo.getAppKey());
+                        if (conversation == null) {
+                            conversation = Conversation.createSingleConversation(userInfo.getUserName(), userInfo.getAppKey());
+                            EventBus.getDefault().post(new Event.Builder()
+                                    .setType(EventType.createConversation)
+                                    .setConversation(conversation)
+                                    .build());
+                        }
+                    }
+
+                    Message textMessage = conversation.createSendMessage(content);
+                    MessageSendingOptions options = new MessageSendingOptions();
+                    options.setNeedReadReceipt(true);
+                    JMessageClient.sendMessage(textMessage, options);
+                    textMessage.setOnSendCompleteCallback(new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                Toast.makeText(context, "发送成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                HandleResponseCode.onHandle(context, i, false);
                             }
                         }
+                    });
 
-                        Message textMessage = conversation.createSendMessage(content);
-                        MessageSendingOptions options = new MessageSendingOptions();
-                        options.setNeedReadReceipt(true);
-                        JMessageClient.sendMessage(textMessage, options);
-                        textMessage.setOnSendCompleteCallback(new BasicCallback() {
-                            @Override
-                            public void gotResult(int i, String s) {
-                                if (i == 0) {
-                                    Toast.makeText(context, "发送成功", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    HandleResponseCode.onHandle(context, i, false);
-                                }
-                            }
-                        });
-                        break;
                 }
             }
         };

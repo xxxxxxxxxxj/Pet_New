@@ -115,29 +115,28 @@ public class SendFileController implements View.OnClickListener, ViewPager.OnPag
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.actionbar_file_btn:
-                mSFView.setCurrentItem(0);
-                break;
-            case R.id.actionbar_video_btn:
-                mSFView.setCurrentItem(1);
-                break;
-            case R.id.actionbar_album_btn:
-                mSFView.setCurrentItem(2);
-                break;
-            case R.id.actionbar_audio_btn:
-                mSFView.setCurrentItem(3);
-                break;
-            case R.id.actionbar_other_btn:
-                mSFView.setCurrentItem(4);
-                break;
-            case R.id.return_btn:
-                mContext.finish();
-                break;
-            case R.id.send_file_btn:
-                if (mSize == 0) {
-                    break;
-                }
+        int i = view.getId();
+        if (i == R.id.actionbar_file_btn) {
+            mSFView.setCurrentItem(0);
+
+        } else if (i == R.id.actionbar_video_btn) {
+            mSFView.setCurrentItem(1);
+
+        } else if (i == R.id.actionbar_album_btn) {
+            mSFView.setCurrentItem(2);
+
+        } else if (i == R.id.actionbar_audio_btn) {
+            mSFView.setCurrentItem(3);
+
+        } else if (i == R.id.actionbar_other_btn) {
+            mSFView.setCurrentItem(4);
+
+        } else if (i == R.id.return_btn) {
+            mContext.finish();
+
+        } else if (i == R.id.send_file_btn) {
+            if (mSize == 0) {
+            }else{
                 mDialog = new ProgressDialog(mContext);
                 mDialog.setCanceledOnTouchOutside(false);
                 mDialog.setCancelable(false);
@@ -227,7 +226,7 @@ public class SendFileController implements View.OnClickListener, ViewPager.OnPag
                             }
                     }
                 }
-                break;
+            }
         }
     }
 

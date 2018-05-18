@@ -126,24 +126,24 @@ public class MembersInChatActivity extends BaseActivity {
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.return_btn:
-                    Intent intent = new Intent();
-                    setResult(JGApplication.RESULT_CODE_ALL_MEMBER, intent);
-                    finish();
-                    break;
-                case R.id.right_btn:
-                    if (mIsDeleteMode) {
-                        List<String> deleteList = mAdapter.getSelectedList();
-                        if (deleteList.size() > 0) {
-                            showDeleteMemberDialog(deleteList);
-                        }else {
-                            ToastUtil.shortToast(MembersInChatActivity.this, "请至少选择一个成员");
-                        }
+            int i = v.getId();
+            if (i == R.id.return_btn) {
+                Intent intent = new Intent();
+                setResult(JGApplication.RESULT_CODE_ALL_MEMBER, intent);
+                finish();
+
+            } else if (i == R.id.right_btn) {
+                if (mIsDeleteMode) {
+                    List<String> deleteList = mAdapter.getSelectedList();
+                    if (deleteList.size() > 0) {
+                        showDeleteMemberDialog(deleteList);
                     } else {
-                        addMemberToGroup();
+                        ToastUtil.shortToast(MembersInChatActivity.this, "请至少选择一个成员");
                     }
-                    break;
+                } else {
+                    addMemberToGroup();
+                }
+
             }
         }
     };
@@ -173,29 +173,28 @@ public class MembersInChatActivity extends BaseActivity {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.jmui_cancel_btn:
-                        mDialog.dismiss();
-                        break;
-                    case R.id.jmui_commit_btn:
-                        mDialog.dismiss();
-                        mLoadingDialog = DialogCreator.createLoadingDialog(mContext,
-                                mContext.getString(R.string.deleting_hint));
-                        mLoadingDialog.show();
-                        JMessageClient.removeGroupMembers(mGroupId, list, new BasicCallback() {
-                            @Override
-                            public void gotResult(int status, String desc) {
-                                mLoadingDialog.dismiss();
-                                if (status == 0) {
-                                    Intent intent = new Intent();
-                                    setResult(JGApplication.RESULT_CODE_ALL_MEMBER, intent);
-                                    finish();
-                                } else {
-                                    Toast.makeText(MembersInChatActivity.this, "删除失败" + desc, Toast.LENGTH_SHORT).show();
-                                }
+                int i = v.getId();
+                if (i == R.id.jmui_cancel_btn) {
+                    mDialog.dismiss();
+
+                } else if (i == R.id.jmui_commit_btn) {
+                    mDialog.dismiss();
+                    mLoadingDialog = DialogCreator.createLoadingDialog(mContext,
+                            mContext.getString(R.string.deleting_hint));
+                    mLoadingDialog.show();
+                    JMessageClient.removeGroupMembers(mGroupId, list, new BasicCallback() {
+                        @Override
+                        public void gotResult(int status, String desc) {
+                            mLoadingDialog.dismiss();
+                            if (status == 0) {
+                                Intent intent = new Intent();
+                                setResult(JGApplication.RESULT_CODE_ALL_MEMBER, intent);
+                                finish();
+                            } else {
+                                Toast.makeText(MembersInChatActivity.this, "删除失败" + desc, Toast.LENGTH_SHORT).show();
                             }
-                        });
-                        break;
+                        }
+                    });
 
                 }
             }
@@ -221,25 +220,24 @@ public class MembersInChatActivity extends BaseActivity {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.jmui_cancel_btn:
-                        dialog.cancel();
-                        break;
-                    case R.id.jmui_commit_btn:
-                        final String targetId = userNameEt.getText().toString().trim();
-                        if (TextUtils.isEmpty(targetId)) {
-                            HandleResponseCode.onHandle(mContext, 801001, true);
-                            break;
-                            //检查群组中是否包含该用户
-                        } else if (checkIfNotContainUser(targetId)) {
-                            mLoadingDialog = DialogCreator.createLoadingDialog(mContext,
-                                    mContext.getString(R.string.searching_user));
-                            mLoadingDialog.show();
-                            getUserInfo(targetId, dialog);
-                        } else {
-                            HandleResponseCode.onHandle(mContext, 1002, true);
-                        }
-                        break;
+                int i = view.getId();
+                if (i == R.id.jmui_cancel_btn) {
+                    dialog.cancel();
+
+                } else if (i == R.id.jmui_commit_btn) {
+                    final String targetId = userNameEt.getText().toString().trim();
+                    if (TextUtils.isEmpty(targetId)) {
+                        HandleResponseCode.onHandle(mContext, 801001, true);
+                        //检查群组中是否包含该用户
+                    } else if (checkIfNotContainUser(targetId)) {
+                        mLoadingDialog = DialogCreator.createLoadingDialog(mContext,
+                                mContext.getString(R.string.searching_user));
+                        mLoadingDialog.show();
+                        getUserInfo(targetId, dialog);
+                    } else {
+                        HandleResponseCode.onHandle(mContext, 1002, true);
+                    }
+
                 }
             }
         };

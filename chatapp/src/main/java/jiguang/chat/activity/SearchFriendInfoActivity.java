@@ -68,14 +68,12 @@ public class SearchFriendInfoActivity extends BaseActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         Intent intent;
-        switch (v.getId()) {
-            case R.id.btn_addFriend:
-                //添加好友界面
-                intent = new Intent(SearchFriendInfoActivity.this, VerificationActivity.class);
-                startActivity(intent);
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.btn_addFriend) {//添加好友界面
+            intent = new Intent(SearchFriendInfoActivity.this, VerificationActivity.class);
+            startActivity(intent);
+
+        } else {
         }
 
     }

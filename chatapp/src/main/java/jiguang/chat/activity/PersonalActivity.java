@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bigkoo.pickerview.TimePickerView;
+import com.bigkoo.pickerview.view.TimePickerView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -178,86 +178,78 @@ public class PersonalActivity extends BaseActivity implements SelectAddressInter
     @Override
     public void onClick(View v) {
         intent = new Intent(PersonalActivity.this, NickSignActivity.class);
-        switch (v.getId()) {
-            case R.id.iv_photo:
-                //头像
-                if ((ContextCompat.checkSelfPermission(PersonalActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) ||
-                        (ContextCompat.checkSelfPermission(PersonalActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
-                    Toast.makeText(PersonalActivity.this, "请在应用管理中打开“读写存储”和“相机”访问权限！", Toast.LENGTH_SHORT).show();
-                }
-                mChoosePhoto.setInfo(PersonalActivity.this, true);
-                mChoosePhoto.showPhotoDialog(PersonalActivity.this);
-                break;
-            case R.id.rl_nickName:
-                //昵称
-                intent.setFlags(FLAGS_NICK);
-                intent.putExtra("old_nick", mMyInfo.getNickname());
-                startActivityForResult(intent, NICK_NAME);
-                break;
-            case R.id.sign:
-                //签名
-                intent.setFlags(FLAGS_SIGN);
-                intent.putExtra("old_sign", mMyInfo.getSignature());
-                startActivityForResult(intent, SIGN);
-                break;
-            case R.id.rl_gender:
-                //弹出性别选择器
-                dialog = new SelectAddressDialog(PersonalActivity.this);
-                dialog.showGenderDialog(PersonalActivity.this, mMyInfo);
-                break;
-            case R.id.rl_birthday:
-                //弹出时间选择器选择生日
-                TimePickerView timePickerView = new TimePickerView.Builder(PersonalActivity.this, new TimePickerView.OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelect(final Date date, View v) {
-                        mMyInfo.setBirthday(date.getTime());
-                        JMessageClient.updateMyInfo(UserInfo.Field.birthday, mMyInfo, new BasicCallback() {
-                            @Override
-                            public void gotResult(int responseCode, String responseMessage) {
-                                if (responseCode == 0) {
-                                    mTv_birthday.setText(getDataTime(date));
-                                    Toast.makeText(PersonalActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(PersonalActivity.this, "更新失败", Toast.LENGTH_SHORT).show();
-                                }
+        int i = v.getId();
+        if (i == R.id.iv_photo) {//头像
+            if ((ContextCompat.checkSelfPermission(PersonalActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) ||
+                    (ContextCompat.checkSelfPermission(PersonalActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                Toast.makeText(PersonalActivity.this, "请在应用管理中打开“读写存储”和“相机”访问权限！", Toast.LENGTH_SHORT).show();
+            }
+            mChoosePhoto.setInfo(PersonalActivity.this, true);
+            mChoosePhoto.showPhotoDialog(PersonalActivity.this);
+
+        } else if (i == R.id.rl_nickName) {//昵称
+            intent.setFlags(FLAGS_NICK);
+            intent.putExtra("old_nick", mMyInfo.getNickname());
+            startActivityForResult(intent, NICK_NAME);
+
+        } else if (i == R.id.sign) {//签名
+            intent.setFlags(FLAGS_SIGN);
+            intent.putExtra("old_sign", mMyInfo.getSignature());
+            startActivityForResult(intent, SIGN);
+
+        } else if (i == R.id.rl_gender) {//弹出性别选择器
+            dialog = new SelectAddressDialog(PersonalActivity.this);
+            dialog.showGenderDialog(PersonalActivity.this, mMyInfo);
+
+        } else if (i == R.id.rl_birthday) {//弹出时间选择器选择生日
+            /*TimePickerView timePickerView = new TimePickerView.(PersonalActivity.this, new TimePickerView.OnTimeSelectListener() {
+                @Override
+                public void onTimeSelect(final Date date, View v) {
+                    mMyInfo.setBirthday(date.getTime());
+                    JMessageClient.updateMyInfo(UserInfo.Field.birthday, mMyInfo, new BasicCallback() {
+                        @Override
+                        public void gotResult(int responseCode, String responseMessage) {
+                            if (responseCode == 0) {
+                                mTv_birthday.setText(getDataTime(date));
+                                Toast.makeText(PersonalActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(PersonalActivity.this, "更新失败", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
-                })
-                        .setType(TimePickerView.Type.YEAR_MONTH_DAY)
-                        .setCancelText("取消")
-                        .setSubmitText("确定")
-                        .setContentSize(20)//滚轮文字大小
-                        .setTitleSize(20)//标题文字大小
-                        .setOutSideCancelable(true)
-                        .isCyclic(true)
-                        .setTextColorCenter(Color.BLACK)//设置选中项的颜色
-                        .setSubmitColor(Color.GRAY)//确定按钮文字颜色
-                        .setCancelColor(Color.GRAY)//取消按钮文字颜色
-                        .isCenterLabel(false)
-                        .build();
-                timePickerView.show();
-//                dialog = new SelectAddressDialog(PersonalActivity.this);
-//                dialog.showDateDialog(PersonalActivity.this, mMyInfo);
-                break;
-            case R.id.rl_cityChoose:
-                //点击选择省市
-                dialog = new SelectAddressDialog(PersonalActivity.this,
-                        PersonalActivity.this, SelectAddressDialog.STYLE_THREE, null, mMyInfo);
-                dialog.showDialog();
-                break;
-            case R.id.rl_zxing:
-                //二维码
-                Intent intent = new Intent(PersonalActivity.this, Person2CodeActivity.class);
-                intent.putExtra("appkey", mMyInfo.getAppKey());
-                intent.putExtra("username", mMyInfo.getUserName());
-                if (mMyInfo.getAvatarFile() != null) {
-                    intent.putExtra("avatar", mMyInfo.getAvatarFile().getAbsolutePath());
+                        }
+                    });
                 }
-                startActivity(intent);
-                break;
-            default:
-                break;
+            })
+                    .setType(TimePickerView.Type.YEAR_MONTH_DAY)
+                    .setCancelText("取消")
+                    .setSubmitText("确定")
+                    .setContentSize(20)//滚轮文字大小
+                    .setTitleSize(20)//标题文字大小
+                    .setOutSideCancelable(true)
+                    .isCyclic(true)
+                    .setTextColorCenter(Color.BLACK)//设置选中项的颜色
+                    .setSubmitColor(Color.GRAY)//确定按钮文字颜色
+                    .setCancelColor(Color.GRAY)//取消按钮文字颜色
+                    .isCenterLabel(false)
+                    .build();
+            timePickerView.show();
+//                dialog = new SelectAddressDialog(PersonalActivity.this);
+//                dialog.showDateDialog(PersonalActivity.this, mMyInfo);*/
+
+        } else if (i == R.id.rl_cityChoose) {//点击选择省市
+            dialog = new SelectAddressDialog(PersonalActivity.this,
+                    PersonalActivity.this, SelectAddressDialog.STYLE_THREE, null, mMyInfo);
+            dialog.showDialog();
+
+        } else if (i == R.id.rl_zxing) {//二维码
+            Intent intent = new Intent(PersonalActivity.this, Person2CodeActivity.class);
+            intent.putExtra("appkey", mMyInfo.getAppKey());
+            intent.putExtra("username", mMyInfo.getUserName());
+            if (mMyInfo.getAvatarFile() != null) {
+                intent.putExtra("avatar", mMyInfo.getAvatarFile().getAbsolutePath());
+            }
+            startActivity(intent);
+
+        } else {
         }
     }
 

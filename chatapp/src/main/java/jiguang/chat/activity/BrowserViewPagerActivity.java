@@ -274,18 +274,17 @@ public class BrowserViewPagerActivity extends BaseActivity {
                 View.OnClickListener listener = new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        switch (v.getId()) {
-                            case R.id.jmui_delete_conv_ll://保存图片
-                                savePicture(path, mDialog);
-                                break;
-                            case R.id.jmui_top_conv_ll://转发
-                                Intent intent = new Intent(BrowserViewPagerActivity.this, ForwardMsgActivity.class);
-                                JGApplication.forwardMsg.clear();
-                                JGApplication.forwardMsg.add(mMsg);
-                                startActivity(intent);
-                                break;
-                            default:
-                                break;
+                        int i = v.getId();
+                        if (i == R.id.jmui_delete_conv_ll) {
+                            savePicture(path, mDialog);
+
+                        } else if (i == R.id.jmui_top_conv_ll) {
+                            Intent intent = new Intent(BrowserViewPagerActivity.this, ForwardMsgActivity.class);
+                            JGApplication.forwardMsg.clear();
+                            JGApplication.forwardMsg.add(mMsg);
+                            startActivity(intent);
+
+                        } else {
                         }
                         mDialog.dismiss();
                     }
@@ -531,39 +530,39 @@ public class BrowserViewPagerActivity extends BaseActivity {
     private OnClickListener listener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.return_btn:
-                    int pathArray[] = new int[mPathList.size()];
-                    for (int i = 0; i < pathArray.length; i++) {
-                        pathArray[i] = 0;
-                    }
-                    for (int j = 0; j < mSelectMap.size(); j++) {
-                        pathArray[mSelectMap.keyAt(j)] = 1;
-                    }
-                    Intent intent = new Intent();
-                    intent.putExtra("pathArray", pathArray);
-                    setResult(JGApplication.RESULT_CODE_SELECT_PICTURE, intent);
-                    finish();
-                    break;
-                case R.id.pick_picture_send_btn:
-                    mProgressDialog = new ProgressDialog(mContext);
-                    mProgressDialog.setMessage(mContext.getString(R.string.sending_hint));
-                    mProgressDialog.setCanceledOnTouchOutside(false);
-                    mProgressDialog.show();
-                    mPosition = mViewPager.getCurrentItem();
+            int i1 = v.getId();
+            if (i1 == R.id.return_btn) {
+                int pathArray[] = new int[mPathList.size()];
+                for (int i = 0; i < pathArray.length; i++) {
+                    pathArray[i] = 0;
+                }
+                for (int j = 0; j < mSelectMap.size(); j++) {
+                    pathArray[mSelectMap.keyAt(j)] = 1;
+                }
+                Intent intent = new Intent();
+                intent.putExtra("pathArray", pathArray);
+                setResult(JGApplication.RESULT_CODE_SELECT_PICTURE, intent);
+                finish();
 
-                    if (mOriginPictureCb.isChecked()) {
-                        Log.i(TAG, "发送原图");
-                        getOriginPictures(mPosition);
-                    } else {
-                        Log.i(TAG, "发送缩略图");
-                        getThumbnailPictures(mPosition);
-                    }
-                    break;
+            } else if (i1 == R.id.pick_picture_send_btn) {
+                mProgressDialog = new ProgressDialog(mContext);
+                mProgressDialog.setMessage(mContext.getString(R.string.sending_hint));
+                mProgressDialog.setCanceledOnTouchOutside(false);
+                mProgressDialog.show();
+                mPosition = mViewPager.getCurrentItem();
+
+                if (mOriginPictureCb.isChecked()) {
+                    Log.i(TAG, "发送原图");
+                    getOriginPictures(mPosition);
+                } else {
+                    Log.i(TAG, "发送缩略图");
+                    getThumbnailPictures(mPosition);
+                }
+
                 //点击显示原图按钮，下载原图
-                case R.id.load_image_btn:
-                    downloadOriginalPicture();
-                    break;
+            } else if (i1 == R.id.load_image_btn) {
+                downloadOriginalPicture();
+
             }
         }
     };

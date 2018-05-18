@@ -152,45 +152,45 @@ public class GroupListAdapter extends BaseAdapter {
                     View.OnClickListener listener = new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            switch (v.getId()) {
-                                case R.id.btn_cancel:
-                                    mDialog.dismiss();
-                                    break;
-                                case R.id.btn_sure:
-                                    mDialog.dismiss();
-                                    mLoadingDialog = DialogCreator.createLoadingDialog(mContext,
-                                            mContext.getString(R.string.btn_send));
-                                    mLoadingDialog.show();
-                                    //把名片的userName和appKey通过extra发送给对方
-                                    TextContent content = new TextContent("推荐了一张名片");
-                                    content.setStringExtra("userName", mUserName);
-                                    content.setStringExtra("appKey", mAppKey);
-                                    content.setStringExtra("businessCard", "businessCard");
+                            int i = v.getId();
+                            if (i == R.id.btn_cancel) {
+                                mDialog.dismiss();
 
-                                    Conversation conversation = JMessageClient.getGroupConversation(groupInfo.getGroupID());
-                                    if (conversation == null) {
-                                        conversation = Conversation.createGroupConversation(groupInfo.getGroupID());
-                                        EventBus.getDefault().post(new Event.Builder()
-                                                .setType(EventType.createConversation)
-                                                .setConversation(conversation)
-                                                .build());
-                                    }
-                                    Message textMessage = conversation.createSendMessage(content);
-                                    MessageSendingOptions options = new MessageSendingOptions();
-                                    options.setNeedReadReceipt(true);
-                                    JMessageClient.sendMessage(textMessage, options);
-                                    textMessage.setOnSendCompleteCallback(new BasicCallback() {
-                                        @Override
-                                        public void gotResult(int i, String s) {
-                                            if (i == 0) {
-                                                Toast.makeText(mContext, "发送成功", Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                HandleResponseCode.onHandle(mContext, i, false);
-                                            }
+                            } else if (i == R.id.btn_sure) {
+                                mDialog.dismiss();
+                                mLoadingDialog = DialogCreator.createLoadingDialog(mContext,
+                                        mContext.getString(R.string.btn_send));
+                                mLoadingDialog.show();
+                                //把名片的userName和appKey通过extra发送给对方
+                                TextContent content = new TextContent("推荐了一张名片");
+                                content.setStringExtra("userName", mUserName);
+                                content.setStringExtra("appKey", mAppKey);
+                                content.setStringExtra("businessCard", "businessCard");
+
+                                Conversation conversation = JMessageClient.getGroupConversation(groupInfo.getGroupID());
+                                if (conversation == null) {
+                                    conversation = Conversation.createGroupConversation(groupInfo.getGroupID());
+                                    EventBus.getDefault().post(new Event.Builder()
+                                            .setType(EventType.createConversation)
+                                            .setConversation(conversation)
+                                            .build());
+                                }
+                                Message textMessage = conversation.createSendMessage(content);
+                                MessageSendingOptions options = new MessageSendingOptions();
+                                options.setNeedReadReceipt(true);
+                                JMessageClient.sendMessage(textMessage, options);
+                                textMessage.setOnSendCompleteCallback(new BasicCallback() {
+                                    @Override
+                                    public void gotResult(int i, String s) {
+                                        if (i == 0) {
+                                            Toast.makeText(mContext, "发送成功", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            HandleResponseCode.onHandle(mContext, i, false);
                                         }
-                                    });
-                                    mLoadingDialog.dismiss();
-                                    break;
+                                    }
+                                });
+                                mLoadingDialog.dismiss();
+
                             }
                         }
                     };

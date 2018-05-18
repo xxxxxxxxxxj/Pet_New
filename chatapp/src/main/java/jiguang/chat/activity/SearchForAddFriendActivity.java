@@ -79,70 +79,68 @@ public class SearchForAddFriendActivity extends BaseActivity implements View.OnC
     @Override
     public void onClick(View v) {
         final Intent intent = new Intent();
-        switch (v.getId()) {
-            case R.id.btn_search:
-                hintKbTwo();
-                String searchUserName = mEt_searchUser.getText().toString();
-                if (!TextUtils.isEmpty(searchUserName)) {
-                    LoadDialog.show(this);
-                    JMessageClient.getUserInfo(searchUserName, new GetUserInfoCallback() {
-                        @Override
-                        public void gotResult(int responseCode, String responseMessage, UserInfo info) {
-                            LoadDialog.dismiss(SearchForAddFriendActivity.this);
-                            if (responseCode == 0) {
-                                InfoModel.getInstance().friendInfo = info;
-                                mSearch_result.setVisibility(View.VISIBLE);
-                                //已经是好友则不显示"加好友"按钮
-                                if (info.isFriend()) {
-                                    mSearch_addBtn.setVisibility(View.GONE);
-                                    //如果是发起单聊.那么不能显示加好友按钮
-                                } else if (!info.isFriend() && getIntent().getFlags() != 2) {
-                                    mSearch_addBtn.setVisibility(View.VISIBLE);
-                                }
-                                //这个接口会在本地寻找头像文件,不存在就异步拉取
-                                File avatarFile = info.getAvatarFile();
-                                if (avatarFile != null) {
-                                    mSearch_header.setImageBitmap(BitmapFactory.decodeFile(avatarFile.getAbsolutePath()));
-                                    InfoModel.getInstance().setBitmap(BitmapFactory.decodeFile(avatarFile.getAbsolutePath()));
-                                } else {
-                                    mSearch_header.setImageResource(R.drawable.rc_default_portrait);
-                                    InfoModel.getInstance().setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.rc_default_portrait));
-                                }
-                                mSearch_name.setText(TextUtils.isEmpty(info.getNickname()) ? info.getUserName() : info.getNickname());
-                            } else {
-                                ToastUtil.shortToast(SearchForAddFriendActivity.this, "该用户不存在");
-                                mSearch_result.setVisibility(View.GONE);
+        int i = v.getId();
+        if (i == R.id.btn_search) {
+            hintKbTwo();
+            String searchUserName = mEt_searchUser.getText().toString();
+            if (!TextUtils.isEmpty(searchUserName)) {
+                LoadDialog.show(this);
+                JMessageClient.getUserInfo(searchUserName, new GetUserInfoCallback() {
+                    @Override
+                    public void gotResult(int responseCode, String responseMessage, UserInfo info) {
+                        LoadDialog.dismiss(SearchForAddFriendActivity.this);
+                        if (responseCode == 0) {
+                            InfoModel.getInstance().friendInfo = info;
+                            mSearch_result.setVisibility(View.VISIBLE);
+                            //已经是好友则不显示"加好友"按钮
+                            if (info.isFriend()) {
+                                mSearch_addBtn.setVisibility(View.GONE);
+                                //如果是发起单聊.那么不能显示加好友按钮
+                            } else if (!info.isFriend() && getIntent().getFlags() != 2) {
+                                mSearch_addBtn.setVisibility(View.VISIBLE);
                             }
+                            //这个接口会在本地寻找头像文件,不存在就异步拉取
+                            File avatarFile = info.getAvatarFile();
+                            if (avatarFile != null) {
+                                mSearch_header.setImageBitmap(BitmapFactory.decodeFile(avatarFile.getAbsolutePath()));
+                                InfoModel.getInstance().setBitmap(BitmapFactory.decodeFile(avatarFile.getAbsolutePath()));
+                            } else {
+                                mSearch_header.setImageResource(R.drawable.rc_default_portrait);
+                                InfoModel.getInstance().setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.rc_default_portrait));
+                            }
+                            mSearch_name.setText(TextUtils.isEmpty(info.getNickname()) ? info.getUserName() : info.getNickname());
+                        } else {
+                            ToastUtil.shortToast(SearchForAddFriendActivity.this, "该用户不存在");
+                            mSearch_result.setVisibility(View.GONE);
                         }
-                    });
-                }
-                break;
-            case R.id.search_result:
-                //详细资料
-                if (InfoModel.getInstance().isFriend()) {
-                    //已经是好友
-                    intent.setClass(SearchForAddFriendActivity.this, FriendInfoActivity.class);
-                    intent.putExtra("addFriend", true);
-                    intent.putExtra("targetId", InfoModel.getInstance().friendInfo.getUserName());
-                    //直接发起单聊
-                } else if (getIntent().getFlags() == 2){
-                    intent.setClass(SearchForAddFriendActivity.this, GroupNotFriendActivity.class);
-                    intent.putExtra(JGApplication.TARGET_ID, InfoModel.getInstance().friendInfo.getUserName());
-                    intent.putExtra(JGApplication.TARGET_APP_KEY, InfoModel.getInstance().friendInfo.getAppKey());
-                }else {
-                    //添加好友
-                    intent.setClass(SearchForAddFriendActivity.this, SearchFriendInfoActivity.class);
-                }
-                startActivity(intent);
-                break;
-            case R.id.search_addBtn:
-                //添加申请
-                intent.setClass(SearchForAddFriendActivity.this, VerificationActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.iv_clear:
-                mEt_searchUser.setText("");
-                break;
+                    }
+                });
+            }
+
+        } else if (i == R.id.search_result) {//详细资料
+            if (InfoModel.getInstance().isFriend()) {
+                //已经是好友
+                intent.setClass(SearchForAddFriendActivity.this, FriendInfoActivity.class);
+                intent.putExtra("addFriend", true);
+                intent.putExtra("targetId", InfoModel.getInstance().friendInfo.getUserName());
+                //直接发起单聊
+            } else if (getIntent().getFlags() == 2) {
+                intent.setClass(SearchForAddFriendActivity.this, GroupNotFriendActivity.class);
+                intent.putExtra(JGApplication.TARGET_ID, InfoModel.getInstance().friendInfo.getUserName());
+                intent.putExtra(JGApplication.TARGET_APP_KEY, InfoModel.getInstance().friendInfo.getAppKey());
+            } else {
+                //添加好友
+                intent.setClass(SearchForAddFriendActivity.this, SearchFriendInfoActivity.class);
+            }
+            startActivity(intent);
+
+        } else if (i == R.id.search_addBtn) {//添加申请
+            intent.setClass(SearchForAddFriendActivity.this, VerificationActivity.class);
+            startActivity(intent);
+
+        } else if (i == R.id.iv_clear) {
+            mEt_searchUser.setText("");
+
         }
     }
 

@@ -273,29 +273,28 @@ public class AllMembersAdapter extends BaseAdapter implements AdapterView.OnItem
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    switch (v.getId()) {
-                        case R.id.jmui_cancel_btn:
-                            mDialog.dismiss();
-                            break;
-                        case R.id.jmui_commit_btn:
-                            mDialog.dismiss();
-                            mLoadingDialog = DialogCreator.createLoadingDialog(mContext,
-                                    mContext.getString(R.string.deleting_hint));
-                            mLoadingDialog.show();
-                            List<String> list = new ArrayList<String>();
-                            list.add(mMemberList.get(position).data.getUserName());
-                            JMessageClient.removeGroupMembers(mGroupId, list, new BasicCallback() {
-                                @Override
-                                public void gotResult(int status, String desc) {
-                                    mLoadingDialog.dismiss();
-                                    if (status == 0) {
-                                        mContext.refreshMemberList();
-                                    } else {
-                                        ToastUtil.shortToast(mContext, "删除失败" + desc);
-                                    }
+                    int i = v.getId();
+                    if (i == R.id.jmui_cancel_btn) {
+                        mDialog.dismiss();
+
+                    } else if (i == R.id.jmui_commit_btn) {
+                        mDialog.dismiss();
+                        mLoadingDialog = DialogCreator.createLoadingDialog(mContext,
+                                mContext.getString(R.string.deleting_hint));
+                        mLoadingDialog.show();
+                        List<String> list = new ArrayList<String>();
+                        list.add(mMemberList.get(position).data.getUserName());
+                        JMessageClient.removeGroupMembers(mGroupId, list, new BasicCallback() {
+                            @Override
+                            public void gotResult(int status, String desc) {
+                                mLoadingDialog.dismiss();
+                                if (status == 0) {
+                                    mContext.refreshMemberList();
+                                } else {
+                                    ToastUtil.shortToast(mContext, "删除失败" + desc);
                                 }
-                            });
-                            break;
+                            }
+                        });
 
                     }
                 }

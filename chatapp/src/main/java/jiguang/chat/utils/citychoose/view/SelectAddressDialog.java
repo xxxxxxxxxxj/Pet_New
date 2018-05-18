@@ -265,69 +265,68 @@ public class SelectAddressDialog implements OnClickListener,
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.man_rl:
-                        selectAdd.setGender("男");
-                        genderDialog.cancel();
-                        ThreadUtil.runInThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                myInfo.setGender(UserInfo.Gender.male);
-                                JMessageClient.updateMyInfo(UserInfo.Field.gender, myInfo, new BasicCallback() {
-                                    @Override
-                                    public void gotResult(int responseCode, String responseMessage) {
-                                        if (responseCode == 0) {
-                                            ToastUtil.shortToast(context, "更新成功");
-                                        } else {
-                                            ToastUtil.shortToast(context, "更新失败" + responseMessage);
-                                        }
+                int i = v.getId();
+                if (i == R.id.man_rl) {
+                    selectAdd.setGender("男");
+                    genderDialog.cancel();
+                    ThreadUtil.runInThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            myInfo.setGender(UserInfo.Gender.male);
+                            JMessageClient.updateMyInfo(UserInfo.Field.gender, myInfo, new BasicCallback() {
+                                @Override
+                                public void gotResult(int responseCode, String responseMessage) {
+                                    if (responseCode == 0) {
+                                        ToastUtil.shortToast(context, "更新成功");
+                                    } else {
+                                        ToastUtil.shortToast(context, "更新失败" + responseMessage);
                                     }
-                                });
-                            }
-                        });
-                        break;
-                    case R.id.woman_rl:
-                        selectAdd.setGender("女");
-                        genderDialog.cancel();
-                        ThreadUtil.runInThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                myInfo.setGender(UserInfo.Gender.female);
-                                JMessageClient.updateMyInfo(UserInfo.Field.gender, myInfo, new BasicCallback() {
-                                    @Override
-                                    public void gotResult(int responseCode, String responseMessage) {
-                                        if (responseCode == 0) {
-                                            ToastUtil.shortToast(context, "更新成功");
-                                        } else {
-                                            ToastUtil.shortToast(context, "更新失败" + responseMessage);
-                                        }
+                                }
+                            });
+                        }
+                    });
+
+                } else if (i == R.id.woman_rl) {
+                    selectAdd.setGender("女");
+                    genderDialog.cancel();
+                    ThreadUtil.runInThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            myInfo.setGender(UserInfo.Gender.female);
+                            JMessageClient.updateMyInfo(UserInfo.Field.gender, myInfo, new BasicCallback() {
+                                @Override
+                                public void gotResult(int responseCode, String responseMessage) {
+                                    if (responseCode == 0) {
+                                        ToastUtil.shortToast(context, "更新成功");
+                                    } else {
+                                        ToastUtil.shortToast(context, "更新失败" + responseMessage);
                                     }
-                                });
-                            }
-                        });
-                        break;
-                    case R.id.rl_secrecy:
-                        selectAdd.setGender("保密");
-                        genderDialog.cancel();
-                        ThreadUtil.runInThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                myInfo.setGender(UserInfo.Gender.unknown);
-                                JMessageClient.updateMyInfo(UserInfo.Field.gender, myInfo, new BasicCallback() {
-                                    @Override
-                                    public void gotResult(int responseCode, String responseMessage) {
-                                        if (responseCode == 0) {
-                                            ToastUtil.shortToast(context, "更新成功");
-                                        } else {
-                                            ToastUtil.shortToast(context, "更新失败" + responseMessage);
-                                        }
+                                }
+                            });
+                        }
+                    });
+
+                } else if (i == R.id.rl_secrecy) {
+                    selectAdd.setGender("保密");
+                    genderDialog.cancel();
+                    ThreadUtil.runInThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            myInfo.setGender(UserInfo.Gender.unknown);
+                            JMessageClient.updateMyInfo(UserInfo.Field.gender, myInfo, new BasicCallback() {
+                                @Override
+                                public void gotResult(int responseCode, String responseMessage) {
+                                    if (responseCode == 0) {
+                                        ToastUtil.shortToast(context, "更新成功");
+                                    } else {
+                                        ToastUtil.shortToast(context, "更新失败" + responseMessage);
                                     }
-                                });
-                            }
-                        });
-                        break;
-                    default:
-                        break;
+                                }
+                            });
+                        }
+                    });
+
+                } else {
                 }
             }
         };
@@ -469,43 +468,41 @@ public class SelectAddressDialog implements OnClickListener,
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_confirm:
-                if (type == STYLE_TWO) {
-                    selectAdd.setAreaString(mCurrentProviceName + "-" + mCurrentCityName);
-                } else if (type == STYLE_ONE) {
-                    selectAdd.setAreaString(mCurrentProviceName);
-                } else {
-                    selectAdd.setAreaString(mCurrentProviceName + "-" + mCurrentCityName + "-"
-                            + mCurrentDistrictName);
-                }
-                mCurrentProviceNamePosition = tmp1;
-                mCurrentCityNamePosition = tmp2;
-                mCurrentDistrictNamePosition = tmp3;
-                ThreadUtil.runInThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mInfo.setAddress(mCurrentProviceName + "-" + mCurrentCityName + "-" + mCurrentDistrictName);
-                        JMessageClient.updateMyInfo(UserInfo.Field.region, mInfo, new BasicCallback() {
-                            @Override
-                            public void gotResult(int responseCode, String responseMessage) {
-                                if (responseCode == 0) {
-                                    ToastUtil.shortToast(context, "更新成功");
-                                } else {
-                                    ToastUtil.shortToast(context, "更新失败" + responseMessage);
-                                }
+        int i = v.getId();
+        if (i == R.id.btn_confirm) {
+            if (type == STYLE_TWO) {
+                selectAdd.setAreaString(mCurrentProviceName + "-" + mCurrentCityName);
+            } else if (type == STYLE_ONE) {
+                selectAdd.setAreaString(mCurrentProviceName);
+            } else {
+                selectAdd.setAreaString(mCurrentProviceName + "-" + mCurrentCityName + "-"
+                        + mCurrentDistrictName);
+            }
+            mCurrentProviceNamePosition = tmp1;
+            mCurrentCityNamePosition = tmp2;
+            mCurrentDistrictNamePosition = tmp3;
+            ThreadUtil.runInThread(new Runnable() {
+                @Override
+                public void run() {
+                    mInfo.setAddress(mCurrentProviceName + "-" + mCurrentCityName + "-" + mCurrentDistrictName);
+                    JMessageClient.updateMyInfo(UserInfo.Field.region, mInfo, new BasicCallback() {
+                        @Override
+                        public void gotResult(int responseCode, String responseMessage) {
+                            if (responseCode == 0) {
+                                ToastUtil.shortToast(context, "更新成功");
+                            } else {
+                                ToastUtil.shortToast(context, "更新失败" + responseMessage);
                             }
-                        });
-                    }
-                });
-                overdialog.cancel();
-                break;
+                        }
+                    });
+                }
+            });
+            overdialog.cancel();
 
-            case R.id.btn_cancel:
-                overdialog.cancel();
-                break;
-            default:
-                break;
+        } else if (i == R.id.btn_cancel) {
+            overdialog.cancel();
+
+        } else {
         }
     }
 

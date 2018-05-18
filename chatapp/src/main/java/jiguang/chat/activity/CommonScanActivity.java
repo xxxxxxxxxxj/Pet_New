@@ -35,8 +35,6 @@ import com.google.zxing.Result;
 
 import java.lang.reflect.Type;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetUserInfoCallback;
 import cn.jpush.im.android.api.model.UserInfo;
@@ -67,18 +65,14 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     TextView qrcode_g_gallery;
     final int PHOTOREQUESTCODE = 1111;
 
-    @Bind(R.id.scan_image)
-    ImageView scan_image;
-    @Bind(R.id.authorize_return)
-    ImageView authorize_return;
+
     private int scanMode;//扫描模型（二维码）
 
-    @Bind(R.id.common_title_TV_center)
     TextView title;
-    @Bind(R.id.scan_hint)
     TextView scan_hint;
-    @Bind(R.id.tv_scan_result)
     TextView tv_scan_result;
+    ImageView scan_image;
+    ImageView authorize_return;
 
 
     @Override
@@ -88,7 +82,6 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_scan_code);
-        ButterKnife.bind(this);
         scanMode = getIntent().getIntExtra(Constant.REQUEST_SCAN_MODE, Constant.REQUEST_SCAN_MODE_ALL_MODE);
         initView();
     }
@@ -100,6 +93,13 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
                 scan_hint.setText(R.string.scan_qrcode_hint);
                 break;
         }
+
+        title = (TextView) findViewById(R.id.common_title_TV_center);
+        scan_hint = (TextView) findViewById(R.id.scan_hint);
+        tv_scan_result = (TextView) findViewById(R.id.tv_scan_result);
+        scan_image = (ImageView) findViewById(R.id.scan_image);
+        authorize_return = (ImageView) findViewById(R.id.authorize_return);
+
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
         scanContainer = findViewById(R.id.capture_container);
         scanCropView = findViewById(R.id.capture_crop_view);
@@ -235,18 +235,17 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_light:
-                scanManager.switchLight();
-                break;
-            case R.id.qrcode_g_gallery:
-                showPictures(PHOTOREQUESTCODE);
-                break;
-            case R.id.authorize_return:
-                finish();
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.iv_light) {
+            scanManager.switchLight();
+
+        } else if (i == R.id.qrcode_g_gallery) {
+            showPictures(PHOTOREQUESTCODE);
+
+        } else if (i == R.id.authorize_return) {
+            finish();
+
+        } else {
         }
     }
 

@@ -107,23 +107,22 @@ public class MeView extends LinearLayout implements SlipButton.OnChangedListener
 
     @Override
     public void onChanged(int id, final boolean checkState) {
-        switch (id) {
-            case R.id.btn_noDisturb:
-                final Dialog loadingDialog = DialogCreator.createLoadingDialog(mContext,
-                        mContext.getString(R.string.jmui_loading));
-                loadingDialog.show();
-                JMessageClient.setNoDisturbGlobal(checkState ? 1 : 0, new BasicCallback() {
-                    @Override
-                    public void gotResult(int status, String desc) {
-                        loadingDialog.dismiss();
-                        if (status == 0) {
-                        } else {
-                            mSet_noDisturb.setChecked(!checkState);
-                            ToastUtil.shortToast(mContext, "设置失败");
-                        }
+        if (id == R.id.btn_noDisturb) {
+            final Dialog loadingDialog = DialogCreator.createLoadingDialog(mContext,
+                    mContext.getString(R.string.jmui_loading));
+            loadingDialog.show();
+            JMessageClient.setNoDisturbGlobal(checkState ? 1 : 0, new BasicCallback() {
+                @Override
+                public void gotResult(int status, String desc) {
+                    loadingDialog.dismiss();
+                    if (status == 0) {
+                    } else {
+                        mSet_noDisturb.setChecked(!checkState);
+                        ToastUtil.shortToast(mContext, "设置失败");
                     }
-                });
-                break;
+                }
+            });
+
         }
     }
 

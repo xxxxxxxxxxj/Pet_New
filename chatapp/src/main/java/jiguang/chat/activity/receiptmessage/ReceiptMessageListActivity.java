@@ -113,18 +113,17 @@ public class ReceiptMessageListActivity extends FragmentActivity implements View
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.return_btn:
-                 finish();
-                break;
-            case R.id.tv_noRead:
-                mReceipt_viewPager.setCurrentItem(0);
-                break;
-            case R.id.tv_alreadyRead:
-                mReceipt_viewPager.setCurrentItem(1);
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.return_btn) {
+            finish();
+
+        } else if (i == R.id.tv_noRead) {
+            mReceipt_viewPager.setCurrentItem(0);
+
+        } else if (i == R.id.tv_alreadyRead) {
+            mReceipt_viewPager.setCurrentItem(1);
+
+        } else {
         }
     }
 }

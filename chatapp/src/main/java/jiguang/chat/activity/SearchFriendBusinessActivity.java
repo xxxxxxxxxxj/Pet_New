@@ -190,35 +190,35 @@ public class SearchFriendBusinessActivity extends BaseActivity implements Adapte
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.btn_cancel:
-                        mDialog.dismiss();
-                        break;
-                    case R.id.btn_sure:
-                        mDialog.dismiss();
-                        //把名片的userName和appKey通过extra发送给对方
-                        TextContent content = new TextContent("推荐了一张名片");
-                        content.setStringExtra("userName", info.getUserName());
-                        content.setStringExtra("appKey", info.getAppKey());
-                        content.setStringExtra("businessCard", "businessCard");
+                int i = v.getId();
+                if (i == R.id.btn_cancel) {
+                    mDialog.dismiss();
 
-                        Message textMessage = conversation.createSendMessage(content);
-                        MessageSendingOptions options = new MessageSendingOptions();
-                        options.setNeedReadReceipt(true);
-                        JMessageClient.sendMessage(textMessage, options);
-                        textMessage.setOnSendCompleteCallback(new BasicCallback() {
-                            @Override
-                            public void gotResult(int i, String s) {
-                                if (i == 0) {
-                                    SharePreferenceManager.setIsOpen(true);
-                                    Toast.makeText(SearchFriendBusinessActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                } else {
-                                    HandleResponseCode.onHandle(SearchFriendBusinessActivity.this, i, false);
-                                }
+                } else if (i == R.id.btn_sure) {
+                    mDialog.dismiss();
+                    //把名片的userName和appKey通过extra发送给对方
+                    TextContent content = new TextContent("推荐了一张名片");
+                    content.setStringExtra("userName", info.getUserName());
+                    content.setStringExtra("appKey", info.getAppKey());
+                    content.setStringExtra("businessCard", "businessCard");
+
+                    Message textMessage = conversation.createSendMessage(content);
+                    MessageSendingOptions options = new MessageSendingOptions();
+                    options.setNeedReadReceipt(true);
+                    JMessageClient.sendMessage(textMessage, options);
+                    textMessage.setOnSendCompleteCallback(new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                SharePreferenceManager.setIsOpen(true);
+                                Toast.makeText(SearchFriendBusinessActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                HandleResponseCode.onHandle(SearchFriendBusinessActivity.this, i, false);
                             }
-                        });
-                        break;
+                        }
+                    });
+
                 }
             }
         };

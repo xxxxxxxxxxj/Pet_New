@@ -37,7 +37,9 @@
             android:layout_marginRight="10dip"
             android:layout_toLeftOf="@id/tv_titlebar_other"
             android:layout_toRightOf="@id/iv_titlebar_back"
+            android:ellipsize="end"
             android:gravity="center"
+            android:singleLine="true"
             android:text="TextView"
             android:textColor="@color/a333333"
             android:textSize="18sp" />

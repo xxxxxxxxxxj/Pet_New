@@ -334,47 +334,46 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_close:
-                mTv_tack.setVisibility(View.VISIBLE);
-                if (recorderPath != null) {//有拍摄好的正在播放,重新拍摄
-                    FileUtils.delteFiles(new File(recorderPath));
-                    recorderPath = null;
-                    recordSecond = 0;
-                    playerManager.stopMedia();
-                    setTakeButtonShow(true);
-                    iv_choice.setVisibility(View.GONE);
-                    cameraManager.openCamera(this, mTextureView.getSurfaceTexture(), mTextureView.getWidth(), mTextureView.getHeight());
-                } else if (isPhotoTakingState) {
-                    isPhotoTakingState = false;
-                    iv_choice.setVisibility(View.GONE);
-                    setTakeButtonShow(true);
-                    cameraManager.restartPreview();
-                } else {
-                    finish();
-                }
-                break;
-            case R.id.iv_choice://选择图片或视频
-                //将拍摄的视频路径回传
-                if (recorderPath != null) {
-                    Intent intent = new Intent();
-                    intent.putExtra("video", recorderPath);
-                    setResult(RequestCode.TAKE_VIDEO, intent);
-                }
-                if (photo != null) {
-                    backPicture();
-                }
+        int i = v.getId();
+        if (i == R.id.iv_close) {
+            mTv_tack.setVisibility(View.VISIBLE);
+            if (recorderPath != null) {//有拍摄好的正在播放,重新拍摄
+                FileUtils.delteFiles(new File(recorderPath));
+                recorderPath = null;
+                recordSecond = 0;
+                playerManager.stopMedia();
+                setTakeButtonShow(true);
+                iv_choice.setVisibility(View.GONE);
+                cameraManager.openCamera(this, mTextureView.getSurfaceTexture(), mTextureView.getWidth(), mTextureView.getHeight());
+            } else if (isPhotoTakingState) {
+                isPhotoTakingState = false;
+                iv_choice.setVisibility(View.GONE);
+                setTakeButtonShow(true);
+                cameraManager.restartPreview();
+            } else {
                 finish();
-                break;
-            case R.id.tv_flash:
-                cameraManager.changeCameraFlash(mTextureView.getSurfaceTexture(),
-                        mTextureView.getWidth(), mTextureView.getHeight());
-                setCameraFlashState();
-                break;
-            case R.id.iv_facing:
-                cameraManager.changeCameraFacing(this, mTextureView.getSurfaceTexture(),
-                        mTextureView.getWidth(), mTextureView.getHeight());
-                break;
+            }
+
+        } else if (i == R.id.iv_choice) {//将拍摄的视频路径回传
+            if (recorderPath != null) {
+                Intent intent = new Intent();
+                intent.putExtra("video", recorderPath);
+                setResult(RequestCode.TAKE_VIDEO, intent);
+            }
+            if (photo != null) {
+                backPicture();
+            }
+            finish();
+
+        } else if (i == R.id.tv_flash) {
+            cameraManager.changeCameraFlash(mTextureView.getSurfaceTexture(),
+                    mTextureView.getWidth(), mTextureView.getHeight());
+            setCameraFlashState();
+
+        } else if (i == R.id.iv_facing) {
+            cameraManager.changeCameraFacing(this, mTextureView.getSurfaceTexture(),
+                    mTextureView.getWidth(), mTextureView.getHeight());
+
         }
     }
 

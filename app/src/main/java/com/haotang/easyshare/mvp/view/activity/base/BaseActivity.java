@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 
 import com.haotang.easyshare.R;
@@ -64,6 +65,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected abstract void initData(Bundle savedInstanceState);//做数据相关的初始化工作
 
     protected abstract void initEvent();//做监听事件相关的初始化工作
+    protected int mWidth;
+    protected int mHeight;
+    protected float mDensity;
+    protected int mDensityDpi;
+    protected int mAvatarSize;
+    protected float mRatio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +86,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         initData(savedInstanceState);//由具体的activity实现，做数据的初始化
         initEvent();//由具体的activity实现，做事件监听的初始化
         getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_ALL);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        mDensity = dm.density;
+        mDensityDpi = dm.densityDpi;
+        mWidth = dm.widthPixels;
+        mHeight = dm.heightPixels;
+        mRatio = Math.min((float) mWidth / 720, (float) mHeight / 1280);
+        mAvatarSize = (int) (50 * mDensity);
     }
 
     private void initBarColor() {

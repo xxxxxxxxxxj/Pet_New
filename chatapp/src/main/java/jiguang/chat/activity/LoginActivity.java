@@ -69,29 +69,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.background:
-                if (!getLogoShow()) {
-                    InputMethodManager imm = (InputMethodManager)
-                            getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    setLogoShow(false);
-                }
-                break;
-            case R.id.login_userName:
-            case R.id.login_passWord:
-                if (getLogoShow()) {
-                    mTitleBar.setVisibility(View.VISIBLE);
-                    mTitleBar.startAnimation(moveToView(0.0f, 0.0f, -1.0f, 0.0f));
-                    mDe_login_logo.setVisibility(View.GONE);
-                    mLl_name_psw.startAnimation(moveToView(0.0f, 0.0f, 0.32f, 0.0f));
+        int i = v.getId();
+        if (i == R.id.background) {
+            if (!getLogoShow()) {
+                InputMethodManager imm = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                setLogoShow(false);
+            }
 
-                    mView.setVisibility(View.VISIBLE);
-                    setLogoShow(false);
-                }
-                break;
-            default:
-                break;
+        } else if (i == R.id.login_userName || i == R.id.login_passWord) {
+            if (getLogoShow()) {
+                mTitleBar.setVisibility(View.VISIBLE);
+                mTitleBar.startAnimation(moveToView(0.0f, 0.0f, -1.0f, 0.0f));
+                mDe_login_logo.setVisibility(View.GONE);
+                mLl_name_psw.startAnimation(moveToView(0.0f, 0.0f, 0.32f, 0.0f));
+
+                mView.setVisibility(View.VISIBLE);
+                setLogoShow(false);
+            }
+
+        } else {
         }
 
     }
@@ -107,40 +105,40 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        switch (v.getId()) {
-            case R.id.login_userName:
-                if (hasFocus) {
-                    mLogin_userLogo.setImageResource(R.drawable.login_user_press);
-                    mUserLine.setBackgroundColor(getResources().getColor(R.color.line_press));
-                } else {
-                    mLogin_userLogo.setImageResource(R.drawable.login_user_normal);
-                    mUserLine.setBackgroundColor(getResources().getColor(R.color.line_normal));
-                }
-                if (hasFocus && getLogoShow()) {
-                    mTitleBar.setVisibility(View.VISIBLE);
-                    mTitleBar.startAnimation(moveToView(0.0f, 0.0f, -1.0f, 0.0f));
-                    mDe_login_logo.setVisibility(View.GONE);
-                    mLl_name_psw.startAnimation(moveToView(0.0f, 0.0f, 0.32f, 0.0f));
-                    mView.setVisibility(View.VISIBLE);
-                    setLogoShow(false);
-                }
-                break;
-            case R.id.login_passWord:
-                if (hasFocus) {
-                    mLogin_pswLogo.setImageResource(R.drawable.login_psw_press);
-                    mPswLine.setBackgroundColor(getResources().getColor(R.color.line_press));
-                } else {
-                    mLogin_pswLogo.setImageResource(R.drawable.login_psw_normal);
-                    mPswLine.setBackgroundColor(getResources().getColor(R.color.line_normal));
-                }
-                if (hasFocus && getLogoShow()) {
-                    mTitleBar.setVisibility(View.VISIBLE);
-                    mTitleBar.startAnimation(moveToView(0.0f, 0.0f, -1.0f, 0.0f));
-                    mDe_login_logo.setVisibility(View.GONE);
-                    mLl_name_psw.startAnimation(moveToView(0.0f, 0.0f, 0.32f, 0.0f));
-                    setLogoShow(false);
-                }
-                break;
+        int i = v.getId();
+        if (i == R.id.login_userName) {
+            if (hasFocus) {
+                mLogin_userLogo.setImageResource(R.drawable.login_user_press);
+                mUserLine.setBackgroundColor(getResources().getColor(R.color.line_press));
+            } else {
+                mLogin_userLogo.setImageResource(R.drawable.login_user_normal);
+                mUserLine.setBackgroundColor(getResources().getColor(R.color.line_normal));
+            }
+            if (hasFocus && getLogoShow()) {
+                mTitleBar.setVisibility(View.VISIBLE);
+                mTitleBar.startAnimation(moveToView(0.0f, 0.0f, -1.0f, 0.0f));
+                mDe_login_logo.setVisibility(View.GONE);
+                mLl_name_psw.startAnimation(moveToView(0.0f, 0.0f, 0.32f, 0.0f));
+                mView.setVisibility(View.VISIBLE);
+                setLogoShow(false);
+            }
+
+        } else if (i == R.id.login_passWord) {
+            if (hasFocus) {
+                mLogin_pswLogo.setImageResource(R.drawable.login_psw_press);
+                mPswLine.setBackgroundColor(getResources().getColor(R.color.line_press));
+            } else {
+                mLogin_pswLogo.setImageResource(R.drawable.login_psw_normal);
+                mPswLine.setBackgroundColor(getResources().getColor(R.color.line_normal));
+            }
+            if (hasFocus && getLogoShow()) {
+                mTitleBar.setVisibility(View.VISIBLE);
+                mTitleBar.startAnimation(moveToView(0.0f, 0.0f, -1.0f, 0.0f));
+                mDe_login_logo.setVisibility(View.GONE);
+                mLl_name_psw.startAnimation(moveToView(0.0f, 0.0f, 0.32f, 0.0f));
+                setLogoShow(false);
+            }
+
         }
     }
 
@@ -176,15 +174,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_release:
-                        swapEnvironment(LoginActivity.this.getApplicationContext(), false);
-                        break;
-                    case R.id.rb_test:
-                        swapEnvironment(LoginActivity.this.getApplicationContext(), true);
-                        break;
-                    default:
-                        break;
+                if (checkedId == R.id.rb_release) {
+                    swapEnvironment(LoginActivity.this.getApplicationContext(), false);
+
+                } else if (checkedId == R.id.rb_test) {
+                    swapEnvironment(LoginActivity.this.getApplicationContext(), true);
+
+                } else {
                 }
             }
         });

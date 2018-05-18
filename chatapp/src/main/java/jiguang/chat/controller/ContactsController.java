@@ -51,26 +51,25 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
-        switch (v.getId()) {
-            case R.id.ib_goToAddFriend://标题栏加号添加好友
-                intent.setClass(mContext, SearchForAddFriendActivity.class);
-                mContext.startActivity(intent);
-                break;
-            case R.id.verify_ll://验证消息
-                intent.setClass(mContext, FriendRecommendActivity.class);
-                mContext.startActivity(intent);
-                mContactsView.dismissNewFriends();
-                break;
-            case R.id.group_ll://群组
-                intent.setClass(mContext, GroupActivity.class);
-                mContext.startActivity(intent);
-                break;
-            case R.id.search_title://查找
-                intent.setClass(mContext, SearchContactsActivity.class);
-                mContext.startActivity(intent);
-                break;
-            default:
-                break;
+        int i = v.getId();
+        if (i == R.id.ib_goToAddFriend) {
+            intent.setClass(mContext, SearchForAddFriendActivity.class);
+            mContext.startActivity(intent);
+
+        } else if (i == R.id.verify_ll) {
+            intent.setClass(mContext, FriendRecommendActivity.class);
+            mContext.startActivity(intent);
+            mContactsView.dismissNewFriends();
+
+        } else if (i == R.id.group_ll) {
+            intent.setClass(mContext, GroupActivity.class);
+            mContext.startActivity(intent);
+
+        } else if (i == R.id.search_title) {
+            intent.setClass(mContext, SearchContactsActivity.class);
+            mContext.startActivity(intent);
+
+        } else {
         }
     }
 

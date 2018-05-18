@@ -52,16 +52,16 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
-        switch (v.getId()) {
-            case R.id.actionbar_msg_btn:
-                mMainView.setCurrentItem(0, false);
-                break;
-            case R.id.actionbar_contact_btn:
-                mMainView.setCurrentItem(1, false);
-                break;
-            case R.id.actionbar_me_btn:
-                mMainView.setCurrentItem(2, false);
-                break;
+        int i = v.getId();
+        if (i == R.id.actionbar_msg_btn) {
+            mMainView.setCurrentItem(0, false);
+
+        } else if (i == R.id.actionbar_contact_btn) {
+            mMainView.setCurrentItem(1, false);
+
+        } else if (i == R.id.actionbar_me_btn) {
+            mMainView.setCurrentItem(2, false);
+
         }
     }
 

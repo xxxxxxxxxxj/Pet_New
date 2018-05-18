@@ -62,42 +62,40 @@ public class NotFriendSettingActivity extends BaseActivity implements SlipButton
 
     @Override
     public void onChanged(int id, boolean checkState) {
-        switch (id) {
-            case R.id.btn_addBlackList:
-                final LoadDialog dialog = new LoadDialog(NotFriendSettingActivity.this, false, "正在设置");
-                dialog.show();
-                List<String> name = new ArrayList<>();
-                name.add(mUserName);
-                if (checkState) {
-                    JMessageClient.addUsersToBlacklist(name, new BasicCallback() {
-                        @Override
-                        public void gotResult(int responseCode, String responseMessage) {
-                            dialog.dismiss();
-                            if (responseCode == 0) {
-                                ToastUtil.shortToast(NotFriendSettingActivity.this, "添加成功");
-                            } else {
-                                mBtn_addBlackList.setChecked(false);
-                                ToastUtil.shortToast(NotFriendSettingActivity.this, "添加失败" + responseMessage);
-                            }
+        if (id == R.id.btn_addBlackList) {
+            final LoadDialog dialog = new LoadDialog(NotFriendSettingActivity.this, false, "正在设置");
+            dialog.show();
+            List<String> name = new ArrayList<>();
+            name.add(mUserName);
+            if (checkState) {
+                JMessageClient.addUsersToBlacklist(name, new BasicCallback() {
+                    @Override
+                    public void gotResult(int responseCode, String responseMessage) {
+                        dialog.dismiss();
+                        if (responseCode == 0) {
+                            ToastUtil.shortToast(NotFriendSettingActivity.this, "添加成功");
+                        } else {
+                            mBtn_addBlackList.setChecked(false);
+                            ToastUtil.shortToast(NotFriendSettingActivity.this, "添加失败" + responseMessage);
                         }
-                    });
-                } else {
-                    JMessageClient.delUsersFromBlacklist(name, new BasicCallback() {
-                        @Override
-                        public void gotResult(int responseCode, String responseMessage) {
-                            dialog.dismiss();
-                            if (responseCode == 0) {
-                                ToastUtil.shortToast(NotFriendSettingActivity.this, "移除成功");
-                            } else {
-                                mBtn_addBlackList.setChecked(true);
-                                ToastUtil.shortToast(NotFriendSettingActivity.this, "移除失败" + responseMessage);
-                            }
+                    }
+                });
+            } else {
+                JMessageClient.delUsersFromBlacklist(name, new BasicCallback() {
+                    @Override
+                    public void gotResult(int responseCode, String responseMessage) {
+                        dialog.dismiss();
+                        if (responseCode == 0) {
+                            ToastUtil.shortToast(NotFriendSettingActivity.this, "移除成功");
+                        } else {
+                            mBtn_addBlackList.setChecked(true);
+                            ToastUtil.shortToast(NotFriendSettingActivity.this, "移除失败" + responseMessage);
                         }
-                    });
-                }
-                break;
-            default:
-                break;
+                    }
+                });
+            }
+
+        } else {
         }
     }
 }
