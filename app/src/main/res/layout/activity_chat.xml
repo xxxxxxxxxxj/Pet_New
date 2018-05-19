@@ -1,42 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/af8f8f8"
-    android:orientation="vertical">
+    android:background="@color/af8f8f8">
 
     <include layout="@layout/title_bar" />
-
-    <com.haotang.easyshare.chat.keyboard.XhsEmoticonsKeyBoard
-        android:id="@+id/ek_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.haotang.easyshare.chat.listview.DropDownListView
-            android:id="@+id/lv_chat"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#E8EDF3"
-            android:cacheColorHint="#00000000"
-            android:divider="@null"
-            android:fadingEdge="none"
-            android:fitsSystemWindows="true"
-            android:listSelector="#00000000"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollingCache="false"
-            android:smoothScrollbar="true"
-            android:transcriptMode="normal" />
-
-        <Button
-            android:id="@+id/jmui_at_me_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="100dp"
-            android:background="#2DD0CF"
-            android:text="有人@我"
-            android:textColor="#fff"
-            android:visibility="gone" />
-    </com.haotang.easyshare.chat.keyboard.XhsEmoticonsKeyBoard>
-</LinearLayout>
+</RelativeLayout>

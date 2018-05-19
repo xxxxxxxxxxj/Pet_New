@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
 
-    <include layout="@layout/ic_spitview_horizontal" />
+    <include layout="@layout/ic_spitview_horizontal"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,10 +21,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
-            android:src="@drawable/btn_voice_or_text" />
+            android:src="@drawable/btn_voice_or_text"/>
 
         <!--语音输入-->
-        <com.haotang.easyshare.chat.view.RecordVoiceButton
+        <jiguang.chat.view.RecordVoiceButton
             android:id="@+id/btn_voice"
             android:layout_width="match_parent"
             android:layout_height="34dp"
@@ -35,7 +35,7 @@
             android:background="@drawable/btn_voice"
             android:text="@string/btn_text_speak"
             android:textColor="#727272"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:id="@+id/rl_input"
@@ -45,13 +45,13 @@
             android:layout_marginLeft="8dp"
             android:layout_toLeftOf="@+id/rl_multi_and_send"
             android:layout_toRightOf="@+id/btn_voice_or_text"
-            android:background="@mipmap/input_bg_gray"
+            android:background="@drawable/input_bg_gray"
             android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:paddingTop="5dp">
 
             <!--输入框-->
-            <com.haotang.easyshare.chat.keyboard.widget.EmoticonsEditText
+            <jiguang.chat.utils.keyboard.widget.EmoticonsEditText
                 android:id="@+id/et_chat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 android:lineSpacingExtra="4dp"
                 android:maxLines="4"
                 android:paddingLeft="8dp"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
         </RelativeLayout>
 
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="7dp"
-                android:src="@mipmap/icon_face_nomal" />
+                android:src="@drawable/icon_face_nomal"/>
 
             <!--apps 功能-->
             <ImageView
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="14dp"
-                android:src="@drawable/btn_multi_bg" />
+                android:src="@drawable/btn_multi_bg"/>
 
             <!--发送-->
             <Button
@@ -105,15 +105,15 @@
                 android:text="@string/btn_send"
                 android:textColor="@color/btn_send_textcolor"
                 android:textSize="16sp"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </RelativeLayout>
     </RelativeLayout>
 
-    <com.haotang.easyshare.chat.keyboard.widget.FuncLayout
+    <jiguang.chat.utils.keyboard.widget.FuncLayout
         android:id="@+id/ly_kvml"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 </LinearLayout>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/jmui_chat_item_send_layout">
+<LinearLayout style="@style/jmui_chat_item_send_layout"
+              xmlns:android="http://schemas.android.com/apk/res/android">
 
 
     <TextView
         android:id="@+id/jmui_send_time_txt"
-        style="@style/jmui_chat_text_date_style" />
+        style="@style/jmui_chat_text_date_style"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:background="@drawable/send_message_failed"
             android:clickable="true"
             android:scaleType="fitCenter"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/jmui_sending_iv"
@@ -31,8 +31,8 @@
             android:layout_height="21dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="3dp"
-            android:src="@mipmap/jmui_sending_img"
-            android:visibility="gone" />
+            android:src="@drawable/jmui_sending_img"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/text_receipt"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="7dp"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/jmui_msg_content"
@@ -53,14 +53,14 @@
             android:paddingLeft="10dp"
             android:paddingRight="18dp"
             android:textColorLink="#157BFB"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/ll_businessCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="3dp"
-            android:background="@mipmap/business_card_bg"
+            android:background="@drawable/business_card_bg"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -74,7 +74,7 @@
                     android:layout_height="40dp"
                     android:layout_marginBottom="12.33dp"
                     android:layout_marginLeft="11dp"
-                    android:layout_marginTop="13.33dp" />
+                    android:layout_marginTop="13.33dp"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="#2C2C2C"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"/>
 
                     <TextView
                         android:id="@+id/tv_userName"
@@ -101,7 +101,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="#999999"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -110,7 +110,7 @@
                 android:layout_height="0.33dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="16.67dp"
-                android:background="#DCDCDC" />
+                android:background="#DCDCDC"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -120,13 +120,13 @@
                 android:layout_marginTop="3dp"
                 android:text="个人名片"
                 android:textColor="#989898"
-                android:textSize="10sp" />
+                android:textSize="10sp"/>
 
         </LinearLayout>
 
         <ImageView
             android:id="@+id/jmui_avatar_iv"
-            style="@style/jmui_chat_item_sender_avatar_style" />
+            style="@style/jmui_chat_item_sender_avatar_style"/>
 
     </LinearLayout>
 

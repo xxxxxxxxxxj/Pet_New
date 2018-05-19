@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/jmui_chat_item_receive_layout">
+<LinearLayout style="@style/jmui_chat_item_receive_layout"
+              xmlns:android="http://schemas.android.com/apk/res/android">
 
 
     <TextView
         android:id="@+id/jmui_send_time_txt"
-        style="@style/jmui_chat_text_date_style" />
+        style="@style/jmui_chat_text_date_style"/>
 
 
     <RelativeLayout
@@ -15,7 +15,7 @@
 
         <ImageView
             android:id="@+id/jmui_avatar_iv"
-            style="@style/jmui_chat_item_receiver_avatar_style" />
+            style="@style/jmui_chat_item_receiver_avatar_style"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
                 style="@style/jmui_chat_display_name_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/jmui_avatar_iv" />
+                android:layout_toRightOf="@id/jmui_avatar_iv"/>
 
             <TextView
                 android:id="@+id/jmui_msg_content"
@@ -45,7 +45,7 @@
                 android:paddingRight="10dp"
                 android:textColor="#363333"
                 android:textColorLink="#157BFB"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout
@@ -68,8 +68,8 @@
                     android:layout_marginBottom="12.33dp"
                     android:layout_marginLeft="11dp"
                     android:layout_marginTop="13.33dp"
-                    android:background="@mipmap/jmui_head_icon"
-                    android:scaleType="fitXY" />
+                    android:background="@drawable/jmui_head_icon"
+                    android:scaleType="fitXY"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="#2C2C2C"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"/>
 
                     <TextView
                         android:id="@+id/tv_userName"
@@ -96,7 +96,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="#999999"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -105,7 +105,7 @@
                 android:layout_height="0.33dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="16.67dp"
-                android:background="#DCDCDC" />
+                android:background="#DCDCDC"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -115,7 +115,7 @@
                 android:layout_marginTop="3dp"
                 android:text="个人名片"
                 android:textColor="#989898"
-                android:textSize="10sp" />
+                android:textSize="10sp"/>
 
         </LinearLayout>
 
