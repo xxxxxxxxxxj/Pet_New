@@ -10,6 +10,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IMemberView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
+import com.umeng.analytics.MobclickAgent;
 
 import javax.inject.Inject;
 
@@ -49,6 +50,18 @@ public class MemberActivity extends BaseActivity<MemberPresenter> implements IMe
     protected void onDestroy() {
         super.onDestroy();
         DevRing.activityStackManager().exitActivity(this); //退出activity
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 }

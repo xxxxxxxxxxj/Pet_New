@@ -14,6 +14,7 @@ import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.FileUtil;
+import com.umeng.commonsdk.UMConfigure;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.im.android.api.JMessageClient;
@@ -118,5 +119,12 @@ public class PetApplication extends Application {
                 .wxId(AppConfig.WX_ID)
                 .wxSecret(AppConfig.WX_ID);
         ShareManager.init(config);
+
+        //友盟设置
+        //设置LOG开关，默认为false
+        UMConfigure.setLogEnabled(true);
+        //设置是否对日志信息进行加密, 默认false(不加密).
+        UMConfigure.setEncryptEnabled(true);
+        UMConfigure.init(getApplicationContext(), "5affa9e9f43e4831e00001fa", "easyshare_1", UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 }

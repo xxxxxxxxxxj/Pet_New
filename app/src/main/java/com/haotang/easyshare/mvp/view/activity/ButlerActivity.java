@@ -17,6 +17,7 @@ import com.haotang.easyshare.mvp.view.fragment.HistoricalMessageFragment;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IButlerView;
 import com.ljy.devring.DevRing;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import me.yokeyword.fragmentation.SwipeBackLayout;
 
 /**
  * 私人管家页面
@@ -117,5 +117,17 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
                 currentMessageFragment.saveMsg();
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

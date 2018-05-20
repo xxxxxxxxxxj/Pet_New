@@ -52,6 +52,7 @@ import com.just.agentweb.download.DownloadingService;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 
@@ -531,12 +532,14 @@ public class WebViewActivity extends BaseActivity {
     public void onResume() {
         mAgentWeb.getWebLifeCycle().onResume();//恢复
         super.onResume();
+        MobclickAgent.onResume(this);
     }
 
     @Override
     public void onPause() {
         mAgentWeb.getWebLifeCycle().onPause(); //暂停应用内所有WebView ， 调用mWebView.resumeTimers();/mAgentWeb.getWebLifeCycle().onResume(); 恢复。
         super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     /**

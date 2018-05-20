@@ -15,7 +15,6 @@ import com.haotang.easyshare.di.component.activity.DaggerAllBrandsActivityCommpo
 import com.haotang.easyshare.di.module.activity.AllBrandsActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
-import com.haotang.easyshare.mvp.model.entity.res.SelectedCarBean;
 import com.haotang.easyshare.mvp.presenter.AllBrandsPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
@@ -28,6 +27,7 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,5 +158,17 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     @Override
     public void specialFail(int code, String msg) {
         RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

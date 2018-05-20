@@ -22,6 +22,7 @@ import com.haotang.easyshare.mvp.view.widget.HackyViewPager;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -240,5 +241,17 @@ public class PhotoViewPagerActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         DevRing.activityStackManager().exitActivity(this); //退出activity
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

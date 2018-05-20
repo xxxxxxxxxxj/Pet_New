@@ -25,6 +25,7 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -222,5 +223,16 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
             postListAdapter.loadMoreFail();
         }
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

@@ -10,6 +10,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -145,5 +146,17 @@ public class ChatActivity extends BaseActivity {
             long serverMsgId = meta.getServerMsgId();
             int unReceiptCnt = meta.getUnReceiptCnt();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

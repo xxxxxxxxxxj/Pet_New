@@ -285,6 +285,16 @@
                 android:resource="@xml/file_paths_public" />
         </provider>
 
+        <!-- ###################添加UmengAppkey###################### -->
+        <!-- 友盟正式版key：55d148a267e58e63e8000775 -->
+        <!-- 友盟测试key：55cd4aa4e0f55a4cc8009565 -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5affa9e9f43e4831e00001fa" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="easyshare_1" />
+
         <!-- 极光推送start -->
         <!-- Rich push 核心功能 since 2.0.6 -->
         <activity

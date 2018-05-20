@@ -55,11 +55,9 @@ import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.model.entity.res.SerchResult;
 import com.haotang.easyshare.mvp.presenter.MainFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
-import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.CommentDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
-import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.SwitchCityActivity;
 import com.haotang.easyshare.mvp.view.adapter.BrandAreaAdAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
@@ -72,11 +70,11 @@ import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
-import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -385,6 +383,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onResume() {
         super.onResume();
         tmv_mainfrag_map.onResume();
+        MobclickAgent.onPageStart("MainScreen");
     }
 
     /**
@@ -394,6 +393,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onPause() {
         super.onPause();
         tmv_mainfrag_map.onPause();
+        MobclickAgent.onPageEnd("MainScreen");
     }
 
     /**
@@ -762,4 +762,5 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             RingLog.d(TAG, "定位失败");
         }
     }
+
 }

@@ -30,6 +30,7 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -54,12 +55,8 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import top.zibin.luban.Luban;
-
-import static com.haotang.easyshare.R.id.refresh;
-import static com.haotang.easyshare.mvp.model.entity.event.RefreshEvent.SAVE_CHARGE_COMMENT;
 
 public class CommentActivity extends BaseActivity<CommentPresenter> implements ICommentView {
     protected final static String TAG = CommentActivity.class.getSimpleName();
@@ -325,5 +322,17 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     @Override
     public void saveFail(int code, String msg) {
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

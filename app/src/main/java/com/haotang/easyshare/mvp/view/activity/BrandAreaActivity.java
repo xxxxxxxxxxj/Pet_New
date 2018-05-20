@@ -25,6 +25,7 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,5 +195,17 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
             brandAreaHotPointAdapter.loadMoreFail();
         }
         RingLog.e(TAG, "articleFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

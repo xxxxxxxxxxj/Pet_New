@@ -17,6 +17,7 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -121,5 +122,17 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
     @Override
     public void saveFail(int code, String msg) {
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

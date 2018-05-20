@@ -25,6 +25,7 @@ import com.haotang.easyshare.mvp.view.iview.ICollectChargeView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuBridge;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
@@ -250,5 +251,17 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
         if (data != null && data.getRefreshIndex() == RefreshEvent.COLLECT_OR_CANCEL_CHARGE) {
             refresh();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

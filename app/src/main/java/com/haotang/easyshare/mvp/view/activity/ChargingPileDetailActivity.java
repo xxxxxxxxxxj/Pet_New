@@ -32,6 +32,7 @@ import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.verticalbanner.VerticalBannerView;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -332,5 +333,17 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     @Override
     public void cancelFail(int code, String msg) {
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

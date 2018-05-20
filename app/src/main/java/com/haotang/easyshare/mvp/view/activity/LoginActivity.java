@@ -34,6 +34,7 @@ import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
+import com.umeng.analytics.MobclickAgent;
 
 import javax.inject.Inject;
 
@@ -330,5 +331,17 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                         + amapLocation.getErrorInfo());
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

@@ -12,6 +12,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.GuideAdapter;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
@@ -100,5 +101,16 @@ public class GuideActivity extends BaseActivity {
                 DevRing.activityStackManager().exitActivity(this); //退出activity
                 break;
         }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

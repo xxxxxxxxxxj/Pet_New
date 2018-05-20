@@ -131,4 +131,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile project(':reclib-qq')
     compile project(':reclib-testemoticons')
+    compile files('libs/umeng-analytics-7.5.1.jar')
+    compile files('libs/umeng-common-1.5.1.jar')
+    compile files('libs/umeng-debug-1.0.0.jar')
 }

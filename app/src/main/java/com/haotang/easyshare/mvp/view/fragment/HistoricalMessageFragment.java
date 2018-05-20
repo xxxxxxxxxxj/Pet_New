@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerHistoricalMessageFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.HistoricalMessageFragmentModule;
@@ -19,6 +18,7 @@ import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +132,15 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
             }
         }
         historicalMessagelAdapter.notifyDataSetChanged();
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("ButlerScreen"); //统计页面("MainScreen"为页面名称，可自定义)
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("ButlerScreen");
     }
 
     @Override

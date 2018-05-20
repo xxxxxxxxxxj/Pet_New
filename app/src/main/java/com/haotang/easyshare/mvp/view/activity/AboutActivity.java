@@ -8,10 +8,10 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import me.yokeyword.fragmentation.SwipeBackLayout;
 
 /**
  * 关于界面
@@ -52,6 +52,18 @@ public class AboutActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         DevRing.activityStackManager().exitActivity(this); //退出activity
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @OnClick({R.id.iv_titlebar_back})

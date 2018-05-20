@@ -30,6 +30,7 @@ import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
@@ -39,7 +40,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -275,6 +275,15 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
             }
         }
         hotPointAdapter.notifyDataSetChanged();
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("MainScreen"); //统计页面("MainScreen"为页面名称，可自定义)
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("MainScreen");
     }
 
     @Override

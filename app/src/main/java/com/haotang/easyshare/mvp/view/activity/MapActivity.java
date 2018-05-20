@@ -44,6 +44,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -419,6 +420,7 @@ public class MapActivity extends BaseActivity implements
     protected void onResume() {
         super.onResume();
         mapView.onResume();
+        MobclickAgent.onResume(this);
     }
 
     /**
@@ -428,6 +430,7 @@ public class MapActivity extends BaseActivity implements
     protected void onPause() {
         super.onPause();
         mapView.onPause();
+        MobclickAgent.onPause(this);
     }
 
     /**
@@ -696,4 +699,6 @@ public class MapActivity extends BaseActivity implements
     public void deactivate() {
 
     }
+
+
 }
