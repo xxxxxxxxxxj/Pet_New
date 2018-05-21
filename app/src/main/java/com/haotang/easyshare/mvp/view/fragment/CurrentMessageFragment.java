@@ -69,15 +69,6 @@ public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentP
         etCurrentmsg.setText("");
         RingToast.show("发布成功");
     }
-
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("ButlerScreen"); //统计页面("MainScreen"为页面名称，可自定义)
-    }
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("ButlerScreen");
-    }
     @Override
     public void saveFail(int code, String msg) {
         RingLog.e(TAG, "historyFail() status = " + code + "---desc = " + msg);

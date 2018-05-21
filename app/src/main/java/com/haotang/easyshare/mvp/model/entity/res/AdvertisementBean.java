@@ -57,6 +57,12 @@ public class AdvertisementBean {
         private int display;
         private String destination;
 
+        public DataBean(String img, int display, String destination) {
+            this.img = img;
+            this.display = display;
+            this.destination = destination;
+        }
+
         public String getImg() {
             return img;
         }

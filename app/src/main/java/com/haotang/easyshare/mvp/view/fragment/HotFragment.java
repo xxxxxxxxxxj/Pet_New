@@ -21,6 +21,7 @@ import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
 import com.haotang.easyshare.mvp.view.activity.BrandAreaActivity;
 import com.haotang.easyshare.mvp.view.activity.PostListActivity;
+import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointAdapter;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
@@ -30,7 +31,6 @@ import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.other.RingLog;
-import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
@@ -64,6 +64,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     private HotPointCarAdapter hotPointCarAdapter;
     private int mNextRequestPage = 1;
     private int pageSize;
+    private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -130,6 +131,16 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     @Override
     public void OnBannerClick(int position) {
         RingLog.e(TAG, "position:" + position);
+        if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
+            AdvertisementBean.DataBean dataBean = bannerList.get(position);
+            if (dataBean != null) {
+                if (dataBean.getDisplay() == 1) {//原生
+
+                } else if (dataBean.getDisplay() == 2) {//H5
+                    mActivity.startActivity(new Intent(mActivity, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, dataBean.getDestination()));
+                }
+            }
+        }
     }
 
     @Override
@@ -180,7 +191,10 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 if (carList != null && carList.size() > 0 && carList.size() > position) {
                     HotCarBean.DataBean dataBean = carList.get(position);
                     if (dataBean != null) {
-                        startActivity(new Intent(mActivity, BrandAreaActivity.class).putExtra("brandId", dataBean.getId()));
+                        Intent intent = new Intent(mActivity, BrandAreaActivity.class);
+                        intent.putExtra("brandId", dataBean.getId());
+                        intent.putExtra("brand", dataBean.getBrand());
+                        startActivity(intent);
                     }
                 }
             }
@@ -228,6 +242,8 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     @Override
     public void listSuccess(List<AdvertisementBean.DataBean> data) {
         if (data != null && data.size() > 0) {
+            bannerList.clear();
+            bannerList.addAll(data);
             hotFragmenHeader.getBannerTopHotfrag().setVisibility(View.VISIBLE);
             setBanner(data);
         } else {
@@ -275,15 +291,6 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
             }
         }
         hotPointAdapter.notifyDataSetChanged();
-    }
-
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("MainScreen"); //统计页面("MainScreen"为页面名称，可自定义)
-    }
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("MainScreen");
     }
 
     @Override

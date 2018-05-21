@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
@@ -17,4 +18,8 @@ public interface IMyPostView extends IBaseView{
     void listSuccess(List<PostBean.DataBean> data);
 
     void listFail(int code, String msg);
+
+    void deleteSuccess(AddChargeBean data);
+
+    void deleteFail(int code, String msg);
 }

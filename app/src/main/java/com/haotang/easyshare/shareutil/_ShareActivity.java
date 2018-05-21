@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.ljy.devring.DevRing;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by shaohui on 2016/11/19.
@@ -52,6 +53,7 @@ public class _ShareActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         ShareLogger.i(ShareLogger.INFO.ACTIVITY_RESUME);
         if (isNew) {
             isNew = false;
@@ -90,5 +92,11 @@ public class _ShareActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         DevRing.activityStackManager().exitActivity(this); //退出activity
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

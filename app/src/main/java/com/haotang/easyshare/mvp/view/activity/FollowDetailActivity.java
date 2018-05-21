@@ -46,6 +46,8 @@ import butterknife.OnClick;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
+import static android.R.attr.rating;
+
 /**
  * 关注的人详情页
  */
@@ -69,6 +71,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     private int isCollect;
     private float stars = 1;
     private int praisePosition = -1;
+    private List<String> starsStr = new ArrayList<String>();
 
     @Override
     protected int getContentLayout() {
@@ -253,8 +256,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 @Override
                 public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
                     stars = rating;
-                    StringUtil.setText(followDetailBoDa.getTvFollowdetailBottomDesc(), String.valueOf(rating), "",
-                            View.VISIBLE, View.VISIBLE);
+                    setStar();
                 }
             });
             pWinBottomDialog.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -262,6 +264,14 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 public void onDismiss() {
                 }
             });
+        }
+        mPresenter.stars();
+    }
+
+    private void setStar() {
+        if (starsStr != null && starsStr.size() > 0 && starsStr.size() > stars) {
+            StringUtil.setText(followDetailBoDa.getTvFollowdetailBottomDesc(), starsStr.get((int) stars), "",
+                    View.VISIBLE, View.VISIBLE);
         }
     }
 
@@ -386,6 +396,19 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     @Override
     public void praiseFail(int code, String msg) {
         RingLog.e(TAG, "praiseFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void starsSuccess(List<String> data) {
+        if (data != null && data.size() > 0) {
+            starsStr.addAll(data);
+            setStar();
+        }
+    }
+
+    @Override
+    public void starsFail(int code, String msg) {
+        RingLog.e(TAG, "starsFail() status = " + code + "---desc = " + msg);
     }
 
     @Override

@@ -18,4 +18,11 @@ public interface IBrandAreaModel extends IBaseModel{
      * 品牌热帖
      */
     Observable article(RequestBody body);
+    /**
+     * 广告
+     * 广告类别(1:首页活动弹窗、2:热点首页顶部广告、3:车型专区首页顶部广告、4:车型专区首页中间广告)
+     *
+     * @param body
+     */
+    Observable list(RequestBody body);
 }

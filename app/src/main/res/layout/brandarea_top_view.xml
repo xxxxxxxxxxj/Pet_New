@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/af8f8f8"
+    android:orientation="vertical">
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner_brandarea_top"
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:layout_marginBottom="15dip"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:indicator_drawable_selected="@drawable/selected_radius" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dip"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip">
+
+        <ImageView
+            android:layout_width="20dip"
+            android:layout_height="20dip"
+            android:layout_marginRight="5dip"
+            android:scaleType="fitXY"
+            android:src="@mipmap/pingpairexiao" />
+
+        <TextView
+            android:id="@+id/tv_brandarea_rexiaotv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="TextView"
+            android:textColor="@color/a333333"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</LinearLayout>

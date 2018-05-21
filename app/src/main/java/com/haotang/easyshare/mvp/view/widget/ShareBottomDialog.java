@@ -4,12 +4,21 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
+import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
+import com.haotang.easyshare.mvp.model.http.ShareApiService;
 import com.haotang.easyshare.shareutil.ShareUtil;
 import com.haotang.easyshare.shareutil.share.ShareListener;
 import com.haotang.easyshare.shareutil.share.SharePlatform;
+import com.haotang.easyshare.util.StringUtil;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RxLifecycleUtil;
 
 import me.shaohui.bottomdialog.BaseBottomDialog;
+import okhttp3.MultipartBody;
 
 /**
  * Created by shaohui on 2016/12/10.
@@ -22,6 +31,11 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
     private String mSummary;
     private String mTargetUrl;
     private String mThumbUrlOrPath;
+    private String uuid;
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     @Override
     public int getLayoutRes() {
@@ -47,6 +61,33 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
             @Override
             public void shareSuccess() {
                 Toast.makeText(v.getContext(), "分享成功", Toast.LENGTH_SHORT).show();
+                if (StringUtil.isNotEmpty(uuid)) {
+                    MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                            .addFormDataPart("uuid", uuid)
+                            .build();
+                    DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callback(body)
+                            , new CommonObserver<HttpResult<AddChargeBean>>() {
+                                @Override
+                                public void onResult(HttpResult<AddChargeBean> result) {
+                                    if (result != null) {
+                                        if (result.getCode() == 0) {
+                                            RingLog.e("分享回调成功");
+                                        } else {
+                                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                                RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
+                                            } else {
+                                                RingLog.e("onError() status = " + AppConfig.SERVER_ERROR + "---desc = " + AppConfig.SERVER_ERROR_MSG);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onError(int errType, String errMessage) {
+                                    RingLog.e("onError() status = " + errType + "---desc = " + errMessage);
+                                }
+                            }, RxLifecycleUtil.bindUntilDestroy(ShareBottomDialog.this));
+                }
             }
 
             @Override

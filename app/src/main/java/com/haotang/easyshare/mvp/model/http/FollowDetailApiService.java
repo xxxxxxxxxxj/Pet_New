@@ -4,6 +4,7 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
+import com.haotang.easyshare.mvp.model.entity.res.StarsBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
 import io.reactivex.Observable;
@@ -60,4 +61,16 @@ public interface FollowDetailApiService {
      */
     @POST(UrlConstants.PRAISE_USER)
     Observable<HttpResult<AddChargeBean>> praise(@Body() RequestBody body);
+
+    /**
+     * 评价星级
+     */
+    @POST(UrlConstants.STARS)
+    Observable<StarsBean> stars();
+
+    /**
+     * 删除帖子
+     */
+    @POST(UrlConstants.DELETE_POST)
+    Observable<HttpResult<AddChargeBean>> delete(@Body() RequestBody body);
 }

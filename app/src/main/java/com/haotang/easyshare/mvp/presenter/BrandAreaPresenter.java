@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.imodel.IBrandAreaModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
@@ -52,6 +53,75 @@ public class BrandAreaPresenter extends BasePresenter<IBrandAreaView, IBrandArea
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.articleFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 广告
+     * 广告类别(1:首页活动弹窗、2:热点首页顶部广告、3:车型专区首页顶部广告、4:车型专区首页中间广告)
+     *
+     * @param body
+     */
+    public void list(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<AdvertisementBean>() {
+            @Override
+            public void onResult(AdvertisementBean result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.listSuccess
+                                    (result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.listFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.listFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.listFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 广告
+     * 广告类别(1:首页活动弹窗、2:热点首页顶部广告、3:车型专区首页顶部广告、4:车型专区首页中间广告)
+     *
+     * @param body
+     */
+    public void list1(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<AdvertisementBean>() {
+            @Override
+            public void onResult(AdvertisementBean result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.list1Success(result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.list1Fail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.list1Fail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.list1Fail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));

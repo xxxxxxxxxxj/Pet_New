@@ -27,4 +27,12 @@ public class CommentModel implements ICommentModel {
     public Observable save(Map<String, RequestBody> filedMap) {
         return DevRing.httpManager().getService(CommentApiService.class).save(filedMap);
     }
+
+    /**
+     * 评论标签
+     */
+    @Override
+    public Observable tags() {
+        return DevRing.httpManager().getService(CommentApiService.class).tags();
+    }
 }

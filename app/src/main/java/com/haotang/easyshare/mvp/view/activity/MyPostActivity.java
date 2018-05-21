@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerMyPostActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MyPostActivityModule;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.MyPostPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -58,6 +59,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     private PostListAdapter postListAdapter;
     private int pageSize;
     private String uuid = "";
+    private int deletePosition;
 
     @Override
     protected int getContentLayout() {
@@ -106,10 +108,14 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                 if (list.size() > 0 && list.size() > position) {
                     PostBean.DataBean dataBean = list.get(position);
                     if (dataBean != null) {
-                        ShareBottomDialog dialog = new ShareBottomDialog();
-                        dialog.setShareInfo("测试", "测试",
-                                "https://www.duba.com", "http://img.sayiyinxiang.com/api/brand/imgs/15246549042921928075.jpg");
-                        dialog.show(getSupportFragmentManager());
+                        PostBean.DataBean.shareMap sharemap = dataBean.getSharemap();
+                        if (sharemap != null) {
+                            ShareBottomDialog dialog = new ShareBottomDialog();
+                            dialog.setUuid(dataBean.getUuid());
+                            dialog.setShareInfo(sharemap.getTitle(), sharemap.getContent(),
+                                    sharemap.getUrl(), sharemap.getImg());
+                            dialog.show(getSupportFragmentManager());
+                        }
                     }
                 }
             }
@@ -118,8 +124,11 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
             @Override
             public void OnDeleteItem(int position) {
                 if (list.size() > 0 && list.size() > position) {
-                    list.remove(position);
-                    postListAdapter.notifyDataSetChanged();
+                    deletePosition = position;
+                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                    builder.addFormDataPart("uuid", list.get(position).getUuid());
+                    RequestBody body = builder.build();
+                    mPresenter.delete(body);
                 }
             }
         });
@@ -224,6 +233,18 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
         }
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
+
+    @Override
+    public void deleteSuccess(AddChargeBean data) {
+        list.remove(deletePosition);
+        postListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void deleteFail(int code, String msg) {
+        RingLog.e(TAG, "deleteFail() status = " + code + "---desc = " + msg);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

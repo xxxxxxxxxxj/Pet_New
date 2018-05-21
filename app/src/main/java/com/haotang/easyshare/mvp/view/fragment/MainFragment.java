@@ -74,7 +74,6 @@ import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -383,7 +382,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onResume() {
         super.onResume();
         tmv_mainfrag_map.onResume();
-        MobclickAgent.onPageStart("MainScreen");
     }
 
     /**
@@ -393,7 +391,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onPause() {
         super.onPause();
         tmv_mainfrag_map.onPause();
-        MobclickAgent.onPageEnd("MainScreen");
     }
 
     /**

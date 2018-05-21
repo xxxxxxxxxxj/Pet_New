@@ -119,7 +119,7 @@ public class UrlConstants {
     /**
      * 25.问题车帖子列表
      */
-    public static final String PROBLEM_CAR_POINT = "article/info/hot";
+    public static final String PROBLEM_CAR_POINT = "article/info/problem";
     /**
      * 26.品牌热帖
      */
@@ -152,6 +152,22 @@ public class UrlConstants {
      * 33.编辑充电桩
      */
     public static final String UPDATECHARGE = "charging/info/update";
+    /**
+     * 34.评论标签
+     */
+    public static final String COMMENT_TAGS = "charging/comment/tags";
+    /**
+     * 35.评价星级
+     */
+    public static final String STARS = "user/eval/stars";
+    /**
+     * 36.删除帖子
+     */
+    public static final String DELETE_POST = "article/info/delete";
+    /**
+     * 37.分享帖子成功回调
+     */
+    public static final String SHARE_POST = "article/info/share/callback";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

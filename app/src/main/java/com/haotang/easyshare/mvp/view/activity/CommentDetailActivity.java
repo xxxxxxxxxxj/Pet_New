@@ -40,7 +40,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 评论详情页
+ * 充电桩评论列表页
  */
 public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> implements ICommentDetailView {
     @Inject

@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -34,6 +35,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.webview.MiddlewareChromeClient;
 import com.haotang.easyshare.mvp.view.webview.MiddlewareWebViewClient;
 import com.haotang.easyshare.mvp.view.webview.UIController;
+import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.just.agentweb.AbsAgentWebSettings;
@@ -126,9 +128,24 @@ public class WebViewActivity extends BaseActivity {
 
     }
 
+    class JsObject {
+        @JavascriptInterface
+        public String toString() {
+            return "easyshare_h5";
+        }
+    }
+
     @Override
     protected void initEvent() {
-
+        mAgentWeb.getJsInterfaceHolder().addJavaObject("easyshare_h5", new JsObject() {
+            @JavascriptInterface
+            public void share(String title, String content, String img, String url, String uuid) {
+                ShareBottomDialog dialog = new ShareBottomDialog();
+                dialog.setUuid(uuid);
+                dialog.setShareInfo(title, content, url, img);
+                dialog.show(getSupportFragmentManager());
+            }
+        });
     }
 
     @Override

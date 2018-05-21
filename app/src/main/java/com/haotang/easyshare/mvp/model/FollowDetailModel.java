@@ -67,4 +67,12 @@ public class FollowDetailModel implements IFollowDetailModel {
     public Observable praise(RequestBody body) {
         return DevRing.httpManager().getService(FollowDetailApiService.class).praise(body);
     }
+
+    /**
+     * 评价星级
+     */
+    @Override
+    public Observable stars() {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).stars();
+    }
 }

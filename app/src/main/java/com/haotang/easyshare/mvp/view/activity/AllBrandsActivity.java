@@ -112,7 +112,10 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
                 if (carList != null && carList.size() > 0 && carList.size() > position) {
                     HotCarBean.DataBean dataBean = carList.get(position);
                     if (dataBean != null) {
-                        startActivity(new Intent(AllBrandsActivity.this, BrandAreaActivity.class).putExtra("brandId", dataBean.getId()));
+                        Intent intent = new Intent(AllBrandsActivity.this, BrandAreaActivity.class);
+                        intent.putExtra("brandId", dataBean.getId());
+                        intent.putExtra("brand", dataBean.getBrand());
+                        startActivity(intent);
                     }
                 }
             }

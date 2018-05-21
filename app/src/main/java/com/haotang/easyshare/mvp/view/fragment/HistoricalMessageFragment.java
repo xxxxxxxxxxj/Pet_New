@@ -134,15 +134,6 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
         historicalMessagelAdapter.notifyDataSetChanged();
     }
 
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("ButlerScreen"); //统计页面("MainScreen"为页面名称，可自定义)
-    }
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("ButlerScreen");
-    }
-
     @Override
     public void historyFail(int code, String msg) {
         if (mNextRequestPage == 1) {

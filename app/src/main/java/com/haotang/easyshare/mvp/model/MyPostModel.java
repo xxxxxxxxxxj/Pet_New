@@ -23,4 +23,12 @@ public class MyPostModel implements IMyPostModel {
     public Observable list(RequestBody body) {
         return DevRing.httpManager().getService(FollowDetailApiService.class).list(body);
     }
+
+    /**
+     * 删除帖子
+     */
+    @Override
+    public Observable delete(RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).delete(body);
+    }
 }

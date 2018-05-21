@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,17 +17,26 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerBrandAreaActivityCommponent;
 import com.haotang.easyshare.di.module.activity.BrandAreaActivityModule;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
+import com.haotang.easyshare.mvp.model.entity.res.BrandAreaBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.BrandAreaPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
+import com.haotang.easyshare.mvp.view.adapter.BrandAreaAdAdapter;
 import com.haotang.easyshare.mvp.view.adapter.BrandAreaHotPointAdapter;
 import com.haotang.easyshare.mvp.view.iview.IBrandAreaView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
+import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
+import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +50,7 @@ import okhttp3.MultipartBody;
 /**
  * 品牌专区
  */
-public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implements IBrandAreaView {
+public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implements IBrandAreaView, OnBannerListener {
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.iv_titlebar_back)
@@ -57,6 +68,13 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
     private int brandId;
     private int mNextRequestPage = 1;
     private int pageSize;
+    private Banner banner_brandarea_top;
+    private TextView tv_brandarea_rexiaotv;
+    private RecyclerView rv_brand_area_ad;
+    private ImageView iv_brand_area_ad_close;
+    private List<BrandAreaBean.AdBean> adList = new ArrayList<BrandAreaBean.AdBean>();
+    private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
+    private String brand;
 
     @Override
     protected int getContentLayout() {
@@ -69,6 +87,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
         DaggerBrandAreaActivityCommponent.builder().
                 brandAreaActivityModule(new BrandAreaActivityModule(this, this)).build().inject(this);
         brandId = getIntent().getIntExtra("brandId", 0);
+        brand = getIntent().getStringExtra("brand");
     }
 
     @Override
@@ -86,6 +105,11 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                 ContextCompat.getColor(this, R.color.af8f8f8)));
         brandAreaHotPointAdapter = new BrandAreaHotPointAdapter(R.layout.brandarea_rexiao_ll, list);
         rvBrandArea.setAdapter(brandAreaHotPointAdapter);
+        View top = getLayoutInflater().inflate(R.layout.brandarea_top_view, (ViewGroup) rvBrandArea.getParent(), false);
+        brandAreaHotPointAdapter.addHeaderView(top);
+        banner_brandarea_top = (Banner) top.findViewById(R.id.banner_brandarea_top);
+        tv_brandarea_rexiaotv = (TextView) top.findViewById(R.id.tv_brandarea_rexiaotv);
+        StringUtil.setText(tv_brandarea_rexiaotv, brand + "热销", "", View.VISIBLE, View.VISIBLE);
     }
 
     @Override
@@ -95,6 +119,14 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                 .addFormDataPart("brandId", String.valueOf(brandId))
                 .build();
         mPresenter.article(body);
+
+        MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "3").build();
+        mPresenter.list(body1);
+
+        MultipartBody body2 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "4").build();
+        mPresenter.list1(body2);
     }
 
     @Override
@@ -105,14 +137,6 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     protected void initEvent() {
-        /*brandAreaHotPointAdapter.setOnBannerItemListener(new brandAreaHotPointAdapter.OnBannerItemListener() {
-            @Override
-            public void OnBannerItem(int position) {
-                RingLog.d("position = " + position);
-                brandAreaList.remove(position);
-                brandAreaHotPointAdapter.notifyDataSetChanged();
-            }
-        });*/
         brandAreaHotPointAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -136,6 +160,14 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                 .addFormDataPart("brandId", String.valueOf(brandId))
                 .build();
         mPresenter.article(body);
+
+        MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "3").build();
+        mPresenter.list(body1);
+
+        MultipartBody body2 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "4").build();
+        mPresenter.list1(body2);
     }
 
     private void loadMore() {
@@ -198,6 +230,109 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        //开始轮播
+        if (banner_brandarea_top != null) {
+            banner_brandarea_top.startAutoPlay();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //结束轮播
+        if (banner_brandarea_top != null) {
+            banner_brandarea_top.stopAutoPlay();
+        }
+    }
+
+    @Override
+    public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        if (data == null) {
+            data = new ArrayList<AdvertisementBean.DataBean>();
+        }
+        for (int i = 0; i < 5; i++) {
+            data.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549072013203471.jpg"
+                    , 2, "http://www.sayiyinxiang.com/docs/ad.html"));
+        }
+        if (data != null && data.size() > 0) {
+            bannerList.clear();
+            bannerList.addAll(data);
+            banner_brandarea_top.setVisibility(View.VISIBLE);
+            setBanner(data);
+        } else {
+            banner_brandarea_top.setVisibility(View.GONE);
+        }
+    }
+
+    private void setBanner(List<AdvertisementBean.DataBean> data) {
+        List<String> list = new ArrayList<String>();
+        for (int i = 0; i < data.size(); i++) {
+            list.add(data.get(i).getImg());
+        }
+        banner_brandarea_top.setImages(list)
+                .setImageLoader(new GlideImageLoader())
+                .setOnBannerListener(this)
+                .start();
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        banner_brandarea_top.setVisibility(View.GONE);
+        RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void list1Success(List<AdvertisementBean.DataBean> data) {
+        if (data == null) {
+            data = new ArrayList<AdvertisementBean.DataBean>();
+        }
+        for (int i = 0; i < 5; i++) {
+            data.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549072013203471.jpg"
+                    , 2, "http://www.sayiyinxiang.com/docs/ad.html"));
+        }
+        if (data != null && data.size() > 0) {
+            adList.clear();
+            for (int i = 0; i < data.size(); i++) {
+                AdvertisementBean.DataBean adsBean = data.get(i);
+                if (adsBean != null) {
+                    adList.add(new BrandAreaBean.AdBean(adsBean.getImg(), adsBean.getDisplay(), adsBean.getDestination()));
+                }
+            }
+            final View top_ad = getLayoutInflater().inflate(R.layout.brandarea_ad_gv, (ViewGroup) rvBrandArea.getParent(), false);
+            brandAreaHotPointAdapter.addHeaderView(top_ad, 3);
+            rv_brand_area_ad = (RecyclerView) top_ad.findViewById(R.id.rv_brand_area_ad);
+            iv_brand_area_ad_close = (ImageView) top_ad.findViewById(R.id.iv_brand_area_ad_close);
+            rv_brand_area_ad.setHasFixedSize(true);
+            rv_brand_area_ad.setNestedScrollingEnabled(false);
+            NoScollFullGridLayoutManager noScollFullGridLayoutManager = new
+                    NoScollFullGridLayoutManager(rv_brand_area_ad, BrandAreaActivity.this, 3, GridLayoutManager.VERTICAL, false);
+            noScollFullGridLayoutManager.setScrollEnabled(false);
+            rv_brand_area_ad.setLayoutManager(noScollFullGridLayoutManager);
+            if (rv_brand_area_ad.getItemDecorationCount() <= 0) {
+                rv_brand_area_ad.addItemDecoration(new GridSpacingItemDecoration(3,
+                        BrandAreaActivity.this.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
+                        BrandAreaActivity.this.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
+                        false));
+            }
+            rv_brand_area_ad.setAdapter(new BrandAreaAdAdapter(R.layout.item_brandarea_ad
+                    , adList));
+            iv_brand_area_ad_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    brandAreaHotPointAdapter.removeHeaderView(top_ad);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void list1Fail(int code, String msg) {
+        RingLog.e(TAG, "list1Fail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
@@ -207,5 +342,19 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    public void OnBannerClick(int position) {
+        if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
+            AdvertisementBean.DataBean dataBean = bannerList.get(position);
+            if (dataBean != null) {
+                if (dataBean.getDisplay() == 1) {//原生
+
+                } else if (dataBean.getDisplay() == 2) {//H5
+                    startActivity(new Intent(BrandAreaActivity.this, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, dataBean.getDestination()));
+                }
+            }
+        }
     }
 }

@@ -76,7 +76,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     private CommentImgAdapter commentImgAdapter;
     private static final int IMG_NUM = 9;
     private int brandId;
-    private int isWtc;
+    private int category = 1;
 
     @Override
     protected int getContentLayout() {
@@ -262,6 +262,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                 //构建body
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("carId", String.valueOf(brandId));
+                builder.addFormDataPart("category", String.valueOf(category));
                 builder.addFormDataPart("content", etSendPost.getText().toString().trim());
                 for (int i = 0; i < imgPathList.size(); i++) {
                     //构建要上传的文件
@@ -276,12 +277,12 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     }
 
     private void setWtc() {
-        if (isWtc == 0) {
-            isWtc = 1;
+        if (category == 1) {
+            category = 2;
             tv_sendpost_wtc.setBackgroundResource(R.mipmap.bg_postlist_calss_select);
             tv_sendpost_wtc.setTextColor(getResources().getColor(R.color.white));
-        } else if (isWtc == 1) {
-            isWtc = 0;
+        } else if (category == 2) {
+            category = 1;
             tv_sendpost_wtc.setBackgroundResource(R.mipmap.bg_postlist_calss_unselect);
             tv_sendpost_wtc.setTextColor(getResources().getColor(R.color.a666666));
         }

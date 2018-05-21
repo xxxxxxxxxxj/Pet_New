@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
+import com.haotang.easyshare.mvp.model.entity.res.CommentTags;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.ICommentModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
@@ -56,6 +57,40 @@ public class CommentPresenter extends BasePresenter<ICommentView, ICommentModel>
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.saveFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+
+    /**
+     * 评论标签
+     */
+    public void tags() {
+        DevRing.httpManager().commonRequest(mIModel.tags(), new CommonObserver<CommentTags>() {
+            @Override
+            public void onResult(CommentTags result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.tagsSuccess
+                                    (result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.tagsFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.tagsFail
+                                        (AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.tagsFail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));

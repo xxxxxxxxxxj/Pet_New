@@ -58,6 +58,9 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import top.zibin.luban.Luban;
 
+/**
+ * 充电桩评论页
+ */
 public class CommentActivity extends BaseActivity<CommentPresenter> implements ICommentView {
     protected final static String TAG = CommentActivity.class.getSimpleName();
     private static final int IMG_NUM = 9;
@@ -73,7 +76,6 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     RecyclerView rvCommentImg;
     @BindView(R.id.rv_comment_tag)
     RecyclerView rvCommentTag;
-    private String[] tags = {"充电便利", "停车免费", "不用排队", "价格便宜", "充电快"};
     private List<CommentImg> imgList = new ArrayList<CommentImg>();
     private List<CommentTag> tagList = new ArrayList<CommentTag>();
     private List<String> imgPathList = new ArrayList<String>();
@@ -99,9 +101,6 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
         tvTitlebarTitle.setText("评论");
         tvTitlebarOther.setVisibility(View.VISIBLE);
         tvTitlebarOther.setText("提交");
-        for (int i = 0; i < tags.length; i++) {
-            tagList.add(new CommentTag(tags[i], false));
-        }
         imgList.add(new CommentImg("", true));
         rvCommentImg.setHasFixedSize(true);
         rvCommentImg.setNestedScrollingEnabled(false);
@@ -131,7 +130,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        mPresenter.tags();
     }
 
     @Override
@@ -322,6 +321,22 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     @Override
     public void saveFail(int code, String msg) {
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void tagsSuccess(List<String> data) {
+        if (data != null && data.size() > 0) {
+            tagList.clear();
+            for (int i = 0; i < data.size(); i++) {
+                tagList.add(new CommentTag(data.get(i), false));
+            }
+            commentTagAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void tagsFail(int code, String msg) {
+        RingLog.e(TAG, "tagsFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
