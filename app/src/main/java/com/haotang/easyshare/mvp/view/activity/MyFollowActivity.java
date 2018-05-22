@@ -147,6 +147,12 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
         } else {
             followListAdapter.loadMoreFail();
         }
+        followListAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 
@@ -174,6 +180,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
             } else {
                 followListAdapter.loadMoreEnd(false);
             }
+            followListAdapter.setEmptyView(setEmptyViewBase(2, "您还没有关注的人哦", R.mipmap.no_data, null));
         }
         followListAdapter.notifyDataSetChanged();
     }

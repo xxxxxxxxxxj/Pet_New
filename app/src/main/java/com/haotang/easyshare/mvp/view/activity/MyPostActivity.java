@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.haotang.easyshare.mvp.view.adapter.PostListAdapter;
 import com.haotang.easyshare.mvp.view.iview.IMyPostView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
+import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
@@ -219,6 +221,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
             } else {
                 postListAdapter.loadMoreEnd(false);
             }
+            postListAdapter.setEmptyView(setEmptyViewBase(2, "您还没有发布帖子哦", R.mipmap.no_data, null));
         }
         postListAdapter.notifyDataSetChanged();
     }
@@ -231,6 +234,12 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
         } else {
             postListAdapter.loadMoreFail();
         }
+        postListAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 

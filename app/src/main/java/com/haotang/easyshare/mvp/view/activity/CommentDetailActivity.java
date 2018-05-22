@@ -185,6 +185,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
                 } else {
                     commentDetailAdapter.loadMoreEnd(false);
                 }
+                commentDetailAdapter.setEmptyView(setEmptyViewBase(2, "暂无评论", R.mipmap.no_data, null));
             }
         }
         commentDetailAdapter.notifyDataSetChanged();
@@ -199,6 +200,12 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
         } else {
             commentDetailAdapter.loadMoreFail();
         }
+        commentDetailAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
     }
 
     @Override

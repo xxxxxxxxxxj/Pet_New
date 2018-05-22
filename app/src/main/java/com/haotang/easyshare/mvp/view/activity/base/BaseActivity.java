@@ -5,10 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
+import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.base.activity.IBaseActivity;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.ColorBar;
@@ -71,6 +75,22 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected int mDensityDpi;
     protected int mAvatarSize;
     protected float mRatio;
+
+    protected View setEmptyViewBase(int flag, String msg, int resId, View.OnClickListener OnClickListener) {//1.无网络2.无数据或数据错误
+        View emptyView = View.inflate(this, R.layout.emptyview, null);
+        ImageView iv_emptyview_img = (ImageView) emptyView.findViewById(R.id.iv_emptyview_img);
+        TextView tv_emptyview_desc = (TextView) emptyView.findViewById(R.id.tv_emptyview_desc);
+        ImageView iv_emptyview_retry = (ImageView) emptyView.findViewById(R.id.iv_emptyview_retry);
+        if (flag == 1) {
+            iv_emptyview_retry.setVisibility(View.VISIBLE);
+            iv_emptyview_retry.setOnClickListener(OnClickListener);
+        } else if (flag == 2) {
+            iv_emptyview_retry.setVisibility(View.GONE);
+        }
+        StringUtil.setText(tv_emptyview_desc, msg, "", View.VISIBLE, View.VISIBLE);
+        iv_emptyview_img.setImageResource(resId);
+        return emptyView;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

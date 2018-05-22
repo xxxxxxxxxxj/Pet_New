@@ -123,7 +123,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
             if (direction == SwipeMenuRecyclerView.RIGHT_DIRECTION) {
                 if (list != null && list.size() > 0 && list.size() > adapterPosition) {
                     CollectChargeBean.DataBean dataBean = list.get(adapterPosition);
-                    if(dataBean != null){
+                    if (dataBean != null) {
                         parmMap.clear();
                         parmMap.put("uuid", dataBean.getUuid());
                         mPresenter.cancel(parmMap);
@@ -215,6 +215,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
             } else {
                 collectChargeListAdapter.loadMoreEnd(false);
             }
+            collectChargeListAdapter.setEmptyView(setEmptyViewBase(2, "暂无收藏的充电桩", R.mipmap.no_data, null));
         }
         collectChargeListAdapter.notifyDataSetChanged();
     }
@@ -227,6 +228,12 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
         } else {
             collectChargeListAdapter.loadMoreFail();
         }
+        collectChargeListAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 

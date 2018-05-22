@@ -230,6 +230,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
             } else {
                 mainLocalAdapter.loadMoreEnd(false);
             }
+            mainLocalAdapter.setEmptyView(setEmptyViewBase(2, "暂无充电桩", R.mipmap.no_data, null));
         }
         mainLocalAdapter.notifyDataSetChanged();
     }
@@ -242,6 +243,12 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         } else {
             mainLocalAdapter.loadMoreFail();
         }
+        mainLocalAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "nearbyFail() status = " + code + "---desc = " + msg);
     }
 

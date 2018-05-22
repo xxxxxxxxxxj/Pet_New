@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerHistoricalMessageFragmentCommponent;
@@ -18,7 +19,6 @@ import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.other.RingLog;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +130,7 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
             } else {
                 historicalMessagelAdapter.loadMoreEnd(false);
             }
+            historicalMessagelAdapter.setEmptyView(setEmptyViewBase(2, "暂无留言", R.mipmap.no_data, null));
         }
         historicalMessagelAdapter.notifyDataSetChanged();
     }
@@ -142,6 +143,12 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
         } else {
             historicalMessagelAdapter.loadMoreFail();
         }
+        historicalMessagelAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "historyFail() status = " + code + "---desc = " + msg);
     }
 }
