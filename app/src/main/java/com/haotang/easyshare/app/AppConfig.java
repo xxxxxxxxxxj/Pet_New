@@ -16,7 +16,7 @@ import cn.jpush.im.android.api.model.Message;
  * @date XJ on 2018/4/12 11:22
  */
 public class AppConfig {
-    public static final String WX_SECRET = "";
+    public static final String WX_SECRET = "79ca826b38996728811ef758334278d1";
     public static List<Message> forwardMsg = new ArrayList<>();
     public static final String SERVER_KEY = "A16EF76FA2D6B5A1A743A489D9332D9A";
     public static final int SERVER_ERROR = 5201314;
