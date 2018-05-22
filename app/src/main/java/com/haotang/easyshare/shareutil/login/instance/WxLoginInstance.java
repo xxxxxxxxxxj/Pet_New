@@ -12,6 +12,7 @@ import com.haotang.easyshare.shareutil.login.LoginResult;
 import com.haotang.easyshare.shareutil.login.result.BaseToken;
 import com.haotang.easyshare.shareutil.login.result.WxToken;
 import com.haotang.easyshare.shareutil.login.result.WxUser;
+import com.ljy.devring.other.RingLog;
 import com.tencent.mm.sdk.openapi.BaseReq;
 import com.tencent.mm.sdk.openapi.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -70,6 +71,7 @@ public class WxLoginInstance extends LoginInstance {
     }
 
     private void getToken(final String code) {
+        RingLog.e("url = " + buildTokenUrl(code));
         Observable.fromEmitter(new Action1<Emitter<WxToken>>() {
             @Override
             public void call(Emitter<WxToken> wxTokenEmitter) {
@@ -147,6 +149,14 @@ public class WxLoginInstance extends LoginInstance {
             public void onResp(BaseResp baseResp) {
                 if (baseResp instanceof SendAuth.Resp && baseResp.getType() == 1) {
                     SendAuth.Resp resp = (SendAuth.Resp) baseResp;
+                    RingLog.e("resp.userName = " + resp.userName);
+                    RingLog.e("resp.token = " + resp.token);
+                    RingLog.e("resp.expireDate = " + resp.expireDate);
+                    RingLog.e("resp.state = " + resp.state);
+                    RingLog.e("resp.resultUrl = " + resp.resultUrl);
+                    RingLog.e("resp.errCode = " + resp.errCode);
+                    RingLog.e("resp.errStr = " + resp.errStr);
+                    RingLog.e("resp.transaction = " + resp.transaction);
                     switch (resp.errCode) {
                         case BaseResp.ErrCode.ERR_OK:
                             getToken(resp.token);

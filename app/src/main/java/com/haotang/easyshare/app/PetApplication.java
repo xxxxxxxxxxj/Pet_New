@@ -117,7 +117,7 @@ public class PetApplication extends Application {
         ShareConfig config = ShareConfig.instance()
                 .qqId(AppConfig.QQ_ID)
                 .wxId(AppConfig.WX_ID)
-                .wxSecret(AppConfig.WX_ID);
+                .wxSecret(AppConfig.WX_SECRET);
         ShareManager.init(config);
 
         //友盟设置

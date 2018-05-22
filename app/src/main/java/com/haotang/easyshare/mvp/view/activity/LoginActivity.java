@@ -244,24 +244,24 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 LoginUtil.login(LoginActivity.this, LoginPlatform.WX, new LoginListener() {
                     @Override
                     public void loginSuccess(LoginResult result) {
-                        RingLog.d(TAG, result.getUserInfo().getNickname());
-                        RingLog.d(TAG, "登录成功");
+                        RingLog.e(TAG, result.getUserInfo().getNickname());
+                        RingLog.e(TAG, "登录成功");
                     }
 
                     @Override
                     public void beforeFetchUserInfo(BaseToken token) {
-                        RingLog.d(TAG, "获取用户信息");
+                        RingLog.e(TAG, "获取用户信息");
                     }
 
                     @Override
                     public void loginFailure(Exception e) {
                         e.printStackTrace();
-                        RingLog.d(TAG, "登录失败e = " + e.toString());
+                        RingLog.e(TAG, "登录失败e = " + e.toString());
                     }
 
                     @Override
                     public void loginCancel() {
-                        RingLog.d(TAG, "登录取消");
+                        RingLog.e(TAG, "登录取消");
                     }
                 });
                 break;
@@ -318,7 +318,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 //定位成功回调信息，设置相关消息
                 lat = amapLocation.getLatitude();//获取纬度
                 lng = amapLocation.getLongitude();//获取经度
-                RingLog.d(TAG, "定位成功lat = "
+                RingLog.e(TAG, "定位成功lat = "
                         + lat + ", lng = "
                         + lng);
                 if (lat > 0 && lng > 0) {
@@ -326,7 +326,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 }
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                RingLog.d(TAG, "location Error, ErrCode:"
+                RingLog.e(TAG, "location Error, ErrCode:"
                         + amapLocation.getErrorCode() + ", errInfo:"
                         + amapLocation.getErrorInfo());
             }
