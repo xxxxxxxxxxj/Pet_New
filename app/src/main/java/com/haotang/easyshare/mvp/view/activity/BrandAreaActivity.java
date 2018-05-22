@@ -47,6 +47,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.MultipartBody;
 
+import static com.haotang.easyshare.R.id.iv_brand_area_ad_close;
+import static com.haotang.easyshare.R.id.rv_brand_area_ad;
+
 /**
  * 品牌专区
  */
@@ -70,9 +73,6 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
     private int pageSize;
     private Banner banner_brandarea_top;
     private TextView tv_brandarea_rexiaotv;
-    private RecyclerView rv_brand_area_ad;
-    private ImageView iv_brand_area_ad_close;
-    private List<BrandAreaBean.AdBean> adList = new ArrayList<BrandAreaBean.AdBean>();
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
     private String brand;
 
@@ -293,37 +293,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                     , 2, "http://www.sayiyinxiang.com/docs/ad.html"));
         }
         if (data != null && data.size() > 0) {
-            adList.clear();
-            for (int i = 0; i < data.size(); i++) {
-                AdvertisementBean.DataBean adsBean = data.get(i);
-                if (adsBean != null) {
-                    adList.add(new BrandAreaBean.AdBean(adsBean.getImg(), adsBean.getDisplay(), adsBean.getDestination()));
-                }
-            }
-            final View top_ad = getLayoutInflater().inflate(R.layout.brandarea_ad_gv, (ViewGroup) rvBrandArea.getParent(), false);
-            brandAreaHotPointAdapter.addHeaderView(top_ad, 3);
-            rv_brand_area_ad = (RecyclerView) top_ad.findViewById(R.id.rv_brand_area_ad);
-            iv_brand_area_ad_close = (ImageView) top_ad.findViewById(R.id.iv_brand_area_ad_close);
-            rv_brand_area_ad.setHasFixedSize(true);
-            rv_brand_area_ad.setNestedScrollingEnabled(false);
-            NoScollFullGridLayoutManager noScollFullGridLayoutManager = new
-                    NoScollFullGridLayoutManager(rv_brand_area_ad, BrandAreaActivity.this, 3, GridLayoutManager.VERTICAL, false);
-            noScollFullGridLayoutManager.setScrollEnabled(false);
-            rv_brand_area_ad.setLayoutManager(noScollFullGridLayoutManager);
-            if (rv_brand_area_ad.getItemDecorationCount() <= 0) {
-                rv_brand_area_ad.addItemDecoration(new GridSpacingItemDecoration(3,
-                        BrandAreaActivity.this.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
-                        BrandAreaActivity.this.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
-                        false));
-            }
-            rv_brand_area_ad.setAdapter(new BrandAreaAdAdapter(R.layout.item_brandarea_ad
-                    , adList));
-            iv_brand_area_ad_close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    brandAreaHotPointAdapter.removeHeaderView(top_ad);
-                }
-            });
+            brandAreaHotPointAdapter.setAdData(data);
         }
     }
 

@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     @Override
 
     public void onWindowFocusChanged(boolean hasFocus) {
-        RingLog.e("加载完毕");
+        /*RingLog.e("加载完毕");
         super.onWindowFocusChanged(hasFocus);
         int lastTop = SharedPreferenceUtil.getInstance(MainActivity.this).getInt("lastTop", -1);
         int lastLeft = SharedPreferenceUtil.getInstance(MainActivity.this).getInt("lastLeft", -1);
@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         RingLog.e("lastTop = " + lastTop + ",lastLeft = " + lastLeft + ",lastRight = " + lastRight + ",lastBottom = " + lastBottom);
         if (lastTop != -1 && lastLeft != -1 && lastRight != -1 && lastBottom != -1) {
             ivMainfragGj.layout(lastLeft, lastTop, lastRight, lastBottom);
-        }
+        }*/
     }
 
     @Override
