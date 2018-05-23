@@ -3,9 +3,7 @@ package com.haotang.easyshare.mvp.view.adapter;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,21 +14,18 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.BrandAreaBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
-import com.haotang.easyshare.mvp.view.activity.BrandAreaActivity;
 import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
+import com.haotang.easyshare.mvp.view.activity.CarInfoActivity;
+import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
-import com.ljy.devring.other.RingLog;
+import com.haotang.easyshare.util.SystemUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.data;
-import static com.haotang.easyshare.R.id.iv_brand_area_ad_close;
-import static com.haotang.easyshare.R.id.rv_brand_area_ad;
 
 /**
  * <p>Title:${type_name}</p>
@@ -80,7 +75,11 @@ public class BrandAreaHotPointAdapter extends BaseQuickAdapter<HotPoint.DataBean
             iv_item_allbands_lxgj.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mContext.startActivity(new Intent(mContext, ButlerActivity.class));
+                    if (SystemUtil.checkLogin(mContext)) {
+                        mContext.startActivity(new Intent(mContext, ButlerActivity.class));
+                    } else {
+                        mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                    }
                 }
             });
             GlideUtil.loadNetCircleImg(mContext, item.getHeadImg(), iv_item_hotpoint_userimg, R.mipmap.ic_image_load_circle);

@@ -158,11 +158,11 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         rllMyfragmentUserinfo.bringToFront();
         ivMyfragmentUserimg.bringToFront();
         if (SystemUtil.checkLogin(mActivity)) {
-            rtvMyfragmentTuichu.setVisibility(View.GONE);
+            rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
             ivMyfragmentAdd.setVisibility(View.GONE);
         } else {
-            rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
+            rtvMyfragmentTuichu.setVisibility(View.GONE);
             tvMyfragmentUsername.setText("立即登录");
             ivMyfragmentAdd.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.GONE);
@@ -249,11 +249,11 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             case R.id.rtv_myfragment_tuichu:
                 SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
                 if (SystemUtil.checkLogin(mActivity)) {
-                    rtvMyfragmentTuichu.setVisibility(View.GONE);
+                    rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
                     llMyfragmentMycdz.setVisibility(View.VISIBLE);
                     ivMyfragmentAdd.setVisibility(View.GONE);
                 } else {
-                    rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
+                    rtvMyfragmentTuichu.setVisibility(View.GONE);
                     tvMyfragmentUsername.setText("立即登录");
                     ivMyfragmentAdd.setVisibility(View.VISIBLE);
                     llMyfragmentMycdz.setVisibility(View.GONE);
