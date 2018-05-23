@@ -129,8 +129,9 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         postListAdapter.setOnShareItemListener(new PostListAdapter.OnShareItemListener() {
             @Override
             public void OnShareItem(int position) {//赞
+                position--;
                 RingLog.d(TAG, "position = " + position);
-                if (list.size() > 0 && list.size() > position) {
+                if (position >= 0 && list.size() > 0 && list.size() > position) {
                     PostBean.DataBean dataBean = list.get(position);
                     if (dataBean != null && dataBean.getIsPraise() == 0) {
                         praisePosition = position;
@@ -145,6 +146,13 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         postListAdapter.setOnDeleteItemListener(new PostListAdapter.OnDeleteItemListener() {
             @Override
             public void OnDeleteItem(int position) {//评论
+                position--;
+                RingLog.d(TAG, "position = " + position);
+                if (position >= 0 && list.size() > 0 && list.size() > position) {
+                    PostBean.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
+                    }
+                }
             }
         });
         postListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

@@ -50,6 +50,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.haotang.easyshare.R.id.iv_myfragment_add;
+import static com.haotang.easyshare.R.id.tv_myfragment_username;
 
 
 /**
@@ -72,7 +73,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     TextView tvMyfragmentVipjf;
     @BindView(R.id.ll_myfragment_yuejf)
     LinearLayout llMyfragmentYuejf;
-    @BindView(R.id.tv_myfragment_username)
+    @BindView(tv_myfragment_username)
     TextView tvMyfragmentUsername;
     @BindView(iv_myfragment_add)
     ImageView ivMyfragmentAdd;
@@ -152,6 +153,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
             ivMyfragmentAdd.setVisibility(View.GONE);
         } else {
+            tvMyfragmentUsername.setText("立即登录");
             ivMyfragmentAdd.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.GONE);
         }
@@ -171,10 +173,10 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @OnClick({iv_myfragment_add, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
             R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
             R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
-            R.id.tv_myfragment_username})
+            tv_myfragment_username})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_myfragment_username:
+            case tv_myfragment_username:
                 if (SystemUtil.checkLogin(mActivity)) {
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
@@ -209,6 +211,14 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 break;
             case R.id.rtv_myfragment_tuichu:
                 SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
+                if (SystemUtil.checkLogin(mActivity)) {
+                    llMyfragmentMycdz.setVisibility(View.VISIBLE);
+                    ivMyfragmentAdd.setVisibility(View.GONE);
+                } else {
+                    tvMyfragmentUsername.setText("立即登录");
+                    ivMyfragmentAdd.setVisibility(View.VISIBLE);
+                    llMyfragmentMycdz.setVisibility(View.GONE);
+                }
                 startActivity(new Intent(mActivity, TestActivity.class));
                 break;
         }

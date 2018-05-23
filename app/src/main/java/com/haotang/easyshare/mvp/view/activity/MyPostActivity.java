@@ -110,12 +110,12 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                 if (list.size() > 0 && list.size() > position) {
                     PostBean.DataBean dataBean = list.get(position);
                     if (dataBean != null) {
-                        PostBean.DataBean.shareMap sharemap = dataBean.getSharemap();
-                        if (sharemap != null) {
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
                             ShareBottomDialog dialog = new ShareBottomDialog();
                             dialog.setUuid(dataBean.getUuid());
-                            dialog.setShareInfo(sharemap.getTitle(), sharemap.getContent(),
-                                    sharemap.getUrl(), sharemap.getImg());
+                            dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
+                                    shareMap.getUrl(), shareMap.getImg());
                             dialog.show(getSupportFragmentManager());
                         }
                     }

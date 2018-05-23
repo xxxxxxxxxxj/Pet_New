@@ -85,7 +85,7 @@ public class PostListAdapter extends BaseQuickAdapter<PostBean.DataBean, BaseVie
             @Override
             public void onClick(View v) {
                 if (onShareItemListener != null) {
-                    onShareItemListener.OnShareItem(helper.getLayoutPosition() - 1);
+                    onShareItemListener.OnShareItem(helper.getLayoutPosition());
                 }
             }
         });
@@ -93,7 +93,7 @@ public class PostListAdapter extends BaseQuickAdapter<PostBean.DataBean, BaseVie
             @Override
             public void onClick(View v) {
                 if (onDeleteItemListener != null) {
-                    onDeleteItemListener.OnDeleteItem(helper.getLayoutPosition() - 1);
+                    onDeleteItemListener.OnDeleteItem(helper.getLayoutPosition());
                 }
             }
         });

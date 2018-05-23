@@ -86,7 +86,7 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
                                 public void onError(int errType, String errMessage) {
                                     RingLog.e("onError() status = " + errType + "---desc = " + errMessage);
                                 }
-                            }, RxLifecycleUtil.bindUntilDestroy(ShareBottomDialog.this));
+                            }, null);
                 }
             }
 
@@ -99,7 +99,6 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
             @Override
             public void shareCancel() {
                 Toast.makeText(v.getContext(), "取消分享", Toast.LENGTH_SHORT).show();
-
             }
         };
     }

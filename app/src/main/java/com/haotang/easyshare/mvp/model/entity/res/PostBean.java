@@ -77,17 +77,17 @@ public class PostBean {
         private int praises;
         private int carId;
         private int isPraise;
-        private shareMap sharemap;
+        private ShareMap shareMap;
 
-        public shareMap getSharemap() {
-            return sharemap;
+        public ShareMap getShareMap() {
+            return shareMap;
         }
 
-        public void setSharemap(shareMap sharemap) {
-            this.sharemap = sharemap;
+        public void setShareMap(ShareMap shareMap) {
+            this.shareMap = shareMap;
         }
 
-        public static class shareMap {
+        public static class ShareMap {
             private String img;
             private String title;
             private String content;
