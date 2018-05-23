@@ -58,6 +58,7 @@ import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.CommentDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
+import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.SwitchCityActivity;
 import com.haotang.easyshare.mvp.view.adapter.BrandAreaAdAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
@@ -473,10 +474,13 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_mainfrag_city:
-                startActivity(new Intent(mActivity, SwitchCityActivity.class).putExtra("city", city));
                 break;
             case R.id.rl_mainfrag_send:
-                startActivity(new Intent(mActivity, AddChargeActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, AddChargeActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
         }
     }
@@ -493,12 +497,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     }
                 }
                 aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
-                break;
-            case R.id.iv_mainfrag_rmht1:
-                break;
-            case R.id.iv_mainfrag_rmht2:
-                break;
-            case R.id.iv_mainfrag_rmht3:
                 break;
             case R.id.rl_mainfrag_localev:
                 Intent intent = new Intent(mActivity, LocalChargingActivity.class);

@@ -223,12 +223,16 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 finish();
                 break;
             case iv_chargingdetail_sc:
-                parmMap.clear();
-                parmMap.put("uuid", uuid);
-                if (is_collect == 0) {//是否已收藏(0:否、1:是)
-                    mPresenter.follow(parmMap);
-                } else if (is_collect == 1) {
-                    mPresenter.cancel(parmMap);
+                if (SystemUtil.checkLogin(this)) {
+                    parmMap.clear();
+                    parmMap.put("uuid", uuid);
+                    if (is_collect == 0) {//是否已收藏(0:否、1:是)
+                        mPresenter.follow(parmMap);
+                    } else if (is_collect == 1) {
+                        mPresenter.cancel(parmMap);
+                    }
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
                 break;
             case R.id.iv_chargingdetail_share:

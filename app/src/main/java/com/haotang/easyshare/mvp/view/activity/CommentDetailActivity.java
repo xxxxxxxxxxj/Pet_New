@@ -25,7 +25,7 @@ import com.haotang.easyshare.mvp.view.adapter.CommentDetailAdapter;
 import com.haotang.easyshare.mvp.view.iview.ICommentDetailView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.StringUtil;
-import com.ljy.devring.DevRing;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -131,7 +131,11 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
                 finish();
                 break;
             case R.id.ll_comment_detail_add:
-                startActivity(new Intent(CommentDetailActivity.this, CommentActivity.class).putExtra("uuid", uuid));
+                if (SystemUtil.checkLogin(this)) {
+                    startActivity(new Intent(CommentDetailActivity.this, CommentActivity.class).putExtra("uuid", uuid));
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
+                }
                 break;
         }
     }

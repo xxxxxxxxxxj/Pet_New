@@ -63,8 +63,6 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
                 .historicalMessageFragmentModule(new HistoricalMessageFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
-        srlHistorymsg.setRefreshing(true);
-        srlHistorymsg.setColorSchemeColors(Color.rgb(47, 223, 189));
         rvHistorymsg.setHasFixedSize(true);
         rvHistorymsg.setLayoutManager(new LinearLayoutManager(mActivity));
         historicalMessagelAdapter = new HistoricalMessagelAdapter(R.layout.item_historymsg, list);
@@ -76,6 +74,7 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
 
     @Override
     protected void initData() {
+        refresh();
     }
 
     @Override
@@ -101,12 +100,11 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
 
     @Override
     public void requestData() {
-        if (isFragmentVisible && isViewReady) {
-            refresh();
-        }
     }
 
     private void refresh() {
+        RingLog.e("refresh");
+        srlHistorymsg.setColorSchemeColors(Color.rgb(47, 223, 189));
         historicalMessagelAdapter.setEnableLoadMore(false);
         srlHistorymsg.setRefreshing(true);
         mNextRequestPage = 1;

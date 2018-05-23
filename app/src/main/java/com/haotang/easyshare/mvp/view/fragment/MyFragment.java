@@ -190,28 +190,56 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 }
                 break;
             case iv_myfragment_add:
-                startActivity(new Intent(mActivity, AddChargeActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, AddChargeActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_clxx:
-                startActivity(new Intent(mActivity, CarInfoActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, CarInfoActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_hytq:
-                startActivity(new Intent(mActivity, MemberActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, MemberActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_wdtz:
-                startActivity(new Intent(mActivity, MyPostActivity.class).putExtra("uuid", uuid));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, MyPostActivity.class).putExtra("uuid", uuid));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_scdzd:
-                startActivity(new Intent(mActivity, CollectChargeActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, CollectChargeActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_gzdr:
-                startActivity(new Intent(mActivity, MyFollowActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, MyFollowActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_jjdh:
                 SystemUtil.cellPhone(mActivity, kf_phone);
                 break;
             case R.id.rl_myfragment_srgj:
-                startActivity(new Intent(mActivity, ButlerActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, ButlerActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_gy:
                 startActivity(new Intent(mActivity, AboutActivity.class));

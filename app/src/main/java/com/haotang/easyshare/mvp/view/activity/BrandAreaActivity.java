@@ -249,13 +249,6 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     public void listSuccess(List<AdvertisementBean.DataBean> data) {
-        if (data == null) {
-            data = new ArrayList<AdvertisementBean.DataBean>();
-        }
-        for (int i = 0; i < 5; i++) {
-            data.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549072013203471.jpg"
-                    , 2, "http://www.sayiyinxiang.com/docs/ad.html"));
-        }
         if (data != null && data.size() > 0) {
             bannerList.clear();
             bannerList.addAll(data);
@@ -285,13 +278,6 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     public void list1Success(List<AdvertisementBean.DataBean> data) {
-        if (data == null) {
-            data = new ArrayList<AdvertisementBean.DataBean>();
-        }
-        for (int i = 0; i < 5; i++) {
-            data.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549072013203471.jpg"
-                    , 2, "http://www.sayiyinxiang.com/docs/ad.html"));
-        }
         if (data != null && data.size() > 0) {
             brandAreaHotPointAdapter.setAdData(data);
         }

@@ -227,7 +227,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
             }
         });
-        ivMainfragGj.setOnTouchListener(new View.OnTouchListener() {
+        /*ivMainfragGj.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // event.getRawX(); //获取手指第一次接触屏幕在x方向的坐标
@@ -278,7 +278,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 }
                 return true;// 不会中断触摸事件的返回
             }
-        });
+        });*/
     }
 
     @Subscribe
@@ -412,7 +412,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_mainfrag_gj:
-                startActivity(new Intent(this, ButlerActivity.class));
+                if (SystemUtil.checkLogin(this)) {
+                    startActivity(new Intent(this, ButlerActivity.class));
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
+                }
                 break;
         }
     }
