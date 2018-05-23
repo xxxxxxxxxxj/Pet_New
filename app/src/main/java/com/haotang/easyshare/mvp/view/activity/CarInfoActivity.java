@@ -51,7 +51,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerCarInfoActivityCommponent.builder().carInfoActivityModule(new CarInfoActivityModule(this, this)).build().inject(this);
     }
 
@@ -73,7 +73,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.iv_carinfo_submit})

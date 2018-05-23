@@ -62,7 +62,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerMyFollowActivityCommponent.builder().myFollowActivityModule(new MyFollowActivityModule(this, this)).build().inject(this);
     }
 
@@ -127,7 +127,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back})

@@ -81,7 +81,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerLoginActivityCommponent.builder().loginActivityModule(new LoginActivityModule(this, this)).build().inject(this);
     }
 
@@ -201,7 +201,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         super.onDestroy();
         mlocationClient.stopLocation();
         CountdownUtil.getInstance().cancel("LOGIN_TIMER");
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_login_hqyzm, R.id.iv_login_login, R.id.iv_login_wxlogin})

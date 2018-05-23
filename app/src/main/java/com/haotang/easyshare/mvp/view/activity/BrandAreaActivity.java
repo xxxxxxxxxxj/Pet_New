@@ -83,7 +83,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerBrandAreaActivityCommponent.builder().
                 brandAreaActivityModule(new BrandAreaActivityModule(this, this)).build().inject(this);
         brandId = getIntent().getIntExtra("brandId", 0);
@@ -132,7 +132,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override

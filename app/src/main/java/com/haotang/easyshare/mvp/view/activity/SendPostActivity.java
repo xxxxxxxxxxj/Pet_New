@@ -85,7 +85,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerSendPostActivityCommponent.builder().sendPostActivityModule(new SendPostActivityModule(this, this)).build().inject(this);
         brandId = getIntent().getIntExtra("brandId", 0);
     }
@@ -246,7 +246,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.tv_sendpost_wtc})

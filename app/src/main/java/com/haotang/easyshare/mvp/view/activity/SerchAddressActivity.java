@@ -65,7 +65,7 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerSerchAddressActivityCommponent.builder().
                 serchAddressActivityModule(new SerchAddressActivityModule(this, this)).build().inject(this);
     }
@@ -125,7 +125,7 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.tv_serchaddress_other, R.id.iv_serchaddress_clear})

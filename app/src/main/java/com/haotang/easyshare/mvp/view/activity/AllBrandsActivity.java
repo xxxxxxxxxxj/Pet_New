@@ -61,7 +61,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerAllBrandsActivityCommponent.builder().
                 allBrandsActivityModule(new AllBrandsActivityModule(this, this)).build().inject(this);
     }
@@ -101,7 +101,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override

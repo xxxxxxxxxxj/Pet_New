@@ -136,7 +136,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerChargingPileDetailActivityCommponent.builder().
                 chargingPileDetailActivityModule(new ChargingPileDetailActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
@@ -213,7 +213,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_chargingdetail_back, iv_chargingdetail_sc, R.id.iv_chargingdetail_share, R.id.ll_chargingdetail_pl, R.id.iv_chargingdetail_lt, R.id.iv_chargingdetail_phone, R.id.ll_chargingdetail_daohang})

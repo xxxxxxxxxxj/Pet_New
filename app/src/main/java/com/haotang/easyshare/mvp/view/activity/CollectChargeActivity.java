@@ -71,7 +71,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerCollectChargeActivityCommponent.builder().collectChargeActivityModule(new CollectChargeActivityModule(this, this)).build().inject(this);
     }
 
@@ -179,7 +179,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back})

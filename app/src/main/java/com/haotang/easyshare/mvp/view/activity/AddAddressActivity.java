@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,8 @@ import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -61,7 +64,7 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerAddAddressActivityCommponent.builder().
                 addAddressActivityModule(new AddAddressActivityModule(this, this)).build().inject(this);
     }
@@ -82,7 +85,7 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override
@@ -110,8 +113,9 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
                 finish();
                 break;
             case R.id.tv_titlebar_other:
-                int stackSize = DevRing.activityStackManager().getStackSize();
-                RingLog.d("stackSize = " + stackSize);
+                List<Activity> activityList = activityListManager.getActivityList();
+                RingLog.e("activityList.size() = " + activityList.size());
+                RingLog.e("activityList = " + activityList.toString());
                 if (StringUtil.isEmpty(etAddaddress.getText().toString())) {
                     RingToast.show("请填写电桩地址");
                     rlAddaddress.setAnimation(SystemUtil.shakeAnimation(5));

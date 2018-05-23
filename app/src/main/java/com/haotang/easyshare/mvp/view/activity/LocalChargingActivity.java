@@ -72,7 +72,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerLocalChargingActivityCommponent.builder().localChargingActivityModule(new LocalChargingActivityModule(this, this)).build().inject(this);
         city = getIntent().getStringExtra("city");
         serchLat = getIntent().getDoubleExtra("serchLat", 0);
@@ -158,7 +158,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick(R.id.iv_titlebar_back)

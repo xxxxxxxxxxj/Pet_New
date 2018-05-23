@@ -65,7 +65,7 @@ public class PhotoViewPagerActivity extends BaseActivity {
     protected void initView(Bundle savedInstanceState) {
         setSwipeBackEnable(false);
         setBarColor(getResources().getColor(R.color.a3a3636));
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
         isDelete = getIntent().getBooleanExtra(EXTRA_IMAGE_ISDELETE, false);
         urls.clear();
@@ -240,7 +240,7 @@ public class PhotoViewPagerActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override

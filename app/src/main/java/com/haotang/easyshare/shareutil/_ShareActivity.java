@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.ljy.devring.DevRing;
+import com.haotang.easyshare.util.ActivityListManager;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -18,6 +18,7 @@ public class _ShareActivity extends Activity {
     private int mType;
     private boolean isNew;
     private static final String TYPE = "share_activity_type";
+    protected ActivityListManager activityListManager = new ActivityListManager();
 
     public static Intent newInstance(Context context, int type) {
         Intent intent = new Intent(context, _ShareActivity.class);
@@ -31,7 +32,7 @@ public class _ShareActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         ShareLogger.i(ShareLogger.INFO.ACTIVITY_CREATE);
         isNew = true;
         // init data
@@ -91,7 +92,7 @@ public class _ShareActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override

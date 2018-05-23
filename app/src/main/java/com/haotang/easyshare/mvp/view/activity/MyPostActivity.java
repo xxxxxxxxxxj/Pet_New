@@ -70,7 +70,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerMyPostActivityCommponent.builder().myPostActivityModule(new MyPostActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
     }
@@ -182,7 +182,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other})

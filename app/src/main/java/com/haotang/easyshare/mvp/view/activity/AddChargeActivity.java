@@ -173,7 +173,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerAddChargeActivityCommponent.builder().
                 addChargeActivityModule(new AddChargeActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
@@ -377,7 +377,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     private void setKuaiOrMan(int flag) {

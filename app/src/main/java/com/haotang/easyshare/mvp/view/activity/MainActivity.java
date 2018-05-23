@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     @Override
     protected void initView(Bundle savedInstanceState) {
         setSwipeBackEnable(false);
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         //使用Dagger2对本类中相关变量进行初始化
         DaggerMainActivityCommponent.builder().mainActivityModule(new MainActivityModule(this, this)).build().inject(this);
         permissionDialog.setMessage(R.string.permission_request_WRITE_EXTERNAL_STORAGE);

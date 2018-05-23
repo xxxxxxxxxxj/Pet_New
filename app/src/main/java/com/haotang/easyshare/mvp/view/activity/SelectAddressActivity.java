@@ -56,7 +56,7 @@ public class SelectAddressActivity extends BaseActivity<SelectAddressPresenter> 
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerSelectAddressActivityCommponent.builder().
                 selectAddressActivityModule(new SelectAddressActivityModule(this, this)).build().inject(this);
     }
@@ -100,7 +100,7 @@ public class SelectAddressActivity extends BaseActivity<SelectAddressPresenter> 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other})

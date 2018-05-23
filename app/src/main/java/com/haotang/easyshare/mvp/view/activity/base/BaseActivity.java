@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
+import com.haotang.easyshare.util.ActivityListManager;
 import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.base.activity.IBaseActivity;
 import com.ljy.devring.other.RingLog;
@@ -51,7 +52,7 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
  */
 
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements
-        IBaseActivity,ISwipeBackActivity {
+        IBaseActivity, ISwipeBackActivity {
     protected final static String TAG = BaseActivity.class.getSimpleName();
     final SwipeBackActivityDelegate mDelegate = new SwipeBackActivityDelegate(this);
     @BindColor(R.color.colorPrimary)
@@ -59,6 +60,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Inject
     @Nullable
     protected P mPresenter;
+    protected ActivityListManager activityListManager = new ActivityListManager();
 
     protected abstract int getContentLayout();//返回页面布局id
 
@@ -69,6 +71,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected abstract void initData(Bundle savedInstanceState);//做数据相关的初始化工作
 
     protected abstract void initEvent();//做监听事件相关的初始化工作
+
     protected int mWidth;
     protected int mHeight;
     protected float mDensity;
@@ -201,6 +204,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     /**
      * 是否可滑动
+     *
      * @param enable
      */
     @Override

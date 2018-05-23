@@ -91,7 +91,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerCommentActivityCommponent.builder().commentActivityModule(new CommentActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
     }
@@ -309,7 +309,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override

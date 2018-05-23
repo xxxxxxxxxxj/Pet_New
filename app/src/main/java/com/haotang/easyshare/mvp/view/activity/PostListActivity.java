@@ -71,7 +71,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerPostListActivityCommponent.builder().
                 postListActivityModule(new PostListActivityModule(this, this)).build().inject(this);
     }
@@ -177,7 +177,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.tv_postlist_zxt, R.id.tv_postlist_rmt, R.id.tv_postlist_wtc})

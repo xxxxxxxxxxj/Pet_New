@@ -93,7 +93,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
     }
 
     @Override
@@ -151,7 +151,7 @@ public class WebViewActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
         mAgentWeb.getWebLifeCycle().onDestroy();
     }
 
