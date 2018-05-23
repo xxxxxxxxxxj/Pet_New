@@ -259,7 +259,7 @@ public class UrlConstants {
         return baseUrl;
     }
 
-    public static final String GET_FLASH_DATA = getServiceBaseUrlNew() + "startPageConfig/startShowImg?";
+    public static final String GET_FLASH_DATA = getServiceBaseUrlNew() + "charging/comment/tags?";
     public static final String GET_LASTVERSION_DATA = getServiceBaseUrlNew() + "user/checkversion?";
     public static final String GET_BOTTOMBAR_DATA = getServiceBaseUrl() + "pet/user/index?";
     public static final String GET_MAINFRAG_DATA = getServiceBaseUrl() + "pet/user/index?";

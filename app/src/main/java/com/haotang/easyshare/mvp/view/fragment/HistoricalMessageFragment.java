@@ -76,7 +76,6 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
 
     @Override
     protected void initData() {
-        refresh();
     }
 
     @Override
@@ -98,6 +97,13 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void requestData() {
+        if (isFragmentVisible && isViewReady) {
+            refresh();
+        }
     }
 
     private void refresh() {

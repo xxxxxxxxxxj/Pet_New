@@ -60,6 +60,11 @@ public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentP
 
     }
 
+    @Override
+    public void requestData() {
+
+    }
+
     public void saveMsg() {
         mPresenter.save(1, etCurrentmsg.getText().toString().trim());
     }

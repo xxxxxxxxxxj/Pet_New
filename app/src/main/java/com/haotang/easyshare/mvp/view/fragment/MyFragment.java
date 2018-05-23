@@ -121,6 +121,14 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         return true;
     }
 
+    @Override
+    public void requestData() {
+        if (isFragmentVisible && isViewReady) {
+            mPresenter.home();
+            mPresenter.my();
+        }
+    }
+
     @Subscribe
     public void getLoginInfo(LoginBean data) {
         mPresenter.home();
@@ -161,8 +169,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     protected void initData() {
-        mPresenter.home();
-        mPresenter.my();
+
     }
 
     @Override

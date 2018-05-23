@@ -52,6 +52,7 @@ import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -208,11 +209,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 currentTabIndex = position;
                 ctlMainactivity.setCurrentTab(currentTabIndex);
                 if (position == 0) {
+                    mainFragment.requestData();
                     ivMainfragGj.setVisibility(View.VISIBLE);
                 } else if (position == 1) {
+                    hotFragment.requestData();
                     ivMainfragGj.setVisibility(View.GONE);
                     ctlMainactivity.hideMsg(1);
                 } else if (position == 2) {
+                    myFragment.requestData();
                     ivMainfragGj.setVisibility(View.GONE);
                     ctlMainactivity.hideMsg(2);
                 }

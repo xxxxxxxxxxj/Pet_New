@@ -118,7 +118,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     protected void initData() {
-        refresh();
+
     }
 
     @Override
@@ -151,6 +151,13 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         //结束轮播
         if (hotFragmenHeader != null) {
             hotFragmenHeader.getBannerTopHotfrag().stopAutoPlay();
+        }
+    }
+
+    @Override
+    public void requestData() {
+        if (isFragmentVisible && isViewReady) {
+            refresh();
         }
     }
 

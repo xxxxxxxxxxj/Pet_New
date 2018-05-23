@@ -39,15 +39,15 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
-            zipAlignEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config//使用上面配置的签名进行打包
         }
 
         debug {
             minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
             signingConfig signingConfigs.config//debug模式下也使用上面配置的签名进行打包
         }
     }

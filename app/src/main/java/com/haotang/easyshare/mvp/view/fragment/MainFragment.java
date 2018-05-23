@@ -168,8 +168,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private List<MainFragmentData.PublishBean> publishList = new ArrayList<MainFragmentData.PublishBean>();
     private List<BrandAreaBean.AdBean> adList = new ArrayList<BrandAreaBean.AdBean>();
     private BrandAreaAdAdapter brandAreaAdAdapter;
-    private double serchLng;
-    private double serchLat;
 
     @Override
     protected boolean isLazyLoad() {
@@ -375,6 +373,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         });
     }
 
+    private void refresh() {
+        mPresenter.homeIndex(lng, lat);
+    }
+
     /**
      * 方法必须重写
      */
@@ -382,6 +384,13 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onResume() {
         super.onResume();
         tmv_mainfrag_map.onResume();
+    }
+
+    @Override
+    public void requestData() {
+        if (isFragmentVisible && isViewReady) {
+            mlocationClient.startLocation();
+        }
     }
 
     /**
@@ -494,8 +503,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             case R.id.rl_mainfrag_localev:
                 Intent intent = new Intent(mActivity, LocalChargingActivity.class);
                 intent.putExtra("city", city);
-                intent.putExtra("serchLat", serchLat);
-                intent.putExtra("serchLng", serchLng);
+                intent.putExtra("serchLat", lat);
+                intent.putExtra("serchLng", lng);
                 startActivity(intent);
                 break;
             case R.id.rl_mainfrag_localev_gg:
@@ -689,9 +698,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                     SerchResult serchResult = serchList.get(position);
                                     if (serchResult != null && !serchResult.isFake()) {
                                         rll_mainfrag_serchresult.setVisibility(View.GONE);
-                                        serchLng = serchResult.getLng();
-                                        serchLat = serchResult.getLat();
-                                        mPresenter.homeIndex(serchResult.getLng(), serchResult.getLat());
+                                        lng = serchResult.getLng();
+                                        lat = serchResult.getLat();
+                                        refresh();
                                     }
                                 }
                             }
@@ -728,7 +737,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         + lat + ", lng = "
                         + lng + ",city = " + city + ",cityCode = " + cityCode + ",address = " + amapLocation.getAddress());
                 if (lat > 0 && lng > 0) {
-                    mPresenter.homeIndex(lng, lat);
+                    refresh();
                     mlocationClient.stopLocation();
                 }
             } else {

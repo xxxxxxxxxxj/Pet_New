@@ -95,6 +95,11 @@ public class ChargeFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
+    public void requestData() {
+
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_myfragment_bjcdz:

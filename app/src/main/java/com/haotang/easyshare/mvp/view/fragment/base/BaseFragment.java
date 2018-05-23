@@ -57,9 +57,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     //根布局视图
     private View mContentView;
     //视图是否已经初始化完毕
-    private boolean isViewReady;
+    protected boolean isViewReady;
     //fragment是否处于可见状态
-    private boolean isFragmentVisible;
+    protected boolean isFragmentVisible;
     //是否已经初始化加载过
     protected boolean isLoaded;
     //用于butterknife解绑
@@ -104,7 +104,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         iv_emptyview_img.setImageResource(resId);
         return emptyView;
     }
-
 
 
     @Override
@@ -213,4 +212,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     public boolean isUseEventBus() {
         return false;
     }
+
+    public abstract void requestData();
 }
