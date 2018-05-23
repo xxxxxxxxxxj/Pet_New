@@ -184,14 +184,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         ctlMainactivity.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-                RingLog.d(TAG, "onTabSelect position = " + position);
+                RingLog.e(TAG, "onTabSelect position = " + position);
                 currentTabIndex = position;
                 vpMainactivity.setCurrentItem(currentTabIndex);
             }
 
             @Override
             public void onTabReselect(int position) {
-                RingLog.d(TAG, "onTabReselect position = " + position);
+                RingLog.e(TAG, "onTabReselect position = " + position);
                 currentTabIndex = position;
                 vpMainactivity.setCurrentItem(currentTabIndex);
             }
@@ -204,18 +204,17 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
             @Override
             public void onPageSelected(int position) {
-                RingLog.d(TAG, "onPageSelected position = " + position);
+                RingLog.e(TAG, "onPageSelected position = " + position);
                 currentTabIndex = position;
                 ctlMainactivity.setCurrentTab(currentTabIndex);
-                if (position == 1) {
-                    ctlMainactivity.hideMsg(1);
-                } else if (position == 2) {
-                    ctlMainactivity.hideMsg(2);
-                }
                 if (position == 0) {
                     ivMainfragGj.setVisibility(View.VISIBLE);
-                } else {
+                } else if (position == 1) {
                     ivMainfragGj.setVisibility(View.GONE);
+                    ctlMainactivity.hideMsg(1);
+                } else if (position == 2) {
+                    ivMainfragGj.setVisibility(View.GONE);
+                    ctlMainactivity.hideMsg(2);
                 }
             }
 

@@ -79,6 +79,7 @@ public class WxLoginInstance extends LoginInstance {
                 try {
                     Response response = mClient.newCall(request).execute();
                     JSONObject jsonObject = new JSONObject(response.body().string());
+                    RingLog.e("jsonObject = " + jsonObject.toString());
                     WxToken token = WxToken.parse(jsonObject);
                     wxTokenEmitter.onNext(token);
                 } catch (IOException | JSONException e) {

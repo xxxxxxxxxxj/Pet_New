@@ -118,14 +118,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     protected void initData() {
-        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
-                .addFormDataPart("category", "2").build();
-        mPresenter.list(body);
-        mPresenter.hot();
-
-        MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
-                .build();
-        mPresenter.newest(body1);
+        refresh();
     }
 
     @Override
@@ -159,6 +152,11 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         if (hotFragmenHeader != null) {
             hotFragmenHeader.getBannerTopHotfrag().stopAutoPlay();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

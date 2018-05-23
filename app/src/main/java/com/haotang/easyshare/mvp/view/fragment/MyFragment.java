@@ -34,10 +34,10 @@ import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMyFragmentView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.GlideUtil;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
-import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -136,6 +136,11 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void initView() {
         DaggerMyFragmentCommponent.builder()
                 .myFragmentModule(new MyFragmentModule(this, mActivity))
@@ -203,7 +208,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 startActivity(new Intent(mActivity, AboutActivity.class));
                 break;
             case R.id.rtv_myfragment_tuichu:
-                //SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
+                SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
                 startActivity(new Intent(mActivity, TestActivity.class));
                 break;
         }

@@ -290,7 +290,7 @@
         <!-- 友盟测试key：55cd4aa4e0f55a4cc8009565 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5affa9e9f43e4831e00001fa" />
+            android:value="5b04ccf0a40fa37bb50001b7" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="easyshare_1" />

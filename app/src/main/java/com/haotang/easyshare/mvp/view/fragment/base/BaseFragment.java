@@ -69,6 +69,10 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     protected P mPresenter;
     protected Bundle savedInstanceState;
 
+    public View getmContentView() {
+        return mContentView;
+    }
+
     protected abstract boolean isLazyLoad();//是否使用懒加载 (Fragment可见时才进行初始化操作(以下四个方法))
 
     protected abstract int getContentLayout();//返回页面布局id
@@ -100,6 +104,8 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         iv_emptyview_img.setImageResource(resId);
         return emptyView;
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

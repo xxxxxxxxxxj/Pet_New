@@ -14,6 +14,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LoginActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
@@ -299,6 +300,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         RingLog.e(TAG, "loginSuccess");
         SharedPreferenceUtil.getInstance(LoginActivity.this).saveString("cellphone",
                 etLoginPhone.getText().toString().trim().replace(" ", ""));
+        DevRing.configureHttp()//配置retrofit
+                .setMapHeader(UrlConstants.getMapHeader(getApplicationContext()));//设置全局的header信息
         if (data != null) {
             DevRing.busManager().postEvent(data);
         }
