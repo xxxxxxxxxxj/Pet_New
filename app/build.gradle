@@ -100,6 +100,11 @@ dependencies {
     compile project(':pickerview')
     compile project(':wheelview')
     compile files('libs/jmessage-sdk-android-2.6.0.jar')
+    compile project(':reclib-qq')
+    compile project(':reclib-testemoticons')
+    compile files('libs/umeng-analytics-7.5.1.jar')
+    compile files('libs/umeng-common-1.5.1.jar')
+    compile files('libs/umeng-debug-1.0.0.jar')
     compile 'com.android.support:appcompat-v7:27.0.2'
     compile 'com.android.support:design:27.0.2'
     compile 'com.android.support:recyclerview-v7:27.0.2'
@@ -129,9 +134,4 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
     annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile project(':reclib-qq')
-    compile project(':reclib-testemoticons')
-    compile files('libs/umeng-analytics-7.5.1.jar')
-    compile files('libs/umeng-common-1.5.1.jar')
-    compile files('libs/umeng-debug-1.0.0.jar')
 }

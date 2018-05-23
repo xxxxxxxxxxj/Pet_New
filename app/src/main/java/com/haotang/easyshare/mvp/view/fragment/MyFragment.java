@@ -24,6 +24,7 @@ import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
 import com.haotang.easyshare.mvp.view.activity.CarInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.CollectChargeActivity;
+import com.haotang.easyshare.mvp.view.activity.EditUserInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.MemberActivity;
 import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
@@ -50,6 +51,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.haotang.easyshare.R.id.iv_myfragment_add;
+import static com.haotang.easyshare.R.id.iv_myfragment_userimg;
 import static com.haotang.easyshare.R.id.tv_myfragment_username;
 
 
@@ -65,7 +67,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     private final static String TAG = MyFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
-    @BindView(R.id.iv_myfragment_userimg)
+    @BindView(iv_myfragment_userimg)
     ImageView ivMyfragmentUserimg;
     @BindView(R.id.tv_myfragment_yue)
     TextView tvMyfragmentYue;
@@ -185,6 +187,13 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             tv_myfragment_username})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case iv_myfragment_userimg:
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, EditUserInfoActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
+                break;
             case tv_myfragment_username:
                 if (SystemUtil.checkLogin(mActivity)) {
                 } else {
