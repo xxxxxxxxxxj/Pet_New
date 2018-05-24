@@ -315,8 +315,8 @@ public class SystemUtil {
         File imageFile = new File(file, fileName);
         FileOutputStream outStream;
         outStream = new FileOutputStream(imageFile);
-        bm.compress(Bitmap.CompressFormat.JPEG, 100,
-                outStream);
+        /*bm.compress(Bitmap.CompressFormat.JPEG, 100,
+                outStream);*/
         outStream.flush();
         outStream.close();
         return imageFile.getAbsolutePath();

@@ -15,6 +15,7 @@ import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMyFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MyFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
@@ -37,7 +38,6 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
-import com.haotang.easyshare.util.SystemTypeUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
@@ -126,9 +126,13 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     public void requestData() {
-        if (isFragmentVisible && isViewReady && SystemUtil.checkLogin(mActivity)) {
-            mPresenter.home();
-            mPresenter.my();
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (SystemUtil.checkLogin(mActivity) && refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_MYFRAGMET) {
+            RingLog.e("REFRESH_MYFRAGMET");
+
         }
     }
 
@@ -178,7 +182,10 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     protected void initData() {
-
+        if (SystemUtil.checkLogin(mActivity)) {
+            mPresenter.home();
+            mPresenter.my();
+        }
     }
 
     @Override

@@ -49,6 +49,7 @@ import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MainFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.BrandAreaBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
@@ -59,7 +60,6 @@ import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.CommentDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
-import com.haotang.easyshare.mvp.view.activity.SwitchCityActivity;
 import com.haotang.easyshare.mvp.view.adapter.BrandAreaAdAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainSerchResultAdapter;
@@ -75,6 +75,8 @@ import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -328,6 +330,18 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     }
 
     @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_MAINFRAGMET) {
+            RingLog.e("REFRESH_MAINFRAGMET");
+        }
+    }
+
+    @Override
     protected void initEvent() {
         aMap.setOnMyLocationChangeListener(this);
         aMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
@@ -389,9 +403,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     public void requestData() {
-        if (isFragmentVisible && isViewReady) {
-            mlocationClient.startLocation();
-        }
+
     }
 
     /**

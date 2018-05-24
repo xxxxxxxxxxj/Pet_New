@@ -10,6 +10,7 @@ import android.view.View;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerHistoricalMessageFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.HistoricalMessageFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HistoricalMsg;
 import com.haotang.easyshare.mvp.presenter.HistoricalMessageFragmentPresenter;
 import com.haotang.easyshare.mvp.view.adapter.HistoricalMessagelAdapter;
@@ -19,6 +20,8 @@ import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.ljy.devring.other.RingLog;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +78,19 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
     @Override
     protected void initData() {
         refresh();
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_HISTORYMESSAGEFRAGMET) {
+            RingLog.e("REFRESH_HISTORYMESSAGEFRAGMET");
+
+        }
     }
 
     @Override

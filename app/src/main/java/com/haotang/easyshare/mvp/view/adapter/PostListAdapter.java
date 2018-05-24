@@ -77,7 +77,11 @@ public class PostListAdapter extends BaseQuickAdapter<PostBean.DataBean, BaseVie
                 }
                 iv_item_mypost_delete.setImageResource(R.mipmap.icon_post_pinglun);
             }
-            StringUtil.setText(tv_item_mypost_desc, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            if (StringUtil.isNotEmpty(item.getTitle())) {
+                StringUtil.setText(tv_item_mypost_desc, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            } else if (StringUtil.isNotEmpty(item.getContent())) {
+                StringUtil.setText(tv_item_mypost_desc, item.getContent(), "", View.VISIBLE, View.VISIBLE);
+            }
             StringUtil.setText(tv_item_mypost_date, item.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetImg(mContext, item.getIcon(), iv_item_mypost, R.mipmap.ic_image_load);
         }

@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -20,6 +19,7 @@ import com.flyco.tablayout.widget.MsgView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerMainActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MainActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.BootmBarBean;
 import com.haotang.easyshare.mvp.model.entity.res.ImageTabEntity;
 import com.haotang.easyshare.mvp.model.entity.res.LastVersionBean;
@@ -52,7 +52,6 @@ import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -138,6 +137,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             ctlMainactivity.hideMsg(1);
         }
         ivMainfragGj.bringToFront();
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
     }
 
     @Override
@@ -209,16 +209,19 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 currentTabIndex = position;
                 ctlMainactivity.setCurrentTab(currentTabIndex);
                 if (position == 0) {
-                    mainFragment.requestData();
                     ivMainfragGj.setVisibility(View.VISIBLE);
+                    mainFragment.requestData();
+                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
                 } else if (position == 1) {
-                    hotFragment.requestData();
                     ivMainfragGj.setVisibility(View.GONE);
                     ctlMainactivity.hideMsg(1);
+                    hotFragment.requestData();
+                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HOTFRAGMET));
                 } else if (position == 2) {
-                    myFragment.requestData();
                     ivMainfragGj.setVisibility(View.GONE);
                     ctlMainactivity.hideMsg(2);
+                    myFragment.requestData();
+                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
                 }
             }
 

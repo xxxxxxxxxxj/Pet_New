@@ -13,9 +13,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerHotFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.HotFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.model.entity.res.SelectAddress;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
@@ -30,8 +32,11 @@ import com.haotang.easyshare.mvp.view.viewholder.HotFragmenHeader;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.other.RingLog;
 import com.youth.banner.listener.OnBannerListener;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +123,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     protected void initData() {
-
+        refresh();
     }
 
     @Override
@@ -156,14 +161,24 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     public void requestData() {
-        if (isFragmentVisible && isViewReady) {
-            refresh();
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_HOTFRAGMET) {
+            RingLog.e("REFRESH_HOTFRAGMET");
+
+        }
     }
 
     @Override

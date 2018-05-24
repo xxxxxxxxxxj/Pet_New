@@ -9,6 +9,7 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerButlerActivityCommponent;
 import com.haotang.easyshare.di.module.activity.ButlerActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.presenter.ButlerPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
@@ -92,8 +93,9 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
                 if (position == 0) {
                     tvTitlebarOther.setVisibility(View.VISIBLE);
                 } else {
-                    historicalMessageFragment.requestData();
                     tvTitlebarOther.setVisibility(View.GONE);
+                    historicalMessageFragment.requestData();
+                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HISTORYMESSAGEFRAGMET));
                 }
             }
 

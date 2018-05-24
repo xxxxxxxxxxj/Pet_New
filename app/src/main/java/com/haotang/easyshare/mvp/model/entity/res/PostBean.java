@@ -78,6 +78,15 @@ public class PostBean {
         private int carId;
         private int isPraise;
         private ShareMap shareMap;
+        private String content;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
 
         public ShareMap getShareMap() {
             return shareMap;

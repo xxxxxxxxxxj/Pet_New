@@ -74,6 +74,11 @@ public class HotPoint {
         private String createTime;
         private String headImg;
         private String batteryLife;
+        private String content;
+
+        public void setContent(String content) {
+            this.content = content;
+        }
 
         public String getBatteryLife() {
             return batteryLife;
@@ -185,6 +190,10 @@ public class HotPoint {
 
         public void setCarId(int carId) {
             this.carId = carId;
+        }
+
+        public String getContent() {
+            return content;
         }
     }
 }
