@@ -414,7 +414,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 break;
             case R.id.tv_titlebar_other:
                 //构建body
-                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("lng", String.valueOf(lng));
                 builder.addFormDataPart("lat", String.valueOf(lat));
                 builder.addFormDataPart("telephone", etAddchargePhone.getText().toString().trim());
