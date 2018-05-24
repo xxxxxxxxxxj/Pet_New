@@ -77,8 +77,6 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-        tvTitlebarOther.setVisibility(View.VISIBLE);
-        tvTitlebarOther.setText("发帖");
         tvTitlebarTitle.setText("我的帖子");
         srlMyPost.setRefreshing(true);
         srlMyPost.setColorSchemeColors(Color.rgb(47, 223, 189));

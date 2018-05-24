@@ -10,8 +10,10 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
+import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 
 import java.util.List;
 
@@ -43,7 +45,11 @@ public class SelectedCarAdapter extends BaseQuickAdapter<HotSpecialCarBean.DataB
             iv_item_allbands_lxgj.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mContext.startActivity(new Intent(mContext, ButlerActivity.class));
+                    if(SystemUtil.checkLogin(mContext)){
+                        mContext.startActivity(new Intent(mContext, ButlerActivity.class));
+                    }else{
+                        mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                    }
                 }
             });
         }

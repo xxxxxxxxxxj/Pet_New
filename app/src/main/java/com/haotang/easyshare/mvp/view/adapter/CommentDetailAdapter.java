@@ -52,7 +52,7 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean.Comment, 
         }
         if (item != null) {
             GlideUtil.loadNetCircleImg(mContext, item.getHeadImg(), iv_item_comment, R.mipmap.ic_image_load_circle);
-            //StringUtil.setText(tv_item_comment_name, item.getName(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_comment_name, item.getUserName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_comment_desc, item.getContent(), "", View.VISIBLE, View.GONE);
             StringUtil.setText(tv_item_comment_date, item.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
             List<CommentTag> tagLIst = item.getTagList();

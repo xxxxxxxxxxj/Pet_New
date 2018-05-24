@@ -79,8 +79,6 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
     @Override
     protected void setView(Bundle savedInstanceState) {
         tvTitlebarTitle.setText("帖子列表");
-        tvTitlebarOther.setVisibility(View.VISIBLE);
-        tvTitlebarOther.setText("发帖");
 
         srlPostlist.setRefreshing(true);
         srlPostlist.setColorSchemeColors(Color.rgb(47, 223, 189));

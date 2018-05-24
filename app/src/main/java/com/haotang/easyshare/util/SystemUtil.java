@@ -38,7 +38,6 @@ import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.LngLat;
 import com.haotang.easyshare.mvp.view.activity.PhotoViewPagerActivity;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -315,8 +314,8 @@ public class SystemUtil {
         File imageFile = new File(file, fileName);
         FileOutputStream outStream;
         outStream = new FileOutputStream(imageFile);
-        /*bm.compress(Bitmap.CompressFormat.JPEG, 100,
-                outStream);*/
+        bm.compress(Bitmap.CompressFormat.JPEG, 100,
+                outStream);
         outStream.flush();
         outStream.close();
         return imageFile.getAbsolutePath();

@@ -49,7 +49,6 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SignUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
@@ -271,7 +270,10 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                     List<String> photoViewImgList = new ArrayList<String>();
                     photoViewImgList.clear();
                     for (int i = 0; i < imgList.size(); i++) {
-                        photoViewImgList.add(imgList.get(i).getImgUrl());
+                        CommentImg commentImg1 = imgList.get(i);
+                        if (commentImg1 != null && !commentImg1.isAdd()) {
+                            photoViewImgList.add(imgList.get(i).getImgUrl());
+                        }
                     }
                     SystemUtil.goPhotoView(AddChargeActivity.this, position, photoViewImgList, true);
                 }
@@ -412,7 +414,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 break;
             case R.id.tv_titlebar_other:
                 //构建body
-                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
                 builder.addFormDataPart("lng", String.valueOf(lng));
                 builder.addFormDataPart("lat", String.valueOf(lat));
                 builder.addFormDataPart("telephone", etAddchargePhone.getText().toString().trim());
