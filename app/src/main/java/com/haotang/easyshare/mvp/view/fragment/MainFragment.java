@@ -446,7 +446,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                 , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
                                 publishBean.getIsPrivate(),
                                 publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
-                                publishBean.getSlowNum(), publishBean.getLat()));
+                                publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(), publishBean.getPayWay(), publishBean.getProvider()));
                     }
                 }
             }
@@ -464,10 +464,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                 , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
                                 publishBean.getIsPrivate(),
                                 publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
-                                publishBean.getSlowNum(), publishBean.getLat()));
+                                publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(), publishBean.getPayWay(), publishBean.getProvider()));
                     }
                 }
-
             }
         }
         mainLocalAdapter.notifyDataSetChanged();
@@ -600,6 +599,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomJuli(), stationsBean.getDistance(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomXxdz(), stationsBean.getAddress(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomKfsj(), stationsBean.getOpenTime(), "", View.VISIBLE, View.VISIBLE);
+
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomYys(), stationsBean.getProvider(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomZffs(), stationsBean.getPayWay(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomTcf(), stationsBean.getParkingPrice(), "", View.VISIBLE, View.VISIBLE);
             if (stationsBean.getIsPrivate() == 0) {//公共
                 mainFragmenBoDa.getIvMainbottomGgorgr().setImageResource(R.mipmap.icon_gg);
             } else if (stationsBean.getIsPrivate() == 1) {//个人

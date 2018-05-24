@@ -120,6 +120,33 @@ public class MainFragmentData {
         private String uuid;
         private int slowNum;
         private double lat;
+        private String parkingPrice;
+        private String payWay;
+        private String provider;
+
+        public String getParkingPrice() {
+            return parkingPrice;
+        }
+
+        public void setParkingPrice(String parkingPrice) {
+            this.parkingPrice = parkingPrice;
+        }
+
+        public String getPayWay() {
+            return payWay;
+        }
+
+        public void setPayWay(String payWay) {
+            this.payWay = payWay;
+        }
+
+        public String getProvider() {
+            return provider;
+        }
+
+        public void setProvider(String provider) {
+            this.provider = provider;
+        }
 
         public String getImg() {
             return img;
@@ -246,6 +273,33 @@ public class MainFragmentData {
         private String uuid;
         private int slowNum;
         private double lat;
+        private String parkingPrice;
+        private String payWay;
+        private String provider;
+
+        public String getParkingPrice() {
+            return parkingPrice;
+        }
+
+        public void setParkingPrice(String parkingPrice) {
+            this.parkingPrice = parkingPrice;
+        }
+
+        public String getPayWay() {
+            return payWay;
+        }
+
+        public void setPayWay(String payWay) {
+            this.payWay = payWay;
+        }
+
+        public String getProvider() {
+            return provider;
+        }
+
+        public void setProvider(String provider) {
+            this.provider = provider;
+        }
 
         public String getImg() {
             return img;

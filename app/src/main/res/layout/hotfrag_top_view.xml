@@ -6,13 +6,33 @@
     android:background="@color/af8f8f8"
     android:orientation="vertical">
 
-    <com.youth.banner.Banner
-        android:id="@+id/banner_top_hotfrag"
+    <RelativeLayout
+        android:id="@+id/rl_banner_top_hotfrag"
         android:layout_width="match_parent"
-        android:layout_height="180dip"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        app:indicator_drawable_selected="@drawable/selected_radius" />
+        android:layout_height="180dip">
+
+        <TextView
+            android:id="@+id/tv_banner_top_hotfrag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <com.youth.banner.Banner
+            android:id="@+id/banner_top_hotfrag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:indicator_drawable_selected="@drawable/selected_radius" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,9 +96,9 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_top_hotfrag"
-            android:paddingLeft="15dip"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:paddingLeft="15dip" />
     </LinearLayout>
 
     <RelativeLayout

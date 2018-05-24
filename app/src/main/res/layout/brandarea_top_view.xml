@@ -6,14 +6,33 @@
     android:background="@color/af8f8f8"
     android:orientation="vertical">
 
-    <com.youth.banner.Banner
-        android:id="@+id/banner_brandarea_top"
+    <RelativeLayout
+        android:id="@+id/rl_brandarea_top"
         android:layout_width="match_parent"
-        android:layout_height="200dip"
         android:layout_marginBottom="15dip"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        app:indicator_drawable_selected="@drawable/selected_radius" />
+        android:layout_height="200dip">
+
+        <TextView
+            android:id="@+id/tv_brandarea_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <com.youth.banner.Banner
+            android:id="@+id/banner_brandarea_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:indicator_drawable_selected="@drawable/selected_radius" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

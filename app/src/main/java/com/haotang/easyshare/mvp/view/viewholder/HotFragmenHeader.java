@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.haotang.easyshare.R;
 import com.youth.banner.Banner;
@@ -32,6 +33,26 @@ public class HotFragmenHeader {
     LinearLayout rlTopHotfragHtpdMore;
     @BindView(R.id.rl_top_hotfrag_htpd)
     RelativeLayout rlTopHotfragHtpd;
+    @BindView(R.id.rl_banner_top_hotfrag)
+    RelativeLayout rl_banner_top_hotfrag;
+    @BindView(R.id.tv_banner_top_hotfrag)
+    TextView tv_banner_top_hotfrag;
+
+    public RelativeLayout getRl_banner_top_hotfrag() {
+        return rl_banner_top_hotfrag;
+    }
+
+    public void setRl_banner_top_hotfrag(RelativeLayout rl_banner_top_hotfrag) {
+        this.rl_banner_top_hotfrag = rl_banner_top_hotfrag;
+    }
+
+    public TextView getTv_banner_top_hotfrag() {
+        return tv_banner_top_hotfrag;
+    }
+
+    public void setTv_banner_top_hotfrag(TextView tv_banner_top_hotfrag) {
+        this.tv_banner_top_hotfrag = tv_banner_top_hotfrag;
+    }
 
     public Banner getBannerTopHotfrag() {
         return bannerTopHotfrag;

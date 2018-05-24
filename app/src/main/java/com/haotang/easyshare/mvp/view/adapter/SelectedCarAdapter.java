@@ -41,13 +41,13 @@ public class SelectedCarAdapter extends BaseQuickAdapter<HotSpecialCarBean.DataB
             GlideUtil.loadNetImg(mContext, item.getIcon(), iv_item_allbands_img, R.mipmap.ic_image_load);
             StringUtil.setText(tv_item_allbands_name, item.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_allbands_xuhang, item.getBatteryLife(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_allbands_price, "¥" + item.getCarPrice(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_allbands_price, "¥" + item.getPrice(), "", View.VISIBLE, View.VISIBLE);
             iv_item_allbands_lxgj.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(SystemUtil.checkLogin(mContext)){
+                    if (SystemUtil.checkLogin(mContext)) {
                         mContext.startActivity(new Intent(mContext, ButlerActivity.class));
-                    }else{
+                    } else {
                         mContext.startActivity(new Intent(mContext, LoginActivity.class));
                     }
                 }

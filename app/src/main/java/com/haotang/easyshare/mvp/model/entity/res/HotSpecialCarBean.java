@@ -56,15 +56,15 @@ public class HotSpecialCarBean {
         private String car;
         private String icon;
         private int id;
-        private String carPrice;
+        private String price;
         private String batteryLife;
 
-        public String getCarPrice() {
-            return carPrice;
+        public String getPrice() {
+            return price;
         }
 
-        public void setCarPrice(String carPrice) {
-            this.carPrice = carPrice;
+        public void setPrice(String price) {
+            this.price = price;
         }
 
         public String getBatteryLife() {
