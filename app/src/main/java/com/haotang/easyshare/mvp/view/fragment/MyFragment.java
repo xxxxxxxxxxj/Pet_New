@@ -75,11 +75,10 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     TextView tvMyfragmentVipjf;
     @BindView(R.id.ll_myfragment_yuejf)
     LinearLayout llMyfragmentYuejf;
-    @BindView(tv_myfragment_username)
+    @BindView(R.id.tv_myfragment_username)
     TextView tvMyfragmentUsername;
-    @BindView(iv_myfragment_add)
+    @BindView(R.id.iv_myfragment_add)
     ImageView ivMyfragmentAdd;
-    TextView tvMyfragmentFwf;
     @BindView(R.id.ll_myfragment_mycdz)
     LinearLayout llMyfragmentMycdz;
     @BindView(R.id.ll_myfragment_jqqd)
@@ -134,6 +133,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @Subscribe
     public void getLoginInfo(LoginBean data) {
         mPresenter.home();
+        mPresenter.my();
     }
 
     @Override
@@ -184,7 +184,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @OnClick({iv_myfragment_add, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
             R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
             R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
-            tv_myfragment_username})
+            tv_myfragment_username, iv_myfragment_userimg})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case iv_myfragment_userimg:

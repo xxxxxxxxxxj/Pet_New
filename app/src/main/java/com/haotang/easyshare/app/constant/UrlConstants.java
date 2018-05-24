@@ -168,6 +168,10 @@ public class UrlConstants {
      * 37.分享帖子成功回调
      */
     public static final String SHARE_POST = "article/info/share/callback";
+    /**
+     * 38.编辑用户信息
+     */
+    public static final String UPDATE_USER_INFO = "";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境
