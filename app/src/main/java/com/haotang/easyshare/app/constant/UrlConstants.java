@@ -171,7 +171,7 @@ public class UrlConstants {
     /**
      * 38.编辑用户信息
      */
-    public static final String UPDATE_USER_INFO = "";
+    public static final String UPDATE_USER_INFO = "user/info/edit";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

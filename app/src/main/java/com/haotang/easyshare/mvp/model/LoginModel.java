@@ -21,7 +21,7 @@ public class LoginModel implements ILoginModel {
     @Override
     public Observable sendVerifyCode(String phone) {
         return DevRing.httpManager().getService(LoginApiService.class).
-                sendVerifyCode(phone);
+                sendVerifyCode(phone,phone);
     }
 
     /**
@@ -30,6 +30,6 @@ public class LoginModel implements ILoginModel {
     @Override
     public Observable login(String phone,String wxOpenId, double lng, double lat, String registrationId, String code) {
         return DevRing.httpManager().getService(LoginApiService.class).
-                login(phone,wxOpenId, lng, lat, registrationId, code);
+                login(phone,phone,wxOpenId, lng, lat, registrationId, code);
     }
 }

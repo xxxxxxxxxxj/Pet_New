@@ -37,7 +37,9 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemTypeUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -124,7 +126,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     public void requestData() {
-        if (isFragmentVisible && isViewReady) {
+        if (isFragmentVisible && isViewReady && SystemUtil.checkLogin(mActivity)) {
             mPresenter.home();
             mPresenter.my();
         }
@@ -132,6 +134,9 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Subscribe
     public void getLoginInfo(LoginBean data) {
+        rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
+        llMyfragmentMycdz.setVisibility(View.VISIBLE);
+        ivMyfragmentAdd.setVisibility(View.GONE);
         mPresenter.home();
         mPresenter.my();
     }
@@ -257,16 +262,11 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 break;
             case R.id.rtv_myfragment_tuichu:
                 SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
-                if (SystemUtil.checkLogin(mActivity)) {
-                    rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
-                    llMyfragmentMycdz.setVisibility(View.VISIBLE);
-                    ivMyfragmentAdd.setVisibility(View.GONE);
-                } else {
-                    rtvMyfragmentTuichu.setVisibility(View.GONE);
-                    tvMyfragmentUsername.setText("立即登录");
-                    ivMyfragmentAdd.setVisibility(View.VISIBLE);
-                    llMyfragmentMycdz.setVisibility(View.GONE);
-                }
+                DevRing.configureHttp().getMapHeader().put("phone", "");
+                rtvMyfragmentTuichu.setVisibility(View.GONE);
+                tvMyfragmentUsername.setText("立即登录");
+                ivMyfragmentAdd.setVisibility(View.VISIBLE);
+                llMyfragmentMycdz.setVisibility(View.GONE);
                 startActivity(new Intent(mActivity, TestActivity.class));
                 break;
         }

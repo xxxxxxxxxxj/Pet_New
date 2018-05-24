@@ -36,6 +36,8 @@ import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -299,6 +301,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         RingLog.e(TAG, "loginSuccess");
         SharedPreferenceUtil.getInstance(LoginActivity.this).saveString("cellphone",
                 etLoginPhone.getText().toString().trim().replace(" ", ""));
+        DevRing.configureHttp().getMapHeader().put("phone", SharedPreferenceUtil.getInstance(this).getString("cellphone", ""));
+        Map<String, String> mapHeader = DevRing.configureHttp().getMapHeader();
+        RingLog.e("mapHeader = " + mapHeader.toString());
         if (data != null) {
             DevRing.busManager().postEvent(data);
         }

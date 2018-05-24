@@ -16,6 +16,7 @@ import com.haotang.easyshare.di.component.activity.DaggerEditUserInfoActivityCom
 import com.haotang.easyshare.di.module.activity.EditUserInfoActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
+import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.presenter.EditUserInfoPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IEditUserInfoView;
@@ -23,6 +24,7 @@ import com.haotang.easyshare.mvp.view.widget.GlideCircleTransform;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 import com.zhihu.matisse.Matisse;
@@ -199,6 +201,8 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        DevRing.busManager().postEvent(new LoginBean());
+        finish();
     }
 
     @Override
