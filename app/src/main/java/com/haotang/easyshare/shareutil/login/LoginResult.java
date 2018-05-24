@@ -16,6 +16,15 @@ public class LoginResult {
 
     private int mPlatform;
 
+    @Override
+    public String toString() {
+        return "LoginResult{" +
+                "mToken=" + mToken +
+                ", mUserInfo=" + mUserInfo +
+                ", mPlatform=" + mPlatform +
+                '}';
+    }
+
     public LoginResult(int platform, BaseToken token) {
         mPlatform = platform;
         mToken = token;

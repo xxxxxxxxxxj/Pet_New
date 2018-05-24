@@ -21,5 +21,5 @@ public interface ILoginModel extends IBaseModel{
     /**
      * 登陆
      */
-    Observable login(String phone,String wxOpenId, double lng, double lat, String registrationId, String code);
+    Observable login(String phone,String wxOpenId, double lng, double lat, String registrationId, String code, String userName, String headImg);
 }

@@ -61,8 +61,8 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
     /**
      * 登陆
      */
-    public void login(String phone,String wxOpenId, double lng, double lat, String registrationId, String code) {
-        DevRing.httpManager().commonRequest(mIModel.login(phone,wxOpenId, lng, lat, registrationId, code),
+    public void login(String phone,String wxOpenId, double lng, double lat, String registrationId, String code, String userName, String headImg) {
+        DevRing.httpManager().commonRequest(mIModel.login(phone,wxOpenId, lng, lat, registrationId, code, userName, headImg),
                 new CommonObserver<HttpResult<LoginBean>>() {
                     @Override
                     public void onResult(HttpResult<LoginBean> result) {

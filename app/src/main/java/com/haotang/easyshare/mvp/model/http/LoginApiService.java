@@ -32,5 +32,7 @@ public interface LoginApiService {
     Observable<HttpResult<LoginBean>> login(@Header("phone") String phone, @Query("phone") String phone1, @Query("wxOpenId") String wxOpenId,
                                             @Query("lng") double lng, @Query("lat") double lat,
                                             @Query("registrationId") String registrationId,
-                                            @Query("code") String code);
+                                            @Query("code") String code,
+                                            @Query("userName") String userName,
+                                            @Query("headImg") String headImg);
 }

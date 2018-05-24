@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -27,6 +28,7 @@ import com.haotang.easyshare.shareutil.login.LoginListener;
 import com.haotang.easyshare.shareutil.login.LoginPlatform;
 import com.haotang.easyshare.shareutil.login.LoginResult;
 import com.haotang.easyshare.shareutil.login.result.BaseToken;
+import com.haotang.easyshare.shareutil.login.result.BaseUser;
 import com.haotang.easyshare.util.CountdownUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
@@ -68,6 +70,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     TextView tvLoginQita;
     @BindView(R.id.iv_login_wxlogin)
     ImageView ivLoginWxlogin;
+    @BindView(R.id.ll_login_qita)
+    LinearLayout ll_login_qita;
+    private String userName;
+    private String headImg;
     private String wxOpenId;
     private double lng;
     private double lat;
@@ -240,14 +246,24 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 }
                 mPresenter.login(etLoginPhone.getText().toString().trim().replace(" ", ""), wxOpenId, lng, lat,
                         SharedPreferenceUtil.getInstance(LoginActivity.this).getString("jpush_id", ""),
-                        etLoginYzm.getText().toString().trim().replace(" ", ""));
+                        etLoginYzm.getText().toString().trim().replace(" ", ""), userName, headImg);
                 break;
             case R.id.iv_login_wxlogin:
                 LoginUtil.login(LoginActivity.this, LoginPlatform.WX, new LoginListener() {
                     @Override
                     public void loginSuccess(LoginResult result) {
-                        RingLog.e(TAG, result.getUserInfo().getNickname());
+                        if (result != null) {
+                            BaseUser userInfo = result.getUserInfo();
+                            if (userInfo != null) {
+                                ll_login_qita.setVisibility(View.GONE);
+                                headImg = userInfo.getHeadImageUrl();
+                                userName = userInfo.getNickname();
+                                wxOpenId = userInfo.getOpenId();
+                            }
+                        }
+                        RingLog.e(TAG, "LoginResult = " + result.toString());
                         RingLog.e(TAG, "登录成功");
+                        RingToast.show("微信登录成功");
                     }
 
                     @Override

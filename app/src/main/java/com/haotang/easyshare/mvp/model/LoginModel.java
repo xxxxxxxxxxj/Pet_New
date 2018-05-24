@@ -5,6 +5,7 @@ import com.haotang.easyshare.mvp.model.imodel.ILoginModel;
 import com.ljy.devring.DevRing;
 
 import io.reactivex.Observable;
+import retrofit2.http.Query;
 
 /**
  * <p>Title:${type_name}</p>
@@ -21,15 +22,16 @@ public class LoginModel implements ILoginModel {
     @Override
     public Observable sendVerifyCode(String phone) {
         return DevRing.httpManager().getService(LoginApiService.class).
-                sendVerifyCode(phone,phone);
+                sendVerifyCode(phone, phone);
     }
 
     /**
      * 登陆
      */
     @Override
-    public Observable login(String phone,String wxOpenId, double lng, double lat, String registrationId, String code) {
+    public Observable login(String phone, String wxOpenId, double lng, double lat, String registrationId, String code
+            , String userName, String headImg) {
         return DevRing.httpManager().getService(LoginApiService.class).
-                login(phone,phone,wxOpenId, lng, lat, registrationId, code);
+                login(phone, phone, wxOpenId, lng, lat, registrationId, code, userName, headImg);
     }
 }
