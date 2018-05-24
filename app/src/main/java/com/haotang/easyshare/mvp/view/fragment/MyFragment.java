@@ -287,6 +287,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             GlideUtil.loadNetCircleImg(mActivity, data.getHeadImg(), ivMyfragmentUserimg, R.mipmap.ic_image_load_circle);
             List<HomeBean.StationsBean> stations = data.getStations();
             if (stations != null && stations.size() > 0) {
+                mFragments.clear();
                 llMyfragmentMycdz.setVisibility(View.VISIBLE);
                 for (HomeBean.StationsBean stationsBean : stations) {
                     ChargeFragment chargeFragment = new ChargeFragment();
