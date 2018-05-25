@@ -66,7 +66,6 @@ public class SelectAddressActivity extends BaseActivity<SelectAddressPresenter> 
         tvTitlebarTitle.setText("选择地址");
         tvTitlebarOther.setVisibility(View.VISIBLE);
         tvTitlebarOther.setText("新增地址");
-
         for (int i = 0; i < 20; i++) {
             list.add(new SelectAddress("方恒国际中心",
                     39.989614, 116.481763));

@@ -102,7 +102,7 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
         if (serchResult != null) {
             lat = serchResult.getLat();
             lng = serchResult.getLng();
-            StringUtil.setText(etAddaddress, serchResult.getName() + serchResult.getDesc(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(etAddaddress, serchResult.getName(), "", View.VISIBLE, View.VISIBLE);
         }
     }
 

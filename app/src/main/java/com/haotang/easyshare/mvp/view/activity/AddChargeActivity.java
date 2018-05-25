@@ -451,7 +451,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 }
                 break;
             case R.id.rl_addcharge_zdz:
-                startActivity(new Intent(AddChargeActivity.this, SelectAddressActivity.class));
+                startActivity(new Intent(AddChargeActivity.this, AddAddressActivity.class));
                 break;
             case R.id.rl_addcharge_zffs:
                 showBottomDialog(1);
