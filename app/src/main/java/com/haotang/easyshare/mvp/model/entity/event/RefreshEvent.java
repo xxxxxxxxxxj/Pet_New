@@ -9,6 +9,7 @@ package com.haotang.easyshare.mvp.model.entity.event;
  * @date XJ on 2018/5/14 13:50
  */
 public class RefreshEvent {
+    public static final int SEND_POST = 3;
     public static int COLLECT_OR_CANCEL_CHARGE = 2;
     private int refreshIndex;
     public final static int SAVE_CHARGE_COMMENT = 1;

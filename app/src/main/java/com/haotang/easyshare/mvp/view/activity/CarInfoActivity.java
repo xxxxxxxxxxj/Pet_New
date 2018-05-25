@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerCarInfoActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CarInfoActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
 import com.haotang.easyshare.mvp.presenter.CarInfoPresenter;
@@ -117,6 +118,8 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
     @Override
     public void saveSuccess(AddChargeBean data) {
         RingLog.e(TAG, "saveSuccess");
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
+        finish();
     }
 
     @Override

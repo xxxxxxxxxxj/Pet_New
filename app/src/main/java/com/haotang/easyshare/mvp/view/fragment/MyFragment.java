@@ -132,7 +132,11 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
         if (SystemUtil.checkLogin(mActivity) && refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_MYFRAGMET) {
             RingLog.e("REFRESH_MYFRAGMET");
-
+            rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
+            llMyfragmentMycdz.setVisibility(View.VISIBLE);
+            ivMyfragmentAdd.setVisibility(View.GONE);
+            mPresenter.home();
+            mPresenter.my();
         }
     }
 
@@ -288,7 +292,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             StringUtil.setText(tvMyfragmentUsername, data.getUserName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentYue, String.valueOf(data.getBalance()), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentVipjf, String.valueOf(data.getCoins()), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvMyfragmentClxx, data.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentSycs, data.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentJjdh, data.getKf_phone(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetCircleImg(mActivity, data.getHeadImg(), ivMyfragmentUserimg, R.mipmap.ic_image_load_circle);

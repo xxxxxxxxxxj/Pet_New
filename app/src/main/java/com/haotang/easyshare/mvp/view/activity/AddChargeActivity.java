@@ -33,6 +33,7 @@ import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerAddChargeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.AddChargeActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
@@ -49,6 +50,7 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SignUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
@@ -602,6 +604,8 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
         finish();
     }
 
@@ -704,6 +708,8 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void updateSuccess(AddChargeBean data) {
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
         finish();
         RingLog.e(TAG, "updateSuccess()");
     }

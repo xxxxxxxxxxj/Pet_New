@@ -14,6 +14,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerSendPostActivityCommponent;
 import com.haotang.easyshare.di.module.activity.SendPostActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.PhotoViewPagerImg;
@@ -290,7 +291,8 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
 
     @Override
     public void saveSuccess(AddChargeBean data) {
-        RingToast.show("发布成功");
+        DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.SEND_POST));
+        finish();
     }
 
     @Override

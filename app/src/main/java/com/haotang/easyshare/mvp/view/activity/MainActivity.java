@@ -210,18 +210,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 ctlMainactivity.setCurrentTab(currentTabIndex);
                 if (position == 0) {
                     ivMainfragGj.setVisibility(View.VISIBLE);
-                    mainFragment.requestData();
-                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
                 } else if (position == 1) {
                     ivMainfragGj.setVisibility(View.GONE);
                     ctlMainactivity.hideMsg(1);
-                    hotFragment.requestData();
-                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HOTFRAGMET));
                 } else if (position == 2) {
                     ivMainfragGj.setVisibility(View.GONE);
                     ctlMainactivity.hideMsg(2);
-                    myFragment.requestData();
-                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
                 }
             }
 

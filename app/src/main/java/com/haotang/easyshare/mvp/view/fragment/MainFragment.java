@@ -338,6 +338,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
         if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_MAINFRAGMET) {
             RingLog.e("REFRESH_MAINFRAGMET");
+            //启动定位
+            mlocationClient.startLocation();
         }
     }
 

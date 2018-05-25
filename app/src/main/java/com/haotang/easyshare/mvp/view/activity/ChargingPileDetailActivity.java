@@ -34,6 +34,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -349,5 +351,17 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void refresh(RefreshEvent data) {
+        if (data != null && data.getRefreshIndex() == RefreshEvent.SAVE_CHARGE_COMMENT) {
+            mlocationClient.startLocation();
+        }
     }
 }

@@ -21,6 +21,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -51,6 +53,20 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
     @Override
     protected int getContentLayout() {
         return R.layout.activity_butler;
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_HISTORYMESSAGEFRAGMET) {
+            RingLog.e("REFRESH_HISTORYMESSAGEFRAGMET");
+            currentTabIndex = 1;
+            vpButler.setCurrentItem(currentTabIndex);
+        }
     }
 
     @Override
@@ -94,8 +110,6 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
                     tvTitlebarOther.setVisibility(View.VISIBLE);
                 } else {
                     tvTitlebarOther.setVisibility(View.GONE);
-                    historicalMessageFragment.requestData();
-                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HISTORYMESSAGEFRAGMET));
                 }
             }
 

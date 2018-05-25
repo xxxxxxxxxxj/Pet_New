@@ -19,6 +19,7 @@ import com.haotang.easyshare.mvp.view.iview.IHistoricalMessageFragmentView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -89,7 +90,7 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
     public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
         if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_HISTORYMESSAGEFRAGMET) {
             RingLog.e("REFRESH_HISTORYMESSAGEFRAGMET");
-
+            refresh();
         }
     }
 

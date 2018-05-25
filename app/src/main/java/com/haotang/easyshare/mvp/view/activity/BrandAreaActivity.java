@@ -18,6 +18,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerBrandAreaActivityCommponent;
 import com.haotang.easyshare.di.module.activity.BrandAreaActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
@@ -33,6 +34,8 @@ import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -338,4 +341,17 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
             }
         }
     }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void refresh(RefreshEvent data) {
+        if (data != null && data.getRefreshIndex() == RefreshEvent.SEND_POST) {
+            refresh();
+        }
+    }
+
 }

@@ -14,9 +14,9 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerEditUserInfoActivityCommponent;
 import com.haotang.easyshare.di.module.activity.EditUserInfoActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
-import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.presenter.EditUserInfoPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IEditUserInfoView;
@@ -201,7 +201,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
 
     @Override
     public void saveSuccess(AddChargeBean data) {
-        DevRing.busManager().postEvent(new LoginBean());
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
         finish();
     }
 
