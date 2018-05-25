@@ -58,6 +58,36 @@ public class ChargeDetailBean {
     private String remark;
     private int parkingIsUnderground;
     private List<String> detailImgs;
+    private List<UseNotices> useNotices;
+
+    public static class UseNotices {
+        private String time;
+        private String content;
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+    }
+
+    public List<UseNotices> getUseNotices() {
+        return useNotices;
+    }
+
+    public void setUseNotices(List<UseNotices> useNotices) {
+        this.useNotices = useNotices;
+    }
 
     public List<String> getDetailImgs() {
         return detailImgs;

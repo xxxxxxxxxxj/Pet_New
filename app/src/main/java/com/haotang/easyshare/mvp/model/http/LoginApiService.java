@@ -3,11 +3,17 @@ package com.haotang.easyshare.mvp.model.http;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.SendVerifyCodeBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxLoginBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxUserInfoBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -35,4 +41,20 @@ public interface LoginApiService {
                                             @Query("code") String code,
                                             @Query("userName") String userName,
                                             @Query("headImg") String headImg);
+
+    /**
+     * 获取微信WxOpenId
+     *
+     * @param body
+     */
+    @POST(UrlConstants.GET_WXOPENID)
+    Observable<HttpResult<WxLoginBean>> getWxOpenId(@Body() RequestBody body);
+
+    /**
+     * 获取微信用户信息
+     *
+     * @param body
+     */
+    @POST(UrlConstants.GET_WX_USERINFO)
+    Observable<HttpResult<WxUserInfoBean>> getWxUserInfo(@Body() RequestBody body);
 }

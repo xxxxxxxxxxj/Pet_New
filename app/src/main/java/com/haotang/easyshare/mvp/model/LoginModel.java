@@ -5,7 +5,7 @@ import com.haotang.easyshare.mvp.model.imodel.ILoginModel;
 import com.ljy.devring.DevRing;
 
 import io.reactivex.Observable;
-import retrofit2.http.Query;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -33,5 +33,27 @@ public class LoginModel implements ILoginModel {
             , String userName, String headImg) {
         return DevRing.httpManager().getService(LoginApiService.class).
                 login(phone, phone, wxOpenId, lng, lat, registrationId, code, userName, headImg);
+    }
+
+    /**
+     * 微信获取WxOpenId
+     *
+     * @param body
+     */
+    @Override
+    public Observable getWxOpenId(RequestBody body) {
+        return DevRing.httpManager().getService(LoginApiService.class).
+                getWxOpenId(body);
+    }
+
+    /**
+     * 微信获取用户信息
+     *
+     * @param body
+     */
+    @Override
+    public Observable getWxUserInfo(RequestBody body) {
+        return DevRing.httpManager().getService(LoginApiService.class).
+                getWxUserInfo(body);
     }
 }

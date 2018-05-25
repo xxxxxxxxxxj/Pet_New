@@ -22,6 +22,7 @@ import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.presenter.ChargingPileDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
+import com.haotang.easyshare.mvp.view.adapter.UseNoticesAdapter;
 import com.haotang.easyshare.mvp.view.iview.IChargingPileDetailView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
@@ -37,6 +38,7 @@ import com.umeng.analytics.MobclickAgent;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -117,6 +119,8 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     TextView tvChargingdetailTcf;
     @BindView(R.id.tv_chargingdetail_zdbz)
     TextView tvChargingdetailZdbz;
+    @BindView(R.id.ll_chargingdetail_vbv)
+    LinearLayout ll_chargingdetail_vbv;
     private String uuid;
     private String city;
     private double lat;
@@ -240,7 +244,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             case R.id.iv_chargingdetail_share:
                 ShareBottomDialog dialog = new ShareBottomDialog();
                 dialog.setShareInfo("测试", "测试",
-                        "https://www.duba.com","http://img.sayiyinxiang.com/api/brand/imgs/15246549042921928075.jpg");
+                        "https://www.duba.com", "http://img.sayiyinxiang.com/api/brand/imgs/15246549042921928075.jpg");
                 dialog.show(getSupportFragmentManager());
                 break;
             case R.id.ll_chargingdetail_pl:
@@ -308,6 +312,20 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 llChargingdetailKongxian.setVisibility(View.VISIBLE);
             } else {
                 llChargingdetailKongxian.setVisibility(View.GONE);
+            }
+            List<ChargeDetailBean.UseNotices> useNotices = data.getUseNotices();
+            if (useNotices != null && useNotices.size() > 0) {
+                ll_chargingdetail_vbv
+                        .setVisibility(View.VISIBLE);
+                try {
+                    vbvChargingdetail.setAdapter(new UseNoticesAdapter(useNotices));
+                    vbvChargingdetail.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                ll_chargingdetail_vbv
+                        .setVisibility(View.GONE);
             }
         }
     }

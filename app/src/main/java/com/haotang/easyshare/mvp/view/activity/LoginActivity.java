@@ -19,6 +19,8 @@ import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent
 import com.haotang.easyshare.di.module.activity.LoginActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.SendVerifyCodeBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxLoginBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxUserInfoBean;
 import com.haotang.easyshare.mvp.presenter.LoginPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.ILoginView;
@@ -28,7 +30,6 @@ import com.haotang.easyshare.shareutil.login.LoginListener;
 import com.haotang.easyshare.shareutil.login.LoginPlatform;
 import com.haotang.easyshare.shareutil.login.LoginResult;
 import com.haotang.easyshare.shareutil.login.result.BaseToken;
-import com.haotang.easyshare.shareutil.login.result.BaseUser;
 import com.haotang.easyshare.util.CountdownUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
@@ -44,6 +45,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * 登录页
@@ -252,18 +255,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 LoginUtil.login(LoginActivity.this, LoginPlatform.WX, new LoginListener() {
                     @Override
                     public void loginSuccess(LoginResult result) {
-                        if (result != null) {
-                            BaseUser userInfo = result.getUserInfo();
-                            if (userInfo != null) {
-                                ll_login_qita.setVisibility(View.GONE);
-                                headImg = userInfo.getHeadImageUrl();
-                                userName = userInfo.getNickname();
-                                wxOpenId = userInfo.getOpenId();
-                            }
-                        }
                         RingLog.e(TAG, "LoginResult = " + result.toString());
                         RingLog.e(TAG, "登录成功");
                         RingToast.show("微信登录成功");
+                        if (result != null) {
+                            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                            builder.addFormDataPart("code", result.getmCcode());
+                            RequestBody body = builder.build();
+                            mPresenter.getWxOpenId(body);
+                        }
                     }
 
                     @Override
@@ -329,7 +329,39 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     public void loginFail(int status, String desc) {
         RingLog.e(TAG, "LoginActivity loginFail() status = " + status + "---desc = " + desc);
-        RingToast.show("LoginActivity loginFail() status = " + status + "---desc = " + desc);
+    }
+
+    @Override
+    public void getWxOpenIdSuccess(WxLoginBean data) {
+        if (data != null && StringUtil.isNotEmpty(data.getOpenId())) {
+            DevRing.configureHttp().getMapHeader().put("wxOpenId", data.getOpenId());
+            Map<String, String> mapHeader = DevRing.configureHttp().getMapHeader();
+            RingLog.e("mapHeader = " + mapHeader.toString());
+            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+            builder.addFormDataPart("wxOpenId", data.getOpenId());
+            RequestBody body = builder.build();
+            mPresenter.getWxUserInfo(body);
+        }
+    }
+
+    @Override
+    public void getWxOpenIdFail(int status, String desc) {
+        RingLog.e(TAG, "LoginActivity getWxOpenIdFail() status = " + status + "---desc = " + desc);
+    }
+
+    @Override
+    public void getWxUserInfoFail(int status, String desc) {
+        RingLog.e(TAG, "LoginActivity getWxUserInfoFail() status = " + status + "---desc = " + desc);
+    }
+
+    @Override
+    public void getWxUserInfoSuccess(WxUserInfoBean data) {
+        if (data != null) {
+            ll_login_qita.setVisibility(View.GONE);
+            userName = data.getNickname();
+            headImg = data.getHeadimgurl();
+            wxOpenId = data.getOpenid();
+        }
     }
 
     @Override

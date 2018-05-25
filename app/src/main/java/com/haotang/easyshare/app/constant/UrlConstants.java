@@ -172,6 +172,14 @@ public class UrlConstants {
      * 38.编辑用户信息
      */
     public static final String UPDATE_USER_INFO = "user/info/edit";
+    /**
+     * 39.获取微信WxOpenId
+     */
+    public static final String GET_WXOPENID = "wx/app/user/login";
+    /**
+     * 40.获取微信用户信息
+     */
+    public static final String GET_WX_USERINFO = "wx/app/user/info";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

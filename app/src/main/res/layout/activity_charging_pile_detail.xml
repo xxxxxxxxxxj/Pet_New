@@ -294,8 +294,10 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_chargingdetail_vbv"
                 android:layout_width="match_parent"
                 android:layout_height="69dip"
+                android:visibility="gone"
                 android:background="@color/af8f8f8"
                 android:padding="15dip">
 

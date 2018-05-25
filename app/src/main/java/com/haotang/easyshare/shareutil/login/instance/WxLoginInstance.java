@@ -160,7 +160,7 @@ public class WxLoginInstance extends LoginInstance {
                     RingLog.e("resp.transaction = " + resp.transaction);
                     switch (resp.errCode) {
                         case BaseResp.ErrCode.ERR_OK:
-                            getToken(resp.token);
+                            mLoginListener.loginSuccess(new LoginResult(LoginPlatform.WX, resp.token));
                             break;
                         case BaseResp.ErrCode.ERR_USER_CANCEL:
                             mLoginListener.loginCancel();
