@@ -58,6 +58,15 @@ public class HotSpecialCarBean {
         private int id;
         private String price;
         private String batteryLife;
+        private PostBean.DataBean.ShareMap shareMap;
+
+        public PostBean.DataBean.ShareMap getShareMap() {
+            return shareMap;
+        }
+
+        public void setShareMap(PostBean.DataBean.ShareMap shareMap) {
+            this.shareMap = shareMap;
+        }
 
         public String getPrice() {
             return price;

@@ -75,6 +75,15 @@ public class HotPoint {
         private String headImg;
         private String batteryLife;
         private String content;
+        private PostBean.DataBean.ShareMap shareMap;
+
+        public PostBean.DataBean.ShareMap getShareMap() {
+            return shareMap;
+        }
+
+        public void setShareMap(PostBean.DataBean.ShareMap shareMap) {
+            this.shareMap = shareMap;
+        }
 
         public void setContent(String content) {
             this.content = content;

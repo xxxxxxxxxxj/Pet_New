@@ -14,7 +14,9 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerAllBrandsActivityCommponent;
 import com.haotang.easyshare.di.module.activity.AllBrandsActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.AllBrandsPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
@@ -25,7 +27,6 @@ import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -36,6 +37,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.R.id.list;
 
 /**
  * 所有品牌
@@ -123,7 +126,16 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
         selectedCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                if (selectedCarList.size() > 0 && selectedCarList.size() > position) {
+                    HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
+                    if (dataBean != null) {
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
+                            startActivity(new Intent(AllBrandsActivity.this, WebViewActivity.class).
+                                    putExtra(WebViewActivity.URL_KEY, shareMap.getUrl()));
+                        }
+                    }
+                }
             }
         });
     }

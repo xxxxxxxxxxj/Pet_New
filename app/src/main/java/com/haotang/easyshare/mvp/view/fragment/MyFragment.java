@@ -278,7 +278,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 tvMyfragmentUsername.setText("立即登录");
                 ivMyfragmentAdd.setVisibility(View.VISIBLE);
                 llMyfragmentMycdz.setVisibility(View.GONE);
-                startActivity(new Intent(mActivity, TestActivity.class));
+                //startActivity(new Intent(mActivity, TestActivity.class));
                 break;
         }
     }

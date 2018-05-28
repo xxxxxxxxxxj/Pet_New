@@ -18,11 +18,12 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
-import com.haotang.easyshare.mvp.model.entity.res.SelectAddress;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
 import com.haotang.easyshare.mvp.view.activity.BrandAreaActivity;
+import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
 import com.haotang.easyshare.mvp.view.activity.PostListActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointAdapter;
@@ -210,7 +211,15 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         hotPointAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                if (list.size() > 0 && list.size() > position) {
+                    HotPoint.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
+                            startActivity(new Intent(mActivity, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, shareMap.getUrl()));
+                        }
+                    }
+                }
             }
         });
         hotPointCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

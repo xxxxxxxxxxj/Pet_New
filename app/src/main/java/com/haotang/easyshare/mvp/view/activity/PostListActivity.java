@@ -16,6 +16,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerPostListActivityCommponent;
 import com.haotang.easyshare.di.module.activity.PostListActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.PostListPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointAdapter;
@@ -23,7 +24,6 @@ import com.haotang.easyshare.mvp.view.iview.IPostListView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -114,7 +114,16 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
         hotPointAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                if (list.size() > 0 && list.size() > position) {
+                    HotPoint.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
+                            startActivity(new Intent(PostListActivity.this, WebViewActivity.class).
+                                    putExtra(WebViewActivity.URL_KEY, shareMap.getUrl()));
+                        }
+                    }
+                }
             }
         });
         hotPointAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

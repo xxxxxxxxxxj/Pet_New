@@ -21,6 +21,7 @@ import com.haotang.easyshare.di.module.activity.BrandAreaActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.BrandAreaPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -169,6 +170,21 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+        brandAreaHotPointAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (list.size() > 0 && list.size() > position) {
+                    HotPoint.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
+                            startActivity(new Intent(BrandAreaActivity.this, WebViewActivity.class).
+                                    putExtra(WebViewActivity.URL_KEY, shareMap.getUrl()));
+                        }
+                    }
+                }
             }
         });
     }

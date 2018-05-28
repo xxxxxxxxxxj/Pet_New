@@ -68,6 +68,7 @@ import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
 import com.haotang.easyshare.mvp.view.widget.CircleImageView;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
@@ -94,7 +95,7 @@ import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
  * @date zhoujunxia on 2018/4/14 20:34
  */
 public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
-        AMapLocationListener,IMainFragmentView, AMap.OnMarkerClickListener,
+        AMapLocationListener, IMainFragmentView, AMap.OnMarkerClickListener,
         AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener {
     private final static String TAG = MainFragment.class.getSimpleName();
     @Inject
@@ -573,16 +574,19 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 }
                 if (adBean1 != null) {
                     iv_mainfrag_rmht1.setVisibility(View.VISIBLE);
+                    GlideUtil.loadNetImg(mActivity, adBean1.getImg(), iv_mainfrag_rmht1, R.mipmap.ic_image_load);
                 } else {
                     iv_mainfrag_rmht1.setVisibility(View.INVISIBLE);
                 }
                 if (adBean2 != null) {
                     iv_mainfrag_rmht2.setVisibility(View.VISIBLE);
+                    GlideUtil.loadNetImg(mActivity, adBean2.getImg(), iv_mainfrag_rmht2, R.mipmap.ic_image_load);
                 } else {
                     iv_mainfrag_rmht2.setVisibility(View.INVISIBLE);
                 }
                 if (adBean3 != null) {
                     iv_mainfrag_rmht3.setVisibility(View.VISIBLE);
+                    GlideUtil.loadNetImg(mActivity, adBean3.getImg(), iv_mainfrag_rmht3, R.mipmap.ic_image_load);
                 } else {
                     iv_mainfrag_rmht3.setVisibility(View.INVISIBLE);
                 }
