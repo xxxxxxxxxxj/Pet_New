@@ -149,6 +149,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             if (data != null) {
+                showDialog();
                 compressWithRx(Matisse.obtainPathResult(data));
             }
         }
@@ -172,6 +173,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                 .subscribe(new Consumer<List<File>>() {
                     @Override
                     public void accept(@NonNull List<File> list) throws Exception {
+                        disMissDialog();
                         for (int i = 0; i < imgList.size(); i++) {
                             CommentImg commentImg = imgList.get(i);
                             if (commentImg.isAdd()) {
@@ -260,6 +262,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                 setWtc();
                 break;
             case R.id.tv_titlebar_other:
+                showDialog();
                 //构建body
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("carId", String.valueOf(brandId));
@@ -291,12 +294,14 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        disMissDialog();
         DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.SEND_POST));
         finish();
     }
 
     @Override
     public void saveFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
 

@@ -68,11 +68,13 @@ public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentP
     }
 
     public void saveMsg() {
+        showDialog();
         mPresenter.save(1, etCurrentmsg.getText().toString().trim());
     }
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        disMissDialog();
         etCurrentmsg.setText("");
         RingToast.show("发布成功");
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HISTORYMESSAGEFRAGMET));
@@ -80,6 +82,7 @@ public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentP
 
     @Override
     public void saveFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "historyFail() status = " + code + "---desc = " + msg);
     }
 }

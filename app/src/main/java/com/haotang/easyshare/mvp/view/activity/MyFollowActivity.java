@@ -83,6 +83,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.list();
     }
 
@@ -114,6 +115,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
     }
 
     private void refresh() {
+        showDialog();
         followListAdapter.setEnableLoadMore(false);
         srlMyFollow.setRefreshing(true);
         mNextRequestPage = 1;
@@ -141,6 +143,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             followListAdapter.setEnableLoadMore(true);
             srlMyFollow.setRefreshing(false);
@@ -158,6 +161,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
 
     @Override
     public void listSuccess(List<FollowBean.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlMyFollow.setRefreshing(false);
             followListAdapter.setEnableLoadMore(true);

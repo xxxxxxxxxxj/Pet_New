@@ -231,6 +231,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
+                showDialog();
                 mPresenter.sendVerifyCode(etLoginPhone.getText().toString().trim().replace(" ", ""));
                 break;
             case R.id.iv_login_login:
@@ -247,6 +248,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     etLoginYzm.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
+                showDialog();
                 mPresenter.login(etLoginPhone.getText().toString().trim().replace(" ", ""), wxOpenId, lng, lat,
                         SharedPreferenceUtil.getInstance(LoginActivity.this).getString("jpush_id", ""),
                         etLoginYzm.getText().toString().trim().replace(" ", ""), userName, headImg);
@@ -259,6 +261,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                         RingLog.e(TAG, "登录成功");
                         RingToast.show("微信登录成功");
                         if (result != null) {
+                            showDialog();
                             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                             builder.addFormDataPart("code", result.getmCcode());
                             RequestBody body = builder.build();
@@ -288,6 +291,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void sendVerifyCodeSuccess(SendVerifyCodeBean data) {
+        disMissDialog();
         etLoginYzm.requestFocus();
         CountdownUtil.getInstance().newTimer(60000, 1000, new CountdownUtil.ICountDown() {
             @Override
@@ -308,12 +312,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void sendVerifyCodeFail(int status, String desc) {
+        disMissDialog();
         RingLog.e(TAG, "LoginActivity sendVerifyCodeFail() status = " + status + "---desc = " + desc);
-        RingToast.show("LoginActivity sendVerifyCodeFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
     public void loginSuccess(LoginBean data) {
+        disMissDialog();
         RingLog.e(TAG, "loginSuccess");
         SharedPreferenceUtil.getInstance(LoginActivity.this).saveString("cellphone",
                 etLoginPhone.getText().toString().trim().replace(" ", ""));
@@ -328,12 +333,15 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void loginFail(int status, String desc) {
+        disMissDialog();
         RingLog.e(TAG, "LoginActivity loginFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
     public void getWxOpenIdSuccess(WxLoginBean data) {
+        disMissDialog();
         if (data != null && StringUtil.isNotEmpty(data.getOpenId())) {
+            showDialog();
             DevRing.configureHttp().getMapHeader().put("wxOpenId", data.getOpenId());
             Map<String, String> mapHeader = DevRing.configureHttp().getMapHeader();
             RingLog.e("mapHeader = " + mapHeader.toString());
@@ -346,16 +354,19 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void getWxOpenIdFail(int status, String desc) {
+        disMissDialog();
         RingLog.e(TAG, "LoginActivity getWxOpenIdFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
     public void getWxUserInfoFail(int status, String desc) {
+        disMissDialog();
         RingLog.e(TAG, "LoginActivity getWxUserInfoFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
     public void getWxUserInfoSuccess(WxUserInfoBean data) {
+        disMissDialog();
         if (data != null) {
             ll_login_qita.setVisibility(View.GONE);
             userName = data.getNickname();

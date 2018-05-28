@@ -379,6 +379,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         adBean1 = null;
         adBean2 = null;
         adBean3 = null;
+        showDialog();
         mPresenter.homeIndex(lng, lat);
     }
 
@@ -544,6 +545,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     public void getMainFragmentSuccess(MainFragmentData mainFragmentData) {
+        disMissDialog();
         if (mainFragmentData != null) {
             personalList.clear();
             publishList.clear();
@@ -606,6 +608,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     public void getMainFragmentFail(int status, String desc) {
+        disMissDialog();
         RingLog.e(TAG, "getMainFragmentFail() status = " + status + "---desc = " + desc);
     }
 

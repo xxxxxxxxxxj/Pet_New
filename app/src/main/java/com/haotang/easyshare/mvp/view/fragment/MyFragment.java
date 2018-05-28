@@ -30,7 +30,6 @@ import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.MemberActivity;
 import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
 import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
-import com.haotang.easyshare.mvp.view.activity.TestActivity;
 import com.haotang.easyshare.mvp.view.adapter.MyFragChargePagerAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMyFragmentView;
@@ -135,6 +134,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
             ivMyfragmentAdd.setVisibility(View.GONE);
+            showDialog();
             mPresenter.home();
             mPresenter.my();
         }
@@ -145,6 +145,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
         llMyfragmentMycdz.setVisibility(View.VISIBLE);
         ivMyfragmentAdd.setVisibility(View.GONE);
+        showDialog();
         mPresenter.home();
         mPresenter.my();
     }
@@ -187,6 +188,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @Override
     protected void initData() {
         if (SystemUtil.checkLogin(mActivity)) {
+            showDialog();
             mPresenter.home();
             mPresenter.my();
         }
@@ -239,7 +241,9 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 break;
             case R.id.rl_myfragment_wdtz:
                 if (SystemUtil.checkLogin(mActivity)) {
-                    startActivity(new Intent(mActivity, MyPostActivity.class).putExtra("uuid", uuid));
+                    if (StringUtil.isNotEmpty(uuid)) {
+                        startActivity(new Intent(mActivity, MyPostActivity.class).putExtra("uuid", uuid));
+                    }
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
@@ -285,6 +289,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     public void homeSuccess(HomeBean data) {
+        disMissDialog();
         RingLog.e(TAG, "MyFragment homeSuccess()");
         if (data != null) {
             uuid = data.getUuid();
@@ -315,11 +320,13 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     public void homeFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "MyFragment homeFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void mySuccess(List<MyCarBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             MyCarBean.DataBean dataBean = data.get(0);
             if (dataBean != null) {
@@ -330,6 +337,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     public void myFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "MyFragment myFail() status = " + code + "---desc = " + msg);
     }
 }

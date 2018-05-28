@@ -116,6 +116,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .addFormDataPart("brandId", String.valueOf(brandId))
@@ -190,6 +191,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
     }
 
     private void refresh() {
+        showDialog();
         brandAreaHotPointAdapter.setEnableLoadMore(false);
         srl_brand_area.setRefreshing(true);
         mNextRequestPage = 1;
@@ -230,6 +232,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     public void articleSuccess(List<HotPoint.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srl_brand_area.setRefreshing(false);
             brandAreaHotPointAdapter.setEnableLoadMore(true);
@@ -258,6 +261,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     public void articleFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             brandAreaHotPointAdapter.setEnableLoadMore(true);
             srl_brand_area.setRefreshing(false);
@@ -287,6 +291,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             bannerList.clear();
             bannerList.addAll(data);
@@ -316,12 +321,14 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         rl_brandarea_top.setVisibility(View.GONE);
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void list1Success(List<AdvertisementBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             brandAreaHotPointAdapter.setAdData(data);
         }
@@ -329,6 +336,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
 
     @Override
     public void list1Fail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "list1Fail() status = " + code + "---desc = " + msg);
     }
 

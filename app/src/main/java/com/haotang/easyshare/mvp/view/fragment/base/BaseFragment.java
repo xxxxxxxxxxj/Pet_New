@@ -15,6 +15,7 @@ import com.haotang.easyshare.BuildConfig;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
+import com.haotang.easyshare.mvp.view.widget.LoadingProgressDailog;
 import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.base.fragment.FragmentLifeCallback;
 import com.ljy.devring.base.fragment.IBaseFragment;
@@ -68,6 +69,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Nullable
     protected P mPresenter;
     protected Bundle savedInstanceState;
+    private LoadingProgressDailog dialog;
 
     public View getmContentView() {
         return mContentView;
@@ -105,6 +107,17 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         return emptyView;
     }
 
+    protected void showDialog() {
+        if (dialog != null && !dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+    protected void disMissDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -146,6 +159,11 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     public void init() {
         if (!isLoaded) {
+            LoadingProgressDailog.Builder loadBuilder = new LoadingProgressDailog.Builder(mActivity)
+                    .setMessage("加载中...")
+                    .setCancelable(true)
+                    .setCancelOutside(true);
+            dialog = loadBuilder.create();
             isLoaded = true;
             initView();
             initData();

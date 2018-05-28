@@ -415,6 +415,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 finish();
                 break;
             case R.id.tv_titlebar_other:
+                showDialog();
                 //构建body
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("lng", String.valueOf(lng));
@@ -604,6 +605,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        disMissDialog();
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
         finish();
@@ -611,11 +613,13 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void saveFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void detailSuccess(ChargeDetailBean data) {
+        disMissDialog();
         if (data != null) {
             uuid = data.getUuid();
             lat = data.getLat();
@@ -703,6 +707,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void detailFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
     }
 
@@ -732,6 +737,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 if (localLat > 0 && localLng > 0) {
                     mlocationClient.stopLocation();
                     if (StringUtil.isNotEmpty(uuid)) {
+                        showDialog();
                         Map<String, String> mapHeader = UrlConstants.getMapHeader(AddChargeActivity.this);
                         mapHeader.put("lng", String.valueOf(localLng));
                         mapHeader.put("lat", String.valueOf(localLat));

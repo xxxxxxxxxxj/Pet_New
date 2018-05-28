@@ -195,6 +195,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
     }
 
     private void nearBy() {
+        showDialog();
         Map<String, String> mapHeader = UrlConstants.getMapHeader(LocalChargingActivity.this);
         mapHeader.put("lng", String.valueOf(serchLng));
         mapHeader.put("lat", String.valueOf(serchLat));
@@ -208,6 +209,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
 
     @Override
     public void nearbySuccess(List<MainFragChargeBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlLocalCharging.setRefreshing(false);
             mainLocalAdapter.setEnableLoadMore(true);
@@ -237,6 +239,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
 
     @Override
     public void nearbyFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             mainLocalAdapter.setEnableLoadMore(true);
             srlLocalCharging.setRefreshing(false);

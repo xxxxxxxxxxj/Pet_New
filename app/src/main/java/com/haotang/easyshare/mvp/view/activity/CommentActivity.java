@@ -130,6 +130,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.tags();
     }
 
@@ -172,6 +173,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             if (data != null) {
+                showDialog();
                 compressWithRx(Matisse.obtainPathResult(data));
             }
         }
@@ -195,6 +197,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
                 .subscribe(new Consumer<List<File>>() {
                     @Override
                     public void accept(@NonNull List<File> list) throws Exception {
+                        disMissDialog();
                         for (int i = 0; i < imgList.size(); i++) {
                             CommentImg commentImg = imgList.get(i);
                             if (commentImg.isAdd()) {
@@ -238,6 +241,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
                 finish();
                 break;
             case R.id.tv_titlebar_other:
+                showDialog();
                 filedMap.clear();
                 String localTags = "";
                 for (int i = 0; i < tagList.size(); i++) {
@@ -314,17 +318,20 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        disMissDialog();
         DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.SAVE_CHARGE_COMMENT));
         finish();
     }
 
     @Override
     public void saveFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void tagsSuccess(List<String> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             tagList.clear();
             for (int i = 0; i < data.size(); i++) {
@@ -336,6 +343,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
 
     @Override
     public void tagsFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "tagsFail() status = " + code + "---desc = " + msg);
     }
 

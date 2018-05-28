@@ -98,6 +98,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
     }
 
     private void setRequest() {
+        showDialog();
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .build();
         if (index == 1) {//最新帖
@@ -210,6 +211,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
 
     @Override
     public void newestSuccess(List<HotPoint.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlPostlist.setRefreshing(false);
             hotPointAdapter.setEnableLoadMore(true);
@@ -247,6 +249,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
 
     @Override
     public void newestFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             hotPointAdapter.setEnableLoadMore(true);
             srlPostlist.setRefreshing(false);

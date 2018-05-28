@@ -88,6 +88,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.list(uuid, mNextRequestPage);
     }
 
@@ -108,6 +109,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     }
 
     private void refresh() {
+        showDialog();
         commentDetailAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         srlCommentDetail.setRefreshing(true);
         mNextRequestPage = 1;
@@ -142,6 +144,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
 
     @Override
     public void listSuccess(CommentBean data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlCommentDetail.setRefreshing(false);
             commentDetailAdapter.setEnableLoadMore(true);
@@ -197,6 +200,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
         if (mNextRequestPage == 1) {
             commentDetailAdapter.setEnableLoadMore(true);

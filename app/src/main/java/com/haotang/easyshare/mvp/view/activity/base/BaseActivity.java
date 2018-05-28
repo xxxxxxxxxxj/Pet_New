@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
+import com.haotang.easyshare.mvp.view.widget.LoadingProgressDailog;
 import com.haotang.easyshare.util.ActivityListManager;
 import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.base.activity.IBaseActivity;
@@ -61,6 +62,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Nullable
     protected P mPresenter;
     protected ActivityListManager activityListManager = new ActivityListManager();
+    private LoadingProgressDailog dialog;
 
     protected abstract int getContentLayout();//返回页面布局id
 
@@ -103,6 +105,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             setContentView(getContentLayout());
             ButterKnife.bind(this);
         }
+        LoadingProgressDailog.Builder loadBuilder = new LoadingProgressDailog.Builder(this)
+                .setMessage("加载中...")
+                .setCancelable(true)
+                .setCancelOutside(true);
+        dialog = loadBuilder.create();
         initBarColor();//初始化状态栏/导航栏颜色，需在设置了布局后再调用
         initView(savedInstanceState);//由具体的activity实现，做视图相关的初始化
         setView(savedInstanceState);//由具体的activity实现，做视图相关的设置
@@ -117,6 +124,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         mHeight = dm.heightPixels;
         mRatio = Math.min((float) mWidth / 720, (float) mHeight / 1280);
         mAvatarSize = (int) (50 * mDensity);
+    }
+
+    protected void showDialog() {
+        if (dialog != null && !dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+    protected void disMissDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     private void initBarColor() {

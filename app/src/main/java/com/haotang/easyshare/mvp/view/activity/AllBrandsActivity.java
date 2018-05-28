@@ -97,6 +97,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.list();
         mPresenter.special();
     }
@@ -151,6 +152,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
 
     @Override
     public void listSuccess(List<HotCarBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             carList.addAll(data);
             hotPointCarAdapter.notifyDataSetChanged();
@@ -159,11 +161,13 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void specialSuccess(List<HotSpecialCarBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             selectedCarList.addAll(data);
             selectedCarAdapter.notifyDataSetChanged();
@@ -172,6 +176,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
 
     @Override
     public void specialFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
     }
 

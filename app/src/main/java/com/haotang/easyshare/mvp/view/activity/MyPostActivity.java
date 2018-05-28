@@ -9,7 +9,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,10 +22,9 @@ import com.haotang.easyshare.mvp.presenter.MyPostPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.PostListAdapter;
 import com.haotang.easyshare.mvp.view.iview.IMyPostView;
+import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
-import com.haotang.easyshare.util.StringUtil;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -92,6 +90,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         //构建body
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("uuid", uuid);
@@ -122,13 +121,26 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
         });
         postListAdapter.setOnDeleteItemListener(new PostListAdapter.OnDeleteItemListener() {
             @Override
-            public void OnDeleteItem(int position) {
+            public void OnDeleteItem(final int position) {
                 if (list.size() > 0 && list.size() > position) {
-                    deletePosition = position;
-                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                    builder.addFormDataPart("uuid", list.get(position).getUuid());
-                    RequestBody body = builder.build();
-                    mPresenter.delete(body);
+                    new AlertDialogNavAndPost(MyPostActivity.this).builder().setTitle("")
+                            .setMsg("确定删除这条帖子吗")
+                            .setPositiveButton("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showDialog();
+                                    deletePosition = position;
+                                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                                    builder.addFormDataPart("uuid", list.get(position).getUuid());
+                                    RequestBody body = builder.build();
+                                    mPresenter.delete(body);
+                                }
+                            }).setNegativeButton("取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
                 }
             }
         });
@@ -161,6 +173,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     }
 
     private void refresh() {
+        showDialog();
         postListAdapter.setEnableLoadMore(false);
         srlMyPost.setRefreshing(true);
         mNextRequestPage = 1;
@@ -201,6 +214,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     public void listSuccess(List<PostBean.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlMyPost.setRefreshing(false);
             postListAdapter.setEnableLoadMore(true);
@@ -230,6 +244,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             postListAdapter.setEnableLoadMore(true);
             srlMyPost.setRefreshing(false);
@@ -247,12 +262,14 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     public void deleteSuccess(AddChargeBean data) {
+        disMissDialog();
         list.remove(deletePosition);
         postListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void deleteFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "deleteFail() status = " + code + "---desc = " + msg);
     }
 

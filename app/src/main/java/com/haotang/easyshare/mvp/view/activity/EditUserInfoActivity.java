@@ -89,6 +89,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.home();
     }
 
@@ -119,6 +120,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_titlebar_other:
+                showDialog();
                 //构建body
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("userName", etEdituserinfoUsername.getText().toString().trim());
@@ -155,6 +157,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             if (data != null) {
+                showDialog();
                 compressWithRx(Matisse.obtainPathResult(data));
             }
         }
@@ -173,6 +176,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
                 .subscribe(new Consumer<List<File>>() {
                     @Override
                     public void accept(@NonNull List<File> list) throws Exception {
+                        disMissDialog();
                         if (list != null && list.size() > 0) {
                             userImgFile = list.get(0);
                             Glide.with(EditUserInfoActivity.this).load(userImgFile).error(R.mipmap.ic_image_load_circle)
@@ -187,6 +191,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
 
     @Override
     public void homeSuccess(HomeBean data) {
+        disMissDialog();
         RingLog.e(TAG, "homeSuccess()");
         if (data != null) {
             StringUtil.setText(etEdituserinfoUsername, data.getUserName(), "", View.VISIBLE, View.VISIBLE);
@@ -196,17 +201,20 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
 
     @Override
     public void homeFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "homeFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        disMissDialog();
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
         finish();
     }
 
     @Override
     public void saveFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "homeFail() status = " + code + "---desc = " + msg);
     }
 }

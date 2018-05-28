@@ -272,6 +272,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     }
 
     private void refresh() {
+        showDialog();
         hotPointCarAdapter.setEnableLoadMore(false);
         srl_hotfragment.setRefreshing(true);
         mNextRequestPage = 1;
@@ -293,12 +294,14 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         hotFragmenHeader.getRl_banner_top_hotfrag().setVisibility(View.GONE);
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             bannerList.clear();
             bannerList.addAll(data);
@@ -311,6 +314,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     public void hotSuccess(List<HotCarBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             carList.clear();
             carList.addAll(data);
@@ -320,11 +324,13 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     public void hotFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "hotFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void newestSuccess(List<HotPoint.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srl_hotfragment.setRefreshing(false);
             hotPointAdapter.setEnableLoadMore(true);
@@ -353,6 +359,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     public void newestFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             hotPointAdapter.setEnableLoadMore(true);
             srl_hotfragment.setRefreshing(false);

@@ -186,6 +186,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                         + lat + ", lng = "
                         + lng + ",city = " + city + ",address = " + amapLocation.getAddress());
                 if (lat > 0 && lng > 0) {
+                    showDialog();
                     Map<String, String> mapHeader = UrlConstants.getMapHeader(ChargingPileDetailActivity.this);
                     mapHeader.put("lng", String.valueOf(lng));
                     mapHeader.put("lat", String.valueOf(lat));
@@ -230,6 +231,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 break;
             case iv_chargingdetail_sc:
                 if (SystemUtil.checkLogin(this)) {
+                    showDialog();
                     parmMap.clear();
                     parmMap.put("uuid", uuid);
                     if (is_collect == 0) {//是否已收藏(0:否、1:是)
@@ -263,6 +265,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     public void detailSuccess(ChargeDetailBean data) {
+        disMissDialog();
         if (data != null) {
             is_collect = data.getIsCollect();
             uuid = data.getUuid();
@@ -332,11 +335,13 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     public void detailFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void followSuccess(AddChargeBean data) {
+        disMissDialog();
         is_collect = 1;
         ivChargingdetailSc.setImageResource(R.mipmap.sc);
         DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.COLLECT_OR_CANCEL_CHARGE));
@@ -344,11 +349,13 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     public void followFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void cancelSuccess(AddChargeBean data) {
+        disMissDialog();
         is_collect = 0;
         ivChargingdetailSc.setImageResource(R.mipmap.sc_not);
         DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.COLLECT_OR_CANCEL_CHARGE));
@@ -356,6 +363,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     public void cancelFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
     }
 

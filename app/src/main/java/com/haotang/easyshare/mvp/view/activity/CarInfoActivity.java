@@ -63,6 +63,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.my();
     }
 
@@ -84,6 +85,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
                 finish();
                 break;
             case R.id.iv_carinfo_submit:
+                showDialog();
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("brand", etCarinfoQcpp.getText().toString().trim());
                 builder.addFormDataPart("car", etCarinfoCx.getText().toString().trim());
@@ -99,6 +101,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
 
     @Override
     public void mySuccess(List<MyCarBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             MyCarBean.DataBean dataBean = data.get(0);
             if (dataBean != null) {
@@ -112,11 +115,13 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
 
     @Override
     public void myFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "myFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        disMissDialog();
         RingLog.e(TAG, "saveSuccess");
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
         finish();
@@ -124,6 +129,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
 
     @Override
     public void saveFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
 

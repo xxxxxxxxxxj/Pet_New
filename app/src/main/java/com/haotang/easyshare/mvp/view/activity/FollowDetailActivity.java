@@ -114,6 +114,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.info(uuid);
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("uuid", uuid);
@@ -134,6 +135,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 if (position >= 0 && list.size() > 0 && list.size() > position) {
                     PostBean.DataBean dataBean = list.get(position);
                     if (dataBean != null && dataBean.getIsPraise() == 0) {
+                        showDialog();
                         praisePosition = position;
                         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                         builder.addFormDataPart("uuid", dataBean.getUuid());
@@ -173,6 +175,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_followdetail_top_guanzhu:
+                showDialog();
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("uuid", uuid);
                 RequestBody build = builder.build();
@@ -191,6 +194,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     }
 
     private void refresh() {
+        showDialog();
         postListAdapter.setEnableLoadMore(false);
         srlFollowdetail.setRefreshing(true);
         mNextRequestPage = 1;
@@ -252,6 +256,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
             followDetailBoDa.getTv_followdetail_bottom_submit().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    showDialog();
                     MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                             .addFormDataPart("uuid", uuid)
                             .addFormDataPart("stars", String.valueOf((int) stars))
@@ -273,6 +278,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 }
             });
         }
+        showDialog();
         mPresenter.stars();
     }
 
@@ -294,6 +300,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void infoSuccess(HomeBean data) {
+        disMissDialog();
         if (data != null) {
             isCollect = data.getIsCollect();
             StringUtil.setText(followDetailHeader.getIvFollowdetailTopUserpf(), data.getStars() + "", "", View.VISIBLE, View.VISIBLE);
@@ -316,11 +323,13 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void infoFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "infoFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void listSuccess(List<PostBean.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlFollowdetail.setRefreshing(false);
             postListAdapter.setEnableLoadMore(true);
@@ -349,6 +358,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             postListAdapter.setEnableLoadMore(true);
             srlFollowdetail.setRefreshing(false);
@@ -360,38 +370,45 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void followSuccess(AddChargeBean data) {
+        disMissDialog();
         isCollect = 1;
         followDetailHeader.getIvFollowdetailTopGuanzhu().setImageResource(R.mipmap.icon_followdetail_top_yiguanzhu);
     }
 
     @Override
     public void followFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "followFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void cancelSuccess(AddChargeBean data) {
+        disMissDialog();
         isCollect = 0;
         followDetailHeader.getIvFollowdetailTopGuanzhu().setImageResource(R.mipmap.icon_followdetail_top_guanzhu);
     }
 
     @Override
     public void cancelFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "cancelFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void evalSuccess(AddChargeBean data) {
+        disMissDialog();
         followDetailHeader.getIvFollowdetailTopPingjia().setImageResource(R.mipmap.icon_followdetail_top_yipingjia);
     }
 
     @Override
     public void evalFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "evalFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void praiseSuccess(AddChargeBean data) {
+        disMissDialog();
         if (praisePosition >= 0 && list.size() > praisePosition) {
             PostBean.DataBean dataBean = list.get(praisePosition);
             if (dataBean != null) {
@@ -403,11 +420,13 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void praiseFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "praiseFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void starsSuccess(List<String> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             starsStr.addAll(data);
             setStar();
@@ -416,6 +435,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void starsFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "starsFail() status = " + code + "---desc = " + msg);
     }
 

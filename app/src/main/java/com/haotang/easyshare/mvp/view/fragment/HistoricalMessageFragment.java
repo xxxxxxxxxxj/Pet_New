@@ -120,6 +120,7 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
     }
 
     private void refresh() {
+        showDialog();
         RingLog.e("refresh");
         srlHistorymsg.setColorSchemeColors(Color.rgb(47, 223, 189));
         historicalMessagelAdapter.setEnableLoadMore(false);
@@ -134,6 +135,7 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
 
     @Override
     public void historySuccess(List<List<HistoricalMsg.DataBean>> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlHistorymsg.setRefreshing(false);
             historicalMessagelAdapter.setEnableLoadMore(true);
@@ -163,6 +165,7 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
 
     @Override
     public void historyFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             historicalMessagelAdapter.setEnableLoadMore(true);
             srlHistorymsg.setRefreshing(false);
