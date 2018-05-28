@@ -27,9 +27,9 @@ import com.haotang.easyshare.mvp.view.activity.CarInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.CollectChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.EditUserInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
-import com.haotang.easyshare.mvp.view.activity.MemberActivity;
 import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
 import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
+import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.MyFragChargePagerAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMyFragmentView;
@@ -78,8 +78,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     LinearLayout llMyfragmentYuejf;
     @BindView(R.id.tv_myfragment_username)
     TextView tvMyfragmentUsername;
-    @BindView(R.id.iv_myfragment_add)
-    ImageView ivMyfragmentAdd;
     @BindView(R.id.ll_myfragment_mycdz)
     LinearLayout llMyfragmentMycdz;
     @BindView(R.id.ll_myfragment_jqqd)
@@ -114,9 +112,12 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     TextView tvMyfragmentJjdh;
     @BindView(R.id.vp_myfragment_mycdz)
     ViewPager vpMyfragmentMycdz;
+    @BindView(R.id.tv_myfragment_mycharge_num)
+    TextView tv_myfragment_mycharge_num;
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
     private String kf_phone = "";
     private String uuid;
+    private String url;
 
     @Override
     public boolean isUseEventBus() {
@@ -133,7 +134,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             RingLog.e("REFRESH_MYFRAGMET");
             rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
-            ivMyfragmentAdd.setVisibility(View.GONE);
             showDialog();
             mPresenter.home();
             mPresenter.my();
@@ -144,7 +144,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void getLoginInfo(LoginBean data) {
         rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
         llMyfragmentMycdz.setVisibility(View.VISIBLE);
-        ivMyfragmentAdd.setVisibility(View.GONE);
         showDialog();
         mPresenter.home();
         mPresenter.my();
@@ -176,11 +175,9 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         if (SystemUtil.checkLogin(mActivity)) {
             rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
-            ivMyfragmentAdd.setVisibility(View.GONE);
         } else {
             rtvMyfragmentTuichu.setVisibility(View.GONE);
             tvMyfragmentUsername.setText("立即登录");
-            ivMyfragmentAdd.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.GONE);
         }
     }
@@ -233,11 +230,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 }
                 break;
             case R.id.rl_myfragment_hytq:
-                if (SystemUtil.checkLogin(mActivity)) {
-                    startActivity(new Intent(mActivity, MemberActivity.class));
-                } else {
-                    startActivity(new Intent(mActivity, LoginActivity.class));
-                }
+                startActivity(new Intent(mActivity, WebViewActivity.class).
+                        putExtra(WebViewActivity.URL_KEY, url));
                 break;
             case R.id.rl_myfragment_wdtz:
                 if (SystemUtil.checkLogin(mActivity)) {
@@ -280,9 +274,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 DevRing.configureHttp().getMapHeader().put("phone", "");
                 rtvMyfragmentTuichu.setVisibility(View.GONE);
                 tvMyfragmentUsername.setText("立即登录");
-                ivMyfragmentAdd.setVisibility(View.VISIBLE);
                 llMyfragmentMycdz.setVisibility(View.GONE);
-                //startActivity(new Intent(mActivity, TestActivity.class));
                 break;
         }
     }
@@ -302,6 +294,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             GlideUtil.loadNetCircleImg(mActivity, data.getHeadImg(), ivMyfragmentUserimg, R.mipmap.ic_image_load_circle);
             List<HomeBean.StationsBean> stations = data.getStations();
             if (stations != null && stations.size() > 0) {
+                StringUtil.setText(tv_myfragment_mycharge_num, "(" + stations.size() + ")", "", View.VISIBLE, View.VISIBLE);
                 mFragments.clear();
                 llMyfragmentMycdz.setVisibility(View.VISIBLE);
                 for (HomeBean.StationsBean stationsBean : stations) {

@@ -138,13 +138,38 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dip"
-                    android:text="我的充电桩"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:layout_marginBottom="15dip">
+
+                    <ImageView
+                        android:id="@+id/iv_myfragment_mycharge_right"
+                        android:layout_width="7dip"
+                        android:layout_height="11dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/right_more_lan" />
+
+                    <TextView
+                        android:id="@+id/tv_myfragment_mycharge_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="我的充电桩   "
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_myfragment_mycharge_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/tv_myfragment_mycharge_title"
+                        android:text="(0)"
+                        android:textColor="@color/a0271F0"
+                        android:textSize="16sp" />
+                </RelativeLayout>
 
                 <com.flyco.roundview.RoundRelativeLayout
                     android:layout_width="match_parent"

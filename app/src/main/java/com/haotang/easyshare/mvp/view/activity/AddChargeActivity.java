@@ -144,6 +144,11 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     RelativeLayout rlAddchargeKfsj;
     @BindView(R.id.et_addcharge_bzsm)
     EditText etAddchargeBzsm;
+    @BindView(R.id.iv_addcharg_gr)
+    ImageView iv_addcharg_gr;
+    @BindView(R.id.iv_addcharg_gg)
+    ImageView iv_addcharg_gg;
+
     private List<CommentImg> imgList = new ArrayList<CommentImg>();
     private List<String> imgPathList = new ArrayList<String>();
     private CommentImgAdapter commentImgAdapter;
@@ -166,6 +171,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     private double localLat;
     private double localLng;
     private File chargeImgFile;
+    private int isPrivate = 1;
 
     @Override
     protected int getContentLayout() {
@@ -288,6 +294,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             if (data != null) {
+                showDialog();
                 compressWithRx(Matisse.obtainPathResult(data));
             }
         }
@@ -306,6 +313,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 .subscribe(new Consumer<List<File>>() {
                     @Override
                     public void accept(@NonNull List<File> list) throws Exception {
+                        disMissDialog();
                         for (int i = 0; i < imgList.size(); i++) {
                             CommentImg commentImg = imgList.get(i);
                             if (commentImg.isAdd()) {
@@ -408,9 +416,29 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         }
     }
 
-    @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.rl_addcharge_zdz, R.id.ll_addcharge_kuai, R.id.ll_addcharge_man, R.id.rl_addcharge_zffs, R.id.ll_addcharge_up, R.id.ll_addcharge_down, R.id.rl_addcharge_kfsj})
+    private void setisPrivate(int flag) {
+        if (flag == 0) {//是否私人(0:公共、1:私人)
+            isPrivate = 0;
+            iv_addcharg_gr.setImageResource(R.mipmap.icon_gr_not);
+            iv_addcharg_gg.setImageResource(R.mipmap.icon_gg);
+        } else if (flag == 1) {//是否私人(0:公共、1:私人)
+            isPrivate = 1;
+            iv_addcharg_gr.setImageResource(R.mipmap.icon_gr);
+            iv_addcharg_gg.setImageResource(R.mipmap.icon_gg_not);
+        }
+    }
+
+    @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.rl_addcharge_zdz, R.id.ll_addcharge_kuai,
+            R.id.ll_addcharge_man, R.id.rl_addcharge_zffs, R.id.ll_addcharge_up, R.id.ll_addcharge_down,
+            R.id.rl_addcharge_kfsj, R.id.iv_addcharg_gr, R.id.iv_addcharg_gg})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_addcharg_gr:
+                setisPrivate(1);
+                break;
+            case R.id.iv_addcharg_gg:
+                setisPrivate(0);
+                break;
             case R.id.iv_titlebar_back:
                 finish();
                 break;
@@ -428,6 +456,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 builder.addFormDataPart("serviceFee", etAddchargeFwf.getText().toString().trim());
                 builder.addFormDataPart("payWay", tvAddchargeZffs.getText().toString().trim());
                 builder.addFormDataPart("openTime", tvAddchargeKfsj.getText().toString().trim());
+                builder.addFormDataPart("isPrivate", String.valueOf(isPrivate));
                 builder.addFormDataPart("remark", etAddchargeBzsm.getText().toString().trim());
                 if (kuaiOrMan == 0) {//快充
                     builder.addFormDataPart("fastNum", etAddchargeSl.getText().toString().trim());
@@ -636,6 +665,12 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             setUpOrDown(data.getParkingIsUnderground());
             int fastNum = data.getFastNum();
             int slowNum = data.getSlowNum();
+            int isPrivate = data.getIsPrivate();
+            if (isPrivate == 0) {
+                setisPrivate(0);
+            } else if (isPrivate == 1) {
+                setisPrivate(1);
+            }
             if (fastNum > 0) {
                 StringUtil.setText(etAddchargeSl, fastNum + "", "", View.VISIBLE, View.VISIBLE);
                 setKuaiOrMan(0);

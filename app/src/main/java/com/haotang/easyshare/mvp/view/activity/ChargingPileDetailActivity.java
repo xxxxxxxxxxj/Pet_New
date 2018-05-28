@@ -20,6 +20,7 @@ import com.haotang.easyshare.di.module.activity.ChargingPileDetailActivityModule
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.ChargingPileDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.UseNoticesAdapter;
@@ -134,6 +135,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     private double chargeLat;
     private int is_collect;
     private Map<String, String> parmMap = new HashMap<String, String>();
+    private PostBean.DataBean.ShareMap shareMap;
 
     @Override
     protected int getContentLayout() {
@@ -244,10 +246,12 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 }
                 break;
             case R.id.iv_chargingdetail_share:
-                ShareBottomDialog dialog = new ShareBottomDialog();
-                dialog.setShareInfo("测试", "测试",
-                        "https://www.duba.com", "http://img.sayiyinxiang.com/api/brand/imgs/15246549042921928075.jpg");
-                dialog.show(getSupportFragmentManager());
+                if (shareMap != null) {
+                    ShareBottomDialog dialog = new ShareBottomDialog();
+                    dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
+                            shareMap.getUrl(), shareMap.getImg());
+                    dialog.show(getSupportFragmentManager());
+                }
                 break;
             case R.id.ll_chargingdetail_pl:
                 startActivity(new Intent(ChargingPileDetailActivity.this, CommentDetailActivity.class).putExtra("uuid", uuid));
@@ -267,6 +271,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     public void detailSuccess(ChargeDetailBean data) {
         disMissDialog();
         if (data != null) {
+            shareMap = data.getShareMap();
             is_collect = data.getIsCollect();
             uuid = data.getUuid();
             address = data.getAddress();

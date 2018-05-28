@@ -59,6 +59,15 @@ public class ChargeDetailBean {
     private int parkingIsUnderground;
     private List<String> detailImgs;
     private List<UseNotices> useNotices;
+    private PostBean.DataBean.ShareMap shareMap;
+
+    public PostBean.DataBean.ShareMap getShareMap() {
+        return shareMap;
+    }
+
+    public void setShareMap(PostBean.DataBean.ShareMap shareMap) {
+        this.shareMap = shareMap;
+    }
 
     public static class UseNotices {
         private String time;

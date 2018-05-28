@@ -181,8 +181,10 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                     if (dataBean != null) {
                         PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
                         if (shareMap != null) {
-                            startActivity(new Intent(BrandAreaActivity.this, WebViewActivity.class).
-                                    putExtra(WebViewActivity.URL_KEY, shareMap.getUrl()));
+                            Intent intent = new Intent(BrandAreaActivity.this, WebViewActivity.class);
+                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                            intent.putExtra("uuid", dataBean.getUuid());
+                            startActivity(intent);
                         }
                     }
                 }

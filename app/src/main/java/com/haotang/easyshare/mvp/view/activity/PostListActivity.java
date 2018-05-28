@@ -120,8 +120,10 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
                     if (dataBean != null) {
                         PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
                         if (shareMap != null) {
-                            startActivity(new Intent(PostListActivity.this, WebViewActivity.class).
-                                    putExtra(WebViewActivity.URL_KEY, shareMap.getUrl()));
+                            Intent intent = new Intent(PostListActivity.this, WebViewActivity.class);
+                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                            intent.putExtra("uuid", dataBean.getUuid());
+                            startActivity(intent);
                         }
                     }
                 }

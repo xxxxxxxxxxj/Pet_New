@@ -35,6 +35,54 @@
                 android:paddingRight="15dip">
 
                 <TextView
+                    android:id="@+id/tv_addcharge_zlx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dip"
+                    android:gravity="center_vertical"
+                    android:text="类      型"
+                    android:textColor="@color/a666666"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/tv_addcharge_zlx"
+                    android:gravity="center_vertical|right">
+
+                    <ImageView
+                        android:id="@+id/iv_addcharg_gr"
+                        android:layout_width="44dip"
+                        android:layout_height="22dip"
+                        android:layout_marginRight="20dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/icon_gr" />
+
+                    <ImageView
+                        android:id="@+id/iv_addcharg_gg"
+                        android:layout_width="44dip"
+                        android:layout_height="22dip"
+                        android:layout_marginRight="5dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/icon_gg_not" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="15dip"
+                android:background="@color/aEEEEEE" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <TextView
                     android:id="@+id/tv_addcharge_zmc"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

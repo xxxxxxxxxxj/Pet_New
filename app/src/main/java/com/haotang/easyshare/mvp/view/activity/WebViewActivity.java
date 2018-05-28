@@ -37,6 +37,7 @@ import com.haotang.easyshare.mvp.view.webview.MiddlewareWebViewClient;
 import com.haotang.easyshare.mvp.view.webview.UIController;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.just.agentweb.AbsAgentWebSettings;
 import com.just.agentweb.AgentWeb;
@@ -172,7 +173,7 @@ public class WebViewActivity extends BaseActivity {
                         + "&system=android_" + SystemUtil.getCurrentVersion(this)
                         + "&imei="
                         + SystemUtil.getIMEI(this)
-                        + "&cellPhone="
+                        + "&phone="
                         + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "&phoneModel="
                         + android.os.Build.BRAND + " " + android.os.Build.MODEL
                         + "&phoneSystemVersion=" + "Android "
@@ -183,14 +184,19 @@ public class WebViewActivity extends BaseActivity {
                         + "?system=android_" + SystemUtil.getCurrentVersion(this)
                         + "&imei="
                         + SystemUtil.getIMEI(this)
-                        + "&cellPhone="
+                        + "&phone="
                         + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "&phoneModel="
                         + android.os.Build.BRAND + " " + android.os.Build.MODEL
                         + "&phoneSystemVersion=" + "Android "
                         + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
                         + System.currentTimeMillis();
             }
+            if (StringUtil.isNotEmpty(getIntent().getStringExtra("uuid"))) {
+                url = url + "&uuid="
+                        + getIntent().getStringExtra("uuid");
+            }
         }
+        RingLog.e("url = " + url);
         return url;
     }
 
