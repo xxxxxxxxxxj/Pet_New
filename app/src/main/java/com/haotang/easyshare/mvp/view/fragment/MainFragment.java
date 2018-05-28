@@ -7,7 +7,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -60,15 +59,13 @@ import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.CommentDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
-import com.haotang.easyshare.mvp.view.adapter.BrandAreaAdAdapter;
+import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainSerchResultAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
 import com.haotang.easyshare.mvp.view.widget.CircleImageView;
-import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
-import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.StringUtil;
@@ -86,6 +83,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -95,8 +94,7 @@ import butterknife.OnClick;
  * @date zhoujunxia on 2018/4/14 20:34
  */
 public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
-        AMapLocationListener,
-        View.OnClickListener, IMainFragmentView, AMap.OnMarkerClickListener,
+        AMapLocationListener,IMainFragmentView, AMap.OnMarkerClickListener,
         AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener {
     private final static String TAG = MainFragment.class.getSimpleName();
     @Inject
@@ -144,8 +142,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     View vwMainfragLocalevGr;
     @BindView(R.id.rl_mainfrag_localev_gr)
     RelativeLayout rlMainfragLocalevGr;
-    @BindView(R.id.rv_mainfrag_ad)
-    RecyclerView rv_mainfrag_ad;
+    @BindView(R.id.iv_mainfrag_rmht1)
+    ImageView iv_mainfrag_rmht1;
+    @BindView(R.id.iv_mainfrag_rmht2)
+    ImageView iv_mainfrag_rmht2;
+    @BindView(R.id.iv_mainfrag_rmht3)
+    ImageView iv_mainfrag_rmht3;
 
     private AMap aMap;
     private UiSettings mUiSettings;
@@ -170,7 +172,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private String cityCode;
     private List<MainFragmentData.PublishBean> publishList = new ArrayList<MainFragmentData.PublishBean>();
     private List<BrandAreaBean.AdBean> adList = new ArrayList<BrandAreaBean.AdBean>();
-    private BrandAreaAdAdapter brandAreaAdAdapter;
+    private BrandAreaBean.AdBean adBean1;
+    private BrandAreaBean.AdBean adBean2;
+    private BrandAreaBean.AdBean adBean3;
 
     @Override
     protected boolean isLazyLoad() {
@@ -296,22 +300,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         DividerItemDecoration divider = new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(mActivity, R.drawable.divider_f8_15));
         rvMainfragLocalev.addItemDecoration(divider);
-
-        rv_mainfrag_ad.setHasFixedSize(true);
-        rv_mainfrag_ad.setNestedScrollingEnabled(false);
-        NoScollFullGridLayoutManager noScollFullGridLayoutManager = new
-                NoScollFullGridLayoutManager(rv_mainfrag_ad, mActivity, 3, GridLayoutManager.VERTICAL, false);
-        noScollFullGridLayoutManager.setScrollEnabled(false);
-        rv_mainfrag_ad.setLayoutManager(new GridLayoutManager(mActivity, 3, GridLayoutManager.VERTICAL, false));
-        if (rv_mainfrag_ad.getItemDecorationCount() <= 0) {
-            rv_mainfrag_ad.addItemDecoration(new GridSpacingItemDecoration(3,
-                    mActivity.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
-                    mActivity.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
-                    false));
-        }
-        brandAreaAdAdapter = new BrandAreaAdAdapter(R.layout.item_brandarea_ad
-                , adList);
-        rv_mainfrag_ad.setAdapter(brandAreaAdAdapter);
     }
 
     private void setUpMap() {
@@ -348,10 +336,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         aMap.setOnMyLocationChangeListener(this);
         aMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
         aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
-        rlMainfragLocalev.setOnClickListener(this);
-        rtvMainfragLocal.setOnClickListener(this);
-        rlMainfragLocalevGg.setOnClickListener(this);
-        rlMainfragLocalevGr.setOnClickListener(this);
         //解决上下滑动冲突问题
         aMap.setOnMapTouchListener(new AMap.OnMapTouchListener() {
             @Override
@@ -391,6 +375,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     }
 
     private void refresh() {
+        adBean1 = null;
+        adBean2 = null;
+        adBean3 = null;
         mPresenter.homeIndex(lng, lat);
     }
 
@@ -483,7 +470,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
     }
 
-    @OnClick({R.id.ll_mainfrag_city, R.id.rl_mainfrag_send})
+    @OnClick({R.id.ll_mainfrag_city, R.id.rl_mainfrag_send, R.id.rtv_mainfrag_local, R.id.rl_mainfrag_localev,
+            R.id.rl_mainfrag_localev_gg, R.id.rl_mainfrag_localev_gr, R.id.iv_mainfrag_rmht1, R.id.iv_mainfrag_rmht2, R.id.iv_mainfrag_rmht3})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_mainfrag_city:
@@ -495,12 +483,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
             case R.id.rtv_mainfrag_local:
                 LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
                 for (int i = 0; i < list.size(); i++) {
@@ -526,6 +508,36 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 index = 1;
                 setTab();
                 break;
+            case R.id.iv_mainfrag_rmht1:
+                if (adBean1 != null) {
+                    if (adBean1.getDisplay() == 1) {//原生
+
+                    } else if (adBean1.getDisplay() == 2) {//H5
+                        mActivity.startActivity(new Intent(mActivity, WebViewActivity.class).
+                                putExtra(WebViewActivity.URL_KEY, adBean1.getDestination()));
+                    }
+                }
+                break;
+            case R.id.iv_mainfrag_rmht2:
+                if (adBean2 != null) {
+                    if (adBean2.getDisplay() == 1) {//原生
+
+                    } else if (adBean2.getDisplay() == 2) {//H5
+                        mActivity.startActivity(new Intent(mActivity, WebViewActivity.class).
+                                putExtra(WebViewActivity.URL_KEY, adBean2.getDestination()));
+                    }
+                }
+                break;
+            case R.id.iv_mainfrag_rmht3:
+                if (adBean3 != null) {
+                    if (adBean3.getDisplay() == 1) {//原生
+
+                    } else if (adBean3.getDisplay() == 2) {//H5
+                        mActivity.startActivity(new Intent(mActivity, WebViewActivity.class).
+                                putExtra(WebViewActivity.URL_KEY, adBean3.getDestination()));
+                    }
+                }
+                break;
         }
     }
 
@@ -547,7 +559,33 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         adList.add(new BrandAreaBean.AdBean(adsBean.getImg(), adsBean.getDisplay(), adsBean.getDestination()));
                     }
                 }
-                brandAreaAdAdapter.notifyDataSetChanged();
+                for (int i = 0; i < adList.size(); i++) {
+                    BrandAreaBean.AdBean adBean = adList.get(i);
+                    if (adBean != null) {
+                        if (i == 0) {
+                            adBean1 = adBean;
+                        } else if (i == 1) {
+                            adBean2 = adBean;
+                        } else if (i == 2) {
+                            adBean3 = adBean;
+                        }
+                    }
+                }
+                if (adBean1 != null) {
+                    iv_mainfrag_rmht1.setVisibility(View.VISIBLE);
+                } else {
+                    iv_mainfrag_rmht1.setVisibility(View.INVISIBLE);
+                }
+                if (adBean2 != null) {
+                    iv_mainfrag_rmht2.setVisibility(View.VISIBLE);
+                } else {
+                    iv_mainfrag_rmht2.setVisibility(View.INVISIBLE);
+                }
+                if (adBean3 != null) {
+                    iv_mainfrag_rmht3.setVisibility(View.VISIBLE);
+                } else {
+                    iv_mainfrag_rmht3.setVisibility(View.INVISIBLE);
+                }
             } else {
                 llMainfragRmht.setVisibility(View.GONE);
             }
