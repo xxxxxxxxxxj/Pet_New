@@ -300,7 +300,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 ivChargingdetailLt.setVisibility(View.GONE);
                 ivChargingdetailGgorgr.setImageResource(R.mipmap.icon_gg);
             } else if (data.getIsPrivate() == 1) {//个人
-                ivChargingdetailLt.setVisibility(View.VISIBLE);
+                ivChargingdetailLt.setVisibility(View.GONE);
                 ivChargingdetailGgorgr.setImageResource(R.mipmap.icon_gr);
             }
             if (data.getFastNum() > 0) {

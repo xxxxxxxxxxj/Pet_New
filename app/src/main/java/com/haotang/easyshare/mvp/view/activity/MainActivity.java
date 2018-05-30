@@ -66,8 +66,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     ViewPager vpMainactivity;
     @BindView(R.id.ctl_mainactivity)
     CommonTabLayout ctlMainactivity;
-    @BindView(R.id.iv_mainfrag_gj)
-    ImageView ivMainfragGj;
     private long mExitTime;
     @Inject
     PermissionDialog permissionDialog;
@@ -136,23 +134,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         } else {
             ctlMainactivity.hideMsg(1);
         }
-        ivMainfragGj.bringToFront();
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
-    }
-
-    @Override
-
-    public void onWindowFocusChanged(boolean hasFocus) {
-        /*RingLog.e("加载完毕");
-        super.onWindowFocusChanged(hasFocus);
-        int lastTop = SharedPreferenceUtil.getInstance(MainActivity.this).getInt("lastTop", -1);
-        int lastLeft = SharedPreferenceUtil.getInstance(MainActivity.this).getInt("lastLeft", -1);
-        int lastRight = SharedPreferenceUtil.getInstance(MainActivity.this).getInt("lastRight", -1);
-        int lastBottom = SharedPreferenceUtil.getInstance(MainActivity.this).getInt("lastBottom", -1);
-        RingLog.e("lastTop = " + lastTop + ",lastLeft = " + lastLeft + ",lastRight = " + lastRight + ",lastBottom = " + lastBottom);
-        if (lastTop != -1 && lastLeft != -1 && lastRight != -1 && lastBottom != -1) {
-            ivMainfragGj.layout(lastLeft, lastTop, lastRight, lastBottom);
-        }*/
     }
 
     @Override
@@ -209,12 +191,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 currentTabIndex = position;
                 ctlMainactivity.setCurrentTab(currentTabIndex);
                 if (position == 0) {
-                    ivMainfragGj.setVisibility(View.VISIBLE);
                 } else if (position == 1) {
-                    ivMainfragGj.setVisibility(View.GONE);
                     ctlMainactivity.hideMsg(1);
                 } else if (position == 2) {
-                    ivMainfragGj.setVisibility(View.GONE);
                     ctlMainactivity.hideMsg(2);
                 }
             }
@@ -278,11 +257,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         });*/
     }
 
-    @Subscribe
-    public void onDeleteMovie(MovieCollect movieCollect) {
-
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
@@ -344,7 +318,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     @Override
     public void getBootmBarFail(int status, String desc) {
         RingLog.e(TAG, "MainActivity getBootmBarFail() status = " + status + "---desc = " + desc);
-        RingToast.show("MainActivity getBootmBarFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
@@ -402,19 +375,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             } else if (currentTabIndex == 2) {
                 ctlMainactivity.hideMsg(2);
             }
-        }
-    }
-
-    @OnClick({R.id.iv_mainfrag_gj})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_mainfrag_gj:
-                if (SystemUtil.checkLogin(this)) {
-                    startActivity(new Intent(this, ButlerActivity.class));
-                } else {
-                    startActivity(new Intent(this, LoginActivity.class));
-                }
-                break;
         }
     }
 

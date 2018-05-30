@@ -63,7 +63,7 @@ import top.zibin.luban.Luban;
  */
 public class CommentActivity extends BaseActivity<CommentPresenter> implements ICommentView {
     protected final static String TAG = CommentActivity.class.getSimpleName();
-    private static final int IMG_NUM = 9;
+    private static final int IMG_NUM = 3;
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_other)

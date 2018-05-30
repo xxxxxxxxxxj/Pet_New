@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.flyco.roundview.RoundLinearLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
@@ -39,7 +38,7 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragChargeBean, BaseV
 
     @Override
     protected void convert(BaseViewHolder helper, final MainFragChargeBean item) {
-        RoundLinearLayout rll_item_mainlocal_root = helper.getView(R.id.rll_item_mainlocal_root);
+        LinearLayout rll_item_mainlocal_root = helper.getView(R.id.rll_item_mainlocal_root);
         ImageView iv_item_mainlocal_ggorgr = helper.getView(R.id.iv_item_mainlocal_ggorgr);
         TextView tv_item_mainlocal_juli = helper.getView(R.id.tv_item_mainlocal_juli);
         TextView tv_item_mainlocal_name = helper.getView(R.id.tv_item_mainlocal_name);
@@ -55,7 +54,7 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragChargeBean, BaseV
         if (isTopDivider && helper.getLayoutPosition() == 0) {
             RecyclerView.LayoutParams layoutParams =
                     (RecyclerView.LayoutParams) rll_item_mainlocal_root.getLayoutParams();
-            layoutParams.topMargin = DensityUtil.dp2px(mContext, 15);
+            layoutParams.topMargin = DensityUtil.dp2px(mContext, 10);
             rll_item_mainlocal_root.setLayoutParams(layoutParams);
         }
         if (item != null) {

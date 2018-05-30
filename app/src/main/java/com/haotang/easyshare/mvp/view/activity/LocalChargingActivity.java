@@ -119,7 +119,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         rvLocalCharging.setAdapter(mainLocalAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_f8_15));
+        divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_f8_5));
         rvLocalCharging.addItemDecoration(divider);
     }
 

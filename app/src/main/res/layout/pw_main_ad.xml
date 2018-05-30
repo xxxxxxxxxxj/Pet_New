@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:background="@color/black"></RelativeLayout>
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner_main_ad"
+        android:layout_width="290dip"
+        android:layout_height="400dip"
+        android:layout_centerInParent="true"
+        app:indicator_drawable_selected="@drawable/selected_radius" />
+
+    <ImageButton
+        android:id="@+id/ib_pw_main_close"
+        android:layout_width="31dip"
+        android:layout_height="45.5dip"
+        android:layout_above="@id/banner_main_ad"
+        android:layout_alignRight="@+id/banner_main_ad"
+        android:background="@mipmap/main_pw_close_img"
+        android:scaleType="fitXY" />
+
+</RelativeLayout>

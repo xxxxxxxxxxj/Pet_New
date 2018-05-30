@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
@@ -17,4 +18,8 @@ public interface IMainFragmentView extends IBaseView {
     void getMainFragmentSuccess(MainFragmentData MainFragmentData);
 
     void getMainFragmentFail(int status, String desc);
+
+    void listSuccess(List<AdvertisementBean.DataBean> data);
+
+    void listFail(int serverError, String s);
 }
