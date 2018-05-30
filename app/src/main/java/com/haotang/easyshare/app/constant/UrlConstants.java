@@ -76,7 +76,7 @@ public class UrlConstants {
      * 14.取消收藏充电桩
      */
     public static final String CANCEL_FOLLOW_CHARGE = "user/charging/cancel";
-    /**
+     /**
      * 15.关注的人列表
      */
     public static final String FOLLOW_LIST = "user/idol/list";
@@ -193,11 +193,8 @@ public class UrlConstants {
     public static String getServiceBaseUrl() {
         String url = "";
         switch (getEnvironmental()) {
-            case 1://test环境
-                url = "http://192.168.0.252/";
-                break;
             case 2://demo环境
-                url = "http://demo.cwjia.cn/";
+                url = "https://demo.sayiyinxiang.com/api/";
                 break;
             case 3://线上环境
                 url = "https://api.sayiyinxiang.com/api/";
@@ -207,74 +204,6 @@ public class UrlConstants {
         }
         return url;
     }
-
-    public static String getServiceBaseUrlNew() {
-        String url = "";
-        switch (getEnvironmental()) {
-            case 1://test环境
-                url = "http://192.168.0.252/pet-api/";
-                break;
-            case 2://demo环境
-                url = "http://demo.cwjia.cn/pet-api/";
-                break;
-            case 3://线上环境
-                url = "https://api.sayiyinxiang.com/api/";
-                break;
-            default:
-                break;
-        }
-        return url;
-    }
-
-    public static String getWebBaseUrl() {
-        String url = "";
-        switch (getEnvironmental()) {
-            case 1://test环境
-                url = "http://192.168.0.247/";
-                break;
-            case 2://demo环境
-                url = "http://192.168.0.248/";
-                break;
-            case 3://线上环境
-                url = "https://api.sayiyinxiang.com/api/";
-                break;
-            default:
-                break;
-        }
-        return url;
-    }
-
-    public static String getGlobalParam(String baseUrl, Activity activity) {
-        if (baseUrl.contains("?")) {
-            baseUrl = baseUrl
-                    + "&system=android_" + SystemUtil.getCurrentVersion(activity)
-                    + "&imei="
-                    + SystemUtil.getIMEI(activity)
-                    + "&phone="
-                    + SharedPreferenceUtil.getInstance(activity).getString("cellphone", "") + "&phoneModel="
-                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
-                    + "&phoneSystemVersion=" + "Android "
-                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
-                    + System.currentTimeMillis();
-        } else {
-            baseUrl = baseUrl
-                    + "?system=android_" + SystemUtil.getCurrentVersion(activity)
-                    + "&imei="
-                    + SystemUtil.getIMEI(activity)
-                    + "&phone="
-                    + SharedPreferenceUtil.getInstance(activity).getString("cellphone", "") + "&phoneModel="
-                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
-                    + "&phoneSystemVersion=" + "Android "
-                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
-                    + System.currentTimeMillis();
-        }
-        return baseUrl;
-    }
-
-    public static final String GET_FLASH_DATA = getServiceBaseUrlNew() + "charging/comment/tags?";
-    public static final String GET_LASTVERSION_DATA = getServiceBaseUrlNew() + "user/checkversion?";
-    public static final String GET_BOTTOMBAR_DATA = getServiceBaseUrl() + "pet/user/index?";
-    public static final String GET_MAINFRAG_DATA = getServiceBaseUrl() + "pet/user/index?";
 
     public static Map<String, String> getMapHeader(Context context) {
         Map<String, String> map = new HashMap<String, String>();
@@ -283,10 +212,6 @@ public class UrlConstants {
         if (StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))) {
             map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
         }
-        /*map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
-        map.put("phoneSystemVersion", "Android "
-                + android.os.Build.VERSION.RELEASE);
-        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));*/
         return map;
     }
 
@@ -296,10 +221,6 @@ public class UrlConstants {
         if (StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))) {
             map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
         }
-        /*map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
-        map.put("phoneSystemVersion", "Android "
-                + android.os.Build.VERSION.RELEASE);
-        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));*/
         return map;
     }
 }

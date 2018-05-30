@@ -5,9 +5,9 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:background="@mipmap/bg_shade_down"
         android:layout_width="match_parent"
         android:layout_height="49dip"
-        android:background="@color/white"
         android:paddingRight="15dip">
 
         <ImageView

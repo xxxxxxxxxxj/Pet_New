@@ -131,7 +131,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:layout_below="@+id/rll_mainfrag_serchresult"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -315,6 +318,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
+                android:background="@mipmap/bg_shade_down"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -372,12 +376,6 @@
                         android:visibility="gone" />
                 </RelativeLayout>
             </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="5dip"
-                android:background="@mipmap/bg_shade"
-                android:scaleType="fitXY" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

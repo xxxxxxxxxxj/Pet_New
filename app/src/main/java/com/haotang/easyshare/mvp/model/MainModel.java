@@ -21,11 +21,11 @@ public class MainModel implements IMainModel {
 
     @Override
     public Observable getLatestVersion(Activity activity, int systemType, String version, String time) {
-        return DevRing.httpManager().getService(MainActivityApiService.class).getLatestVersion(UrlConstants.getGlobalParam(UrlConstants.GET_LASTVERSION_DATA, activity), systemType, version, time);
+        return DevRing.httpManager().getService(MainActivityApiService.class).getLatestVersion("", systemType, version, time);
     }
 
     @Override
     public Observable getBottomBar(Activity activity) {
-        return DevRing.httpManager().getService(MainActivityApiService.class).getBottomBar(UrlConstants.getGlobalParam(UrlConstants.GET_BOTTOMBAR_DATA, activity));
+        return DevRing.httpManager().getService(MainActivityApiService.class).getBottomBar("");
     }
 }
