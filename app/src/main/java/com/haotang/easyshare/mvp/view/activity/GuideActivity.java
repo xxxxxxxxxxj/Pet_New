@@ -46,7 +46,7 @@ public class GuideActivity extends BaseActivity {
     protected void setView(Bundle savedInstanceState) {
         activityListManager.addActivity(this);
         SystemUtil.hideBottomUIMenu(this);
-        imagesIds = new int[]{R.mipmap.guide1, R.mipmap.guide2, R.mipmap.guide3};
+        imagesIds = new int[]{R.mipmap.guide1, R.mipmap.guide2, R.mipmap.guide3, R.mipmap.guide4};
         imageList = new ArrayList<ImageView>();
         for (int i = 0; i < imagesIds.length; i++) {
             ImageView iv = new ImageView(this);
