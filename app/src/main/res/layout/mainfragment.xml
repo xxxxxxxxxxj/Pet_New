@@ -16,16 +16,18 @@
         android:scaleType="fitXY"
         android:src="@mipmap/sirenguanjia" />
 
-    <RelativeLayout
+    <com.flyco.roundview.RoundRelativeLayout
         android:id="@+id/rll_mainfrag_serch"
         android:layout_width="match_parent"
-        android:layout_height="54dip"
+        android:layout_height="44dip"
         android:layout_marginLeft="15dip"
         android:layout_marginRight="15dip"
         android:layout_marginTop="10dip"
-        android:background="@mipmap/bg_shade_serch"
+        android:elevation="10dip"
         android:paddingLeft="15dip"
-        android:paddingRight="15dip">
+        android:paddingRight="15dip"
+        rv:rv_backgroundColor="@color/white"
+        rv:rv_cornerRadius="5dip">
 
         <LinearLayout
             android:id="@+id/ll_mainfrag_city"
@@ -63,7 +65,7 @@
                 android:layout_height="5dip"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="2dip"
-                android:layout_marginTop="10dip"
+                android:layout_marginTop="5dip"
                 android:scaleType="fitXY"
                 android:src="@mipmap/redpoint" />
 
@@ -104,7 +106,7 @@
             android:textColorHint="@color/a999999"
             android:textCursorDrawable="@drawable/test_cursor"
             android:textSize="14sp" />
-    </RelativeLayout>
+    </com.flyco.roundview.RoundRelativeLayout>
 
     <com.flyco.roundview.RoundLinearLayout
         android:id="@+id/rll_mainfrag_serchresult"
@@ -130,11 +132,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="none"
-        android:layout_below="@+id/rll_mainfrag_serchresult"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -318,7 +316,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
-                android:background="@mipmap/bg_shade_down"
+                android:elevation="10dip"
                 android:orientation="horizontal">
 
                 <RelativeLayout

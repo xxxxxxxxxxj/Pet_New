@@ -43,6 +43,7 @@ import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.roundview.RoundLinearLayout;
+import com.flyco.roundview.RoundRelativeLayout;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
@@ -117,7 +118,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @BindView(R.id.et_mainfrag_serch)
     EditText etMainfragSerch;
     @BindView(R.id.rll_mainfrag_serch)
-    RelativeLayout rllMainfragSerch;
+    RoundRelativeLayout rllMainfragSerch;
     @BindView(R.id.rll_mainfrag_serchresult)
     RoundLinearLayout rll_mainfrag_serchresult;
     @BindView(R.id.rv_mainfrag_serchresult)
@@ -262,7 +263,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         rvMainfragLocalev.setAdapter(mainLocalAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(mActivity, R.drawable.divider_f8_5));
+        divider.setDrawable(ContextCompat.getDrawable(mActivity, R.drawable.divider_f8_15));
         rvMainfragLocalev.addItemDecoration(divider);
     }
 

@@ -54,7 +54,7 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragChargeBean, BaseV
         if (isTopDivider && helper.getLayoutPosition() == 0) {
             RecyclerView.LayoutParams layoutParams =
                     (RecyclerView.LayoutParams) rll_item_mainlocal_root.getLayoutParams();
-            layoutParams.topMargin = DensityUtil.dp2px(mContext, 10);
+            layoutParams.topMargin = DensityUtil.dp2px(mContext, 15);
             rll_item_mainlocal_root.setLayoutParams(layoutParams);
         }
         if (item != null) {

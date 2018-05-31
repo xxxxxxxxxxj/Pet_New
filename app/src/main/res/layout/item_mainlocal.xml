@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.flyco.roundview.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:rv="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rll_item_mainlocal_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dip"
-    android:layout_marginRight="5dip"
-    android:background="@drawable/main_local_bg_shade"
+    android:layout_marginLeft="15dip"
+    android:layout_marginRight="15dip"
+    android:elevation="10dip"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:padding="20dip">
+    android:padding="10dip"
+    rv:rv_backgroundColor="@color/white"
+    rv:rv_cornerRadius="5dip">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3.5dip">
+        android:layout_marginBottom="5dip">
 
         <ImageView
             android:id="@+id/iv_item_mainlocal_ggorgr"
@@ -139,7 +142,7 @@
         android:id="@+id/tv_item_mainlocal_kfsj"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3.5dip"
+        android:layout_marginBottom="5dip"
         android:text="开放时间："
         android:textColor="@color/a666666"
         android:textSize="12sp" />
@@ -162,10 +165,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="30dip"
+            android:layout_marginRight="10dip"
             android:layout_toLeftOf="@id/iv_item_mainlocal_daohang"
             android:text="TextView"
             android:textColor="@color/a666666"
             android:textSize="12sp" />
     </RelativeLayout>
-</LinearLayout>
+</com.flyco.roundview.RoundLinearLayout>
