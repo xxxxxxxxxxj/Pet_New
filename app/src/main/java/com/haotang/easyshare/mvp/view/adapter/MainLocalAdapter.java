@@ -67,24 +67,9 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragChargeBean, BaseV
             } else if (item.getIsPrivate() == 1) {//个人
                 iv_item_mainlocal_ggorgr.setImageResource(R.mipmap.icon_gr);
             }
-            if (item.getFastNum() > 0) {
-                StringUtil.setText(tv_item_mainlocal_kuaichong_num, "快充" + item.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                ll_item_mainlocal_kuaichong.setVisibility(View.VISIBLE);
-            } else {
-                ll_item_mainlocal_kuaichong.setVisibility(View.GONE);
-            }
-            if (item.getSlowNum() > 0) {
-                StringUtil.setText(tv_item_mainlocal_manchong_num, "慢充" + item.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                ll_item_mainlocal_manchong.setVisibility(View.VISIBLE);
-            } else {
-                ll_item_mainlocal_manchong.setVisibility(View.GONE);
-            }
-            if (item.getFreeNum() > 0) {
-                StringUtil.setText(tv_item_mainlocal_kongxian_num, "空闲" + item.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                ll_item_mainlocal_kongxian.setVisibility(View.VISIBLE);
-            } else {
-                ll_item_mainlocal_kongxian.setVisibility(View.GONE);
-            }
+            StringUtil.setText(tv_item_mainlocal_kuaichong_num, "快充" + item.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_mainlocal_manchong_num, "慢充" + item.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_mainlocal_kongxian_num, "空闲" + item.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
             iv_item_mainlocal_daohang.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -94,7 +79,7 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragChargeBean, BaseV
             rll_item_mainlocal_root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mContext.startActivity(new Intent(mContext, ChargingPileDetailActivity.class).putExtra("uuid",item.getUuid()));
+                    mContext.startActivity(new Intent(mContext, ChargingPileDetailActivity.class).putExtra("uuid", item.getUuid()));
                 }
             });
         }

@@ -722,24 +722,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             } else if (stationsBean.getIsPrivate() == 1) {//个人
                 mainFragmenBoDa.getIvMainbottomGgorgr().setImageResource(R.mipmap.icon_gr);
             }
-            if (stationsBean.getFastNum() > 0) {
-                StringUtil.setText(mainFragmenBoDa.getTvMainbottomKuaichongNum(), "快充" + stationsBean.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                mainFragmenBoDa.getLlMainbottomKuaichong().setVisibility(View.VISIBLE);
-            } else {
-                mainFragmenBoDa.getLlMainbottomKuaichong().setVisibility(View.GONE);
-            }
-            if (stationsBean.getSlowNum() > 0) {
-                StringUtil.setText(mainFragmenBoDa.getTvMainbottomManchongNum(), "慢充" + stationsBean.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                mainFragmenBoDa.getLlMainbottomManchong().setVisibility(View.VISIBLE);
-            } else {
-                mainFragmenBoDa.getLlMainbottomManchong().setVisibility(View.GONE);
-            }
-            if (stationsBean.getFreeNum() > 0) {
-                StringUtil.setText(mainFragmenBoDa.getTvMainbottomKongxianNum(), "空闲" + stationsBean.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                mainFragmenBoDa.getLlMainbottomKongxian().setVisibility(View.VISIBLE);
-            } else {
-                mainFragmenBoDa.getLlMainbottomKongxian().setVisibility(View.GONE);
-            }
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomKuaichongNum(), "快充" + stationsBean.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomManchongNum(), "慢充" + stationsBean.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomKongxianNum(), "空闲" + stationsBean.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
             mainFragmenBoDa.getIvMainbottomBg().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

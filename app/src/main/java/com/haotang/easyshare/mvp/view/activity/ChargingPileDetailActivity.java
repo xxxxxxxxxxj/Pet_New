@@ -303,24 +303,9 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 ivChargingdetailLt.setVisibility(View.GONE);
                 ivChargingdetailGgorgr.setImageResource(R.mipmap.icon_gr);
             }
-            if (data.getFastNum() > 0) {
-                StringUtil.setText(tvChargingdetailKuaichongNum, "快充" + data.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                llChargingdetailKuaichong.setVisibility(View.VISIBLE);
-            } else {
-                llChargingdetailKuaichong.setVisibility(View.GONE);
-            }
-            if (data.getSlowNum() > 0) {
-                StringUtil.setText(tvChargingdetailManchongNum, "慢充" + data.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                llChargingdetailManchong.setVisibility(View.VISIBLE);
-            } else {
-                llChargingdetailManchong.setVisibility(View.GONE);
-            }
-            if (data.getFreeNum() > 0) {
-                StringUtil.setText(tvChargingdetailKongxianNum, "空闲" + data.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                llChargingdetailKongxian.setVisibility(View.VISIBLE);
-            } else {
-                llChargingdetailKongxian.setVisibility(View.GONE);
-            }
+            StringUtil.setText(tvChargingdetailKuaichongNum, "快充" + data.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargingdetailManchongNum, "慢充" + data.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargingdetailKongxianNum, "空闲" + data.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
             List<ChargeDetailBean.UseNotices> useNotices = data.getUseNotices();
             if (useNotices != null && useNotices.size() > 0) {
                 ll_chargingdetail_vbv

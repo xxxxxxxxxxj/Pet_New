@@ -375,8 +375,8 @@ public class SystemUtil {
                                     String daddr, String city) {
         if (checkApkExist(context, AppConfig.GaoDeMapPackageName)) {
             try {
-                goToNaviActivity(context, context.getResources().getString(R.string.app_name), "", lat + "",
-                        lng + "", "1", "2");
+                Intent intent = Intent.getIntent("androidamap://route?sourceApplication=" + context.getResources().getString(R.string.app_name) + "&sname=" + saddr + "&dlat=" + lat + "&dlon=" + lng + "&dname=" + daddr + "&dev=0&m=0&t=0");
+                context.startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -403,15 +403,15 @@ public class SystemUtil {
     }
 
     public static void goToNaviActivity(Context context, String sourceApplication, String poiname, String lat, String lon, String dev, String style) {
-        StringBuffer stringBuffer = new StringBuffer("androidamap://navi?sourceApplication=")
+        StringBuffer stringBuffer = new StringBuffer("androidamap://path?sourceApplication=")
                 .append(sourceApplication);
         if (!TextUtils.isEmpty(poiname)) {
             stringBuffer.append("&poiname=").append(poiname);
         }
         stringBuffer.append("&lat=").append(lat)
                 .append("&lon=").append(lon)
-                .append("&dev=").append(dev)
-                .append("&style=").append(style);
+                .append("&dev=").append(dev);
+        //.append("&t=").append(style);
         Intent intent = new Intent("android.intent.action.VIEW", android.net.Uri.parse(stringBuffer.toString()));
         intent.setPackage("com.autonavi.minimap");
         context.startActivity(intent);
