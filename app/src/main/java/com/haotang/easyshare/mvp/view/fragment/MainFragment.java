@@ -70,6 +70,7 @@ import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -99,7 +100,7 @@ import okhttp3.MultipartBody;
  */
 public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         AMapLocationListener, IMainFragmentView, AMap.OnMarkerClickListener,
-        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener,OnBannerListener {
+        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener, OnBannerListener {
     private final static String TAG = MainFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
@@ -186,6 +187,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private double localLng;
     private PopupWindow pWin;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
+    private MainSerchResultAdapter mainSerchResultAdapter;
 
     @Override
     protected boolean isLazyLoad() {
@@ -265,6 +267,14 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         DividerItemDecoration divider = new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(mActivity, R.drawable.divider_f8_15));
         rvMainfragLocalev.addItemDecoration(divider);
+
+        serchList.clear();
+        serchList.add(new SerchResult("目的地", "", 0, 0, true));
+        rv_mainfrag_serchresult.setHasFixedSize(true);
+        rv_mainfrag_serchresult.setLayoutManager(new LinearLayoutManager(mActivity));
+        mainSerchResultAdapter = new MainSerchResultAdapter(R.layout.item_mainserchresult, serchList);
+        rv_mainfrag_serchresult.setAdapter(mainSerchResultAdapter);
+        rv_mainfrag_serchresult.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL));
     }
 
     private void setUpMap() {
@@ -336,9 +346,37 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                if (StringUtil.isEmpty(etMainfragSerch.getText().toString())) {
-                    rll_mainfrag_serchresult.setVisibility(View.GONE);
+            }
+        });
+        mainSerchResultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (serchList != null && serchList.size() > 0 && serchList.size() > position) {
+                    SerchResult serchResult = serchList.get(position);
+                    if (serchResult != null && !serchResult.isFake()) {
+                        rll_mainfrag_serchresult.setVisibility(View.GONE);
+                        lng = serchResult.getLng();
+                        lat = serchResult.getLat();
+                        refresh();
+                    }
                 }
+            }
+        });
+        SoftKeyBoardListener.setListener(mActivity, new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
+            @Override
+            public void keyBoardShow(int height) {
+                RingLog.e("keyBoardShow height = " + height);
+                rll_mainfrag_serchresult.setVisibility(View.VISIBLE);
+                rll_mainfrag_serchresult.bringToFront();
+                serchList.clear();
+                serchList.add(new SerchResult("目的地", "", 0, 0, true));
+                mainSerchResultAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void keyBoardHide(int height) {
+                RingLog.e("keyBoardHide height = " + height);
+                rll_mainfrag_serchresult.setVisibility(View.GONE);
             }
         });
     }
@@ -773,34 +811,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                         poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude()));
                             }
                         }
-                        rll_mainfrag_serchresult.bringToFront();
-                        rll_mainfrag_serchresult.setVisibility(View.VISIBLE);
-                        rv_mainfrag_serchresult.setHasFixedSize(true);
-                        rv_mainfrag_serchresult.setLayoutManager(new LinearLayoutManager(mActivity));
-                        MainSerchResultAdapter mainSerchResultAdapter = new MainSerchResultAdapter(R.layout.item_mainserchresult, serchList);
-                        rv_mainfrag_serchresult.setAdapter(mainSerchResultAdapter);
-                        rv_mainfrag_serchresult.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL));
-                        mainSerchResultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                if (serchList != null && serchList.size() > 0 && serchList.size() > position) {
-                                    SerchResult serchResult = serchList.get(position);
-                                    if (serchResult != null && !serchResult.isFake()) {
-                                        rll_mainfrag_serchresult.setVisibility(View.GONE);
-                                        lng = serchResult.getLng();
-                                        lat = serchResult.getLat();
-                                        refresh();
-                                    }
-                                }
-                            }
-                        });
+                        mainSerchResultAdapter.notifyDataSetChanged();
                     } else {
-                        rll_mainfrag_serchresult.setVisibility(View.GONE);
                         RingToast.show(R.string.no_result);
                     }
                 }
             } else {
-                rll_mainfrag_serchresult.setVisibility(View.GONE);
                 RingToast.show(R.string.no_result);
             }
         }
