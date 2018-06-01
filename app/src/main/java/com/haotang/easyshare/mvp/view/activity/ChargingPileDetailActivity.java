@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +29,7 @@ import com.haotang.easyshare.mvp.view.iview.IChargingPileDetailView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
 import com.haotang.easyshare.util.GlideUtil;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.SignUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -247,6 +249,34 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 break;
             case R.id.iv_chargingdetail_share:
                 if (shareMap != null) {
+                    if (shareMap.getUrl() != null && !TextUtils.isEmpty(shareMap.getUrl())) {
+                        if (!shareMap.getUrl().startsWith("http:")
+                                && !shareMap.getUrl().startsWith("https:") && !shareMap.getUrl().startsWith("file:///")) {
+                            shareMap.setUrl(UrlConstants.getServiceBaseUrl() + shareMap.getUrl());
+                        }
+                        if (shareMap.getUrl().contains("?")) {
+                            shareMap.setUrl(shareMap.getUrl() + "&system=android_" + SystemUtil.getCurrentVersion(this)
+                                    + "&imei="
+                                    + SystemUtil.getIMEI(this)
+                                    + "&phone="
+                                    + SharedPreferenceUtil.getInstance(ChargingPileDetailActivity.this).getString("cellphone", "") + "&phoneModel="
+                                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                    + "&phoneSystemVersion=" + "Android "
+                                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                    + System.currentTimeMillis());
+                        } else {
+                            shareMap.setUrl(shareMap.getUrl() + "?system=android_" + SystemUtil.getCurrentVersion(this)
+                                    + "&imei="
+                                    + SystemUtil.getIMEI(this)
+                                    + "&phone="
+                                    + SharedPreferenceUtil.getInstance(ChargingPileDetailActivity.this).getString("cellphone", "") + "&phoneModel="
+                                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                    + "&phoneSystemVersion=" + "Android "
+                                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                    + System.currentTimeMillis());
+                        }
+                        shareMap.setUrl(shareMap.getUrl() + "&lat=" + lat + "&lng=" + lng + "&uuid=" + uuid);
+                    }
                     ShareBottomDialog dialog = new ShareBottomDialog();
                     dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
                             shareMap.getUrl(), shareMap.getImg());

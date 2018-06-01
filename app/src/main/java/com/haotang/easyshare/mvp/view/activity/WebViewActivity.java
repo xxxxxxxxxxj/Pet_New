@@ -62,6 +62,8 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.haotang.easyshare.R.mipmap.share;
+
 /**
  * webview
  */
@@ -141,6 +143,38 @@ public class WebViewActivity extends BaseActivity {
         mAgentWeb.getJsInterfaceHolder().addJavaObject("easyshare_h5", new JsObject() {
             @JavascriptInterface
             public void share(String title, String content, String img, String url, String uuid) {
+                if (url != null && !TextUtils.isEmpty(url)) {
+                    if (!url.startsWith("http:")
+                            && !url.startsWith("https:") && !url.startsWith("file:///")) {
+                        url = UrlConstants.getServiceBaseUrl() + url;
+                    }
+                    if (url.contains("?")) {
+                        url = url
+                                + "&system=android_" + SystemUtil.getCurrentVersion(WebViewActivity.this)
+                                + "&imei="
+                                + SystemUtil.getIMEI(WebViewActivity.this)
+                                + "&phone="
+                                + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "&phoneModel="
+                                + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                + "&phoneSystemVersion=" + "Android "
+                                + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                + System.currentTimeMillis();
+                    } else {
+                        url = url
+                                + "?system=android_" + SystemUtil.getCurrentVersion(WebViewActivity.this)
+                                + "&imei="
+                                + SystemUtil.getIMEI(WebViewActivity.this)
+                                + "&phone="
+                                + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "&phoneModel="
+                                + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                + "&phoneSystemVersion=" + "Android "
+                                + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                + System.currentTimeMillis();
+                    }
+                    url = url + "&uuid="
+                            + uuid;
+                }
+                RingLog.e("share() title = " + title + ",content = " + content + ",img = " + img + ",uuid = " + uuid);
                 ShareBottomDialog dialog = new ShareBottomDialog();
                 dialog.setUuid(uuid);
                 dialog.setShareInfo(title, content, url, img);

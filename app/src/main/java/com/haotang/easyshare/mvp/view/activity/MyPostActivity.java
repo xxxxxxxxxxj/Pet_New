@@ -8,12 +8,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerMyPostActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MyPostActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
@@ -25,6 +27,8 @@ import com.haotang.easyshare.mvp.view.iview.IMyPostView;
 import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -109,6 +113,34 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                     if (dataBean != null) {
                         PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
                         if (shareMap != null) {
+                            if (shareMap.getUrl() != null && !TextUtils.isEmpty(shareMap.getUrl())) {
+                                if (!shareMap.getUrl().startsWith("http:")
+                                        && !shareMap.getUrl().startsWith("https:") && !shareMap.getUrl().startsWith("file:///")) {
+                                    shareMap.setUrl(UrlConstants.getServiceBaseUrl() + shareMap.getUrl());
+                                }
+                                if (shareMap.getUrl().contains("?")) {
+                                    shareMap.setUrl(shareMap.getUrl() + "&system=android_" + SystemUtil.getCurrentVersion(MyPostActivity.this)
+                                            + "&imei="
+                                            + SystemUtil.getIMEI(MyPostActivity.this)
+                                            + "&phone="
+                                            + SharedPreferenceUtil.getInstance(MyPostActivity.this).getString("cellphone", "") + "&phoneModel="
+                                            + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                            + "&phoneSystemVersion=" + "Android "
+                                            + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                            + System.currentTimeMillis());
+                                } else {
+                                    shareMap.setUrl(shareMap.getUrl() + "?system=android_" + SystemUtil.getCurrentVersion(MyPostActivity.this)
+                                            + "&imei="
+                                            + SystemUtil.getIMEI(MyPostActivity.this)
+                                            + "&phone="
+                                            + SharedPreferenceUtil.getInstance(MyPostActivity.this).getString("cellphone", "") + "&phoneModel="
+                                            + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                            + "&phoneSystemVersion=" + "Android "
+                                            + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                            + System.currentTimeMillis());
+                                }
+                                shareMap.setUrl(shareMap.getUrl() + "&uuid=" + dataBean.getUuid());
+                            }
                             ShareBottomDialog dialog = new ShareBottomDialog();
                             dialog.setUuid(dataBean.getUuid());
                             dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),

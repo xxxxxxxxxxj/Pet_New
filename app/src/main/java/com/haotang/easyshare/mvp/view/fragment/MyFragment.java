@@ -117,7 +117,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
     private String kf_phone = "";
     private String uuid;
-    private String url;
+    private String vipPrivilege;
 
     @Override
     public boolean isUseEventBus() {
@@ -231,7 +231,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 break;
             case R.id.rl_myfragment_hytq:
                 startActivity(new Intent(mActivity, WebViewActivity.class).
-                        putExtra(WebViewActivity.URL_KEY, url));
+                        putExtra(WebViewActivity.URL_KEY, vipPrivilege));
                 break;
             case R.id.rl_myfragment_wdtz:
                 if (SystemUtil.checkLogin(mActivity)) {
@@ -284,6 +284,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         disMissDialog();
         RingLog.e(TAG, "MyFragment homeSuccess()");
         if (data != null) {
+            vipPrivilege = data.getVipPrivilege();
             uuid = data.getUuid();
             kf_phone = data.getKf_phone();
             StringUtil.setText(tvMyfragmentUsername, data.getUserName(), "", View.VISIBLE, View.VISIBLE);
