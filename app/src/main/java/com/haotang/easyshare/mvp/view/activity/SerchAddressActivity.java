@@ -20,8 +20,6 @@ import com.amap.api.services.poisearch.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.roundview.RoundRelativeLayout;
 import com.haotang.easyshare.R;
-import com.haotang.easyshare.app.AppConfig;
-import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerSerchAddressActivityCommponent;
 import com.haotang.easyshare.di.module.activity.SerchAddressActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.SerchResult;
@@ -30,7 +28,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainSerchResultAdapter;
 import com.haotang.easyshare.mvp.view.iview.ISerchAddressView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
-import com.haotang.easyshare.util.SignUtil;
+import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
@@ -40,12 +38,13 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.haotang.easyshare.R.id.rll_mainfrag_serchresult;
 
 
 /**

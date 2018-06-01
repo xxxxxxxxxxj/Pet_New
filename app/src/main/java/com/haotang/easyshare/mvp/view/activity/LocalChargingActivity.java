@@ -27,7 +27,6 @@ import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
 import com.haotang.easyshare.mvp.view.iview.ILocalChargingView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SignUtil;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 

@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.flyco.roundview.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:rv="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rll_item_mainlocal_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="15dip"
-    android:layout_marginRight="15dip"
-    android:elevation="10dip"
-    android:background="@color/white"
+    android:layout_marginLeft="5dip"
+    android:layout_marginRight="5dip"
     android:orientation="vertical"
-    android:padding="10dip"
-    rv:rv_backgroundColor="@color/white"
-    rv:rv_cornerRadius="5dip">
+    android:padding="20dip"
+    android:background="@drawable/main_local_bg_shade">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -171,4 +167,4 @@
             android:textColor="@color/a666666"
             android:textSize="12sp" />
     </RelativeLayout>
-</com.flyco.roundview.RoundLinearLayout>
+</LinearLayout>
