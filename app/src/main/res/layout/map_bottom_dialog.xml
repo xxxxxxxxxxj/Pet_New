@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rv="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/iv_mapbottom_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.7"
+        android:background="@color/black" />
+
+    <LinearLayout
+        android:id="@+id/ll_mapbottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dip"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.flyco.roundview.RoundLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            rv:rv_backgroundColor="@color/white"
+            rv:rv_cornerRadius="10dip">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:gravity="center"
+                android:text="导航到设备"
+                android:textColor="@color/a666666"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:background="@color/aEEEEEE" />
+
+            <TextView
+                android:id="@+id/tv_map_bottomdia_gaode"
+                android:layout_width="match_parent"
+                android:layout_height="55dip"
+                android:gravity="center"
+                android:text="高德地图"
+                android:textColor="@color/actionsheet_blue"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dip"
+                android:background="@color/aEEEEEE" />
+
+            <TextView
+                android:id="@+id/tv_map_bottomdia_baidu"
+                android:layout_width="match_parent"
+                android:layout_height="55dip"
+                android:gravity="center"
+                android:text="百度地图"
+                android:textColor="@color/actionsheet_blue"
+                android:textSize="18sp" />
+
+        </com.flyco.roundview.RoundLinearLayout>
+
+        <com.flyco.roundview.RoundTextView
+            android:id="@+id/tv_map_bottomdia_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="55dip"
+            android:layout_marginTop="10dip"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/actionsheet_blue"
+            android:textSize="18sp"
+            rv:rv_backgroundColor="@color/white"
+            rv:rv_cornerRadius="10dip" />
+    </LinearLayout>
+</RelativeLayout>

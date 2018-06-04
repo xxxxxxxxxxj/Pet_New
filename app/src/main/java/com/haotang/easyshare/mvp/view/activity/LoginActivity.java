@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +18,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LoginActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.SendVerifyCodeBean;
 import com.haotang.easyshare.mvp.model.entity.res.WxLoginBean;
@@ -31,6 +33,7 @@ import com.haotang.easyshare.shareutil.login.LoginPlatform;
 import com.haotang.easyshare.shareutil.login.LoginResult;
 import com.haotang.easyshare.shareutil.login.result.BaseToken;
 import com.haotang.easyshare.util.CountdownUtil;
+import com.haotang.easyshare.util.Global;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -84,6 +87,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     private AMapLocationClient mlocationClient;
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
+    private int previous;
 
     @Override
     protected int getContentLayout() {
@@ -98,6 +102,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        previous = intent.getIntExtra("previous", 0);
         tvTitlebarTitle.setText("登陆");
         setLocation();
     }
@@ -327,6 +333,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         RingLog.e("mapHeader = " + mapHeader.toString());
         if (data != null) {
             DevRing.busManager().postEvent(data);
+        }
+        if (previous == Global.H5_TO_LOGIN) {
+            DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_WEBVIEW_LOGIN));
         }
         finish();
     }

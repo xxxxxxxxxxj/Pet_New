@@ -126,6 +126,7 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
                     rlAddaddressXxdz.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
+                SystemUtil.goneJP(this);
                 DevRing.busManager().postEvent(new SelectAddress(etAddaddress.getText().toString().trim()
                         + etAddaddressXxdz.getText().toString().trim(), lat, lng));
                 finish();

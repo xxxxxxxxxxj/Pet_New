@@ -634,6 +634,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        RingToast.show("保存成功");
         disMissDialog();
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
@@ -642,6 +643,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void saveFail(int code, String msg) {
+        RingToast.show("保存失败");
         disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
@@ -748,6 +750,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void updateSuccess(AddChargeBean data) {
+        RingToast.show("编辑成功");
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
         finish();
@@ -756,6 +759,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void updateFail(int code, String msg) {
+        RingToast.show("编辑失败");
         RingLog.e(TAG, "updateFail() status = " + code + "---desc = " + msg);
     }
 

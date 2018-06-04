@@ -310,10 +310,29 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             StringUtil.setText(tvChargingdetailName, data.getTitle(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailJuli, data.getDistance(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailAddress, data.getAddress(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargingdetailKfsj, "开放时间：" + data.getOpenTime(), "", View.VISIBLE, View.VISIBLE);
+            String kfsj = "";
+            if (data.getOpenTime() != null && StringUtil.isNotEmpty(data.getOpenTime())) {
+                if (data.getOpenTime().contains("开放时间:")) {
+                    String[] split = data.getOpenTime().split("开放时间:");
+                    if (split != null && split.length > 1) {
+                        kfsj = split[1];
+                    }
+                } else {
+                    kfsj = data.getOpenTime();
+                }
+            }
+            String cdf = "";
+            if (data.getElectricityPrice() != null && StringUtil.isNotEmpty(data.getElectricityPrice())) {
+                if (data.getElectricityPrice().contains("/度")) {
+                    cdf = "充电费：" + data.getElectricityPrice();
+                } else {
+                    cdf = "充电费：" + data.getElectricityPrice() + "元/度";
+                }
+            }
+            StringUtil.setText(tvChargingdetailKfsj, kfsj, "", View.VISIBLE, View.VISIBLE);
             tvChargingdetailCdcs.bringToFront();
             StringUtil.setText(tvChargingdetailCdcs, "充电" + data.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargingdetailCdf, "充电费：" + data.getElectricityPrice() + "元/度", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargingdetailCdf, cdf, "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailFwf, "服务费：" + data.getServiceFee() + "元/度", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailYys, data.getProvider(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailZffs, data.getPayWay(), "", View.VISIBLE, View.VISIBLE);

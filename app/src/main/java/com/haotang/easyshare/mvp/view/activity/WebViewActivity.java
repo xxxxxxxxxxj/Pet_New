@@ -31,11 +31,13 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.webview.MiddlewareChromeClient;
 import com.haotang.easyshare.mvp.view.webview.MiddlewareWebViewClient;
 import com.haotang.easyshare.mvp.view.webview.UIController;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
+import com.haotang.easyshare.util.Global;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -52,17 +54,16 @@ import com.just.agentweb.download.AgentWebDownloader;
 import com.just.agentweb.download.DefaultDownloadImpl;
 import com.just.agentweb.download.DownloadListenerAdapter;
 import com.just.agentweb.download.DownloadingService;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.haotang.easyshare.R.mipmap.share;
 
 /**
  * webview
@@ -131,6 +132,27 @@ public class WebViewActivity extends BaseActivity {
 
     }
 
+    @Subscribe
+    public void LoginRefresh(RefreshFragmentEvent refreshFragmentEvent) {
+        if (SystemUtil.checkLogin(this) && refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_WEBVIEW_LOGIN) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String curl = "javascript:init_roll('"
+                            + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "')";
+                    if (mAgentWeb != null) {
+                        mAgentWeb.getUrlLoader().loadUrl(curl); // 刷新
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
     class JsObject {
         @JavascriptInterface
         public String toString() {
@@ -179,6 +201,16 @@ public class WebViewActivity extends BaseActivity {
                 dialog.setUuid(uuid);
                 dialog.setShareInfo(title, content, url, img);
                 dialog.show(getSupportFragmentManager());
+            }
+
+            @JavascriptInterface
+            public void login() {
+                startActivity(new Intent(WebViewActivity.this, LoginActivity.class).putExtra("previous", Global.H5_TO_LOGIN));
+            }
+
+            @JavascriptInterface
+            public void gobutler() {
+                startActivity(new Intent(WebViewActivity.this, ButlerActivity.class));
             }
         });
     }

@@ -35,8 +35,6 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:layout_toLeftOf="@id/tv_titlebar_other"
-            android:layout_toRightOf="@id/iv_titlebar_back"
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"

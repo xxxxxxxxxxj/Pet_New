@@ -9,6 +9,7 @@ package com.haotang.easyshare.mvp.model.entity.event;
  * @date XJ on 2018/5/24 14:53
  */
 public class RefreshFragmentEvent {
+    public static final int REFRESH_WEBVIEW_LOGIN = 5;
     private int refreshIndex;
     public final static int REFRESH_MAINFRAGMET = 1;
     public final static int REFRESH_HOTFRAGMET = 2;

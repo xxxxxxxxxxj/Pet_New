@@ -1,6 +1,5 @@
 package com.haotang.easyshare.app.constant;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.haotang.easyshare.app.AppConfig;
@@ -76,7 +75,7 @@ public class UrlConstants {
      * 14.取消收藏充电桩
      */
     public static final String CANCEL_FOLLOW_CHARGE = "user/charging/cancel";
-     /**
+    /**
      * 15.关注的人列表
      */
     public static final String FOLLOW_LIST = "user/idol/list";
@@ -180,6 +179,10 @@ public class UrlConstants {
      * 40.获取微信用户信息
      */
     public static final String GET_WX_USERINFO = "wx/app/user/info";
+    /**
+     * 41.品牌车型
+     */
+    public static final String BRAND_CAR = "brand/car/list";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

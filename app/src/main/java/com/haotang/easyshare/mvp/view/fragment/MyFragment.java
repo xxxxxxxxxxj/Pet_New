@@ -51,11 +51,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.haotang.easyshare.R.id.iv_myfragment_add;
-import static com.haotang.easyshare.R.id.iv_myfragment_userimg;
-import static com.haotang.easyshare.R.id.tv_myfragment_username;
-
-
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -68,7 +63,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     private final static String TAG = MyFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
-    @BindView(iv_myfragment_userimg)
+    @BindView(R.id.iv_myfragment_userimg)
     ImageView ivMyfragmentUserimg;
     @BindView(R.id.tv_myfragment_yue)
     TextView tvMyfragmentYue;
@@ -114,10 +109,14 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     ViewPager vpMyfragmentMycdz;
     @BindView(R.id.tv_myfragment_mycharge_num)
     TextView tv_myfragment_mycharge_num;
+    @BindView(R.id.iv_myfragment_add)
+    ImageView iv_myfragment_add;
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
     private String kf_phone = "";
     private String uuid;
     private String vipPrivilege;
+    private int pagePosition;
+    private List<HomeBean.StationsBean> stations;
 
     @Override
     public boolean isUseEventBus() {
@@ -193,29 +192,56 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     protected void initEvent() {
+        vpMyfragmentMycdz.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pagePosition = position;
+                RingLog.e(TAG, "onPageSelected position = " + position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
-    @OnClick({iv_myfragment_add, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
+    @OnClick({R.id.iv_myfragment_add, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
             R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
             R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
-            tv_myfragment_username, iv_myfragment_userimg})
+            R.id.tv_myfragment_username, R.id.iv_myfragment_userimg, R.id.rl_myfragment_mycharge_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case iv_myfragment_userimg:
+            case R.id.rl_myfragment_mycharge_right:
+                if (stations != null && stations.size() > 0) {
+                    pagePosition++;
+                    if (stations.size() > pagePosition) {
+                        pagePosition++;
+                    } else {
+                        pagePosition = 0;
+                    }
+                    vpMyfragmentMycdz.setCurrentItem(pagePosition);
+                }
+                break;
+            case R.id.iv_myfragment_userimg:
                 if (SystemUtil.checkLogin(mActivity)) {
                     startActivity(new Intent(mActivity, EditUserInfoActivity.class));
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case tv_myfragment_username:
+            case R.id.tv_myfragment_username:
                 if (SystemUtil.checkLogin(mActivity)) {
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case iv_myfragment_add:
+            case R.id.iv_myfragment_add:
                 if (SystemUtil.checkLogin(mActivity)) {
                     startActivity(new Intent(mActivity, AddChargeActivity.class));
                 } else {
@@ -230,8 +256,12 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 }
                 break;
             case R.id.rl_myfragment_hytq:
-                startActivity(new Intent(mActivity, WebViewActivity.class).
-                        putExtra(WebViewActivity.URL_KEY, vipPrivilege));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, WebViewActivity.class).
+                            putExtra(WebViewActivity.URL_KEY, vipPrivilege));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_wdtz:
                 if (SystemUtil.checkLogin(mActivity)) {
@@ -293,8 +323,9 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             StringUtil.setText(tvMyfragmentSycs, data.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentJjdh, data.getKf_phone(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetCircleImg(mActivity, data.getHeadImg(), ivMyfragmentUserimg, R.mipmap.ic_image_load_circle);
-            List<HomeBean.StationsBean> stations = data.getStations();
+            stations = data.getStations();
             if (stations != null && stations.size() > 0) {
+                iv_myfragment_add.setVisibility(View.GONE);
                 StringUtil.setText(tv_myfragment_mycharge_num, "(" + stations.size() + ")", "", View.VISIBLE, View.VISIBLE);
                 mFragments.clear();
                 llMyfragmentMycdz.setVisibility(View.VISIBLE);
@@ -307,6 +338,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 }
                 vpMyfragmentMycdz.setAdapter(new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments));
             } else {
+                iv_myfragment_add.setVisibility(View.VISIBLE);
                 llMyfragmentMycdz.setVisibility(View.GONE);
             }
         }

@@ -354,6 +354,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 if (serchList != null && serchList.size() > 0 && serchList.size() > position) {
                     SerchResult serchResult = serchList.get(position);
                     if (serchResult != null && !serchResult.isFake()) {
+                        etMainfragSerch.setText(serchResult.getName());
                         rll_mainfrag_serchresult.setVisibility(View.GONE);
                         lng = serchResult.getLng();
                         lat = serchResult.getLat();

@@ -144,7 +144,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginRight="5dip"
+                        android:ellipsize="end"
                         android:gravity="center_vertical"
+                        android:singleLine="true"
                         android:text="请选择站地址"
                         android:textColor="@color/a666666"
                         android:textSize="15sp" />
@@ -346,7 +348,7 @@
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical|right"
                     android:hint="请输入充电费"
-                    android:inputType="number"
+                    android:inputType="number|numberDecimal"
                     android:textColor="@color/a333333"
                     android:textColorHint="@color/aBBBBBB"
                     android:textSize="14sp" />
