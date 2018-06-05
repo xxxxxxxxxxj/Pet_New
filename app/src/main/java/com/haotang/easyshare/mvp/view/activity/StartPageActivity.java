@@ -42,7 +42,7 @@ public class StartPageActivity extends BaseActivity {
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         SystemUtil.hideBottomUIMenu(this);
         img_url = getIntent().getStringExtra("img_url");
         jump_url = getIntent().getStringExtra("jump_url");
@@ -77,7 +77,7 @@ public class StartPageActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         CountdownUtil.getInstance().cancel("STARTPAGE_TIMER");
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.btn_landing_tg, R.id.iv_landingpage})

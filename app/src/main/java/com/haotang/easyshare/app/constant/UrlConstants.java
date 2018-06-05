@@ -1,6 +1,5 @@
 package com.haotang.easyshare.app.constant;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.haotang.easyshare.app.AppConfig;
@@ -119,7 +118,7 @@ public class UrlConstants {
     /**
      * 25.问题车帖子列表
      */
-    public static final String PROBLEM_CAR_POINT = "article/info/hot";
+    public static final String PROBLEM_CAR_POINT = "article/info/problem";
     /**
      * 26.品牌热帖
      */
@@ -152,6 +151,38 @@ public class UrlConstants {
      * 33.编辑充电桩
      */
     public static final String UPDATECHARGE = "charging/info/update";
+    /**
+     * 34.评论标签
+     */
+    public static final String COMMENT_TAGS = "charging/comment/tags";
+    /**
+     * 35.评价星级
+     */
+    public static final String STARS = "user/eval/stars";
+    /**
+     * 36.删除帖子
+     */
+    public static final String DELETE_POST = "article/info/delete";
+    /**
+     * 37.分享帖子成功回调
+     */
+    public static final String SHARE_POST = "article/info/share/callback";
+    /**
+     * 38.编辑用户信息
+     */
+    public static final String UPDATE_USER_INFO = "user/info/edit";
+    /**
+     * 39.获取微信WxOpenId
+     */
+    public static final String GET_WXOPENID = "wx/app/user/login";
+    /**
+     * 40.获取微信用户信息
+     */
+    public static final String GET_WX_USERINFO = "wx/app/user/info";
+    /**
+     * 41.品牌车型
+     */
+    public static final String BRAND_CAR = "brand/car/list";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境
@@ -165,11 +196,8 @@ public class UrlConstants {
     public static String getServiceBaseUrl() {
         String url = "";
         switch (getEnvironmental()) {
-            case 1://test环境
-                url = "http://192.168.0.252/";
-                break;
             case 2://demo环境
-                url = "http://demo.cwjia.cn/";
+                url = "https://demo.sayiyinxiang.com/api/";
                 break;
             case 3://线上环境
                 url = "https://api.sayiyinxiang.com/api/";
@@ -179,74 +207,6 @@ public class UrlConstants {
         }
         return url;
     }
-
-    public static String getServiceBaseUrlNew() {
-        String url = "";
-        switch (getEnvironmental()) {
-            case 1://test环境
-                url = "http://192.168.0.252/pet-api/";
-                break;
-            case 2://demo环境
-                url = "http://demo.cwjia.cn/pet-api/";
-                break;
-            case 3://线上环境
-                url = "https://api.sayiyinxiang.com/api/";
-                break;
-            default:
-                break;
-        }
-        return url;
-    }
-
-    public static String getWebBaseUrl() {
-        String url = "";
-        switch (getEnvironmental()) {
-            case 1://test环境
-                url = "http://192.168.0.247/";
-                break;
-            case 2://demo环境
-                url = "http://192.168.0.248/";
-                break;
-            case 3://线上环境
-                url = "https://api.sayiyinxiang.com/api/";
-                break;
-            default:
-                break;
-        }
-        return url;
-    }
-
-    public static String getGlobalParam(String baseUrl, Activity activity) {
-        if (baseUrl.contains("?")) {
-            baseUrl = baseUrl
-                    + "&system=android_" + SystemUtil.getCurrentVersion(activity)
-                    + "&imei="
-                    + SystemUtil.getIMEI(activity)
-                    + "&phone="
-                    + SharedPreferenceUtil.getInstance(activity).getString("cellphone", "") + "&phoneModel="
-                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
-                    + "&phoneSystemVersion=" + "Android "
-                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
-                    + System.currentTimeMillis();
-        } else {
-            baseUrl = baseUrl
-                    + "?system=android_" + SystemUtil.getCurrentVersion(activity)
-                    + "&imei="
-                    + SystemUtil.getIMEI(activity)
-                    + "&phone="
-                    + SharedPreferenceUtil.getInstance(activity).getString("cellphone", "") + "&phoneModel="
-                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
-                    + "&phoneSystemVersion=" + "Android "
-                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
-                    + System.currentTimeMillis();
-        }
-        return baseUrl;
-    }
-
-    public static final String GET_FLASH_DATA = getServiceBaseUrlNew() + "startPageConfig/startShowImg?";
-    public static final String GET_LASTVERSION_DATA = getServiceBaseUrlNew() + "user/checkversion?";
-    public static final String GET_BOTTOMBAR_DATA = getServiceBaseUrl() + "pet/user/index?";
-    public static final String GET_MAINFRAG_DATA = getServiceBaseUrl() + "pet/user/index?";
 
     public static Map<String, String> getMapHeader(Context context) {
         Map<String, String> map = new HashMap<String, String>();
@@ -255,10 +215,6 @@ public class UrlConstants {
         if (StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))) {
             map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
         }
-        /*map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
-        map.put("phoneSystemVersion", "Android "
-                + android.os.Build.VERSION.RELEASE);
-        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));*/
         return map;
     }
 
@@ -268,10 +224,6 @@ public class UrlConstants {
         if (StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))) {
             map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
         }
-        /*map.put("phoneModel", android.os.Build.BRAND + " " + android.os.Build.MODEL);
-        map.put("phoneSystemVersion", "Android "
-                + android.os.Build.VERSION.RELEASE);
-        map.put("petTimeStamp", String.valueOf(System.currentTimeMillis()));*/
         return map;
     }
 }

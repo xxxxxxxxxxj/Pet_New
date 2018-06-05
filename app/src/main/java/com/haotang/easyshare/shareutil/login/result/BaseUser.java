@@ -15,6 +15,17 @@ public class BaseUser {
 
     private String openId;
 
+    @Override
+    public String toString() {
+        return "BaseUser{" +
+                "openId='" + openId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", sex=" + sex +
+                ", headImageUrl='" + headImageUrl + '\'' +
+                ", headImageUrlLarge='" + headImageUrlLarge + '\'' +
+                '}';
+    }
+
     private String nickname;
 
     private int sex;

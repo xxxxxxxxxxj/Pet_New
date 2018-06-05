@@ -46,6 +46,8 @@ import butterknife.OnClick;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
+import static android.R.attr.rating;
+
 /**
  * 关注的人详情页
  */
@@ -69,6 +71,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     private int isCollect;
     private float stars = 1;
     private int praisePosition = -1;
+    private List<String> starsStr = new ArrayList<String>();
 
     @Override
     protected int getContentLayout() {
@@ -77,7 +80,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerFollowDetailActivityCommponent.builder().followDetailActivityModule(new FollowDetailActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
     }
@@ -85,7 +88,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override
@@ -111,6 +114,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.info(uuid);
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("uuid", uuid);
@@ -126,10 +130,12 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         postListAdapter.setOnShareItemListener(new PostListAdapter.OnShareItemListener() {
             @Override
             public void OnShareItem(int position) {//赞
+                position--;
                 RingLog.d(TAG, "position = " + position);
-                if (list.size() > 0 && list.size() > position) {
+                if (position >= 0 && list.size() > 0 && list.size() > position) {
                     PostBean.DataBean dataBean = list.get(position);
                     if (dataBean != null && dataBean.getIsPraise() == 0) {
+                        showDialog();
                         praisePosition = position;
                         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                         builder.addFormDataPart("uuid", dataBean.getUuid());
@@ -142,6 +148,13 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         postListAdapter.setOnDeleteItemListener(new PostListAdapter.OnDeleteItemListener() {
             @Override
             public void OnDeleteItem(int position) {//评论
+                position--;
+                RingLog.d(TAG, "position = " + position);
+                if (position >= 0 && list.size() > 0 && list.size() > position) {
+                    PostBean.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
+                    }
+                }
             }
         });
         postListAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -162,6 +175,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_followdetail_top_guanzhu:
+                showDialog();
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("uuid", uuid);
                 RequestBody build = builder.build();
@@ -180,6 +194,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     }
 
     private void refresh() {
+        showDialog();
         postListAdapter.setEnableLoadMore(false);
         srlFollowdetail.setRefreshing(true);
         mNextRequestPage = 1;
@@ -241,6 +256,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
             followDetailBoDa.getTv_followdetail_bottom_submit().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    showDialog();
                     MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                             .addFormDataPart("uuid", uuid)
                             .addFormDataPart("stars", String.valueOf((int) stars))
@@ -253,8 +269,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 @Override
                 public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
                     stars = rating;
-                    StringUtil.setText(followDetailBoDa.getTvFollowdetailBottomDesc(), String.valueOf(rating), "",
-                            View.VISIBLE, View.VISIBLE);
+                    setStar();
                 }
             });
             pWinBottomDialog.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -262,6 +277,15 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 public void onDismiss() {
                 }
             });
+        }
+        showDialog();
+        mPresenter.stars();
+    }
+
+    private void setStar() {
+        if (starsStr != null && starsStr.size() > 0 && starsStr.size() > stars) {
+            StringUtil.setText(followDetailBoDa.getTvFollowdetailBottomDesc(), starsStr.get((int) stars), "",
+                    View.VISIBLE, View.VISIBLE);
         }
     }
 
@@ -276,6 +300,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void infoSuccess(HomeBean data) {
+        disMissDialog();
         if (data != null) {
             isCollect = data.getIsCollect();
             StringUtil.setText(followDetailHeader.getIvFollowdetailTopUserpf(), data.getStars() + "", "", View.VISIBLE, View.VISIBLE);
@@ -298,11 +323,13 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void infoFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "infoFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void listSuccess(List<PostBean.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlFollowdetail.setRefreshing(false);
             postListAdapter.setEnableLoadMore(true);
@@ -331,6 +358,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             postListAdapter.setEnableLoadMore(true);
             srlFollowdetail.setRefreshing(false);
@@ -342,38 +370,45 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void followSuccess(AddChargeBean data) {
+        disMissDialog();
         isCollect = 1;
         followDetailHeader.getIvFollowdetailTopGuanzhu().setImageResource(R.mipmap.icon_followdetail_top_yiguanzhu);
     }
 
     @Override
     public void followFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "followFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void cancelSuccess(AddChargeBean data) {
+        disMissDialog();
         isCollect = 0;
         followDetailHeader.getIvFollowdetailTopGuanzhu().setImageResource(R.mipmap.icon_followdetail_top_guanzhu);
     }
 
     @Override
     public void cancelFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "cancelFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void evalSuccess(AddChargeBean data) {
+        disMissDialog();
         followDetailHeader.getIvFollowdetailTopPingjia().setImageResource(R.mipmap.icon_followdetail_top_yipingjia);
     }
 
     @Override
     public void evalFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "evalFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void praiseSuccess(AddChargeBean data) {
+        disMissDialog();
         if (praisePosition >= 0 && list.size() > praisePosition) {
             PostBean.DataBean dataBean = list.get(praisePosition);
             if (dataBean != null) {
@@ -385,7 +420,23 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
 
     @Override
     public void praiseFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "praiseFail() status = " + code + "---desc = " + msg);
+    }
+
+    @Override
+    public void starsSuccess(List<String> data) {
+        disMissDialog();
+        if (data != null && data.size() > 0) {
+            starsStr.addAll(data);
+            setStar();
+        }
+    }
+
+    @Override
+    public void starsFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "starsFail() status = " + code + "---desc = " + msg);
     }
 
     @Override

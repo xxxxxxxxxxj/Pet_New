@@ -14,6 +14,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerSendPostActivityCommponent;
 import com.haotang.easyshare.di.module.activity.SendPostActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
 import com.haotang.easyshare.mvp.model.entity.res.PhotoViewPagerImg;
@@ -76,7 +77,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     private CommentImgAdapter commentImgAdapter;
     private static final int IMG_NUM = 9;
     private int brandId;
-    private int isWtc;
+    private int category = 1;
 
     @Override
     protected int getContentLayout() {
@@ -85,7 +86,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerSendPostActivityCommponent.builder().sendPostActivityModule(new SendPostActivityModule(this, this)).build().inject(this);
         brandId = getIntent().getIntExtra("brandId", 0);
     }
@@ -148,6 +149,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             if (data != null) {
+                showDialog();
                 compressWithRx(Matisse.obtainPathResult(data));
             }
         }
@@ -171,6 +173,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                 .subscribe(new Consumer<List<File>>() {
                     @Override
                     public void accept(@NonNull List<File> list) throws Exception {
+                        disMissDialog();
                         for (int i = 0; i < imgList.size(); i++) {
                             CommentImg commentImg = imgList.get(i);
                             if (commentImg.isAdd()) {
@@ -246,7 +249,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.tv_sendpost_wtc})
@@ -259,9 +262,11 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                 setWtc();
                 break;
             case R.id.tv_titlebar_other:
+                showDialog();
                 //构建body
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("carId", String.valueOf(brandId));
+                builder.addFormDataPart("category", String.valueOf(category));
                 builder.addFormDataPart("content", etSendPost.getText().toString().trim());
                 for (int i = 0; i < imgPathList.size(); i++) {
                     //构建要上传的文件
@@ -276,12 +281,12 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     }
 
     private void setWtc() {
-        if (isWtc == 0) {
-            isWtc = 1;
+        if (category == 1) {
+            category = 2;
             tv_sendpost_wtc.setBackgroundResource(R.mipmap.bg_postlist_calss_select);
             tv_sendpost_wtc.setTextColor(getResources().getColor(R.color.white));
-        } else if (isWtc == 1) {
-            isWtc = 0;
+        } else if (category == 2) {
+            category = 1;
             tv_sendpost_wtc.setBackgroundResource(R.mipmap.bg_postlist_calss_unselect);
             tv_sendpost_wtc.setTextColor(getResources().getColor(R.color.a666666));
         }
@@ -289,11 +294,14 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
 
     @Override
     public void saveSuccess(AddChargeBean data) {
-        RingToast.show("发布成功");
+        disMissDialog();
+        DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.SEND_POST));
+        finish();
     }
 
     @Override
     public void saveFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
 

@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.model.http;
 
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
+import com.haotang.easyshare.mvp.model.entity.res.CommentTags;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
 import java.util.Map;
@@ -29,4 +30,10 @@ public interface CommentApiService {
     @Multipart
     @POST(UrlConstants.COMMENT_SAVE)
     Observable<HttpResult<AddChargeBean>> save(@PartMap() Map<String, RequestBody> files);
+
+    /**
+     * 评论标签
+     */
+    @POST(UrlConstants.COMMENT_TAGS)
+    Observable<CommentTags> tags();
 }

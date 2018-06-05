@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,12 +21,15 @@ import com.haotang.easyshare.di.module.activity.ChargingPileDetailActivityModule
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.ChargingPileDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
+import com.haotang.easyshare.mvp.view.adapter.UseNoticesAdapter;
 import com.haotang.easyshare.mvp.view.iview.IChargingPileDetailView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
 import com.haotang.easyshare.util.GlideUtil;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.SignUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -34,7 +38,10 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -115,6 +122,8 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     TextView tvChargingdetailTcf;
     @BindView(R.id.tv_chargingdetail_zdbz)
     TextView tvChargingdetailZdbz;
+    @BindView(R.id.ll_chargingdetail_vbv)
+    LinearLayout ll_chargingdetail_vbv;
     private String uuid;
     private String city;
     private double lat;
@@ -128,6 +137,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     private double chargeLat;
     private int is_collect;
     private Map<String, String> parmMap = new HashMap<String, String>();
+    private PostBean.DataBean.ShareMap shareMap;
 
     @Override
     protected int getContentLayout() {
@@ -136,7 +146,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerChargingPileDetailActivityCommponent.builder().
                 chargingPileDetailActivityModule(new ChargingPileDetailActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
@@ -180,6 +190,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                         + lat + ", lng = "
                         + lng + ",city = " + city + ",address = " + amapLocation.getAddress());
                 if (lat > 0 && lng > 0) {
+                    showDialog();
                     Map<String, String> mapHeader = UrlConstants.getMapHeader(ChargingPileDetailActivity.this);
                     mapHeader.put("lng", String.valueOf(lng));
                     mapHeader.put("lat", String.valueOf(lat));
@@ -213,7 +224,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_chargingdetail_back, iv_chargingdetail_sc, R.id.iv_chargingdetail_share, R.id.ll_chargingdetail_pl, R.id.iv_chargingdetail_lt, R.id.iv_chargingdetail_phone, R.id.ll_chargingdetail_daohang})
@@ -223,19 +234,54 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 finish();
                 break;
             case iv_chargingdetail_sc:
-                parmMap.clear();
-                parmMap.put("uuid", uuid);
-                if (is_collect == 0) {//是否已收藏(0:否、1:是)
-                    mPresenter.follow(parmMap);
-                } else if (is_collect == 1) {
-                    mPresenter.cancel(parmMap);
+                if (SystemUtil.checkLogin(this)) {
+                    showDialog();
+                    parmMap.clear();
+                    parmMap.put("uuid", uuid);
+                    if (is_collect == 0) {//是否已收藏(0:否、1:是)
+                        mPresenter.follow(parmMap);
+                    } else if (is_collect == 1) {
+                        mPresenter.cancel(parmMap);
+                    }
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
                 break;
             case R.id.iv_chargingdetail_share:
-                ShareBottomDialog dialog = new ShareBottomDialog();
-                dialog.setShareInfo("测试", "测试",
-                        "https://www.duba.com","http://img.sayiyinxiang.com/api/brand/imgs/15246549042921928075.jpg");
-                dialog.show(getSupportFragmentManager());
+                if (shareMap != null) {
+                    if (shareMap.getUrl() != null && !TextUtils.isEmpty(shareMap.getUrl())) {
+                        if (!shareMap.getUrl().startsWith("http:")
+                                && !shareMap.getUrl().startsWith("https:") && !shareMap.getUrl().startsWith("file:///")) {
+                            shareMap.setUrl(UrlConstants.getServiceBaseUrl() + shareMap.getUrl());
+                        }
+                        if (shareMap.getUrl().contains("?")) {
+                            shareMap.setUrl(shareMap.getUrl() + "&system=android_" + SystemUtil.getCurrentVersion(this)
+                                    + "&imei="
+                                    + SystemUtil.getIMEI(this)
+                                    + "&phone="
+                                    + SharedPreferenceUtil.getInstance(ChargingPileDetailActivity.this).getString("cellphone", "") + "&phoneModel="
+                                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                    + "&phoneSystemVersion=" + "Android "
+                                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                    + System.currentTimeMillis());
+                        } else {
+                            shareMap.setUrl(shareMap.getUrl() + "?system=android_" + SystemUtil.getCurrentVersion(this)
+                                    + "&imei="
+                                    + SystemUtil.getIMEI(this)
+                                    + "&phone="
+                                    + SharedPreferenceUtil.getInstance(ChargingPileDetailActivity.this).getString("cellphone", "") + "&phoneModel="
+                                    + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                    + "&phoneSystemVersion=" + "Android "
+                                    + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                    + System.currentTimeMillis());
+                        }
+                        shareMap.setUrl(shareMap.getUrl() + "&lat=" + lat + "&lng=" + lng + "&uuid=" + uuid);
+                    }
+                    ShareBottomDialog dialog = new ShareBottomDialog();
+                    dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
+                            shareMap.getUrl(), shareMap.getImg());
+                    dialog.show(getSupportFragmentManager());
+                }
                 break;
             case R.id.ll_chargingdetail_pl:
                 startActivity(new Intent(ChargingPileDetailActivity.this, CommentDetailActivity.class).putExtra("uuid", uuid));
@@ -253,7 +299,9 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     public void detailSuccess(ChargeDetailBean data) {
+        disMissDialog();
         if (data != null) {
+            shareMap = data.getShareMap();
             is_collect = data.getIsCollect();
             uuid = data.getUuid();
             address = data.getAddress();
@@ -262,10 +310,29 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             StringUtil.setText(tvChargingdetailName, data.getTitle(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailJuli, data.getDistance(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailAddress, data.getAddress(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargingdetailKfsj, "开放时间：" + data.getOpenTime(), "", View.VISIBLE, View.VISIBLE);
+            String kfsj = "";
+            if (data.getOpenTime() != null && StringUtil.isNotEmpty(data.getOpenTime())) {
+                if (data.getOpenTime().contains("开放时间:")) {
+                    String[] split = data.getOpenTime().split("开放时间:");
+                    if (split != null && split.length > 1) {
+                        kfsj = split[1];
+                    }
+                } else {
+                    kfsj = data.getOpenTime();
+                }
+            }
+            String cdf = "";
+            if (data.getElectricityPrice() != null && StringUtil.isNotEmpty(data.getElectricityPrice())) {
+                if (data.getElectricityPrice().contains("/度")) {
+                    cdf = "充电费：" + data.getElectricityPrice();
+                } else {
+                    cdf = "充电费：" + data.getElectricityPrice() + "元/度";
+                }
+            }
+            StringUtil.setText(tvChargingdetailKfsj, kfsj, "", View.VISIBLE, View.VISIBLE);
             tvChargingdetailCdcs.bringToFront();
             StringUtil.setText(tvChargingdetailCdcs, "充电" + data.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargingdetailCdf, "充电费：" + data.getElectricityPrice() + "元/度", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargingdetailCdf, cdf, "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailFwf, "服务费：" + data.getServiceFee() + "元/度", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailYys, data.getProvider(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailZffs, data.getPayWay(), "", View.VISIBLE, View.VISIBLE);
@@ -282,37 +349,38 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 ivChargingdetailLt.setVisibility(View.GONE);
                 ivChargingdetailGgorgr.setImageResource(R.mipmap.icon_gg);
             } else if (data.getIsPrivate() == 1) {//个人
-                ivChargingdetailLt.setVisibility(View.VISIBLE);
+                ivChargingdetailLt.setVisibility(View.GONE);
                 ivChargingdetailGgorgr.setImageResource(R.mipmap.icon_gr);
             }
-            if (data.getFastNum() > 0) {
-                StringUtil.setText(tvChargingdetailKuaichongNum, "快充" + data.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                llChargingdetailKuaichong.setVisibility(View.VISIBLE);
+            StringUtil.setText(tvChargingdetailKuaichongNum, "快充" + data.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargingdetailManchongNum, "慢充" + data.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargingdetailKongxianNum, "空闲" + data.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            List<ChargeDetailBean.UseNotices> useNotices = data.getUseNotices();
+            if (useNotices != null && useNotices.size() > 0) {
+                ll_chargingdetail_vbv
+                        .setVisibility(View.VISIBLE);
+                try {
+                    vbvChargingdetail.setAdapter(new UseNoticesAdapter(useNotices));
+                    vbvChargingdetail.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
-                llChargingdetailKuaichong.setVisibility(View.GONE);
-            }
-            if (data.getSlowNum() > 0) {
-                StringUtil.setText(tvChargingdetailManchongNum, "慢充" + data.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                llChargingdetailManchong.setVisibility(View.VISIBLE);
-            } else {
-                llChargingdetailManchong.setVisibility(View.GONE);
-            }
-            if (data.getFreeNum() > 0) {
-                StringUtil.setText(tvChargingdetailKongxianNum, "空闲" + data.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                llChargingdetailKongxian.setVisibility(View.VISIBLE);
-            } else {
-                llChargingdetailKongxian.setVisibility(View.GONE);
+                ll_chargingdetail_vbv
+                        .setVisibility(View.GONE);
             }
         }
     }
 
     @Override
     public void detailFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void followSuccess(AddChargeBean data) {
+        disMissDialog();
         is_collect = 1;
         ivChargingdetailSc.setImageResource(R.mipmap.sc);
         DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.COLLECT_OR_CANCEL_CHARGE));
@@ -320,11 +388,13 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     public void followFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void cancelSuccess(AddChargeBean data) {
+        disMissDialog();
         is_collect = 0;
         ivChargingdetailSc.setImageResource(R.mipmap.sc_not);
         DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.COLLECT_OR_CANCEL_CHARGE));
@@ -332,6 +402,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     public void cancelFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
     }
 
@@ -345,5 +416,17 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void refresh(RefreshEvent data) {
+        if (data != null && data.getRefreshIndex() == RefreshEvent.SAVE_CHARGE_COMMENT) {
+            mlocationClient.startLocation();
+        }
     }
 }

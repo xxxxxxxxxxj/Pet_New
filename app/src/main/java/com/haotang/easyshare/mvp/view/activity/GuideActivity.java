@@ -39,14 +39,14 @@ public class GuideActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         setSwipeBackEnable(false);
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
     }
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         SystemUtil.hideBottomUIMenu(this);
-        imagesIds = new int[]{R.mipmap.guide1, R.mipmap.guide2, R.mipmap.guide3};
+        imagesIds = new int[]{R.mipmap.guide1, R.mipmap.guide2, R.mipmap.guide3, R.mipmap.guide4};
         imageList = new ArrayList<ImageView>();
         for (int i = 0; i < imagesIds.length; i++) {
             ImageView iv = new ImageView(this);
@@ -89,7 +89,7 @@ public class GuideActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.ib_guide_next})
@@ -98,7 +98,7 @@ public class GuideActivity extends BaseActivity {
             case R.id.ib_guide_next:
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
-                DevRing.activityStackManager().exitActivity(this); //退出activity
+                activityListManager.removeActivity(this); //退出activity
                 break;
         }
     }

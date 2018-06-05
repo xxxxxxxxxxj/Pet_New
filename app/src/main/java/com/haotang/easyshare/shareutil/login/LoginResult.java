@@ -15,6 +15,53 @@ public class LoginResult {
     private BaseUser mUserInfo;
 
     private int mPlatform;
+    private String mCcode;
+
+    public BaseToken getmToken() {
+        return mToken;
+    }
+
+    public void setmToken(BaseToken mToken) {
+        this.mToken = mToken;
+    }
+
+    public BaseUser getmUserInfo() {
+        return mUserInfo;
+    }
+
+    public void setmUserInfo(BaseUser mUserInfo) {
+        this.mUserInfo = mUserInfo;
+    }
+
+    public int getmPlatform() {
+        return mPlatform;
+    }
+
+    public void setmPlatform(int mPlatform) {
+        this.mPlatform = mPlatform;
+    }
+
+    public String getmCcode() {
+        return mCcode;
+    }
+
+    public void setmCcode(String mCcode) {
+        this.mCcode = mCcode;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginResult{" +
+                "mToken=" + mToken +
+                ", mUserInfo=" + mUserInfo +
+                ", mPlatform=" + mPlatform +
+                '}';
+    }
+
+    public LoginResult(int platform,String code) {
+        mPlatform = platform;
+        mCcode = code;
+    }
 
     public LoginResult(int platform, BaseToken token) {
         mPlatform = platform;

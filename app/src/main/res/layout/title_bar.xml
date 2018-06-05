@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="49dip"
-        android:background="@color/white"
+        android:background="@mipmap/bg_shade_down"
         android:paddingRight="15dip">
 
         <ImageView
@@ -35,8 +35,6 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:layout_toLeftOf="@id/tv_titlebar_other"
-            android:layout_toRightOf="@id/iv_titlebar_back"
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"

@@ -117,7 +117,7 @@ public class PetApplication extends Application {
         ShareConfig config = ShareConfig.instance()
                 .qqId(AppConfig.QQ_ID)
                 .wxId(AppConfig.WX_ID)
-                .wxSecret(AppConfig.WX_ID);
+                .wxSecret(AppConfig.WX_SECRET);
         ShareManager.init(config);
 
         //友盟设置
@@ -125,6 +125,6 @@ public class PetApplication extends Application {
         UMConfigure.setLogEnabled(true);
         //设置是否对日志信息进行加密, 默认false(不加密).
         UMConfigure.setEncryptEnabled(true);
-        UMConfigure.init(getApplicationContext(), "5affa9e9f43e4831e00001fa", "easyshare_1", UMConfigure.DEVICE_TYPE_PHONE, "");
+        UMConfigure.init(getApplicationContext(), AppConfig.UMENG_APPKEY, "easyshare_1", UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 }

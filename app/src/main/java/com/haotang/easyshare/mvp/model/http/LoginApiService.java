@@ -3,11 +3,17 @@ package com.haotang.easyshare.mvp.model.http;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.SendVerifyCodeBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxLoginBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxUserInfoBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -23,14 +29,32 @@ public interface LoginApiService {
      * 下发验证码
      */
     @GET(UrlConstants.SENDVERIFYCODE)
-    Observable<HttpResult<SendVerifyCodeBean>> sendVerifyCode(@Header("phone") String phone);
+    Observable<HttpResult<SendVerifyCodeBean>> sendVerifyCode(@Header("phone") String phone, @Query("phone") String phone1);
 
     /**
      * 登陆
      */
     @GET(UrlConstants.LOGIN)
-    Observable<HttpResult<LoginBean>> login(@Header("phone") String phone, @Query("wxOpenId") String wxOpenId,
+    Observable<HttpResult<LoginBean>> login(@Header("phone") String phone, @Query("phone") String phone1, @Query("wxOpenId") String wxOpenId,
                                             @Query("lng") double lng, @Query("lat") double lat,
                                             @Query("registrationId") String registrationId,
-                                            @Query("code") String code);
+                                            @Query("code") String code,
+                                            @Query("userName") String userName,
+                                            @Query("headImg") String headImg);
+
+    /**
+     * 获取微信WxOpenId
+     *
+     * @param body
+     */
+    @POST(UrlConstants.GET_WXOPENID)
+    Observable<HttpResult<WxLoginBean>> getWxOpenId(@Body() RequestBody body);
+
+    /**
+     * 获取微信用户信息
+     *
+     * @param body
+     */
+    @POST(UrlConstants.GET_WX_USERINFO)
+    Observable<HttpResult<WxUserInfoBean>> getWxUserInfo(@Body() RequestBody body);
 }

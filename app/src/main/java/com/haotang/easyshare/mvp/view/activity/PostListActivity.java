@@ -16,6 +16,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerPostListActivityCommponent;
 import com.haotang.easyshare.di.module.activity.PostListActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.PostListPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointAdapter;
@@ -23,7 +24,6 @@ import com.haotang.easyshare.mvp.view.iview.IPostListView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -71,7 +71,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerPostListActivityCommponent.builder().
                 postListActivityModule(new PostListActivityModule(this, this)).build().inject(this);
     }
@@ -79,8 +79,6 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
     @Override
     protected void setView(Bundle savedInstanceState) {
         tvTitlebarTitle.setText("帖子列表");
-        tvTitlebarOther.setVisibility(View.VISIBLE);
-        tvTitlebarOther.setText("发帖");
 
         srlPostlist.setRefreshing(true);
         srlPostlist.setColorSchemeColors(Color.rgb(47, 223, 189));
@@ -100,6 +98,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
     }
 
     private void setRequest() {
+        showDialog();
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .build();
         if (index == 1) {//最新帖
@@ -116,7 +115,18 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
         hotPointAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                if (list.size() > 0 && list.size() > position) {
+                    HotPoint.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
+                            Intent intent = new Intent(PostListActivity.this, WebViewActivity.class);
+                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                            intent.putExtra("uuid", dataBean.getUuid());
+                            startActivity(intent);
+                        }
+                    }
+                }
             }
         });
         hotPointAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -177,7 +187,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.tv_postlist_zxt, R.id.tv_postlist_rmt, R.id.tv_postlist_wtc})
@@ -203,6 +213,7 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
 
     @Override
     public void newestSuccess(List<HotPoint.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlPostlist.setRefreshing(false);
             hotPointAdapter.setEnableLoadMore(true);
@@ -225,18 +236,34 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
             } else {
                 hotPointAdapter.loadMoreEnd(false);
             }
+            String msg = "";
+            if (index == 1) {
+                msg = "暂无最新帖";
+            } else if (index == 2) {
+                msg = "暂无热门帖";
+            } else if (index == 3) {
+                msg = "暂无问题车帖子";
+            }
+            hotPointAdapter.setEmptyView(setEmptyViewBase(2, msg, R.mipmap.no_data, null));
         }
         hotPointAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void newestFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             hotPointAdapter.setEnableLoadMore(true);
             srlPostlist.setRefreshing(false);
         } else {
             hotPointAdapter.loadMoreFail();
         }
+        hotPointAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "newestFail() status = " + code + "---desc = " + msg);
     }
 

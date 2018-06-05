@@ -62,7 +62,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerMyFollowActivityCommponent.builder().myFollowActivityModule(new MyFollowActivityModule(this, this)).build().inject(this);
     }
 
@@ -83,6 +83,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.list();
     }
 
@@ -114,6 +115,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
     }
 
     private void refresh() {
+        showDialog();
         followListAdapter.setEnableLoadMore(false);
         srlMyFollow.setRefreshing(true);
         mNextRequestPage = 1;
@@ -127,7 +129,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back})
@@ -141,17 +143,25 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             followListAdapter.setEnableLoadMore(true);
             srlMyFollow.setRefreshing(false);
         } else {
             followListAdapter.loadMoreFail();
         }
+        followListAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void listSuccess(List<FollowBean.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlMyFollow.setRefreshing(false);
             followListAdapter.setEnableLoadMore(true);
@@ -174,6 +184,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
             } else {
                 followListAdapter.loadMoreEnd(false);
             }
+            followListAdapter.setEmptyView(setEmptyViewBase(2, "您还没有关注的人哦", R.mipmap.no_data, null));
         }
         followListAdapter.notifyDataSetChanged();
     }

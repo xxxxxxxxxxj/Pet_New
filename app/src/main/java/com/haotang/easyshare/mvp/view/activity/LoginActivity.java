@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -16,8 +18,11 @@ import com.amap.api.location.AMapLocationListener;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LoginActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.SendVerifyCodeBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxLoginBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxUserInfoBean;
 import com.haotang.easyshare.mvp.presenter.LoginPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.ILoginView;
@@ -28,6 +33,7 @@ import com.haotang.easyshare.shareutil.login.LoginPlatform;
 import com.haotang.easyshare.shareutil.login.LoginResult;
 import com.haotang.easyshare.shareutil.login.result.BaseToken;
 import com.haotang.easyshare.util.CountdownUtil;
+import com.haotang.easyshare.util.Global;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -36,10 +42,14 @@ import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * 登录页
@@ -66,6 +76,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     TextView tvLoginQita;
     @BindView(R.id.iv_login_wxlogin)
     ImageView ivLoginWxlogin;
+    @BindView(R.id.ll_login_qita)
+    LinearLayout ll_login_qita;
+    private String userName;
+    private String headImg;
     private String wxOpenId;
     private double lng;
     private double lat;
@@ -73,6 +87,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     private AMapLocationClient mlocationClient;
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
+    private int previous;
 
     @Override
     protected int getContentLayout() {
@@ -81,12 +96,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerLoginActivityCommponent.builder().loginActivityModule(new LoginActivityModule(this, this)).build().inject(this);
     }
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        previous = intent.getIntExtra("previous", 0);
         tvTitlebarTitle.setText("登陆");
         setLocation();
     }
@@ -201,7 +218,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         super.onDestroy();
         mlocationClient.stopLocation();
         CountdownUtil.getInstance().cancel("LOGIN_TIMER");
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_login_hqyzm, R.id.iv_login_login, R.id.iv_login_wxlogin})
@@ -220,6 +237,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
+                showDialog();
                 mPresenter.sendVerifyCode(etLoginPhone.getText().toString().trim().replace(" ", ""));
                 break;
             case R.id.iv_login_login:
@@ -236,32 +254,41 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     etLoginYzm.setAnimation(SystemUtil.shakeAnimation(5));
                     return;
                 }
+                showDialog();
                 mPresenter.login(etLoginPhone.getText().toString().trim().replace(" ", ""), wxOpenId, lng, lat,
                         SharedPreferenceUtil.getInstance(LoginActivity.this).getString("jpush_id", ""),
-                        etLoginYzm.getText().toString().trim().replace(" ", ""));
+                        etLoginYzm.getText().toString().trim().replace(" ", ""), userName, headImg);
                 break;
             case R.id.iv_login_wxlogin:
                 LoginUtil.login(LoginActivity.this, LoginPlatform.WX, new LoginListener() {
                     @Override
                     public void loginSuccess(LoginResult result) {
-                        RingLog.d(TAG, result.getUserInfo().getNickname());
-                        RingLog.d(TAG, "登录成功");
+                        RingLog.e(TAG, "LoginResult = " + result.toString());
+                        RingLog.e(TAG, "登录成功");
+                        RingToast.show("微信登录成功");
+                        if (result != null) {
+                            showDialog();
+                            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                            builder.addFormDataPart("code", result.getmCcode());
+                            RequestBody body = builder.build();
+                            mPresenter.getWxOpenId(body);
+                        }
                     }
 
                     @Override
                     public void beforeFetchUserInfo(BaseToken token) {
-                        RingLog.d(TAG, "获取用户信息");
+                        RingLog.e(TAG, "获取用户信息");
                     }
 
                     @Override
                     public void loginFailure(Exception e) {
                         e.printStackTrace();
-                        RingLog.d(TAG, "登录失败e = " + e.toString());
+                        RingLog.e(TAG, "登录失败e = " + e.toString());
                     }
 
                     @Override
                     public void loginCancel() {
-                        RingLog.d(TAG, "登录取消");
+                        RingLog.e(TAG, "登录取消");
                     }
                 });
                 break;
@@ -270,6 +297,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void sendVerifyCodeSuccess(SendVerifyCodeBean data) {
+        disMissDialog();
         etLoginYzm.requestFocus();
         CountdownUtil.getInstance().newTimer(60000, 1000, new CountdownUtil.ICountDown() {
             @Override
@@ -290,25 +318,70 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     public void sendVerifyCodeFail(int status, String desc) {
+        disMissDialog();
         RingLog.e(TAG, "LoginActivity sendVerifyCodeFail() status = " + status + "---desc = " + desc);
-        RingToast.show("LoginActivity sendVerifyCodeFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
     public void loginSuccess(LoginBean data) {
+        disMissDialog();
         RingLog.e(TAG, "loginSuccess");
         SharedPreferenceUtil.getInstance(LoginActivity.this).saveString("cellphone",
                 etLoginPhone.getText().toString().trim().replace(" ", ""));
+        DevRing.configureHttp().getMapHeader().put("phone", SharedPreferenceUtil.getInstance(this).getString("cellphone", ""));
+        Map<String, String> mapHeader = DevRing.configureHttp().getMapHeader();
+        RingLog.e("mapHeader = " + mapHeader.toString());
         if (data != null) {
             DevRing.busManager().postEvent(data);
+        }
+        if (previous == Global.H5_TO_LOGIN) {
+            DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_WEBVIEW_LOGIN));
         }
         finish();
     }
 
     @Override
     public void loginFail(int status, String desc) {
+        disMissDialog();
         RingLog.e(TAG, "LoginActivity loginFail() status = " + status + "---desc = " + desc);
-        RingToast.show("LoginActivity loginFail() status = " + status + "---desc = " + desc);
+    }
+
+    @Override
+    public void getWxOpenIdSuccess(WxLoginBean data) {
+        disMissDialog();
+        if (data != null && StringUtil.isNotEmpty(data.getOpenId())) {
+            showDialog();
+            DevRing.configureHttp().getMapHeader().put("wxOpenId", data.getOpenId());
+            Map<String, String> mapHeader = DevRing.configureHttp().getMapHeader();
+            RingLog.e("mapHeader = " + mapHeader.toString());
+            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+            builder.addFormDataPart("wxOpenId", data.getOpenId());
+            RequestBody body = builder.build();
+            mPresenter.getWxUserInfo(body);
+        }
+    }
+
+    @Override
+    public void getWxOpenIdFail(int status, String desc) {
+        disMissDialog();
+        RingLog.e(TAG, "LoginActivity getWxOpenIdFail() status = " + status + "---desc = " + desc);
+    }
+
+    @Override
+    public void getWxUserInfoFail(int status, String desc) {
+        disMissDialog();
+        RingLog.e(TAG, "LoginActivity getWxUserInfoFail() status = " + status + "---desc = " + desc);
+    }
+
+    @Override
+    public void getWxUserInfoSuccess(WxUserInfoBean data) {
+        disMissDialog();
+        if (data != null) {
+            ll_login_qita.setVisibility(View.GONE);
+            userName = data.getNickname();
+            headImg = data.getHeadimgurl();
+            wxOpenId = data.getOpenid();
+        }
     }
 
     @Override
@@ -318,7 +391,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 //定位成功回调信息，设置相关消息
                 lat = amapLocation.getLatitude();//获取纬度
                 lng = amapLocation.getLongitude();//获取经度
-                RingLog.d(TAG, "定位成功lat = "
+                RingLog.e(TAG, "定位成功lat = "
                         + lat + ", lng = "
                         + lng);
                 if (lat > 0 && lng > 0) {
@@ -326,7 +399,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 }
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                RingLog.d(TAG, "location Error, ErrCode:"
+                RingLog.e(TAG, "location Error, ErrCode:"
                         + amapLocation.getErrorCode() + ", errInfo:"
                         + amapLocation.getErrorInfo());
             }

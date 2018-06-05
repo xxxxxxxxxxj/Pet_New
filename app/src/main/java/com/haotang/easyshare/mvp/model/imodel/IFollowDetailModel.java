@@ -3,7 +3,6 @@ package com.haotang.easyshare.mvp.model.imodel;
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
 import io.reactivex.Observable;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -50,4 +49,9 @@ public interface IFollowDetailModel extends IBaseModel {
      * 点赞
      */
     Observable praise(RequestBody body);
+
+    /**
+     * 评价星级
+     */
+    Observable stars();
 }

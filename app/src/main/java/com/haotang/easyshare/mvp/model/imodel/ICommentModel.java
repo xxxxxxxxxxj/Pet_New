@@ -22,4 +22,9 @@ public interface ICommentModel extends IBaseModel {
      * @param filedMap
      */
     Observable save(Map<String, RequestBody> filedMap);
+
+    /**
+     * 评论标签
+     */
+    Observable tags();
 }

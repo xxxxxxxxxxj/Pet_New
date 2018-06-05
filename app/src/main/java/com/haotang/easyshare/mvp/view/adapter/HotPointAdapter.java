@@ -40,7 +40,11 @@ public class HotPointAdapter extends BaseQuickAdapter<HotPoint.DataBean, BaseVie
             StringUtil.setText(tv_item_hotpoint_date, item.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_hotpoint_num, item.getVisitors() + "阅读", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_hotpoint_username, item.getUserName(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_hotpoint_name, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            if (StringUtil.isNotEmpty(item.getTitle())) {
+                StringUtil.setText(tv_item_hotpoint_name, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            } else if (StringUtil.isNotEmpty(item.getContent())) {
+                StringUtil.setText(tv_item_hotpoint_name, item.getContent(), "", View.VISIBLE, View.VISIBLE);
+            }
         }
     }
 }

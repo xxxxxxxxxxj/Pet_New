@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/f8f8ff8"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_bar" />
+
+    <RelativeLayout
+        android:id="@+id/rl_edituserinfo_img"
+        android:layout_width="match_parent"
+        android:layout_height="60dip"
+        android:layout_marginBottom="15dip"
+        android:layout_marginTop="15dip"
+        android:background="@color/white"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip">
+
+        <ImageView
+            android:id="@+id/iv_edituserinfo_img_right"
+            android:layout_width="7dip"
+            android:layout_height="11dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:src="@mipmap/right_more" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="上传头像："
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/iv_edituserinfo_img"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:layout_toLeftOf="@id/iv_edituserinfo_img_right"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_image_load_circle" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_edituserinfo_username"
+        android:layout_width="match_parent"
+        android:layout_height="60dip"
+        android:background="@color/white"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip">
+
+        <TextView
+            android:id="@+id/tv_edituserinfo_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:text="用户名："
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/et_edituserinfo_username"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="17dip"
+            android:layout_toRightOf="@id/tv_edituserinfo_username"
+            android:background="@android:color/transparent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical|right"
+            android:hint="请输入用户名"
+            android:textColor="@color/a333333"
+            android:textColorHint="@color/aBBBBBB"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+</LinearLayout>

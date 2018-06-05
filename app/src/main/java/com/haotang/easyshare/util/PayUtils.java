@@ -28,7 +28,7 @@ public class PayUtils {
     /*public static void weChatPayment(Activity activity, String appId,
                                      String partnerId, String prepayId, String packageValue,
                                      String nonceStr, String timeStamp, String sign,
-                                     MProgressDialog pDialog) {
+                                     LoadingProgressDailog pDialog) {
         PayReq payReq = new PayReq();
         payReq.appId = appId;
         payReq.partnerId = partnerId;

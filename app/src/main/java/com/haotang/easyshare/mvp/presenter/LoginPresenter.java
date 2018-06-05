@@ -3,6 +3,8 @@ package com.haotang.easyshare.mvp.presenter;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.SendVerifyCodeBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxLoginBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxUserInfoBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.ILoginModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
@@ -11,6 +13,8 @@ import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
+
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -61,8 +65,8 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
     /**
      * 登陆
      */
-    public void login(String phone,String wxOpenId, double lng, double lat, String registrationId, String code) {
-        DevRing.httpManager().commonRequest(mIModel.login(phone,wxOpenId, lng, lat, registrationId, code),
+    public void login(String phone, String wxOpenId, double lng, double lat, String registrationId, String code, String userName, String headImg) {
+        DevRing.httpManager().commonRequest(mIModel.login(phone, wxOpenId, lng, lat, registrationId, code, userName, headImg),
                 new CommonObserver<HttpResult<LoginBean>>() {
                     @Override
                     public void onResult(HttpResult<LoginBean> result) {
@@ -86,6 +90,80 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
                     public void onError(int errType, String errMessage) {
                         if (mIView != null) {
                             mIView.loginFail(errType, errMessage);
+                        }
+                    }
+                }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 微信获取WxOpenId
+     *
+     * @param body
+     */
+    public void getWxOpenId(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.getWxOpenId(body),
+                new CommonObserver<HttpResult<WxLoginBean>>() {
+                    @Override
+                    public void onResult(HttpResult<WxLoginBean> result) {
+                        if (mIView != null) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    mIView.getWxOpenIdSuccess
+                                            (result.getData());
+                                } else {
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        mIView.getWxOpenIdFail(result.getCode(), result.getMsg());
+                                    } else {
+                                        mIView.getWxOpenIdFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG
+                                                + "-code=" + result.getCode());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int errType, String errMessage) {
+                        if (mIView != null) {
+                            mIView.getWxOpenIdFail(errType, errMessage);
+                        }
+                    }
+                }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 微信获取用户信息
+     *
+     * @param body
+     */
+    public void getWxUserInfo(RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.getWxUserInfo(body),
+                new CommonObserver<HttpResult<WxUserInfoBean>>() {
+                    @Override
+                    public void onResult(HttpResult<WxUserInfoBean> result) {
+                        if (mIView != null) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    mIView.getWxUserInfoSuccess
+
+                                            (result.getData());
+                                } else {
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        mIView.getWxUserInfoFail(result.getCode(), result.getMsg());
+                                    } else {
+                                        mIView.getWxUserInfoFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG
+                                                + "-code=" + result.getCode());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int errType, String errMessage) {
+                        if (mIView != null) {
+                            mIView.getWxUserInfoFail
+                                    (errType, errMessage);
                         }
                     }
                 }, RxLifecycleUtil.bindUntilDestroy(mIView));

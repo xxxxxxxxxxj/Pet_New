@@ -25,7 +25,7 @@ import com.haotang.easyshare.mvp.view.adapter.CommentDetailAdapter;
 import com.haotang.easyshare.mvp.view.iview.ICommentDetailView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.StringUtil;
-import com.ljy.devring.DevRing;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -40,7 +40,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 评论详情页
+ * 充电桩评论列表页
  */
 public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> implements ICommentDetailView {
     @Inject
@@ -66,7 +66,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerCommentDetailActivityCommponent.builder().commentDetailActivityModule(new CommentDetailActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
     }
@@ -88,6 +88,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.list(uuid, mNextRequestPage);
     }
 
@@ -108,6 +109,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     }
 
     private void refresh() {
+        showDialog();
         commentDetailAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         srlCommentDetail.setRefreshing(true);
         mNextRequestPage = 1;
@@ -121,7 +123,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.ll_comment_detail_add})
@@ -131,13 +133,18 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
                 finish();
                 break;
             case R.id.ll_comment_detail_add:
-                startActivity(new Intent(CommentDetailActivity.this, CommentActivity.class).putExtra("uuid", uuid));
+                if (SystemUtil.checkLogin(this)) {
+                    startActivity(new Intent(CommentDetailActivity.this, CommentActivity.class).putExtra("uuid", uuid));
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
+                }
                 break;
         }
     }
 
     @Override
     public void listSuccess(CommentBean data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlCommentDetail.setRefreshing(false);
             commentDetailAdapter.setEnableLoadMore(true);
@@ -185,6 +192,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
                 } else {
                     commentDetailAdapter.loadMoreEnd(false);
                 }
+                commentDetailAdapter.setEmptyView(setEmptyViewBase(2, "暂无评论", R.mipmap.no_data, null));
             }
         }
         commentDetailAdapter.notifyDataSetChanged();
@@ -192,6 +200,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
         if (mNextRequestPage == 1) {
             commentDetailAdapter.setEnableLoadMore(true);
@@ -199,6 +208,12 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
         } else {
             commentDetailAdapter.loadMoreFail();
         }
+        commentDetailAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
     }
 
     @Override

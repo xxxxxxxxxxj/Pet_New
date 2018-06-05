@@ -56,6 +56,33 @@ public class HotCarBean {
         private String icon;
         private int id;
         private String brand;
+        private String sortLetters;  //显示数据拼音的首字母
+        private String pyhead;//字母缩写
+        private List<HotSpecialCarBean.DataBean> carList;
+
+        public List<HotSpecialCarBean.DataBean> getCarList() {
+            return carList;
+        }
+
+        public void setCarList(List<HotSpecialCarBean.DataBean> carList) {
+            this.carList = carList;
+        }
+
+        public String getSortLetters() {
+            return sortLetters;
+        }
+
+        public void setSortLetters(String sortLetters) {
+            this.sortLetters = sortLetters;
+        }
+
+        public String getPyhead() {
+            return pyhead;
+        }
+
+        public void setPyhead(String pyhead) {
+            this.pyhead = pyhead;
+        }
 
         public String getIcon() {
             return icon;

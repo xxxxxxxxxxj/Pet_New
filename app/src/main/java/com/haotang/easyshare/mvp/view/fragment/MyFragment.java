@@ -15,6 +15,7 @@ import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMyFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MyFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
@@ -24,20 +25,21 @@ import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
 import com.haotang.easyshare.mvp.view.activity.CarInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.CollectChargeActivity;
+import com.haotang.easyshare.mvp.view.activity.EditUserInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
-import com.haotang.easyshare.mvp.view.activity.MemberActivity;
 import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
 import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
-import com.haotang.easyshare.mvp.view.activity.TestActivity;
+import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.MyFragChargePagerAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMyFragmentView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.GlideUtil;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
-import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -48,9 +50,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.haotang.easyshare.R.id.iv_myfragment_add;
-
 
 /**
  * <p>Title:${type_name}</p>
@@ -74,9 +73,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     LinearLayout llMyfragmentYuejf;
     @BindView(R.id.tv_myfragment_username)
     TextView tvMyfragmentUsername;
-    @BindView(iv_myfragment_add)
-    ImageView ivMyfragmentAdd;
-    TextView tvMyfragmentFwf;
     @BindView(R.id.ll_myfragment_mycdz)
     LinearLayout llMyfragmentMycdz;
     @BindView(R.id.ll_myfragment_jqqd)
@@ -111,18 +107,45 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     TextView tvMyfragmentJjdh;
     @BindView(R.id.vp_myfragment_mycdz)
     ViewPager vpMyfragmentMycdz;
+    @BindView(R.id.tv_myfragment_mycharge_num)
+    TextView tv_myfragment_mycharge_num;
+    @BindView(R.id.iv_myfragment_add)
+    ImageView iv_myfragment_add;
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
     private String kf_phone = "";
     private String uuid;
+    private String vipPrivilege;
+    private int pagePosition;
+    private List<HomeBean.StationsBean> stations;
 
     @Override
     public boolean isUseEventBus() {
         return true;
     }
 
+    @Override
+    public void requestData() {
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (SystemUtil.checkLogin(mActivity) && refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_MYFRAGMET) {
+            RingLog.e("REFRESH_MYFRAGMET");
+            rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
+            llMyfragmentMycdz.setVisibility(View.VISIBLE);
+            showDialog();
+            mPresenter.home();
+            mPresenter.my();
+        }
+    }
+
     @Subscribe
     public void getLoginInfo(LoginBean data) {
+        rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
+        llMyfragmentMycdz.setVisibility(View.VISIBLE);
+        showDialog();
         mPresenter.home();
+        mPresenter.my();
     }
 
     @Override
@@ -136,6 +159,11 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void initView() {
         DaggerMyFragmentCommponent.builder()
                 .myFragmentModule(new MyFragmentModule(this, mActivity))
@@ -144,86 +172,162 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         rllMyfragmentUserinfo.bringToFront();
         ivMyfragmentUserimg.bringToFront();
         if (SystemUtil.checkLogin(mActivity)) {
+            rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
-            ivMyfragmentAdd.setVisibility(View.GONE);
         } else {
-            ivMyfragmentAdd.setVisibility(View.VISIBLE);
+            rtvMyfragmentTuichu.setVisibility(View.GONE);
+            tvMyfragmentUsername.setText("立即登录");
             llMyfragmentMycdz.setVisibility(View.GONE);
         }
     }
 
     @Override
     protected void initData() {
-        mPresenter.home();
-        mPresenter.my();
+        if (SystemUtil.checkLogin(mActivity)) {
+            showDialog();
+            mPresenter.home();
+            mPresenter.my();
+        }
     }
 
     @Override
     protected void initEvent() {
+        vpMyfragmentMycdz.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pagePosition = position;
+                RingLog.e(TAG, "onPageSelected position = " + position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
-    @OnClick({iv_myfragment_add, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
+    @OnClick({R.id.iv_myfragment_add, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
             R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
             R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
-            R.id.tv_myfragment_username})
+            R.id.tv_myfragment_username, R.id.iv_myfragment_userimg, R.id.rl_myfragment_mycharge_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rl_myfragment_mycharge_right:
+                if (stations != null && stations.size() > 0) {
+                    pagePosition++;
+                    if (stations.size() > pagePosition) {
+                        pagePosition++;
+                    } else {
+                        pagePosition = 0;
+                    }
+                    vpMyfragmentMycdz.setCurrentItem(pagePosition);
+                }
+                break;
+            case R.id.iv_myfragment_userimg:
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, EditUserInfoActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
+                break;
             case R.id.tv_myfragment_username:
                 if (SystemUtil.checkLogin(mActivity)) {
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case iv_myfragment_add:
-                startActivity(new Intent(mActivity, AddChargeActivity.class));
+            case R.id.iv_myfragment_add:
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, AddChargeActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_clxx:
-                startActivity(new Intent(mActivity, CarInfoActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, CarInfoActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_hytq:
-                startActivity(new Intent(mActivity, MemberActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, WebViewActivity.class).
+                            putExtra(WebViewActivity.URL_KEY, vipPrivilege));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_wdtz:
-                startActivity(new Intent(mActivity, MyPostActivity.class).putExtra("uuid", uuid));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    if (StringUtil.isNotEmpty(uuid)) {
+                        startActivity(new Intent(mActivity, MyPostActivity.class).putExtra("uuid", uuid));
+                    }
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_scdzd:
-                startActivity(new Intent(mActivity, CollectChargeActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, CollectChargeActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_gzdr:
-                startActivity(new Intent(mActivity, MyFollowActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, MyFollowActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_jjdh:
                 SystemUtil.cellPhone(mActivity, kf_phone);
                 break;
             case R.id.rl_myfragment_srgj:
-                startActivity(new Intent(mActivity, ButlerActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, ButlerActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_myfragment_gy:
                 startActivity(new Intent(mActivity, AboutActivity.class));
                 break;
             case R.id.rtv_myfragment_tuichu:
-                //SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
-                startActivity(new Intent(mActivity, TestActivity.class));
+                SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
+                DevRing.configureHttp().getMapHeader().put("phone", "");
+                rtvMyfragmentTuichu.setVisibility(View.GONE);
+                tvMyfragmentUsername.setText("立即登录");
+                llMyfragmentMycdz.setVisibility(View.GONE);
                 break;
         }
     }
 
     @Override
     public void homeSuccess(HomeBean data) {
+        disMissDialog();
         RingLog.e(TAG, "MyFragment homeSuccess()");
         if (data != null) {
+            vipPrivilege = data.getVipPrivilege();
             uuid = data.getUuid();
             kf_phone = data.getKf_phone();
             StringUtil.setText(tvMyfragmentUsername, data.getUserName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentYue, String.valueOf(data.getBalance()), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentVipjf, String.valueOf(data.getCoins()), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvMyfragmentClxx, data.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentSycs, data.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentJjdh, data.getKf_phone(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetCircleImg(mActivity, data.getHeadImg(), ivMyfragmentUserimg, R.mipmap.ic_image_load_circle);
-            List<HomeBean.StationsBean> stations = data.getStations();
+            stations = data.getStations();
             if (stations != null && stations.size() > 0) {
+                iv_myfragment_add.setVisibility(View.GONE);
+                StringUtil.setText(tv_myfragment_mycharge_num, "(" + stations.size() + ")", "", View.VISIBLE, View.VISIBLE);
+                mFragments.clear();
                 llMyfragmentMycdz.setVisibility(View.VISIBLE);
                 for (HomeBean.StationsBean stationsBean : stations) {
                     ChargeFragment chargeFragment = new ChargeFragment();
@@ -234,6 +338,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 }
                 vpMyfragmentMycdz.setAdapter(new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments));
             } else {
+                iv_myfragment_add.setVisibility(View.VISIBLE);
                 llMyfragmentMycdz.setVisibility(View.GONE);
             }
         }
@@ -241,11 +346,13 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     public void homeFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "MyFragment homeFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void mySuccess(List<MyCarBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             MyCarBean.DataBean dataBean = data.get(0);
             if (dataBean != null) {
@@ -254,17 +361,9 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         }
     }
 
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("MainScreen"); //统计页面("MainScreen"为页面名称，可自定义)
-    }
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("MainScreen");
-    }
-
     @Override
     public void myFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "MyFragment myFail() status = " + code + "---desc = " + msg);
     }
 }

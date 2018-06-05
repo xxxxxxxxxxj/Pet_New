@@ -39,11 +39,40 @@ public class MainFragChargeBean {
     private int slowNum;
     private double lat;
     private Bitmap bitmap;
+    private String parkingPrice;
+    private String payWay;
+    private String provider;
+
+    public String getParkingPrice() {
+        return parkingPrice;
+    }
+
+    public void setParkingPrice(String parkingPrice) {
+        this.parkingPrice = parkingPrice;
+    }
+
+    public String getPayWay() {
+        return payWay;
+    }
+
+    public void setPayWay(String payWay) {
+        this.payWay = payWay;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
 
     public MainFragChargeBean() {
     }
 
-    public MainFragChargeBean(String img, String address, String distance, double lng, int fastNum, int freeNum, int isPrivate, String title, String openTime, String uuid, int slowNum, double lat) {
+    public MainFragChargeBean(String img, String address, String distance, double lng, int fastNum, int freeNum,
+                              int isPrivate, String title, String openTime, String uuid, int slowNum, double lat
+            , String parkingPrice, String payWay, String provider) {
         this.img = img;
         this.address = address;
         this.distance = distance;
@@ -56,6 +85,9 @@ public class MainFragChargeBean {
         this.uuid = uuid;
         this.slowNum = slowNum;
         this.lat = lat;
+        this.parkingPrice = parkingPrice;
+        this.payWay = payWay;
+        this.provider = provider;
     }
 
     public Bitmap getBitmap() {

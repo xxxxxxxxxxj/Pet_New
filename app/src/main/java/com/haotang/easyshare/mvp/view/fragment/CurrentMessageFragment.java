@@ -5,14 +5,16 @@ import android.widget.EditText;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerCurrentMessageFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.CurrentMessageFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.presenter.CurrentMessageFragmentPresenter;
+import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.ICurrentMessageFragmentView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
-import com.umeng.analytics.MobclickAgent;
 
 import javax.inject.Inject;
 
@@ -60,26 +62,27 @@ public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentP
 
     }
 
+    @Override
+    public void requestData() {
+
+    }
+
     public void saveMsg() {
+        showDialog();
         mPresenter.save(1, etCurrentmsg.getText().toString().trim());
     }
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        disMissDialog();
         etCurrentmsg.setText("");
         RingToast.show("发布成功");
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HISTORYMESSAGEFRAGMET));
     }
 
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("ButlerScreen"); //统计页面("MainScreen"为页面名称，可自定义)
-    }
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("ButlerScreen");
-    }
     @Override
     public void saveFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "historyFail() status = " + code + "---desc = " + msg);
     }
 }

@@ -44,7 +44,7 @@ public class TestActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
 
     }
 
@@ -66,7 +66,7 @@ public class TestActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.btn_test_webview, R.id.btn_test_share, R.id.btn_test_wxlogin, R.id.btn_test_wxpay, R.id.btn_test_alipay

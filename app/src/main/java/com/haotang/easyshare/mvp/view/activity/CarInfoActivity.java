@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerCarInfoActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CarInfoActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
 import com.haotang.easyshare.mvp.presenter.CarInfoPresenter;
@@ -51,7 +52,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerCarInfoActivityCommponent.builder().carInfoActivityModule(new CarInfoActivityModule(this, this)).build().inject(this);
     }
 
@@ -62,6 +63,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.my();
     }
 
@@ -73,7 +75,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.iv_carinfo_submit})
@@ -83,6 +85,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
                 finish();
                 break;
             case R.id.iv_carinfo_submit:
+                showDialog();
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("brand", etCarinfoQcpp.getText().toString().trim());
                 builder.addFormDataPart("car", etCarinfoCx.getText().toString().trim());
@@ -98,6 +101,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
 
     @Override
     public void mySuccess(List<MyCarBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             MyCarBean.DataBean dataBean = data.get(0);
             if (dataBean != null) {
@@ -111,16 +115,21 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
 
     @Override
     public void myFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "myFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        disMissDialog();
         RingLog.e(TAG, "saveSuccess");
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
+        finish();
     }
 
     @Override
     public void saveFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
 

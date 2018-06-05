@@ -28,7 +28,7 @@ public class MemberActivity extends BaseActivity<MemberPresenter> implements IMe
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerMemberActivityCommponent.builder().memberActivityModule(new MemberActivityModule(this, this)).build().inject(this);
     }
 
@@ -49,7 +49,7 @@ public class MemberActivity extends BaseActivity<MemberPresenter> implements IMe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override

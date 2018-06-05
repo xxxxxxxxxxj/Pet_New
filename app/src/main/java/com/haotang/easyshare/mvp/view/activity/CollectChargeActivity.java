@@ -22,8 +22,8 @@ import com.haotang.easyshare.mvp.presenter.CollectChargePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.CollectChargeListAdapter;
 import com.haotang.easyshare.mvp.view.iview.ICollectChargeView;
+import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
@@ -44,7 +44,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
 /**
  * 收藏的站点
  */
@@ -71,7 +70,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerCollectChargeActivityCommponent.builder().collectChargeActivityModule(new CollectChargeActivityModule(this, this)).build().inject(this);
     }
 
@@ -122,11 +121,24 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
             adapterPosition = menuBridge.getAdapterPosition(); // RecyclerView的Item的position。
             if (direction == SwipeMenuRecyclerView.RIGHT_DIRECTION) {
                 if (list != null && list.size() > 0 && list.size() > adapterPosition) {
-                    CollectChargeBean.DataBean dataBean = list.get(adapterPosition);
-                    if(dataBean != null){
-                        parmMap.clear();
-                        parmMap.put("uuid", dataBean.getUuid());
-                        mPresenter.cancel(parmMap);
+                    final CollectChargeBean.DataBean dataBean = list.get(adapterPosition);
+                    if (dataBean != null) {
+                        new AlertDialogNavAndPost(CollectChargeActivity.this).builder().setTitle("")
+                                .setMsg("确定删除收藏的充电桩吗")
+                                .setPositiveButton("确定", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        showDialog();
+                                        parmMap.clear();
+                                        parmMap.put("uuid", dataBean.getUuid());
+                                        mPresenter.cancel(parmMap);
+                                    }
+                                }).setNegativeButton("取消", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        }).show();
                     }
                 }
             }
@@ -135,6 +147,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         mPresenter.list();
     }
 
@@ -166,6 +179,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
     }
 
     private void refresh() {
+        showDialog();
         collectChargeListAdapter.setEnableLoadMore(false);
         srlCollectCharge.setRefreshing(true);
         mNextRequestPage = 1;
@@ -179,7 +193,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back})
@@ -193,6 +207,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
 
     @Override
     public void listSuccess(List<CollectChargeBean.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlCollectCharge.setRefreshing(false);
             collectChargeListAdapter.setEnableLoadMore(true);
@@ -215,29 +230,39 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
             } else {
                 collectChargeListAdapter.loadMoreEnd(false);
             }
+            collectChargeListAdapter.setEmptyView(setEmptyViewBase(2, "暂无收藏的充电桩", R.mipmap.no_data, null));
         }
         collectChargeListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             collectChargeListAdapter.setEnableLoadMore(true);
             srlCollectCharge.setRefreshing(false);
         } else {
             collectChargeListAdapter.loadMoreFail();
         }
+        collectChargeListAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void cancelSuccess(AddChargeBean data) {
+        disMissDialog();
         list.remove(adapterPosition);
         collectChargeListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void cancelFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 

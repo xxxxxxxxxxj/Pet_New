@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -39,7 +40,7 @@ public class JChatTestActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        activityListManager.addActivity(this);
     }
 
     @Override
@@ -138,6 +139,12 @@ public class JChatTestActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.view.iview;
 
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.SendVerifyCodeBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxLoginBean;
+import com.haotang.easyshare.mvp.model.entity.res.WxUserInfoBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
 /**
@@ -20,4 +22,12 @@ public interface ILoginView extends IBaseView{
     void loginSuccess(LoginBean data);
 
     void loginFail(int status, String desc);
+
+    void getWxOpenIdSuccess(WxLoginBean data);
+
+    void getWxOpenIdFail(int serverError, String s);
+
+    void getWxUserInfoFail(int errType, String errMessage);
+
+    void getWxUserInfoSuccess(WxUserInfoBean data);
 }

@@ -18,4 +18,9 @@ public interface IMyPostModel extends IBaseModel {
      * 用户帖子列表
      */
     Observable list(RequestBody body);
+
+    /**
+     * 删除帖子
+     */
+    Observable delete(RequestBody body);
 }

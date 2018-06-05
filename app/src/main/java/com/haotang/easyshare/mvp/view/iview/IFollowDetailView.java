@@ -39,4 +39,8 @@ public interface IFollowDetailView extends IBaseView{
     void praiseSuccess(AddChargeBean data);
 
     void praiseFail(int code, String msg);
+
+    void starsSuccess(List<String> data);
+
+    void starsFail(int code, String msg);
 }

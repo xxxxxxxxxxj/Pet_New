@@ -42,6 +42,15 @@ public class HomeBean {
     private int isCollect;
     private int isEval;
     private List<StationsBean> stations;
+    private String vipPrivilege;
+
+    public String getVipPrivilege() {
+        return vipPrivilege;
+    }
+
+    public void setVipPrivilege(String vipPrivilege) {
+        this.vipPrivilege = vipPrivilege;
+    }
 
     public int getIsCollect() {
         return isCollect;

@@ -14,10 +14,11 @@ import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
-import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.haotang.easyshare.R.id.rl_chargefrag_root;
 
 /**
  * <p>Title:${type_name}</p>
@@ -31,23 +32,16 @@ import butterknife.OnClick;
 /**
  * 充电桩
  */
-public class ChargeFragment extends BaseFragment {
-    @BindView(R.id.tv_myfragment_cdcs)
-    TextView tvMyfragmentCdcs;
-    @BindView(R.id.iv_myfragment_img)
-    ImageView ivMyfragmentImg;
-    @BindView(R.id.rl_myfragment_img)
-    RelativeLayout rlMyfragmentImg;
-    @BindView(R.id.tv_myfragment_bjcdz)
-    TextView tvMyfragmentBjcdz;
-    @BindView(R.id.iv_myfragment_ggorgr)
-    ImageView ivMyfragmentGgorgr;
-    @BindView(R.id.tv_myfragment_name)
-    TextView tvMyfragmentName;
-    @BindView(R.id.tv_myfragment_cdf)
-    TextView tvMyfragmentCdf;
-    @BindView(R.id.tv_myfragment_fwf)
-    TextView tvMyfragmentFwf;
+public class ChargeFragment extends BaseFragment implements View.OnClickListener {
+    private TextView tvMyfragmentCdcs;
+    private ImageView ivMyfragmentImg;
+    private RelativeLayout rl_chargefrag_root;
+    private RelativeLayout rlMyfragmentImg;
+    private TextView tvMyfragmentBjcdz;
+    private ImageView ivMyfragmentGgorgr;
+    private TextView tvMyfragmentName;
+    private TextView tvMyfragmentCdf;
+    private TextView tvMyfragmentFwf;
     private String uuid;
 
     public ChargeFragment() {
@@ -55,7 +49,7 @@ public class ChargeFragment extends BaseFragment {
 
     @Override
     protected boolean isLazyLoad() {
-        return false;
+        return true;
     }
 
     @Override
@@ -65,6 +59,22 @@ public class ChargeFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        View view = getmContentView();
+        if (view != null) {
+            tvMyfragmentCdcs = (TextView) view.findViewById(R.id.tv_myfragment_cdcs);
+            ivMyfragmentImg = (ImageView) view.findViewById(R.id.iv_myfragment_img);
+            rlMyfragmentImg = (RelativeLayout) view.findViewById(R.id.rl_myfragment_img);
+            tvMyfragmentBjcdz = (TextView) view.findViewById(R.id.tv_myfragment_bjcdz);
+            ivMyfragmentGgorgr = (ImageView) view.findViewById(R.id.iv_myfragment_ggorgr);
+            tvMyfragmentName = (TextView) view.findViewById(R.id.tv_myfragment_name);
+            tvMyfragmentCdf = (TextView) view.findViewById(R.id.tv_myfragment_cdf);
+            tvMyfragmentFwf = (TextView) view.findViewById(R.id.tv_myfragment_fwf);
+            rl_chargefrag_root = (RelativeLayout) view.findViewById(R.id.rl_chargefrag_root);
+        }
+    }
+
+    @Override
+    protected void initData() {
         Bundle arguments = getArguments();
         HomeBean.StationsBean stationsBean = arguments.getParcelable("stationsBean");
         if (stationsBean != null) {
@@ -79,26 +89,18 @@ public class ChargeFragment extends BaseFragment {
     }
 
     @Override
-    protected void initData() {
+    protected void initEvent() {
+        tvMyfragmentBjcdz.setOnClickListener(this);
+        rl_chargefrag_root.setOnClickListener(this);
+    }
+
+    @Override
+    public void requestData() {
 
     }
 
     @Override
-    protected void initEvent() {
-
-    }
-
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("MainScreen"); //统计页面("MainScreen"为页面名称，可自定义)
-    }
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("MainScreen");
-    }
-
-    @OnClick({R.id.tv_myfragment_bjcdz, R.id.rl_chargefrag_root})
-    public void onViewClicked(View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_myfragment_bjcdz:
                 startActivity(new Intent(mActivity, AddChargeActivity.class).putExtra("uuid", uuid));

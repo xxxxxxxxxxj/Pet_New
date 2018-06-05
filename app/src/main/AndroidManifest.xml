@@ -86,9 +86,9 @@
     <application
         android:name=".app.PetApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -103,7 +103,8 @@
         <activity
             android:name=".mvp.view.activity.MainActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".mvp.view.activity.StartPageActivity"
             android:launchMode="singleTop"
@@ -256,6 +257,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
+        <activity
+            android:name=".mvp.view.activity.EditUserInfoActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
 
         <receiver
             android:name=".updateapputil.UpdateAppReceiver"
@@ -290,7 +296,7 @@
         <!-- 友盟测试key：55cd4aa4e0f55a4cc8009565 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5affa9e9f43e4831e00001fa" />
+            android:value="5b04ccf0a40fa37bb50001b7" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="easyshare_1" />
@@ -475,6 +481,7 @@
 
         <service android:name="com.amap.api.location.APSService" />
         <!-- 高德地图结束 -->
+        <activity android:name=".mvp.view.activity.BrandCarActivity"></activity>
     </application>
 
 </manifest>

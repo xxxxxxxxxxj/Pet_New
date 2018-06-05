@@ -10,6 +10,14 @@ public class BaseToken {
 
     private String openid;
 
+    @Override
+    public String toString() {
+        return "BaseToken{" +
+                "access_token='" + access_token + '\'' +
+                ", openid='" + openid + '\'' +
+                '}';
+    }
+
     public String getAccessToken() {
         return access_token;
     }

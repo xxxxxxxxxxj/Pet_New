@@ -67,7 +67,6 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
     public void getFlashFail(int status, String desc) {
         initTimer(0);
         RingLog.e(TAG, "FlashActivity getFlashFail() status = " + status + "---desc = " + desc);
-        RingToast.show("FlashActivity getFlashFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
@@ -80,7 +79,7 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
         setSwipeBackEnable(false);
         //使用Dagger2对本类中相关变量进行初始化
         DaggerFlashActivityCommponent.builder().flashActivityModule(new FlashActivityModule(this, this)).build().inject(this);
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         permissionDialog.setMessage("该功能需您授予\"获取手机信息和位置权限\"权限才可正常使用");
     }
 
@@ -160,14 +159,14 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
         intent.putExtra("point", point);
         startActivity(intent);
         finish();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         CountdownUtil.getInstance().cancel("FLASH_TIMER");
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @Override

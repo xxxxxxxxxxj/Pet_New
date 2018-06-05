@@ -8,22 +8,27 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerMyPostActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MyPostActivityModule;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.MyPostPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.PostListAdapter;
 import com.haotang.easyshare.mvp.view.iview.IMyPostView;
+import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
-import com.ljy.devring.DevRing;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -58,6 +63,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     private PostListAdapter postListAdapter;
     private int pageSize;
     private String uuid = "";
+    private int deletePosition;
 
     @Override
     protected int getContentLayout() {
@@ -66,15 +72,13 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerMyPostActivityCommponent.builder().myPostActivityModule(new MyPostActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
     }
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-        tvTitlebarOther.setVisibility(View.VISIBLE);
-        tvTitlebarOther.setText("发帖");
         tvTitlebarTitle.setText("我的帖子");
         srlMyPost.setRefreshing(true);
         srlMyPost.setColorSchemeColors(Color.rgb(47, 223, 189));
@@ -90,6 +94,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
         //构建body
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("uuid", uuid);
@@ -106,20 +111,68 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                 if (list.size() > 0 && list.size() > position) {
                     PostBean.DataBean dataBean = list.get(position);
                     if (dataBean != null) {
-                        ShareBottomDialog dialog = new ShareBottomDialog();
-                        dialog.setShareInfo("测试", "测试",
-                                "https://www.duba.com", "http://img.sayiyinxiang.com/api/brand/imgs/15246549042921928075.jpg");
-                        dialog.show(getSupportFragmentManager());
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
+                            if (shareMap.getUrl() != null && !TextUtils.isEmpty(shareMap.getUrl())) {
+                                if (!shareMap.getUrl().startsWith("http:")
+                                        && !shareMap.getUrl().startsWith("https:") && !shareMap.getUrl().startsWith("file:///")) {
+                                    shareMap.setUrl(UrlConstants.getServiceBaseUrl() + shareMap.getUrl());
+                                }
+                                if (shareMap.getUrl().contains("?")) {
+                                    shareMap.setUrl(shareMap.getUrl() + "&system=android_" + SystemUtil.getCurrentVersion(MyPostActivity.this)
+                                            + "&imei="
+                                            + SystemUtil.getIMEI(MyPostActivity.this)
+                                            + "&phone="
+                                            + SharedPreferenceUtil.getInstance(MyPostActivity.this).getString("cellphone", "") + "&phoneModel="
+                                            + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                            + "&phoneSystemVersion=" + "Android "
+                                            + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                            + System.currentTimeMillis());
+                                } else {
+                                    shareMap.setUrl(shareMap.getUrl() + "?system=android_" + SystemUtil.getCurrentVersion(MyPostActivity.this)
+                                            + "&imei="
+                                            + SystemUtil.getIMEI(MyPostActivity.this)
+                                            + "&phone="
+                                            + SharedPreferenceUtil.getInstance(MyPostActivity.this).getString("cellphone", "") + "&phoneModel="
+                                            + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                            + "&phoneSystemVersion=" + "Android "
+                                            + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                            + System.currentTimeMillis());
+                                }
+                                shareMap.setUrl(shareMap.getUrl() + "&uuid=" + dataBean.getUuid());
+                            }
+                            ShareBottomDialog dialog = new ShareBottomDialog();
+                            dialog.setUuid(dataBean.getUuid());
+                            dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
+                                    shareMap.getUrl(), shareMap.getImg());
+                            dialog.show(getSupportFragmentManager());
+                        }
                     }
                 }
             }
         });
         postListAdapter.setOnDeleteItemListener(new PostListAdapter.OnDeleteItemListener() {
             @Override
-            public void OnDeleteItem(int position) {
+            public void OnDeleteItem(final int position) {
                 if (list.size() > 0 && list.size() > position) {
-                    list.remove(position);
-                    postListAdapter.notifyDataSetChanged();
+                    new AlertDialogNavAndPost(MyPostActivity.this).builder().setTitle("")
+                            .setMsg("确定删除这条帖子吗")
+                            .setPositiveButton("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showDialog();
+                                    deletePosition = position;
+                                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                                    builder.addFormDataPart("uuid", list.get(position).getUuid());
+                                    RequestBody body = builder.build();
+                                    mPresenter.delete(body);
+                                }
+                            }).setNegativeButton("取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
                 }
             }
         });
@@ -127,9 +180,16 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (list.size() > 0 && list.size() > position) {
-                    startActivity(new Intent(MyPostActivity.this, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, "http://192.168.0.252/static/conte" +
-                            "nt/html5/LiveList/LiveList.html?cwj_bannershare=1&system=android_4.9.0&imei=A00000598A8C45&cellPhone=15" +
-                            "717155675&phoneModel=HONOR KIW-CL00&phoneSystemVersion=Android 6.0.1&time=1525775735803"));
+                    PostBean.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
+                            Intent intent = new Intent(MyPostActivity.this, WebViewActivity.class);
+                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                            intent.putExtra("uuid", dataBean.getUuid());
+                            startActivity(intent);
+                        }
+                    }
                 }
             }
         });
@@ -148,6 +208,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     }
 
     private void refresh() {
+        showDialog();
         postListAdapter.setEnableLoadMore(false);
         srlMyPost.setRefreshing(true);
         mNextRequestPage = 1;
@@ -171,7 +232,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other})
@@ -188,6 +249,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
 
     @Override
     public void listSuccess(List<PostBean.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlMyPost.setRefreshing(false);
             postListAdapter.setEnableLoadMore(true);
@@ -210,20 +272,42 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
             } else {
                 postListAdapter.loadMoreEnd(false);
             }
+            postListAdapter.setEmptyView(setEmptyViewBase(2, "您还没有发布帖子哦", R.mipmap.no_data, null));
         }
         postListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             postListAdapter.setEnableLoadMore(true);
             srlMyPost.setRefreshing(false);
         } else {
             postListAdapter.loadMoreFail();
         }
+        postListAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
+
+    @Override
+    public void deleteSuccess(AddChargeBean data) {
+        disMissDialog();
+        list.remove(deletePosition);
+        postListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void deleteFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "deleteFail() status = " + code + "---desc = " + msg);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

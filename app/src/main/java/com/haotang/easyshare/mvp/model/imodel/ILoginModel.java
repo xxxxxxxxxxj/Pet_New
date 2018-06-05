@@ -3,6 +3,7 @@ package com.haotang.easyshare.mvp.model.imodel;
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -12,7 +13,7 @@ import io.reactivex.Observable;
  * @author 徐俊
  * @date XJ on 2018/5/7 17:53
  */
-public interface ILoginModel extends IBaseModel{
+public interface ILoginModel extends IBaseModel {
     /**
      * 下发验证码
      */
@@ -21,5 +22,19 @@ public interface ILoginModel extends IBaseModel{
     /**
      * 登陆
      */
-    Observable login(String phone,String wxOpenId, double lng, double lat, String registrationId, String code);
+    Observable login(String phone, String wxOpenId, double lng, double lat, String registrationId, String code, String userName, String headImg);
+
+    /**
+     * 微信获取WxOpenId
+     *
+     * @param body
+     */
+    Observable getWxOpenId(RequestBody body);
+
+    /**
+     * 微信获取用户信息
+     *
+     * @param body
+     */
+    Observable getWxUserInfo(RequestBody body);
 }

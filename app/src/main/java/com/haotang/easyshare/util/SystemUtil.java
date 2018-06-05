@@ -17,28 +17,34 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.LngLat;
 import com.haotang.easyshare.mvp.view.activity.PhotoViewPagerActivity;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -372,50 +378,121 @@ public class SystemUtil {
         return bitmap;
     }
 
-    public static void goNavigation(Context context, double lat, double lng, String saddr,
-                                    String daddr, String city) {
-        if (checkApkExist(context, AppConfig.GaoDeMapPackageName)) {
-            try {
-                goToNaviActivity(context, context.getResources().getString(R.string.app_name), "", lat + "",
-                        lng + "", "1", "2");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (checkApkExist(context, AppConfig.BaiDuMapPackageName)) {
-            try {
-                LngLat lngLat = CoodinateCovertor.bd_encrypt(new LngLat(lng, lat));
-                Intent intent = Intent.getIntent("intent://map/direction?origin=latlng:" + lngLat.getLantitude()
-                        + "," + lngLat.getLongitude() +
-                        "|name:" + saddr + "&destination=" + daddr + "&mode=driving&region=" + city +
-                        "&src=" + context.getResources().getString(R.string.app_name) + "#Intent;" +
-                        "scheme=bdapp;package=com.baidu.BaiduMap;end");
-                context.startActivity(intent); //启动调用
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            String url = "http://api.map.baidu.com/direction?origin=latlng:" + lat + "," + lng +
-                    "|name:" + saddr + "&destination=" + daddr + "&mode=driving&region=" + city +
-                    "&output=html&src=" + context.getResources().getString(R.string.app_name);
-            Uri uri = Uri.parse(url);
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            context.startActivity(intent);
+    public static void goneJP(Context context) {
+        try {
+            ((InputMethodManager) context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(((Activity) context)
+                                    .getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public static void goToNaviActivity(Context context, String sourceApplication, String poiname, String lat, String lon, String dev, String style) {
-        StringBuffer stringBuffer = new StringBuffer("androidamap://navi?sourceApplication=")
-                .append(sourceApplication);
-        if (!TextUtils.isEmpty(poiname)) {
-            stringBuffer.append("&poiname=").append(poiname);
-        }
-        stringBuffer.append("&lat=").append(lat)
-                .append("&lon=").append(lon)
-                .append("&dev=").append(dev)
-                .append("&style=").append(style);
-        Intent intent = new Intent("android.intent.action.VIEW", android.net.Uri.parse(stringBuffer.toString()));
-        intent.setPackage("com.autonavi.minimap");
-        context.startActivity(intent);
+    public static void goNavigation(final Context context, final double lat, final double lng, final String saddr,
+                                    final String daddr, final String city) {
+        ViewGroup customView = (ViewGroup) View.inflate(context, R.layout.map_bottom_dialog, null);
+        TextView tv_map_bottomdia_gaode = (TextView) customView.findViewById(R.id.tv_map_bottomdia_gaode);
+        TextView tv_map_bottomdia_baidu = (TextView) customView.findViewById(R.id.tv_map_bottomdia_baidu);
+        RoundTextView tv_map_bottomdia_cancel = (RoundTextView) customView.findViewById(R.id.tv_map_bottomdia_cancel);
+        ImageView iv_mapbottom_bg = (ImageView) customView.findViewById(R.id.iv_mapbottom_bg);
+        LinearLayout ll_mapbottom = (LinearLayout) customView.findViewById(R.id.ll_mapbottom);
+        final PopupWindow pWinBottomDialog = new PopupWindow(customView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT, true);
+        pWinBottomDialog.setFocusable(true);// 取得焦点
+        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+        pWinBottomDialog.setBackgroundDrawable(new BitmapDrawable());
+        //点击外部消失
+        pWinBottomDialog.setOutsideTouchable(true);
+        //设置可以点击
+        pWinBottomDialog.setTouchable(true);
+        //进入退出的动画
+        pWinBottomDialog.setAnimationStyle(R.style.mypopwindow_anim_style);
+        pWinBottomDialog.setWidth(SystemUtil.getDisplayMetrics((Activity) context)[0]);
+        pWinBottomDialog.showAtLocation(customView, Gravity.BOTTOM, 0, 0);
+        iv_mapbottom_bg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pWinBottomDialog.dismiss();
+            }
+        });
+        tv_map_bottomdia_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pWinBottomDialog.dismiss();
+            }
+        });
+        ll_mapbottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        tv_map_bottomdia_gaode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pWinBottomDialog.dismiss();
+                if (checkApkExist(context, AppConfig.GaoDeMapPackageName)) {
+                    try {
+                        Intent intent = Intent.getIntent("androidamap://route?sourceApplication=" + context.getResources().getString(R.string.app_name) +
+                                "&sname=" + saddr + "&dlat=" + lat + "&dlon=" + lng + "&dname=" + daddr +
+                                "&dev=0&m=0&t=0");
+                        context.startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Intent intent = new Intent();
+                        intent.setAction("android.intent.action.VIEW");
+                        // 驾车导航
+                        intent.setData(Uri.parse("http://uri.amap.com/navigation?to=" + lng + "," + lat +
+                                "&mode=car&src=nyx_super"));
+                        context.startActivity(intent); // 启动调用
+                    }
+                } else {
+                    Intent intent = new Intent();
+                    intent.setAction("android.intent.action.VIEW");
+                    // 驾车导航
+                    intent.setData(Uri.parse("http://uri.amap.com/navigation?to=" + lng + "," + lat +
+                            "&mode=car&src=nyx_super"));
+                    context.startActivity(intent); // 启动调用
+                }
+            }
+        });
+        tv_map_bottomdia_baidu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pWinBottomDialog.dismiss();
+                if (checkApkExist(context, AppConfig.BaiDuMapPackageName)) {
+                    try {
+                        LngLat lngLat = CoodinateCovertor.bd_encrypt(new LngLat(lng, lat));
+                        Intent intent = Intent.getIntent("intent://map/direction?origin=latlng:" + lngLat.getLantitude()
+                                + "," + lngLat.getLongitude() +
+                                "|name:" + saddr + "&destination=" + daddr + "&mode=driving&region=" + city +
+                                "&src=" + context.getResources().getString(R.string.app_name) + "#Intent;" +
+                                "scheme=bdapp;package=com.baidu.BaiduMap;end");
+                        context.startActivity(intent); //启动调用
+                    } catch (Exception e) {
+                        LngLat lngLat = CoodinateCovertor.bd_encrypt(new LngLat(lng, lat));
+                        e.printStackTrace();
+                        String url = "http://api.map.baidu.com/direction?origin=latlng:" + lngLat.getLantitude() + "," + lngLat.getLongitude() +
+                                "|name:" + saddr + "&destination=" + daddr + "&mode=driving&region=" + city +
+                                "&output=html&src=" + context.getResources().getString(R.string.app_name);
+                        Uri uri = Uri.parse(url);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        context.startActivity(intent);
+                    }
+                } else {
+                    LngLat lngLat = CoodinateCovertor.bd_encrypt(new LngLat(lng, lat));
+                    String url = "http://api.map.baidu.com/direction?origin=latlng:" + lngLat.getLantitude() + "," + lngLat.getLongitude() +
+                            "|name:" + saddr + "&destination=" + daddr + "&mode=driving&region=" + city +
+                            "&output=html&src=" + context.getResources().getString(R.string.app_name);
+                    Uri uri = Uri.parse(url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
 
     public static boolean checkApkExist(Context context, String packageName) {

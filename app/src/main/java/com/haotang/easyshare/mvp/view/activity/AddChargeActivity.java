@@ -33,6 +33,7 @@ import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerAddChargeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.AddChargeActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
@@ -143,6 +144,11 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     RelativeLayout rlAddchargeKfsj;
     @BindView(R.id.et_addcharge_bzsm)
     EditText etAddchargeBzsm;
+    @BindView(R.id.iv_addcharg_gr)
+    ImageView iv_addcharg_gr;
+    @BindView(R.id.iv_addcharg_gg)
+    ImageView iv_addcharg_gg;
+
     private List<CommentImg> imgList = new ArrayList<CommentImg>();
     private List<String> imgPathList = new ArrayList<String>();
     private CommentImgAdapter commentImgAdapter;
@@ -165,6 +171,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     private double localLat;
     private double localLng;
     private File chargeImgFile;
+    private int isPrivate = 1;
 
     @Override
     protected int getContentLayout() {
@@ -173,7 +180,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerAddChargeActivityCommponent.builder().
                 addChargeActivityModule(new AddChargeActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
@@ -271,7 +278,10 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                     List<String> photoViewImgList = new ArrayList<String>();
                     photoViewImgList.clear();
                     for (int i = 0; i < imgList.size(); i++) {
-                        photoViewImgList.add(imgList.get(i).getImgUrl());
+                        CommentImg commentImg1 = imgList.get(i);
+                        if (commentImg1 != null && !commentImg1.isAdd()) {
+                            photoViewImgList.add(imgList.get(i).getImgUrl());
+                        }
                     }
                     SystemUtil.goPhotoView(AddChargeActivity.this, position, photoViewImgList, true);
                 }
@@ -284,6 +294,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             if (data != null) {
+                showDialog();
                 compressWithRx(Matisse.obtainPathResult(data));
             }
         }
@@ -302,6 +313,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 .subscribe(new Consumer<List<File>>() {
                     @Override
                     public void accept(@NonNull List<File> list) throws Exception {
+                        disMissDialog();
                         for (int i = 0; i < imgList.size(); i++) {
                             CommentImg commentImg = imgList.get(i);
                             if (commentImg.isAdd()) {
@@ -377,7 +389,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     private void setKuaiOrMan(int flag) {
@@ -404,13 +416,34 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         }
     }
 
-    @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.rl_addcharge_zdz, R.id.ll_addcharge_kuai, R.id.ll_addcharge_man, R.id.rl_addcharge_zffs, R.id.ll_addcharge_up, R.id.ll_addcharge_down, R.id.rl_addcharge_kfsj})
+    private void setisPrivate(int flag) {
+        if (flag == 0) {//是否私人(0:公共、1:私人)
+            isPrivate = 0;
+            iv_addcharg_gr.setImageResource(R.mipmap.icon_gr_not);
+            iv_addcharg_gg.setImageResource(R.mipmap.icon_gg);
+        } else if (flag == 1) {//是否私人(0:公共、1:私人)
+            isPrivate = 1;
+            iv_addcharg_gr.setImageResource(R.mipmap.icon_gr);
+            iv_addcharg_gg.setImageResource(R.mipmap.icon_gg_not);
+        }
+    }
+
+    @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.rl_addcharge_zdz, R.id.ll_addcharge_kuai,
+            R.id.ll_addcharge_man, R.id.rl_addcharge_zffs, R.id.ll_addcharge_up, R.id.ll_addcharge_down,
+            R.id.rl_addcharge_kfsj, R.id.iv_addcharg_gr, R.id.iv_addcharg_gg})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_addcharg_gr:
+                setisPrivate(1);
+                break;
+            case R.id.iv_addcharg_gg:
+                setisPrivate(0);
+                break;
             case R.id.iv_titlebar_back:
                 finish();
                 break;
             case R.id.tv_titlebar_other:
+                showDialog();
                 //构建body
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("lng", String.valueOf(lng));
@@ -423,6 +456,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 builder.addFormDataPart("serviceFee", etAddchargeFwf.getText().toString().trim());
                 builder.addFormDataPart("payWay", tvAddchargeZffs.getText().toString().trim());
                 builder.addFormDataPart("openTime", tvAddchargeKfsj.getText().toString().trim());
+                builder.addFormDataPart("isPrivate", String.valueOf(isPrivate));
                 builder.addFormDataPart("remark", etAddchargeBzsm.getText().toString().trim());
                 if (kuaiOrMan == 0) {//快充
                     builder.addFormDataPart("fastNum", etAddchargeSl.getText().toString().trim());
@@ -449,7 +483,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 }
                 break;
             case R.id.rl_addcharge_zdz:
-                startActivity(new Intent(AddChargeActivity.this, SelectAddressActivity.class));
+                startActivity(new Intent(AddChargeActivity.this, AddAddressActivity.class));
                 break;
             case R.id.rl_addcharge_zffs:
                 showBottomDialog(1);
@@ -600,16 +634,23 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        RingToast.show("保存成功");
+        disMissDialog();
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
         finish();
     }
 
     @Override
     public void saveFail(int code, String msg) {
+        RingToast.show("保存失败");
+        disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void detailSuccess(ChargeDetailBean data) {
+        disMissDialog();
         if (data != null) {
             uuid = data.getUuid();
             lat = data.getLat();
@@ -626,6 +667,12 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             setUpOrDown(data.getParkingIsUnderground());
             int fastNum = data.getFastNum();
             int slowNum = data.getSlowNum();
+            int isPrivate = data.getIsPrivate();
+            if (isPrivate == 0) {
+                setisPrivate(0);
+            } else if (isPrivate == 1) {
+                setisPrivate(1);
+            }
             if (fastNum > 0) {
                 StringUtil.setText(etAddchargeSl, fastNum + "", "", View.VISIBLE, View.VISIBLE);
                 setKuaiOrMan(0);
@@ -697,17 +744,22 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void detailFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void updateSuccess(AddChargeBean data) {
+        RingToast.show("编辑成功");
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
+        DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
         finish();
         RingLog.e(TAG, "updateSuccess()");
     }
 
     @Override
     public void updateFail(int code, String msg) {
+        RingToast.show("编辑失败");
         RingLog.e(TAG, "updateFail() status = " + code + "---desc = " + msg);
     }
 
@@ -724,6 +776,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 if (localLat > 0 && localLng > 0) {
                     mlocationClient.stopLocation();
                     if (StringUtil.isNotEmpty(uuid)) {
+                        showDialog();
                         Map<String, String> mapHeader = UrlConstants.getMapHeader(AddChargeActivity.this);
                         mapHeader.put("lng", String.valueOf(localLng));
                         mapHeader.put("lat", String.valueOf(localLat));

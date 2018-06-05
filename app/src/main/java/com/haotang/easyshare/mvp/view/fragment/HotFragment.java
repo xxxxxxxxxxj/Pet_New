@@ -3,6 +3,7 @@ package com.haotang.easyshare.mvp.view.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,14 +14,18 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerHotFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.HotFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
 import com.haotang.easyshare.mvp.view.activity.BrandAreaActivity;
 import com.haotang.easyshare.mvp.view.activity.PostListActivity;
+import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointAdapter;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
@@ -29,9 +34,11 @@ import com.haotang.easyshare.mvp.view.viewholder.HotFragmenHeader;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.other.RingLog;
-import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.listener.OnBannerListener;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +71,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     private HotPointCarAdapter hotPointCarAdapter;
     private int mNextRequestPage = 1;
     private int pageSize;
+    private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -102,6 +110,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         //添加自定义分割线
         hotFragmenHeader.getRvTopHotfrag().addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL, DensityUtil.dp2px(mActivity, 15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
+        hotFragmenHeader.getTv_banner_top_hotfrag().bringToFront();
     }
 
     private void setBanner(List<AdvertisementBean.DataBean> data) {
@@ -113,23 +122,39 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 .setImageLoader(new GlideImageLoader())
                 .setOnBannerListener(this)
                 .start();
+        if (bannerList != null && bannerList.size() > 0) {
+            AdvertisementBean.DataBean dataBean = bannerList.get(0);
+            if (dataBean != null) {
+                StringUtil.setText(hotFragmenHeader.getTv_banner_top_hotfrag(), dataBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            }
+        }
     }
 
     @Override
     protected void initData() {
-        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
-                .addFormDataPart("category", "2").build();
-        mPresenter.list(body);
-        mPresenter.hot();
-
-        MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
-                .build();
-        mPresenter.newest(body1);
+        refresh();
     }
 
     @Override
     public void OnBannerClick(int position) {
         RingLog.e(TAG, "position:" + position);
+        if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
+            AdvertisementBean.DataBean dataBean = bannerList.get(position);
+            if (dataBean != null) {
+                if (dataBean.getDisplay() == 1) {//原生
+
+                } else if (dataBean.getDisplay() == 2) {//H5
+                    mActivity.startActivity(new Intent(mActivity, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, dataBean.getDestination()));
+                }
+            }
+        }
+    }
+
+    @Subscribe
+    public void refresh(RefreshEvent data) {
+        if (data != null && data.getRefreshIndex() == RefreshEvent.SEND_POST) {
+            refresh();
+        }
     }
 
     @Override
@@ -147,6 +172,28 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         //结束轮播
         if (hotFragmenHeader != null) {
             hotFragmenHeader.getBannerTopHotfrag().stopAutoPlay();
+        }
+    }
+
+    @Override
+    public void requestData() {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_HOTFRAGMET) {
+            RingLog.e("REFRESH_HOTFRAGMET");
+
         }
     }
 
@@ -171,7 +218,18 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         hotPointAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                if (list.size() > 0 && list.size() > position) {
+                    HotPoint.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
+                            Intent intent = new Intent(mActivity, WebViewActivity.class);
+                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                            intent.putExtra("uuid", dataBean.getUuid());
+                            startActivity(intent);
+                        }
+                    }
+                }
             }
         });
         hotPointCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -180,7 +238,10 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 if (carList != null && carList.size() > 0 && carList.size() > position) {
                     HotCarBean.DataBean dataBean = carList.get(position);
                     if (dataBean != null) {
-                        startActivity(new Intent(mActivity, BrandAreaActivity.class).putExtra("brandId", dataBean.getId()));
+                        Intent intent = new Intent(mActivity, BrandAreaActivity.class);
+                        intent.putExtra("brandId", dataBean.getId());
+                        intent.putExtra("brand", dataBean.getBrand());
+                        startActivity(intent);
                     }
                 }
             }
@@ -197,9 +258,31 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 refresh();
             }
         });
+        hotFragmenHeader.getBannerTopHotfrag().setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
+                    AdvertisementBean.DataBean dataBean = bannerList.get(position);
+                    if (dataBean != null) {
+                        StringUtil.setText(hotFragmenHeader.getTv_banner_top_hotfrag(), dataBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void refresh() {
+        showDialog();
         hotPointCarAdapter.setEnableLoadMore(false);
         srl_hotfragment.setRefreshing(true);
         mNextRequestPage = 1;
@@ -221,22 +304,27 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     public void listFail(int code, String msg) {
-        hotFragmenHeader.getBannerTopHotfrag().setVisibility(View.GONE);
+        disMissDialog();
+        hotFragmenHeader.getRl_banner_top_hotfrag().setVisibility(View.GONE);
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
-            hotFragmenHeader.getBannerTopHotfrag().setVisibility(View.VISIBLE);
+            bannerList.clear();
+            bannerList.addAll(data);
+            hotFragmenHeader.getRl_banner_top_hotfrag().setVisibility(View.VISIBLE);
             setBanner(data);
         } else {
-            hotFragmenHeader.getBannerTopHotfrag().setVisibility(View.GONE);
+            hotFragmenHeader.getRl_banner_top_hotfrag().setVisibility(View.GONE);
         }
     }
 
     @Override
     public void hotSuccess(List<HotCarBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             carList.clear();
             carList.addAll(data);
@@ -246,11 +334,13 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     public void hotFail(int code, String msg) {
+        disMissDialog();
         RingLog.e(TAG, "hotFail() status = " + code + "---desc = " + msg);
     }
 
     @Override
     public void newestSuccess(List<HotPoint.DataBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srl_hotfragment.setRefreshing(false);
             hotPointAdapter.setEnableLoadMore(true);
@@ -277,17 +367,9 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         hotPointAdapter.notifyDataSetChanged();
     }
 
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("MainScreen"); //统计页面("MainScreen"为页面名称，可自定义)
-    }
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("MainScreen");
-    }
-
     @Override
     public void newestFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             hotPointAdapter.setEnableLoadMore(true);
             srl_hotfragment.setRefreshing(false);

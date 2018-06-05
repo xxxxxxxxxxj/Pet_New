@@ -5,10 +5,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
+import com.haotang.easyshare.mvp.view.widget.LoadingProgressDailog;
+import com.haotang.easyshare.util.ActivityListManager;
+import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.base.activity.IBaseActivity;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.ColorBar;
@@ -47,7 +53,7 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
  */
 
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements
-        IBaseActivity,ISwipeBackActivity {
+        IBaseActivity, ISwipeBackActivity {
     protected final static String TAG = BaseActivity.class.getSimpleName();
     final SwipeBackActivityDelegate mDelegate = new SwipeBackActivityDelegate(this);
     @BindColor(R.color.colorPrimary)
@@ -55,6 +61,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Inject
     @Nullable
     protected P mPresenter;
+    protected ActivityListManager activityListManager = new ActivityListManager();
+    private LoadingProgressDailog dialog;
 
     protected abstract int getContentLayout();//返回页面布局id
 
@@ -65,12 +73,29 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected abstract void initData(Bundle savedInstanceState);//做数据相关的初始化工作
 
     protected abstract void initEvent();//做监听事件相关的初始化工作
+
     protected int mWidth;
     protected int mHeight;
     protected float mDensity;
     protected int mDensityDpi;
     protected int mAvatarSize;
     protected float mRatio;
+
+    protected View setEmptyViewBase(int flag, String msg, int resId, View.OnClickListener OnClickListener) {//1.无网络2.无数据或数据错误
+        View emptyView = View.inflate(this, R.layout.emptyview, null);
+        ImageView iv_emptyview_img = (ImageView) emptyView.findViewById(R.id.iv_emptyview_img);
+        TextView tv_emptyview_desc = (TextView) emptyView.findViewById(R.id.tv_emptyview_desc);
+        ImageView iv_emptyview_retry = (ImageView) emptyView.findViewById(R.id.iv_emptyview_retry);
+        if (flag == 1) {
+            iv_emptyview_retry.setVisibility(View.VISIBLE);
+            iv_emptyview_retry.setOnClickListener(OnClickListener);
+        } else if (flag == 2) {
+            iv_emptyview_retry.setVisibility(View.GONE);
+        }
+        StringUtil.setText(tv_emptyview_desc, msg, "", View.VISIBLE, View.VISIBLE);
+        iv_emptyview_img.setImageResource(resId);
+        return emptyView;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +105,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             setContentView(getContentLayout());
             ButterKnife.bind(this);
         }
+        LoadingProgressDailog.Builder loadBuilder = new LoadingProgressDailog.Builder(this)
+                .setMessage("加载中...")
+                .setCancelable(true)
+                .setCancelOutside(true);
+        dialog = loadBuilder.create();
         initBarColor();//初始化状态栏/导航栏颜色，需在设置了布局后再调用
         initView(savedInstanceState);//由具体的activity实现，做视图相关的初始化
         setView(savedInstanceState);//由具体的activity实现，做视图相关的设置
@@ -94,6 +124,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         mHeight = dm.heightPixels;
         mRatio = Math.min((float) mWidth / 720, (float) mHeight / 1280);
         mAvatarSize = (int) (50 * mDensity);
+    }
+
+    protected void showDialog() {
+        if (dialog != null && !dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+    protected void disMissDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     private void initBarColor() {
@@ -181,6 +223,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     /**
      * 是否可滑动
+     *
      * @param enable
      */
     @Override

@@ -27,7 +27,6 @@ import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
 import com.haotang.easyshare.mvp.view.iview.ILocalChargingView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SignUtil;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -72,7 +71,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         DaggerLocalChargingActivityCommponent.builder().localChargingActivityModule(new LocalChargingActivityModule(this, this)).build().inject(this);
         city = getIntent().getStringExtra("city");
         serchLat = getIntent().getDoubleExtra("serchLat", 0);
@@ -119,7 +118,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         rvLocalCharging.setAdapter(mainLocalAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_f8_15));
+        divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_f8_5));
         rvLocalCharging.addItemDecoration(divider);
     }
 
@@ -158,7 +157,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick(R.id.iv_titlebar_back)
@@ -195,6 +194,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
     }
 
     private void nearBy() {
+        showDialog();
         Map<String, String> mapHeader = UrlConstants.getMapHeader(LocalChargingActivity.this);
         mapHeader.put("lng", String.valueOf(serchLng));
         mapHeader.put("lat", String.valueOf(serchLat));
@@ -208,6 +208,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
 
     @Override
     public void nearbySuccess(List<MainFragChargeBean> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlLocalCharging.setRefreshing(false);
             mainLocalAdapter.setEnableLoadMore(true);
@@ -230,18 +231,26 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
             } else {
                 mainLocalAdapter.loadMoreEnd(false);
             }
+            mainLocalAdapter.setEmptyView(setEmptyViewBase(2, "暂无充电桩", R.mipmap.no_data, null));
         }
         mainLocalAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void nearbyFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             mainLocalAdapter.setEnableLoadMore(true);
             srlLocalCharging.setRefreshing(false);
         } else {
             mainLocalAdapter.loadMoreFail();
         }
+        mainLocalAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "nearbyFail() status = " + code + "---desc = " + msg);
     }
 

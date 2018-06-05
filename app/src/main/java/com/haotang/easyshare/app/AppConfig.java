@@ -16,14 +16,16 @@ import cn.jpush.im.android.api.model.Message;
  * @date XJ on 2018/4/12 11:22
  */
 public class AppConfig {
+    public static final String WX_SECRET = "4541b1896902768bafda8e717486e17a";
+    public static final String UMENG_APPKEY = "5b04ccf0a40fa37bb50001b7";
     public static List<Message> forwardMsg = new ArrayList<>();
     public static final String SERVER_KEY = "A16EF76FA2D6B5A1A743A489D9332D9A";
     public static final int SERVER_ERROR = 5201314;
     public static final String SERVER_ERROR_MSG = "服务器错误";
-    public static final String QQ_ID = "1104724367";
+    public static final String QQ_ID = "";
     public static final String WX_ID = "wx9e40f612c8756cb3";
     public static final boolean isShowLog = true;
-    public static final int environmental = 3;//1.test环境---2.demo环境---3.线上环境
+    public static final int environmental = 2;//1.test环境---2.demo环境---3.线上环境
     public static final int ALI_SDK_PAY_FLAG = 1000;
     public static final int REQUEST_CODE_CHOOSE = 23;
     public static String PICTURE_DIR = "sdcard/JChatDemo/pictures/";

@@ -23,6 +23,6 @@ public class FlashModel implements IFlashModel {
      */
     @Override
     public Observable startPageConfig(Activity activity) {
-        return DevRing.httpManager().getService(FlashApiService.class).startPageConfig(UrlConstants.getGlobalParam(UrlConstants.GET_FLASH_DATA, activity));
+        return DevRing.httpManager().getService(FlashApiService.class).startPageConfig("");
     }
 }

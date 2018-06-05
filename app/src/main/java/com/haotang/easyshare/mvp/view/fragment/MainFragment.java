@@ -1,13 +1,11 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -17,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -49,32 +48,38 @@ import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MainFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.BrandAreaBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.model.entity.res.SerchResult;
+import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.MainFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
+import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.CommentDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
-import com.haotang.easyshare.mvp.view.activity.SwitchCityActivity;
-import com.haotang.easyshare.mvp.view.adapter.BrandAreaAdAdapter;
+import com.haotang.easyshare.mvp.view.activity.LoginActivity;
+import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainSerchResultAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
-import com.haotang.easyshare.mvp.view.widget.CircleImageView;
-import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
-import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
+import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
-import com.umeng.analytics.MobclickAgent;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +88,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -93,9 +99,8 @@ import butterknife.OnClick;
  * @date zhoujunxia on 2018/4/14 20:34
  */
 public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
-        AMapLocationListener,
-        View.OnClickListener, IMainFragmentView, AMap.OnMarkerClickListener,
-        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener {
+        AMapLocationListener, IMainFragmentView, AMap.OnMarkerClickListener,
+        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener, OnBannerListener {
     private final static String TAG = MainFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
@@ -142,8 +147,16 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     View vwMainfragLocalevGr;
     @BindView(R.id.rl_mainfrag_localev_gr)
     RelativeLayout rlMainfragLocalevGr;
-    @BindView(R.id.rv_mainfrag_ad)
-    RecyclerView rv_mainfrag_ad;
+    @BindView(R.id.iv_mainfrag_rmht1)
+    ImageView iv_mainfrag_rmht1;
+    @BindView(R.id.iv_mainfrag_rmht2)
+    ImageView iv_mainfrag_rmht2;
+    @BindView(R.id.iv_mainfrag_rmht3)
+    ImageView iv_mainfrag_rmht3;
+    @BindView(R.id.iv_mainfrag_map_loc)
+    ImageView iv_mainfrag_map_loc;
+    @BindView(R.id.iv_mainfrag_gj)
+    ImageView ivMainfragGj;
 
     private AMap aMap;
     private UiSettings mUiSettings;
@@ -157,7 +170,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private PoiSearch.Query query;
     private PoiSearch poiSearch;
     private List<SerchResult> serchList = new ArrayList<SerchResult>();
-    private List<Bitmap> bitmapList = new ArrayList<Bitmap>();
     private double lat;
     private double lng;
     private String city = "";
@@ -168,9 +180,14 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private String cityCode;
     private List<MainFragmentData.PublishBean> publishList = new ArrayList<MainFragmentData.PublishBean>();
     private List<BrandAreaBean.AdBean> adList = new ArrayList<BrandAreaBean.AdBean>();
-    private BrandAreaAdAdapter brandAreaAdAdapter;
-    private double serchLng;
-    private double serchLat;
+    private BrandAreaBean.AdBean adBean1;
+    private BrandAreaBean.AdBean adBean2;
+    private BrandAreaBean.AdBean adBean3;
+    private double localLat;
+    private double localLng;
+    private PopupWindow pWin;
+    private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
+    private MainSerchResultAdapter mainSerchResultAdapter;
 
     @Override
     protected boolean isLazyLoad() {
@@ -191,6 +208,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 .inject(this);
         setAdapter();
         RingLog.d(TAG, "savedInstanceState = " + savedInstanceState);
+        iv_mainfrag_map_loc.bringToFront();
+        ivMainfragGj.bringToFront();
         tmv_mainfrag_map.onCreate(savedInstanceState);// 此方法必须重写
         if (aMap == null) {
             aMap = tmv_mainfrag_map.getMap();
@@ -223,59 +242,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     }
 
     private void addMarkersToMap() {
-        RingLog.d(TAG, "list.size() = " + list.size());
         aMap.clear();
-        bitmapList.clear();
-        /*for (int i = 0; i < list.size(); i++) {
-            MainFragChargeBean stationsBean = list.get(i);
-            if (stationsBean != null) {
-                Glide.with(mActivity)
-                        .load(stationsBean.getImg())
-                        .asBitmap()
-                        .placeholder(R.mipmap.ic_image_load_circle).dontAnimate()
-                        .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
-                            @Override
-                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                RingLog.d(TAG, "onResourceReady bitmapList.size() = " + bitmapList.size());
-                                bitmapList.add(resource);
-                                if (bitmapList.size() == list.size()) {
-                                    addMarkers();
-                                }
-                            }
-                        });
-            }
-        }*/
         for (int i = 0; i < list.size(); i++) {
-            //Bitmap bitmap = bitmapList.get(i);
             MainFragChargeBean stationsBean = list.get(i);
             if (stationsBean != null) {
-                //stationsBean.setBitmap(bitmap);
-                View infoWindow = getLayoutInflater().inflate(
-                        R.layout.map_custom_info_window, null);
-                CircleImageView iv_map_custom_info = ((CircleImageView) infoWindow.findViewById(R.id.iv_map_custom_info));
-                //iv_map_custom_info.setImageBitmap(stationsBean.getBitmap());
-                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromView(infoWindow))
-                        .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
-                        .draggable(true);
-                Marker marker = aMap.addMarker(markerOptions);
-                marker.setObject(i);
-            }
-        }
-    }
-
-    private void addMarkers() {
-        RingLog.d(TAG, "list.size() = " + list.size());
-        RingLog.d(TAG, "bitmapList.size() = " + bitmapList.size());
-        for (int i = 0; i < list.size(); i++) {
-            Bitmap bitmap = bitmapList.get(i);
-            MainFragChargeBean stationsBean = list.get(i);
-            if (stationsBean != null) {
-                stationsBean.setBitmap(bitmap);
-                View infoWindow = getLayoutInflater().inflate(
-                        R.layout.map_custom_info_window, null);
-                CircleImageView iv_map_custom_info = ((CircleImageView) infoWindow.findViewById(R.id.iv_map_custom_info));
-                iv_map_custom_info.setImageBitmap(stationsBean.getBitmap());
-                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromView(infoWindow))
+                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view))
                         .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
                         .draggable(true);
                 Marker marker = aMap.addMarker(markerOptions);
@@ -294,24 +265,16 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         rvMainfragLocalev.setAdapter(mainLocalAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(mActivity, R.drawable.divider_f8_15));
+        divider.setDrawable(ContextCompat.getDrawable(mActivity, R.drawable.divider_f8_5));
         rvMainfragLocalev.addItemDecoration(divider);
 
-        rv_mainfrag_ad.setHasFixedSize(true);
-        rv_mainfrag_ad.setNestedScrollingEnabled(false);
-        NoScollFullGridLayoutManager noScollFullGridLayoutManager = new
-                NoScollFullGridLayoutManager(rv_mainfrag_ad, mActivity, 3, GridLayoutManager.VERTICAL, false);
-        noScollFullGridLayoutManager.setScrollEnabled(false);
-        rv_mainfrag_ad.setLayoutManager(new GridLayoutManager(mActivity, 3, GridLayoutManager.VERTICAL, false));
-        if (rv_mainfrag_ad.getItemDecorationCount() <= 0) {
-            rv_mainfrag_ad.addItemDecoration(new GridSpacingItemDecoration(3,
-                    mActivity.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
-                    mActivity.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
-                    false));
-        }
-        brandAreaAdAdapter = new BrandAreaAdAdapter(R.layout.item_brandarea_ad
-                , adList);
-        rv_mainfrag_ad.setAdapter(brandAreaAdAdapter);
+        serchList.clear();
+        serchList.add(new SerchResult("目的地", "", 0, 0, true));
+        rv_mainfrag_serchresult.setHasFixedSize(true);
+        rv_mainfrag_serchresult.setLayoutManager(new LinearLayoutManager(mActivity));
+        mainSerchResultAdapter = new MainSerchResultAdapter(R.layout.item_mainserchresult, serchList);
+        rv_mainfrag_serchresult.setAdapter(mainSerchResultAdapter);
+        rv_mainfrag_serchresult.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL));
     }
 
     private void setUpMap() {
@@ -321,12 +284,30 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
         aMap.setMyLocationStyle(myLocationStyle);
         mUiSettings.setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
-        aMap.setMyLocationEnabled(false);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+        aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         mUiSettings.setZoomControlsEnabled(false);
     }
 
     @Override
     protected void initData() {
+        showDialog();
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "1").build();
+        mPresenter.list(body);
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_MAINFRAGMET) {
+            RingLog.e("REFRESH_MAINFRAGMET");
+            //启动定位
+            mlocationClient.startLocation();
+        }
     }
 
     @Override
@@ -334,10 +315,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         aMap.setOnMyLocationChangeListener(this);
         aMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
         aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
-        rlMainfragLocalev.setOnClickListener(this);
-        rtvMainfragLocal.setOnClickListener(this);
-        rlMainfragLocalevGg.setOnClickListener(this);
-        rlMainfragLocalevGr.setOnClickListener(this);
         //解决上下滑动冲突问题
         aMap.setOnMapTouchListener(new AMap.OnMapTouchListener() {
             @Override
@@ -369,11 +346,48 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                if (StringUtil.isEmpty(etMainfragSerch.getText().toString())) {
-                    rll_mainfrag_serchresult.setVisibility(View.GONE);
+            }
+        });
+        mainSerchResultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (serchList != null && serchList.size() > 0 && serchList.size() > position) {
+                    SerchResult serchResult = serchList.get(position);
+                    if (serchResult != null && !serchResult.isFake()) {
+                        etMainfragSerch.setText(serchResult.getName());
+                        rll_mainfrag_serchresult.setVisibility(View.GONE);
+                        lng = serchResult.getLng();
+                        lat = serchResult.getLat();
+                        refresh();
+                    }
                 }
             }
         });
+        SoftKeyBoardListener.setListener(mActivity, new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
+            @Override
+            public void keyBoardShow(int height) {
+                RingLog.e("keyBoardShow height = " + height);
+                rll_mainfrag_serchresult.setVisibility(View.VISIBLE);
+                rll_mainfrag_serchresult.bringToFront();
+                serchList.clear();
+                serchList.add(new SerchResult("目的地", "", 0, 0, true));
+                mainSerchResultAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void keyBoardHide(int height) {
+                RingLog.e("keyBoardHide height = " + height);
+                rll_mainfrag_serchresult.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void refresh() {
+        adBean1 = null;
+        adBean2 = null;
+        adBean3 = null;
+        showDialog();
+        mPresenter.homeIndex(lng, lat);
     }
 
     /**
@@ -383,7 +397,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onResume() {
         super.onResume();
         tmv_mainfrag_map.onResume();
-        MobclickAgent.onPageStart("MainScreen");
+    }
+
+    @Override
+    public void requestData() {
+
     }
 
     /**
@@ -393,7 +411,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onPause() {
         super.onPause();
         tmv_mainfrag_map.onPause();
-        MobclickAgent.onPageEnd("MainScreen");
     }
 
     /**
@@ -427,7 +444,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                 , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
                                 publishBean.getIsPrivate(),
                                 publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
-                                publishBean.getSlowNum(), publishBean.getLat()));
+                                publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(), publishBean.getPayWay(), publishBean.getProvider()));
                     }
                 }
             }
@@ -445,10 +462,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                 , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
                                 publishBean.getIsPrivate(),
                                 publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
-                                publishBean.getSlowNum(), publishBean.getLat()));
+                                publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(), publishBean.getPayWay(), publishBean.getProvider()));
                     }
                 }
-
             }
         }
         mainLocalAdapter.notifyDataSetChanged();
@@ -463,21 +479,32 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
     }
 
-    @OnClick({R.id.ll_mainfrag_city, R.id.rl_mainfrag_send})
+    @OnClick({R.id.ll_mainfrag_city, R.id.rl_mainfrag_send, R.id.rtv_mainfrag_local, R.id.rl_mainfrag_localev,
+            R.id.rl_mainfrag_localev_gg, R.id.rl_mainfrag_localev_gr, R.id.iv_mainfrag_rmht1, R.id.iv_mainfrag_rmht2,
+            R.id.iv_mainfrag_rmht3, R.id.iv_mainfrag_map_loc, R.id.iv_mainfrag_gj})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_mainfrag_gj:
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, ButlerActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
+            case R.id.iv_mainfrag_map_loc:
+                if (localLat > 0 && localLng > 0) {
+                    aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(localLat, localLng), 18, 0, 30)),
+                            1000, null);
+                }
+                break;
             case R.id.ll_mainfrag_city:
-                startActivity(new Intent(mActivity, SwitchCityActivity.class).putExtra("city", city));
                 break;
             case R.id.rl_mainfrag_send:
-                startActivity(new Intent(mActivity, AddChargeActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, AddChargeActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
             case R.id.rtv_mainfrag_local:
                 LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
                 for (int i = 0; i < list.size(); i++) {
@@ -488,17 +515,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 }
                 aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
                 break;
-            case R.id.iv_mainfrag_rmht1:
-                break;
-            case R.id.iv_mainfrag_rmht2:
-                break;
-            case R.id.iv_mainfrag_rmht3:
-                break;
             case R.id.rl_mainfrag_localev:
                 Intent intent = new Intent(mActivity, LocalChargingActivity.class);
                 intent.putExtra("city", city);
-                intent.putExtra("serchLat", serchLat);
-                intent.putExtra("serchLng", serchLng);
+                intent.putExtra("serchLat", lat);
+                intent.putExtra("serchLng", lng);
                 startActivity(intent);
                 break;
             case R.id.rl_mainfrag_localev_gg:
@@ -509,11 +530,42 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 index = 1;
                 setTab();
                 break;
+            case R.id.iv_mainfrag_rmht1:
+                if (adBean1 != null) {
+                    if (adBean1.getDisplay() == 1) {//原生
+
+                    } else if (adBean1.getDisplay() == 2) {//H5
+                        mActivity.startActivity(new Intent(mActivity, WebViewActivity.class).
+                                putExtra(WebViewActivity.URL_KEY, adBean1.getDestination()));
+                    }
+                }
+                break;
+            case R.id.iv_mainfrag_rmht2:
+                if (adBean2 != null) {
+                    if (adBean2.getDisplay() == 1) {//原生
+
+                    } else if (adBean2.getDisplay() == 2) {//H5
+                        mActivity.startActivity(new Intent(mActivity, WebViewActivity.class).
+                                putExtra(WebViewActivity.URL_KEY, adBean2.getDestination()));
+                    }
+                }
+                break;
+            case R.id.iv_mainfrag_rmht3:
+                if (adBean3 != null) {
+                    if (adBean3.getDisplay() == 1) {//原生
+
+                    } else if (adBean3.getDisplay() == 2) {//H5
+                        mActivity.startActivity(new Intent(mActivity, WebViewActivity.class).
+                                putExtra(WebViewActivity.URL_KEY, adBean3.getDestination()));
+                    }
+                }
+                break;
         }
     }
 
     @Override
     public void getMainFragmentSuccess(MainFragmentData mainFragmentData) {
+        disMissDialog();
         if (mainFragmentData != null) {
             personalList.clear();
             publishList.clear();
@@ -530,7 +582,36 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         adList.add(new BrandAreaBean.AdBean(adsBean.getImg(), adsBean.getDisplay(), adsBean.getDestination()));
                     }
                 }
-                brandAreaAdAdapter.notifyDataSetChanged();
+                for (int i = 0; i < adList.size(); i++) {
+                    BrandAreaBean.AdBean adBean = adList.get(i);
+                    if (adBean != null) {
+                        if (i == 0) {
+                            adBean1 = adBean;
+                        } else if (i == 1) {
+                            adBean2 = adBean;
+                        } else if (i == 2) {
+                            adBean3 = adBean;
+                        }
+                    }
+                }
+                if (adBean1 != null) {
+                    iv_mainfrag_rmht1.setVisibility(View.VISIBLE);
+                    GlideUtil.loadNetImg(mActivity, adBean1.getImg(), iv_mainfrag_rmht1, R.mipmap.ic_image_load);
+                } else {
+                    iv_mainfrag_rmht1.setVisibility(View.INVISIBLE);
+                }
+                if (adBean2 != null) {
+                    iv_mainfrag_rmht2.setVisibility(View.VISIBLE);
+                    GlideUtil.loadNetImg(mActivity, adBean2.getImg(), iv_mainfrag_rmht2, R.mipmap.ic_image_load);
+                } else {
+                    iv_mainfrag_rmht2.setVisibility(View.INVISIBLE);
+                }
+                if (adBean3 != null) {
+                    iv_mainfrag_rmht3.setVisibility(View.VISIBLE);
+                    GlideUtil.loadNetImg(mActivity, adBean3.getImg(), iv_mainfrag_rmht3, R.mipmap.ic_image_load);
+                } else {
+                    iv_mainfrag_rmht3.setVisibility(View.INVISIBLE);
+                }
             } else {
                 llMainfragRmht.setVisibility(View.GONE);
             }
@@ -547,7 +628,56 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     public void getMainFragmentFail(int status, String desc) {
+        disMissDialog();
         RingLog.e(TAG, "getMainFragmentFail() status = " + status + "---desc = " + desc);
+    }
+
+    @Override
+    public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        if (data != null && data.size() > 0) {
+            bannerList.clear();
+            bannerList.addAll(data);
+            showPopPhoto(data);
+        }
+    }
+
+    private void showPopPhoto(List<AdvertisementBean.DataBean> data) {
+        pWin = null;
+        if (pWin == null) {
+            final View view = View
+                    .inflate(mActivity, R.layout.pw_main_ad, null);
+            ImageButton ib_pw_main_close = (ImageButton) view
+                    .findViewById(R.id.ib_pw_main_close);
+            Banner banner_main_ad = (Banner) view
+                    .findViewById(R.id.banner_main_ad);
+            pWin = new PopupWindow(view,
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT, true);
+            pWin.setFocusable(true);
+            pWin.setWidth(SystemUtil.getDisplayMetrics(mActivity)[0]);
+            pWin.showAtLocation(view, Gravity.CENTER, 0, 0);
+            List<String> list = new ArrayList<String>();
+            list.clear();
+            for (int i = 0; i < data.size(); i++) {
+                list.add(data.get(i).getImg());
+            }
+            banner_main_ad.setImages(list)
+                    .setImageLoader(new GlideImageLoader())
+                    .setOnBannerListener(this)
+                    .start();
+            ib_pw_main_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    pWin.dismiss();
+                    pWin = null;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void listFail(int status, String desc) {
+        RingLog.e(TAG, "listFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
@@ -584,29 +714,18 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomJuli(), stationsBean.getDistance(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomXxdz(), stationsBean.getAddress(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomKfsj(), stationsBean.getOpenTime(), "", View.VISIBLE, View.VISIBLE);
+
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomYys(), stationsBean.getProvider(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomZffs(), stationsBean.getPayWay(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomTcf(), stationsBean.getParkingPrice(), "", View.VISIBLE, View.VISIBLE);
             if (stationsBean.getIsPrivate() == 0) {//公共
                 mainFragmenBoDa.getIvMainbottomGgorgr().setImageResource(R.mipmap.icon_gg);
             } else if (stationsBean.getIsPrivate() == 1) {//个人
                 mainFragmenBoDa.getIvMainbottomGgorgr().setImageResource(R.mipmap.icon_gr);
             }
-            if (stationsBean.getFastNum() > 0) {
-                StringUtil.setText(mainFragmenBoDa.getTvMainbottomKuaichongNum(), "快充" + stationsBean.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                mainFragmenBoDa.getLlMainbottomKuaichong().setVisibility(View.VISIBLE);
-            } else {
-                mainFragmenBoDa.getLlMainbottomKuaichong().setVisibility(View.GONE);
-            }
-            if (stationsBean.getSlowNum() > 0) {
-                StringUtil.setText(mainFragmenBoDa.getTvMainbottomManchongNum(), "慢充" + stationsBean.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                mainFragmenBoDa.getLlMainbottomManchong().setVisibility(View.VISIBLE);
-            } else {
-                mainFragmenBoDa.getLlMainbottomManchong().setVisibility(View.GONE);
-            }
-            if (stationsBean.getFreeNum() > 0) {
-                StringUtil.setText(mainFragmenBoDa.getTvMainbottomKongxianNum(), "空闲" + stationsBean.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
-                mainFragmenBoDa.getLlMainbottomKongxian().setVisibility(View.VISIBLE);
-            } else {
-                mainFragmenBoDa.getLlMainbottomKongxian().setVisibility(View.GONE);
-            }
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomKuaichongNum(), "快充" + stationsBean.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomManchongNum(), "慢充" + stationsBean.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(mainFragmenBoDa.getTvMainbottomKongxianNum(), "空闲" + stationsBean.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
             mainFragmenBoDa.getIvMainbottomBg().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -678,34 +797,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                         poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude()));
                             }
                         }
-                        rll_mainfrag_serchresult.bringToFront();
-                        rll_mainfrag_serchresult.setVisibility(View.VISIBLE);
-                        rv_mainfrag_serchresult.setHasFixedSize(true);
-                        rv_mainfrag_serchresult.setLayoutManager(new LinearLayoutManager(mActivity));
-                        MainSerchResultAdapter mainSerchResultAdapter = new MainSerchResultAdapter(R.layout.item_mainserchresult, serchList);
-                        rv_mainfrag_serchresult.setAdapter(mainSerchResultAdapter);
-                        rv_mainfrag_serchresult.addItemDecoration(new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL));
-                        mainSerchResultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                if (serchList != null && serchList.size() > 0 && serchList.size() > position) {
-                                    SerchResult serchResult = serchList.get(position);
-                                    if (serchResult != null && !serchResult.isFake()) {
-                                        rll_mainfrag_serchresult.setVisibility(View.GONE);
-                                        serchLng = serchResult.getLng();
-                                        serchLat = serchResult.getLat();
-                                        mPresenter.homeIndex(serchResult.getLng(), serchResult.getLat());
-                                    }
-                                }
-                            }
-                        });
+                        mainSerchResultAdapter.notifyDataSetChanged();
                     } else {
-                        rll_mainfrag_serchresult.setVisibility(View.GONE);
                         RingToast.show(R.string.no_result);
                     }
                 }
             } else {
-                rll_mainfrag_serchresult.setVisibility(View.GONE);
                 RingToast.show(R.string.no_result);
             }
         }
@@ -720,18 +817,19 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onLocationChanged(AMapLocation amapLocation) {
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
+                localLat = amapLocation.getLatitude();
+                localLng = amapLocation.getLongitude();
                 //定位成功回调信息，设置相关消息
                 lat = amapLocation.getLatitude();//获取纬度
                 lng = amapLocation.getLongitude();//获取经度
                 city = amapLocation.getCity();
-                tvMainfragCity.setText(city);
                 cityCode = amapLocation.getCityCode();
                 amapLocation.getAddress();
                 RingLog.d(TAG, "定位成功lat = "
                         + lat + ", lng = "
                         + lng + ",city = " + city + ",cityCode = " + cityCode + ",address = " + amapLocation.getAddress());
                 if (lat > 0 && lng > 0) {
-                    mPresenter.homeIndex(lng, lat);
+                    refresh();
                     mlocationClient.stopLocation();
                 }
             } else {
@@ -763,4 +861,18 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         }
     }
 
+    @Override
+    public void OnBannerClick(int position) {
+        RingLog.e(TAG, "position:" + position);
+        if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
+            AdvertisementBean.DataBean dataBean = bannerList.get(position);
+            if (dataBean != null) {
+                if (dataBean.getDisplay() == 1) {//原生
+
+                } else if (dataBean.getDisplay() == 2) {//H5
+                    mActivity.startActivity(new Intent(mActivity, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, dataBean.getDestination()));
+                }
+            }
+        }
+    }
 }

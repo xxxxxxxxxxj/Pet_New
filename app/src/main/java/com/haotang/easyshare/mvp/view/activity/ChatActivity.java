@@ -43,7 +43,7 @@ public class ChatActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         //注册sdk的event用于接收各种event事件
         JMessageClient.registerEventReceiver(this);
         Intent intent = getIntent();
@@ -73,7 +73,7 @@ public class ChatActivity extends BaseActivity {
         super.onDestroy();
         //注销消息接收
         JMessageClient.unRegisterEventReceiver(this);
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back})

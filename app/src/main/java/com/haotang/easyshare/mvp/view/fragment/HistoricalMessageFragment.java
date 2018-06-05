@@ -5,10 +5,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerHistoricalMessageFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.HistoricalMessageFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HistoricalMsg;
 import com.haotang.easyshare.mvp.presenter.HistoricalMessageFragmentPresenter;
 import com.haotang.easyshare.mvp.view.adapter.HistoricalMessagelAdapter;
@@ -17,8 +19,10 @@ import com.haotang.easyshare.mvp.view.iview.IHistoricalMessageFragmentView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
-import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +67,6 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
                 .historicalMessageFragmentModule(new HistoricalMessageFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
-        srlHistorymsg.setRefreshing(true);
-        srlHistorymsg.setColorSchemeColors(Color.rgb(47, 223, 189));
         rvHistorymsg.setHasFixedSize(true);
         rvHistorymsg.setLayoutManager(new LinearLayoutManager(mActivity));
         historicalMessagelAdapter = new HistoricalMessagelAdapter(R.layout.item_historymsg, list);
@@ -76,7 +78,20 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
 
     @Override
     protected void initData() {
-        mPresenter.history();
+        refresh();
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_HISTORYMESSAGEFRAGMET) {
+            RingLog.e("REFRESH_HISTORYMESSAGEFRAGMET");
+            refresh();
+        }
     }
 
     @Override
@@ -95,7 +110,19 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void requestData() {
+    }
+
     private void refresh() {
+        showDialog();
+        RingLog.e("refresh");
+        srlHistorymsg.setColorSchemeColors(Color.rgb(47, 223, 189));
         historicalMessagelAdapter.setEnableLoadMore(false);
         srlHistorymsg.setRefreshing(true);
         mNextRequestPage = 1;
@@ -108,6 +135,7 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
 
     @Override
     public void historySuccess(List<List<HistoricalMsg.DataBean>> data) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             srlHistorymsg.setRefreshing(false);
             historicalMessagelAdapter.setEnableLoadMore(true);
@@ -130,27 +158,26 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
             } else {
                 historicalMessagelAdapter.loadMoreEnd(false);
             }
+            historicalMessagelAdapter.setEmptyView(setEmptyViewBase(2, "暂无留言", R.mipmap.no_data, null));
         }
         historicalMessagelAdapter.notifyDataSetChanged();
     }
 
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("ButlerScreen"); //统计页面("MainScreen"为页面名称，可自定义)
-    }
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd("ButlerScreen");
-    }
-
     @Override
     public void historyFail(int code, String msg) {
+        disMissDialog();
         if (mNextRequestPage == 1) {
             historicalMessagelAdapter.setEnableLoadMore(true);
             srlHistorymsg.setRefreshing(false);
         } else {
             historicalMessagelAdapter.loadMoreFail();
         }
+        historicalMessagelAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "historyFail() status = " + code + "---desc = " + msg);
     }
 }

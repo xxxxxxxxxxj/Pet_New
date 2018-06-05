@@ -1,5 +1,7 @@
 package com.haotang.easyshare.mvp.model.entity.res;
 
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -75,6 +77,63 @@ public class PostBean {
         private int praises;
         private int carId;
         private int isPraise;
+        private ShareMap shareMap;
+        private String content;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public ShareMap getShareMap() {
+            return shareMap;
+        }
+
+        public void setShareMap(ShareMap shareMap) {
+            this.shareMap = shareMap;
+        }
+
+        public static class ShareMap {
+            private String img;
+            private String title;
+            private String content;
+            private String url;
+
+            public String getImg() {
+                return img;
+            }
+
+            public void setImg(String img) {
+                this.img = img;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+        }
 
         public int getIsPraise() {
             return isPraise;

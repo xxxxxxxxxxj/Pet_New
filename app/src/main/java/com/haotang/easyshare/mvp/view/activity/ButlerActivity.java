@@ -9,6 +9,7 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerButlerActivityCommponent;
 import com.haotang.easyshare.di.module.activity.ButlerActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.presenter.ButlerPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
@@ -17,7 +18,10 @@ import com.haotang.easyshare.mvp.view.fragment.HistoricalMessageFragment;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IButlerView;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -52,8 +56,22 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
     }
 
     @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_HISTORYMESSAGEFRAGMET) {
+            RingLog.e("REFRESH_HISTORYMESSAGEFRAGMET");
+            currentTabIndex = 1;
+            vpButler.setCurrentItem(currentTabIndex);
+        }
+    }
+
+    @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
         //使用Dagger2对本类中相关变量进行初始化
         DaggerButlerActivityCommponent.builder().butlerActivityModule(new ButlerActivityModule(this, this)).build().inject(this);
     }
@@ -87,6 +105,7 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
 
             @Override
             public void onPageSelected(int position) {
+                RingLog.e("position = " + position);
                 if (position == 0) {
                     tvTitlebarOther.setVisibility(View.VISIBLE);
                 } else {
@@ -104,7 +123,7 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other})

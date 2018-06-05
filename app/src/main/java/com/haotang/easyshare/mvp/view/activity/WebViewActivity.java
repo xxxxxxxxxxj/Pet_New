@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -30,11 +31,15 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.webview.MiddlewareChromeClient;
 import com.haotang.easyshare.mvp.view.webview.MiddlewareWebViewClient;
 import com.haotang.easyshare.mvp.view.webview.UIController;
+import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
+import com.haotang.easyshare.util.Global;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.just.agentweb.AbsAgentWebSettings;
 import com.just.agentweb.AgentWeb;
@@ -49,10 +54,11 @@ import com.just.agentweb.download.AgentWebDownloader;
 import com.just.agentweb.download.DefaultDownloadImpl;
 import com.just.agentweb.download.DownloadListenerAdapter;
 import com.just.agentweb.download.DownloadingService;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 
@@ -91,7 +97,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
     }
 
     @Override
@@ -126,15 +132,93 @@ public class WebViewActivity extends BaseActivity {
 
     }
 
+    @Subscribe
+    public void LoginRefresh(RefreshFragmentEvent refreshFragmentEvent) {
+        if (SystemUtil.checkLogin(this) && refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_WEBVIEW_LOGIN) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String curl = "javascript:init_roll('"
+                            + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "')";
+                    if (mAgentWeb != null) {
+                        mAgentWeb.getUrlLoader().loadUrl(curl); // 刷新
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    class JsObject {
+        @JavascriptInterface
+        public String toString() {
+            return "easyshare_h5";
+        }
+    }
+
     @Override
     protected void initEvent() {
+        mAgentWeb.getJsInterfaceHolder().addJavaObject("easyshare_h5", new JsObject() {
+            @JavascriptInterface
+            public void share(String title, String content, String img, String url, String uuid) {
+                if (url != null && !TextUtils.isEmpty(url)) {
+                    if (!url.startsWith("http:")
+                            && !url.startsWith("https:") && !url.startsWith("file:///")) {
+                        url = UrlConstants.getServiceBaseUrl() + url;
+                    }
+                    if (url.contains("?")) {
+                        url = url
+                                + "&system=android_" + SystemUtil.getCurrentVersion(WebViewActivity.this)
+                                + "&imei="
+                                + SystemUtil.getIMEI(WebViewActivity.this)
+                                + "&phone="
+                                + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "&phoneModel="
+                                + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                + "&phoneSystemVersion=" + "Android "
+                                + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                + System.currentTimeMillis();
+                    } else {
+                        url = url
+                                + "?system=android_" + SystemUtil.getCurrentVersion(WebViewActivity.this)
+                                + "&imei="
+                                + SystemUtil.getIMEI(WebViewActivity.this)
+                                + "&phone="
+                                + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "&phoneModel="
+                                + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                                + "&phoneSystemVersion=" + "Android "
+                                + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                                + System.currentTimeMillis();
+                    }
+                    url = url + "&uuid="
+                            + uuid;
+                }
+                RingLog.e("share() title = " + title + ",content = " + content + ",img = " + img + ",uuid = " + uuid);
+                ShareBottomDialog dialog = new ShareBottomDialog();
+                dialog.setUuid(uuid);
+                dialog.setShareInfo(title, content, url, img);
+                dialog.show(getSupportFragmentManager());
+            }
 
+            @JavascriptInterface
+            public void login() {
+                startActivity(new Intent(WebViewActivity.this, LoginActivity.class).putExtra("previous", Global.H5_TO_LOGIN));
+            }
+
+            @JavascriptInterface
+            public void gobutler() {
+                startActivity(new Intent(WebViewActivity.this, ButlerActivity.class));
+            }
+        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
         mAgentWeb.getWebLifeCycle().onDestroy();
     }
 
@@ -155,7 +239,7 @@ public class WebViewActivity extends BaseActivity {
                         + "&system=android_" + SystemUtil.getCurrentVersion(this)
                         + "&imei="
                         + SystemUtil.getIMEI(this)
-                        + "&cellPhone="
+                        + "&phone="
                         + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "&phoneModel="
                         + android.os.Build.BRAND + " " + android.os.Build.MODEL
                         + "&phoneSystemVersion=" + "Android "
@@ -166,14 +250,19 @@ public class WebViewActivity extends BaseActivity {
                         + "?system=android_" + SystemUtil.getCurrentVersion(this)
                         + "&imei="
                         + SystemUtil.getIMEI(this)
-                        + "&cellPhone="
+                        + "&phone="
                         + SharedPreferenceUtil.getInstance(WebViewActivity.this).getString("cellphone", "") + "&phoneModel="
                         + android.os.Build.BRAND + " " + android.os.Build.MODEL
                         + "&phoneSystemVersion=" + "Android "
                         + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
                         + System.currentTimeMillis();
             }
+            if (StringUtil.isNotEmpty(getIntent().getStringExtra("uuid"))) {
+                url = url + "&uuid="
+                        + getIntent().getStringExtra("uuid");
+            }
         }
+        RingLog.e("url = " + url);
         return url;
     }
 

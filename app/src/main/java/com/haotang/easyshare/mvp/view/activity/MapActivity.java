@@ -110,7 +110,7 @@ public class MapActivity extends BaseActivity implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        DevRing.activityStackManager().pushOneActivity(this);
+        activityListManager.addActivity(this);
     }
 
     @Override
@@ -446,7 +446,7 @@ public class MapActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        DevRing.activityStackManager().exitActivity(this); //退出activity
+        activityListManager.removeActivity(this); //退出activity
     }
 
     /**

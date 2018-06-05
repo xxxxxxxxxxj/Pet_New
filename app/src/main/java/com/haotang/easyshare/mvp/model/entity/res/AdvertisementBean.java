@@ -56,6 +56,22 @@ public class AdvertisementBean {
         private String img;
         private int display;
         private String destination;
+        private String title;
+
+        public DataBean(String img, int display, String destination, String title) {
+            this.img = img;
+            this.display = display;
+            this.destination = destination;
+            this.title = title;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
 
         public String getImg() {
             return img;

@@ -86,7 +86,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="VIP积分 "
+                        android:text="易享币 "
                         android:textColor="@color/a999999"
                         android:textSize="12sp" />
 
@@ -128,7 +128,6 @@
                 android:layout_width="150dip"
                 android:layout_height="40dip"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="15dip"
                 android:scaleType="fitXY"
                 android:src="@mipmap/icon_add_cdz" />
 
@@ -138,13 +137,45 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dip"
-                    android:text="我的充电桩"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dip">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_myfragment_mycharge_right"
+                        android:layout_width="50dip"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true">
+
+                        <ImageView
+                            android:layout_width="7dip"
+                            android:layout_height="11dip"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/right_more_lan" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tv_myfragment_mycharge_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="我的充电桩   "
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_myfragment_mycharge_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/tv_myfragment_mycharge_title"
+                        android:text="(0)"
+                        android:textColor="@color/a0271F0"
+                        android:textSize="16sp" />
+                </RelativeLayout>
 
                 <com.flyco.roundview.RoundRelativeLayout
                     android:layout_width="match_parent"
@@ -213,6 +244,7 @@
                         android:src="@mipmap/right_more" />
 
                     <TextView
+                        android:id="@+id/tv_myfragment_clxx_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -222,11 +254,14 @@
 
                     <TextView
                         android:id="@+id/tv_myfragment_clxx"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dip"
+                        android:layout_marginRight="5dip"
                         android:layout_toLeftOf="@id/iv_myfragment_clxx_right"
-                        android:text="TextView"
+                        android:layout_toRightOf="@id/tv_myfragment_clxx_title"
+                        android:gravity="center_vertical|right"
                         android:textColor="@color/a666666"
                         android:textSize="14sp" />
 
@@ -256,7 +291,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="TextView"
                         android:textColor="@color/a666666"
                         android:textSize="14sp" />
 
