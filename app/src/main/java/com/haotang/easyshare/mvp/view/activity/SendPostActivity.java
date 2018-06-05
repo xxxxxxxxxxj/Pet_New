@@ -28,7 +28,6 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
-import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -76,7 +75,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     private List<String> imgPathList = new ArrayList<String>();
     private CommentImgAdapter commentImgAdapter;
     private static final int IMG_NUM = 9;
-    private int brandId;
+    private int carId;
     private int category = 1;
 
     @Override
@@ -88,7 +87,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     protected void initView(Bundle savedInstanceState) {
         activityListManager.addActivity(this);
         DaggerSendPostActivityCommponent.builder().sendPostActivityModule(new SendPostActivityModule(this, this)).build().inject(this);
-        brandId = getIntent().getIntExtra("brandId", 0);
+        carId = getIntent().getIntExtra("carId", 0);
     }
 
     @Override
@@ -265,7 +264,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                 showDialog();
                 //构建body
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                builder.addFormDataPart("carId", String.valueOf(brandId));
+                builder.addFormDataPart("carId", String.valueOf(carId));
                 builder.addFormDataPart("category", String.valueOf(category));
                 builder.addFormDataPart("content", etSendPost.getText().toString().trim());
                 for (int i = 0; i < imgPathList.size(); i++) {

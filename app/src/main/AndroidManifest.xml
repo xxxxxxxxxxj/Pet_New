@@ -262,6 +262,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
+        <activity
+            android:name=".mvp.view.activity.BrandCarActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
 
         <receiver
             android:name=".updateapputil.UpdateAppReceiver"
@@ -481,7 +486,6 @@
 
         <service android:name="com.amap.api.location.APSService" />
         <!-- 高德地图结束 -->
-        <activity android:name=".mvp.view.activity.BrandCarActivity"></activity>
     </application>
 
 </manifest>

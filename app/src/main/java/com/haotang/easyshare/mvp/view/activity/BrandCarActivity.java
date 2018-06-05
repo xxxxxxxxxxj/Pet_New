@@ -23,7 +23,6 @@ import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -102,7 +101,7 @@ public class BrandCarActivity extends BaseActivity<BrandCarPresenter> implements
 
     @Override
     protected void initEvent() {
-        sbBrandCarSidebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+        /*sbBrandCarSidebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
 
             @Override
             public void onTouchingLetterChanged(String s) {
@@ -116,7 +115,7 @@ public class BrandCarActivity extends BaseActivity<BrandCarPresenter> implements
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
         brandCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -151,7 +150,7 @@ public class BrandCarActivity extends BaseActivity<BrandCarPresenter> implements
         if (data != null && data.size() > 0) {
             list.addAll(data);
             // 根据a-z进行排序源数据
-            Collections.sort(list, pinyinComparator);
+            //Collections.sort(list, pinyinComparator);
             brandCarAdapter.notifyDataSetChanged();
             rvBrandCar.scrollToPosition(0);
         }
@@ -167,6 +166,12 @@ public class BrandCarActivity extends BaseActivity<BrandCarPresenter> implements
     public void carListSuccess(List<HotSpecialCarBean.DataBean> data) {
         disMissDialog();
         if (data != null && data.size() > 0) {
+            for(int i=0;i<list.size();i++){
+                HotCarBean.DataBean dataBean = list.get(i);
+                if(dataBean != null){
+                    dataBean.setCarList(null);
+                }
+            }
             HotCarBean.DataBean dataBean = list.get(brandposition);
             dataBean.setCarList(data);
             brandCarAdapter.notifyDataSetChanged();
