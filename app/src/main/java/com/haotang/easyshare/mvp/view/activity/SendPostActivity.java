@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.flyco.roundview.RoundRelativeLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerSendPostActivityCommponent;
@@ -25,6 +26,7 @@ import com.haotang.easyshare.mvp.view.iview.ISendPostView;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
@@ -59,6 +61,7 @@ import top.zibin.luban.Luban;
  * 发帖界面
  */
 public class SendPostActivity extends BaseActivity<SendPostPresenter> implements ISendPostView {
+    private static final int REQUESTCODE_BRANDCAR = 1111;
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_other)
@@ -71,12 +74,15 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     RecyclerView rvSendPostImg;
     @BindView(R.id.tv_sendpost_wtc)
     TextView tv_sendpost_wtc;
+    @BindView(R.id.tv_send_post_cx)
+    TextView tv_send_post_cx;
     private List<CommentImg> imgList = new ArrayList<CommentImg>();
     private List<String> imgPathList = new ArrayList<String>();
     private CommentImgAdapter commentImgAdapter;
     private static final int IMG_NUM = 9;
     private int carId;
     private int category = 1;
+    private String carName;
 
     @Override
     protected int getContentLayout() {
@@ -88,6 +94,8 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
         activityListManager.addActivity(this);
         DaggerSendPostActivityCommponent.builder().sendPostActivityModule(new SendPostActivityModule(this, this)).build().inject(this);
         carId = getIntent().getIntExtra("carId", 0);
+        carName = getIntent().getStringExtra("carName");
+        StringUtil.setText(tv_send_post_cx, carName, "", View.VISIBLE, View.VISIBLE);
     }
 
     @Override
@@ -146,10 +154,18 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppConfig.REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            if (data != null) {
-                showDialog();
-                compressWithRx(Matisse.obtainPathResult(data));
+        if (resultCode == RESULT_OK) {
+            if (requestCode == AppConfig.REQUEST_CODE_CHOOSE) {
+                if (data != null) {
+                    showDialog();
+                    compressWithRx(Matisse.obtainPathResult(data));
+                }
+            } else if (requestCode == REQUESTCODE_BRANDCAR) {
+                if (data != null) {
+                    carId = data.getIntExtra("carId", 0);
+                    carName = data.getStringExtra("carName");
+                    StringUtil.setText(tv_send_post_cx, carName, "", View.VISIBLE, View.VISIBLE);
+                }
             }
         }
     }
@@ -251,9 +267,12 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
         activityListManager.removeActivity(this); //退出activity
     }
 
-    @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.tv_sendpost_wtc})
+    @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other, R.id.tv_sendpost_wtc, R.id.rll_send_post_xzcx})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rll_send_post_xzcx:
+                startActivityForResult(new Intent(SendPostActivity.this, BrandCarActivity.class), REQUESTCODE_BRANDCAR);
+                break;
             case R.id.iv_titlebar_back:
                 finish();
                 break;

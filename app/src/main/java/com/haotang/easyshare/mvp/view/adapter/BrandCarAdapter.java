@@ -32,6 +32,16 @@ import java.util.List;
  * @date XJ on 2018/6/4 18:36
  */
 public class BrandCarAdapter extends BaseQuickAdapter<HotCarBean.DataBean, BaseViewHolder> implements SectionIndexer {
+    public OnCarItemClickListener onCarItemClickListener = null;
+
+    public interface OnCarItemClickListener {
+        public void OnCarItemClick(HotSpecialCarBean.DataBean dataBean);
+    }
+
+    public void setOnCarItemClickListener(OnCarItemClickListener onCarItemClickListener) {
+        this.onCarItemClickListener = onCarItemClickListener;
+    }
+
     public BrandCarAdapter(int layoutResId, List<HotCarBean.DataBean> data) {
         super(layoutResId, data);
     }
@@ -59,7 +69,7 @@ public class BrandCarAdapter extends BaseQuickAdapter<HotCarBean.DataBean, BaseV
                 tv_item_brandcar_zm.setVisibility(View.GONE);
             }*/
             final List<HotSpecialCarBean.DataBean> carList = item.getCarList();
-            if(carList != null && carList.size() > 0){
+            if (carList != null && carList.size() > 0) {
                 rv_item_brandcar.setVisibility(View.VISIBLE);
                 rv_item_brandcar.setHasFixedSize(true);
                 rv_item_brandcar.setNestedScrollingEnabled(false);
@@ -77,15 +87,15 @@ public class BrandCarAdapter extends BaseQuickAdapter<HotCarBean.DataBean, BaseV
                 brandCarInfoAdapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        if(carList.size() > position){
+                        if (carList.size() > position) {
                             HotSpecialCarBean.DataBean dataBean = carList.get(position);
-                            if(dataBean != null){
-                                mContext.startActivity(new Intent(mContext, SendPostActivity.class).putExtra("carId",dataBean.getId()));
+                            if (dataBean != null && onCarItemClickListener != null) {
+                                onCarItemClickListener.OnCarItemClick(dataBean);
                             }
                         }
                     }
                 });
-            }else{
+            } else {
                 rv_item_brandcar.setVisibility(View.GONE);
             }
         }

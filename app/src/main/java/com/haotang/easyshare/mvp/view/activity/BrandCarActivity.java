@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -133,6 +134,17 @@ public class BrandCarActivity extends BaseActivity<BrandCarPresenter> implements
                 }
             }
         });
+        brandCarAdapter.setOnCarItemClickListener(new BrandCarAdapter.OnCarItemClickListener() {
+            @Override
+            public void OnCarItemClick(HotSpecialCarBean.DataBean dataBean) {
+                Intent intent = new Intent(BrandCarActivity.this, SendPostActivity.class);
+                intent.putExtra("carId", dataBean.getId());
+                intent.putExtra("carName", dataBean.getCar());
+                startActivity(intent);
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other})
@@ -166,9 +178,9 @@ public class BrandCarActivity extends BaseActivity<BrandCarPresenter> implements
     public void carListSuccess(List<HotSpecialCarBean.DataBean> data) {
         disMissDialog();
         if (data != null && data.size() > 0) {
-            for(int i=0;i<list.size();i++){
+            for (int i = 0; i < list.size(); i++) {
                 HotCarBean.DataBean dataBean = list.get(i);
-                if(dataBean != null){
+                if (dataBean != null) {
                     dataBean.setCarList(null);
                 }
             }
