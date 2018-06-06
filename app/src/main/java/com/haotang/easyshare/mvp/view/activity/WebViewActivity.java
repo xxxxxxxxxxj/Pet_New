@@ -89,6 +89,11 @@ public class WebViewActivity extends BaseActivity {
     private MiddlewareWebChromeBase mMiddleWareWebChrome;
     private DownloadingService mDownloadingService;
     private AgentWebDownloader.ExtraService mExtraService;
+    private String localUuid = "";
+    private String localTitle = "";
+    private String localContent = "";
+    private String localUrl = "";
+    private String localImg = "";
 
     @Override
     protected int getContentLayout() {
@@ -196,11 +201,12 @@ public class WebViewActivity extends BaseActivity {
                     url = url + "&uuid="
                             + uuid;
                 }
+                localUuid = uuid;
+                localTitle = title;
+                localContent = content;
+                localUrl = url;
+                localImg = img;
                 RingLog.e("share() title = " + title + ",content = " + content + ",img = " + img + ",uuid = " + uuid);
-                ShareBottomDialog dialog = new ShareBottomDialog();
-                dialog.setUuid(uuid);
-                dialog.setShareInfo(title, content, url, img);
-                dialog.show(getSupportFragmentManager());
             }
 
             @JavascriptInterface
@@ -266,7 +272,7 @@ public class WebViewActivity extends BaseActivity {
         return url;
     }
 
-    @OnClick({R.id.iv_back, R.id.iv_finish, R.id.iv_more})
+    @OnClick({R.id.iv_back, R.id.iv_finish, R.id.iv_more, R.id.iv_webview_share})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -279,6 +285,12 @@ public class WebViewActivity extends BaseActivity {
                 break;
             case R.id.iv_more:
                 showPoPup(view);
+                break;
+            case R.id.iv_webview_share:
+                ShareBottomDialog dialog = new ShareBottomDialog();
+                dialog.setUuid(localUuid);
+                dialog.setShareInfo(localTitle, localContent, localUrl, localImg);
+                dialog.show(getSupportFragmentManager());
                 break;
         }
     }
