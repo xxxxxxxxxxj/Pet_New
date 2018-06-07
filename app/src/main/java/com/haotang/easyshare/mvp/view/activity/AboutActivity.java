@@ -35,7 +35,7 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void setView(Bundle savedInstanceState) {
         tvTitlebarTitle.setText("关于");
-        tvAboutVersion.setText("易享充电 V" + SystemUtil.getCurrentVersion(this));
+        tvAboutVersion.setText(getResources().getString(R.string.app_name) + " V" + SystemUtil.getCurrentVersion(this));
     }
 
     @Override
