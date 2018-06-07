@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item_brandcar_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_item_brandcar_zm"
-        android:layout_width="match_parent"
-        android:layout_height="27dip"
-        android:background="@color/af8f8f8"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dip"
-        android:text="A"
-        android:textColor="@color/a333333"
-        android:textSize="15sp" />
-
     <View
-        android:id="@+id/vw_item_brandcar1"
+        android:id="@+id/ew_item_brandcar_top"
         android:layout_width="match_parent"
         android:layout_height="15dip"
         android:background="@color/white" />
@@ -51,7 +41,7 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/vw_item_brandcar2"
+        android:id="@+id/ew_item_brandcar_bottom"
         android:layout_width="match_parent"
         android:layout_height="15dip"
         android:background="@color/white" />
@@ -59,7 +49,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_item_brandcar"
         android:layout_width="match_parent"
-        android:background="@color/af8f8f8"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/af8f8f8" />
 
 </LinearLayout>

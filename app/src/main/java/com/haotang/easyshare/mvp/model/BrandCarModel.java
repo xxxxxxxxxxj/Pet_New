@@ -1,12 +1,10 @@
 package com.haotang.easyshare.mvp.model;
 
-import com.haotang.easyshare.mvp.model.http.AllBrandsApiService;
 import com.haotang.easyshare.mvp.model.http.BrandCarApiService;
 import com.haotang.easyshare.mvp.model.imodel.IBrandCarModel;
 import com.ljy.devring.DevRing;
 
 import io.reactivex.Observable;
-import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -18,18 +16,10 @@ import okhttp3.RequestBody;
  */
 public class BrandCarModel implements IBrandCarModel {
     /**
-     * 所有品牌
-     */
-    @Override
-    public Observable list() {
-        return DevRing.httpManager().getService(AllBrandsApiService.class).list();
-    }
-
-    /**
      * 品牌车型
      */
     @Override
-    public Observable carList(RequestBody body) {
-        return DevRing.httpManager().getService(BrandCarApiService.class).carList(body);
+    public Observable car() {
+        return DevRing.httpManager().getService(BrandCarApiService.class).car();
     }
 }

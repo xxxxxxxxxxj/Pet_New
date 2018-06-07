@@ -183,6 +183,10 @@ public class UrlConstants {
      * 41.品牌车型
      */
     public static final String BRAND_CAR = "brand/car/list";
+    /**
+     * 42.品牌和车型
+     */
+    public static final String BRAND_AND_CAR = "brand/car";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

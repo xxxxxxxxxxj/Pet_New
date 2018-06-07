@@ -115,7 +115,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         setView(savedInstanceState);//由具体的activity实现，做视图相关的设置
         initData(savedInstanceState);//由具体的activity实现，做数据的初始化
         initEvent();//由具体的activity实现，做事件监听的初始化
-        getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_ALL);
+        getSwipeBackLayout().setEdgeOrientation(SwipeBackLayout.EDGE_LEFT);
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         mDensity = dm.density;

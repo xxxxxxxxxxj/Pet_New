@@ -15,12 +15,7 @@ import okhttp3.RequestBody;
  */
 public interface IBrandCarModel extends IBaseModel {
     /**
-     * 所有品牌
-     */
-    Observable list();
-
-    /**
      * 品牌车型
      */
-    Observable carList(RequestBody body);
+    Observable car();
 }

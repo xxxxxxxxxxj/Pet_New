@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.haotang.easyshare.R;
-import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.BrandCarBean;
 import com.haotang.easyshare.util.StringUtil;
 
 import java.util.List;
@@ -19,13 +19,13 @@ import java.util.List;
  * @author 徐俊
  * @date zhoujunxia on 2018/6/5 20:17
  */
-class BrandCarInfoAdapter extends BaseQuickAdapter<HotSpecialCarBean.DataBean, BaseViewHolder> {
-    public BrandCarInfoAdapter(int layoutResId, List<HotSpecialCarBean.DataBean> data) {
+class BrandCarInfoAdapter extends BaseQuickAdapter<BrandCarBean.DataBean.DatasetBean.CarsBean, BaseViewHolder> {
+    public BrandCarInfoAdapter(int layoutResId, List<BrandCarBean.DataBean.DatasetBean.CarsBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, HotSpecialCarBean.DataBean item) {
+    protected void convert(BaseViewHolder helper, BrandCarBean.DataBean.DatasetBean.CarsBean item) {
         TextView tv_item_brandcarinfo_name = helper.getView(R.id.tv_item_brandcarinfo_name);
         if (item != null) {
             StringUtil.setText(tv_item_brandcarinfo_name, item.getCar(), "", View.VISIBLE, View.VISIBLE);

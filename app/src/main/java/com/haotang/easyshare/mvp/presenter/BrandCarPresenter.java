@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.model.entity.res.BrandCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.model.imodel.IBrandCarModel;
@@ -29,20 +30,20 @@ public class BrandCarPresenter extends BasePresenter<IBrandCarView, IBrandCarMod
     /**
      * 所有品牌
      */
-    public void list() {
-        DevRing.httpManager().commonRequest(mIModel.list(), new CommonObserver<HotCarBean>() {
+    public void car() {
+        DevRing.httpManager().commonRequest(mIModel.car(), new CommonObserver<BrandCarBean>() {
             @Override
-            public void onResult(HotCarBean result) {
+            public void onResult(BrandCarBean result) {
                 if (mIView != null) {
                     if (result != null) {
                         if (result.getCode() == 0) {
-                            mIView.listSuccess(result.getData());
+                            mIView.carSuccess
+                                    (result.getData());
                         } else {
                             if (StringUtil.isNotEmpty(result.getMsg())) {
-                                mIView.listFail
-                                        (result.getCode(), result.getMsg());
+                                mIView.carFail(result.getCode(), result.getMsg());
                             } else {
-                                mIView.listFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                                mIView.carFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
                             }
                         }
                     }
@@ -52,39 +53,7 @@ public class BrandCarPresenter extends BasePresenter<IBrandCarView, IBrandCarMod
             @Override
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
-                    mIView.listFail(errType, errMessage);
-                }
-            }
-        }, RxLifecycleUtil.bindUntilDestroy(mIView));
-    }
-
-    /**
-     * 品牌车型
-     */
-    public void carList(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.carList(body), new CommonObserver<HotSpecialCarBean>() {
-            @Override
-            public void onResult(HotSpecialCarBean result) {
-                if (mIView != null) {
-                    if (result != null) {
-                        if (result.getCode() == 0) {
-                            mIView.carListSuccess(result.getData());
-                        } else {
-                            if (StringUtil.isNotEmpty(result.getMsg())) {
-                                mIView.carListFail
-                                        (result.getCode(), result.getMsg());
-                            } else {
-                                mIView.carListFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onError(int errType, String errMessage) {
-                if (mIView != null) {
-                    mIView.listFail(errType, errMessage);
+                    mIView.carFail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));
