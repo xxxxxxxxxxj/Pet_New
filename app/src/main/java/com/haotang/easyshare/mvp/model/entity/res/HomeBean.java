@@ -174,6 +174,15 @@ public class HomeBean {
         private int times;
         private String title;
         private String uuid;
+        private int isPrivate;
+
+        public int getIsPrivate() {
+            return isPrivate;
+        }
+
+        public void setIsPrivate(int isPrivate) {
+            this.isPrivate = isPrivate;
+        }
 
         public String getElectricityPrice() {
             return electricityPrice;
