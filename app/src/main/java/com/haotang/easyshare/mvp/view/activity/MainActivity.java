@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -19,11 +18,12 @@ import com.flyco.tablayout.widget.MsgView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerMainActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MainActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.MainTabEvent;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.BootmBarBean;
 import com.haotang.easyshare.mvp.model.entity.res.ImageTabEntity;
 import com.haotang.easyshare.mvp.model.entity.res.LastVersionBean;
-import com.haotang.easyshare.mvp.model.entity.table.MovieCollect;
+import com.haotang.easyshare.mvp.model.entity.res.SelectAddress;
 import com.haotang.easyshare.mvp.presenter.MainPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
@@ -35,6 +35,7 @@ import com.haotang.easyshare.mvp.view.iview.IMainView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UpdateUtil;
 import com.ljy.devring.DevRing;
@@ -52,7 +53,6 @@ import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * 首页
@@ -102,6 +102,20 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         //使用Dagger2对本类中相关变量进行初始化
         DaggerMainActivityCommponent.builder().mainActivityModule(new MainActivityModule(this, this)).build().inject(this);
         permissionDialog.setMessage(R.string.permission_request_WRITE_EXTERNAL_STORAGE);
+    }
+
+    @Subscribe
+    public void getAddress(MainTabEvent mainTabEvent) {
+        if (mainTabEvent != null) {
+            currentTabIndex = mainTabEvent.getIndex();
+            ctlMainactivity.setCurrentTab(currentTabIndex);
+            vpMainactivity.setCurrentItem(currentTabIndex);
+        }
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
     }
 
     @Override

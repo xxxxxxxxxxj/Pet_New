@@ -1,20 +1,26 @@
 package com.haotang.easyshare.mvp.view.receiver;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.haotang.easyshare.mvp.view.activity.TestActivity;
+import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.model.entity.event.MainTabEvent;
+import com.haotang.easyshare.mvp.view.activity.MainActivity;
+import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -49,12 +55,9 @@ public class MyJPushReceiver extends BroadcastReceiver {
                 RingLog.d(TAG, "[MyJPushReceiver] 接收到推送下来的通知的ID: " + notifactionId);
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 RingLog.d(TAG, "[MyJPushReceiver] 用户点击打开了通知");
-                //打开自定义的Activity
-                Intent i = new Intent(context, TestActivity.class);
-                i.putExtras(bundle);
-                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                context.startActivity(i);
+                String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+                RingLog.e(TAG, "extras = " + extras);
+                donePush(context, extras);
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
                 RingLog.d(TAG, "[MyJPushReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
                 //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
@@ -67,6 +70,81 @@ public class MyJPushReceiver extends BroadcastReceiver {
         } catch (Exception e) {
 
         }
+    }
+
+    private void donePush(Context context, String json) {
+        try {
+            JSONObject jobj = new JSONObject(json);
+            int display = 0;
+            String destination = "";
+            JSONObject jparameters = null;
+            if (jobj.has("display") && !jobj.isNull("display")) {//展示方式(1:原生、2:H5)
+                display = Integer.parseInt(jobj.getString("display"));
+            }
+            if (jobj.has("destination") && !jobj.isNull("destination")) {//跳转目的地,原生展示方式输入界面编号,H5展示方式输入页面url
+                destination = jobj.getString("destination");
+            }
+            if (jobj.has("parameters") && !jobj.isNull("parameters")) {// json对象
+                jparameters = jobj.getJSONObject("parameters");
+            }
+            if (display == 1) {
+                switch (Integer.parseInt(destination)) {
+                    case AppConfig.MAIN_MAIN:
+                        context.startActivity(new Intent(context, MainActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                        | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        DevRing.busManager().postEvent(new MainTabEvent(0));
+                        break;
+                    case AppConfig.MAIN_HOT:
+                        context.startActivity(new Intent(context, MainActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                        | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        DevRing.busManager().postEvent(new MainTabEvent(1));
+                        break;
+                    case AppConfig.MAIN_MY:
+                        context.startActivity(new Intent(context, MainActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                        | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        DevRing.busManager().postEvent(new MainTabEvent(2));
+                        break;
+                }
+            } else if (display == 2) {
+                if (!isAppOpen(context)) {
+                    context.startActivity(new Intent(context, MainActivity.class)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                }
+                Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.URL_KEY, destination);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
+            } else {// 首页
+                context.startActivity(new Intent(context, MainActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            RingLog.e("e = " + e.toString());
+            context.startActivity(new Intent(context, MainActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        }
+    }
+
+    private boolean isAppOpen(Context context) {
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(100);
+        for (ActivityManager.RunningTaskInfo info : list) {
+            if (info.topActivity.getPackageName().equals("com.haotang.easyshare")
+                    || info.baseActivity.getPackageName().equals(
+                    "com.haotang.easyshare")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // 打印所有的 intent extra 数据
