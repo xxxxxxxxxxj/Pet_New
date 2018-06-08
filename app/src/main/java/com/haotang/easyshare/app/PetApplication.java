@@ -106,7 +106,7 @@ public class PetApplication extends Application {
         JPushInterface.setDebugMode(AppConfig.isShowLog);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
         String regId = JPushInterface.getRegistrationID(getApplicationContext());
-        RingLog.d("regId", "regId = " + regId);
+        RingLog.e("regId", "regId = " + regId);
         if (StringUtil.isNotEmpty(regId)) {
             SharedPreferenceUtil.getInstance(getApplicationContext()).saveString("jpush_id", regId);
         }
