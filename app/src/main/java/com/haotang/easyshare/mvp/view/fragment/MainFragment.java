@@ -183,8 +183,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private BrandAreaBean.AdBean adBean1;
     private BrandAreaBean.AdBean adBean2;
     private BrandAreaBean.AdBean adBean3;
-    private double localLat;
-    private double localLng;
     private PopupWindow pWin;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
     private MainSerchResultAdapter mainSerchResultAdapter;
@@ -467,7 +465,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 }
             }
         }
-        mainLocalAdapter.notifyDataSetChanged();
+        mainLocalAdapter.setLatLng(lat,lng);
         addMarkersToMap();// 往地图上添加marker
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
         for (int i = 0; i < list.size(); i++) {
@@ -491,8 +489,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
             case R.id.iv_mainfrag_map_loc:
-                if (localLat > 0 && localLng > 0) {
-                    aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(localLat, localLng), 18, 0, 30)),
+                if (lat > 0 && lng > 0) {
+                    aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(lat, lng), 18, 0, 30)),
                             1000, null);
                 }
                 break;
@@ -748,7 +746,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             mainFragmenBoDa.getLlMainbottomXq().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(mActivity, ChargingPileDetailActivity.class).putExtra("uuid", stationsBean.getUuid()));
+                    Intent intent = new Intent(mActivity, ChargingPileDetailActivity.class);
+                    intent.putExtra("uuid", stationsBean.getUuid());
+                    intent.putExtra("serchLat", lat);
+                    intent.putExtra("serchLng", lng);
+                    startActivity(intent);
                 }
             });
             mainFragmenBoDa.getLlMainbottomPl().setOnClickListener(new View.OnClickListener() {
@@ -817,8 +819,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onLocationChanged(AMapLocation amapLocation) {
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
-                localLat = amapLocation.getLatitude();
-                localLng = amapLocation.getLongitude();
                 //定位成功回调信息，设置相关消息
                 lat = amapLocation.getLatitude();//获取纬度
                 lng = amapLocation.getLongitude();//获取经度

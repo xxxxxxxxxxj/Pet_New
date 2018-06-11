@@ -153,12 +153,54 @@
                     android:layout_height="0.5dip"
                     android:layout_marginLeft="15dip"
                     android:background="@color/aEEEEEE" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_addcharge_bottom_xj"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dip"
+                    android:paddingLeft="15dip"
+                    android:paddingRight="15dip">
+
+                    <ImageView
+                        android:id="@+id/iv_addcharge_bottom_xj"
+                        android:layout_width="15dip"
+                        android:layout_height="15dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/icon_addcharge_unselect" />
+
+                    <ImageView
+                        android:id="@+id/iv_addcharge_bottom_xjicon"
+                        android:layout_width="23.5dip"
+                        android:layout_height="23.5dip"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/icon_wx" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/iv_addcharge_bottom_xjicon"
+                        android:text="现金支付"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dip"
+                    android:layout_marginLeft="15dip"
+                    android:background="@color/aEEEEEE" />
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_addcharge_bottom_selecttime"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
                 <View
                     android:layout_width="30dip"

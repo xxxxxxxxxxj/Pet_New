@@ -506,4 +506,31 @@ public class SystemUtil {
             return false;
         }
     }
+
+    /**
+     * double类型转换为int类型
+     *
+     * @param num
+     * @return
+     */
+    public static int formatDouble(double num) {
+        return Integer.parseInt(new java.text.DecimalFormat("0").format(num));
+    }
+
+    public static boolean isDoubleEndWithZero(double price) {
+        boolean bool = false;
+        try {
+            String str = String.valueOf(price);
+            String[] split = str.split("\\.");
+            if (Integer.parseInt(split[1]) > 0) {
+                bool = false;
+            } else {
+                bool = true;
+            }
+        } catch (Exception e) {
+            bool = false;
+            e.printStackTrace();
+        }
+        return bool;
+    }
 }

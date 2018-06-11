@@ -30,6 +30,8 @@ import java.util.List;
 public class MainLocalAdapter extends BaseQuickAdapter<MainFragChargeBean, BaseViewHolder> {
     private boolean isTopDivider;
     private String city;
+    private double lat;
+    private double lng;
 
     public MainLocalAdapter(int layoutResId, List<MainFragChargeBean> data, boolean isTopDivider, String city) {
         super(layoutResId, data);
@@ -80,9 +82,19 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragChargeBean, BaseV
             rll_item_mainlocal_root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mContext.startActivity(new Intent(mContext, ChargingPileDetailActivity.class).putExtra("uuid", item.getUuid()));
+                    Intent intent = new Intent(mContext, ChargingPileDetailActivity.class);
+                    intent.putExtra("uuid", item.getUuid());
+                    intent.putExtra("serchLat", lat);
+                    intent.putExtra("serchLng", lng);
+                    mContext.startActivity(intent);
                 }
             });
         }
+    }
+
+    public void setLatLng(double lat, double lng) {
+        this.lat = lat;
+        this.lng = lng;
+        notifyDataSetChanged();
     }
 }

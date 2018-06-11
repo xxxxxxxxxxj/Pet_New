@@ -79,6 +79,8 @@ public class WebViewActivity extends BaseActivity {
     public static final String URL_KEY = "url_key";
     @BindView(R.id.linearLayout)
     LinearLayout linearLayout;
+    @BindView(R.id.iv_webview_share)
+    ImageView iv_webview_share;
     private PopupMenu mPopupMenu;
     /**
      * 用于方便打印测试
@@ -130,6 +132,11 @@ public class WebViewActivity extends BaseActivity {
                 .go(getUrl()); //WebView载入该url地址的页面并显示。
         AgentWebConfig.debug();
         mAgentWeb.getWebCreator().getWebView().setOverScrollMode(WebView.OVER_SCROLL_NEVER);
+        if (getUrl().contains("share=1")) {
+            iv_webview_share.setVisibility(View.VISIBLE);
+        } else {
+            iv_webview_share.setVisibility(View.GONE);
+        }
     }
 
     @Override

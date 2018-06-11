@@ -52,6 +52,26 @@ public class AddChargeBoDa {
     WheelView wv_addcharge_bottom_starttime;
     @BindView(R.id.wv_addcharge_bottom_endtime)
     WheelView wv_addcharge_bottom_endtime;
+    @BindView(R.id.iv_addcharge_bottom_xj)
+    ImageView iv_addcharge_bottom_xj;
+    @BindView(R.id.rl_addcharge_bottom_xj)
+    RelativeLayout rl_addcharge_bottom_xj;
+
+    public ImageView getIv_addcharge_bottom_xj() {
+        return iv_addcharge_bottom_xj;
+    }
+
+    public void setIv_addcharge_bottom_xj(ImageView iv_addcharge_bottom_xj) {
+        this.iv_addcharge_bottom_xj = iv_addcharge_bottom_xj;
+    }
+
+    public RelativeLayout getRl_addcharge_bottom_xj() {
+        return rl_addcharge_bottom_xj;
+    }
+
+    public void setRl_addcharge_bottom_xj(RelativeLayout rl_addcharge_bottom_xj) {
+        this.rl_addcharge_bottom_xj = rl_addcharge_bottom_xj;
+    }
 
     public WheelView getWv_addcharge_bottom_starttime() {
         return wv_addcharge_bottom_starttime;

@@ -506,15 +506,22 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         }
     }
 
-    private void setWxOrZfb(int flag) {
+    private void setPayWay(int flag) {
         if (flag == 1) {//微信
             payWay = 1;
             addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_select);
             addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_unselect);
+            addChargeBoDa.getIv_addcharge_bottom_xj().setImageResource(R.mipmap.icon_addcharge_unselect);
         } else if (flag == 2) {//支付宝
             payWay = 2;
             addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_unselect);
             addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_select);
+            addChargeBoDa.getIv_addcharge_bottom_xj().setImageResource(R.mipmap.icon_addcharge_unselect);
+        } else if (flag == 3) {//现金
+            payWay = 3;
+            addChargeBoDa.getIv_addcharge_bottom_xj().setImageResource(R.mipmap.icon_addcharge_select);
+            addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_unselect);
+            addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_unselect);
         }
     }
 
@@ -577,13 +584,19 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             addChargeBoDa.getRlAddchargeBottomWx().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setWxOrZfb(1);
+                    setPayWay(1);
                 }
             });
             addChargeBoDa.getRlAddchargeBottomZfb().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setWxOrZfb(2);
+                    setPayWay(2);
+                }
+            });
+            addChargeBoDa.getRl_addcharge_bottom_xj().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setPayWay(3);
                 }
             });
             addChargeBoDa.getTvAddchargeBottomOther().setOnClickListener(new View.OnClickListener() {
@@ -597,6 +610,9 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                             pWinBottomDialog.dismiss();
                         } else if (payWay == 2) {//支付宝
                             tvAddchargeZffs.setText("支付宝支付");
+                            pWinBottomDialog.dismiss();
+                        } else if (payWay == 3) {//支付宝
+                            tvAddchargeZffs.setText("现金支付");
                             pWinBottomDialog.dismiss();
                         }
                     } else if (flag == 2) {//开放时间
@@ -659,7 +675,11 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             StringUtil.setText(tvAddchargeZdz, data.getAddress(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvAddchargeKfsj, data.getOpenTime(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargeCdf, data.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(etAddchargeFwf, data.getServiceFee() + "", "", View.VISIBLE, View.VISIBLE);
+            if (SystemUtil.isDoubleEndWithZero(data.getServiceFee())) {
+                StringUtil.setText(etAddchargeFwf, SystemUtil.formatDouble(data.getServiceFee()) + "", "", View.VISIBLE, View.VISIBLE);
+            } else {
+                StringUtil.setText(etAddchargeFwf, data.getServiceFee() + "", "", View.VISIBLE, View.VISIBLE);
+            }
             StringUtil.setText(tvAddchargeZffs, data.getPayWay(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargePhone, data.getPhone() + "", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargeTcf, data.getParkingPrice(), "", View.VISIBLE, View.VISIBLE);
@@ -706,7 +726,6 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                                 });
                     }
                 }
-
                 for (int i = 0; i < imgList.size(); i++) {
                     CommentImg commentImg = imgList.get(i);
                     if (commentImg.isAdd()) {

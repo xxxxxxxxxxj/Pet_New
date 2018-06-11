@@ -138,6 +138,8 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     private int is_collect;
     private Map<String, String> parmMap = new HashMap<String, String>();
     private PostBean.DataBean.ShareMap shareMap;
+    private double serchLat;
+    private double serchLng;
 
     @Override
     protected int getContentLayout() {
@@ -150,11 +152,17 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
         DaggerChargingPileDetailActivityCommponent.builder().
                 chargingPileDetailActivityModule(new ChargingPileDetailActivityModule(this, this)).build().inject(this);
         uuid = getIntent().getStringExtra("uuid");
+        serchLat = getIntent().getDoubleExtra("serchLat", 0);
+        serchLng = getIntent().getDoubleExtra("serchLng", 0);
     }
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-        setLocation();
+        if (serchLat > 0 && serchLng > 0) {
+            refresh();
+        } else {
+            setLocation();
+        }
     }
 
     private void setLocation() {
@@ -190,16 +198,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                         + lat + ", lng = "
                         + lng + ",city = " + city + ",address = " + amapLocation.getAddress());
                 if (lat > 0 && lng > 0) {
-                    showDialog();
-                    Map<String, String> mapHeader = UrlConstants.getMapHeader(ChargingPileDetailActivity.this);
-                    mapHeader.put("lng", String.valueOf(lng));
-                    mapHeader.put("lat", String.valueOf(lat));
-                    mapHeader.put("key", AppConfig.SERVER_KEY);
-                    mapHeader.put("uuid", uuid);
-                    RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
-                    String md5 = SignUtil.sign(mapHeader, "MD5");
-                    RingLog.d(TAG, "md5 =  " + md5);
-                    mPresenter.detail(lng, lat, uuid, md5);
+                    refresh();
                     mlocationClient.stopLocation();
                 }
             } else {
@@ -208,6 +207,30 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                         + amapLocation.getErrorCode() + ", errInfo:"
                         + amapLocation.getErrorInfo());
             }
+        }
+    }
+
+    private void refresh() {
+        showDialog();
+        Map<String, String> mapHeader = UrlConstants.getMapHeader(ChargingPileDetailActivity.this);
+        if (serchLat > 0 && serchLng > 0) {
+            mapHeader.put("lng", String.valueOf(serchLng));
+            mapHeader.put("lat", String.valueOf(serchLat));
+            mapHeader.put("key", AppConfig.SERVER_KEY);
+            mapHeader.put("uuid", uuid);
+            RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
+            String md5 = SignUtil.sign(mapHeader, "MD5");
+            RingLog.d(TAG, "md5 =  " + md5);
+            mPresenter.detail(serchLng, serchLat, uuid, md5);
+        } else if (lat > 0 && lng > 0) {
+            mapHeader.put("lng", String.valueOf(lng));
+            mapHeader.put("lat", String.valueOf(lat));
+            mapHeader.put("key", AppConfig.SERVER_KEY);
+            mapHeader.put("uuid", uuid);
+            RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
+            String md5 = SignUtil.sign(mapHeader, "MD5");
+            RingLog.d(TAG, "md5 =  " + md5);
+            mPresenter.detail(lng, lat, uuid, md5);
         }
     }
 
@@ -275,7 +298,11 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                                     + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
                                     + System.currentTimeMillis());
                         }
-                        shareMap.setUrl(shareMap.getUrl() + "&lat=" + lat + "&lng=" + lng + "&uuid=" + uuid);
+                        if (serchLat > 0 && serchLng > 0) {
+                            shareMap.setUrl(shareMap.getUrl() + "&lat=" + serchLat + "&lng=" + serchLng + "&uuid=" + uuid);
+                        } else if (lat > 0 && lng > 0) {
+                            shareMap.setUrl(shareMap.getUrl() + "&lat=" + lat + "&lng=" + lng + "&uuid=" + uuid);
+                        }
                     }
                     ShareBottomDialog dialog = new ShareBottomDialog();
                     dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
@@ -292,7 +319,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 SystemUtil.cellPhone(ChargingPileDetailActivity.this, "");
                 break;
             case R.id.ll_chargingdetail_daohang:
-                SystemUtil.goNavigation(this, chargeLat, chargeLat, "我的位置", address, city);
+                SystemUtil.goNavigation(this, chargeLat, chargeLng, "我的位置", address, city);
                 break;
         }
     }
@@ -426,7 +453,11 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     @Subscribe
     public void refresh(RefreshEvent data) {
         if (data != null && data.getRefreshIndex() == RefreshEvent.SAVE_CHARGE_COMMENT) {
-            mlocationClient.startLocation();
+            if (serchLat > 0 && serchLng > 0) {
+                refresh();
+            } else {
+                mlocationClient.startLocation();
+            }
         }
     }
 }

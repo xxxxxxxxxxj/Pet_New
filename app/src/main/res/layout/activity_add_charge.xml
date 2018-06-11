@@ -130,33 +130,35 @@
                     android:textColor="@color/a666666"
                     android:textSize="15sp" />
 
-                <LinearLayout
-                    android:id="@+id/ll_addcharge_zdz"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:layout_toRightOf="@id/tv_addcharge_zdz_title"
-                    android:gravity="center_vertical|right"
-                    android:orientation="horizontal">
+                    android:layout_toRightOf="@id/tv_addcharge_zdz_title">
+
+                    <ImageView
+                        android:id="@+id/iv_addcharge_zdz"
+                        android:layout_width="7dip"
+                        android:layout_height="11dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/right_more" />
 
                     <TextView
                         android:id="@+id/tv_addcharge_zdz"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginRight="5dip"
+                        android:layout_toLeftOf="@id/iv_addcharge_zdz"
                         android:ellipsize="end"
-                        android:gravity="center_vertical"
+                        android:gravity="center_vertical|right"
                         android:singleLine="true"
                         android:text="请选择站地址"
                         android:textColor="@color/a666666"
                         android:textSize="15sp" />
 
-                    <ImageView
-                        android:layout_width="7dip"
-                        android:layout_height="11dip"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/right_more" />
-                </LinearLayout>
+                </RelativeLayout>
             </RelativeLayout>
 
             <View
@@ -385,7 +387,7 @@
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical|right"
                     android:hint="请输入服务费"
-                    android:inputType="number"
+                    android:inputType="number|numberDecimal"
                     android:textColor="@color/a333333"
                     android:textColorHint="@color/aBBBBBB"
                     android:textSize="14sp" />
@@ -422,7 +424,7 @@
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical|right"
                     android:hint="请输入停车费"
-                    android:inputType="number"
+                    android:inputType="number|numberDecimal"
                     android:textColor="@color/a333333"
                     android:textColorHint="@color/aBBBBBB"
                     android:textSize="14sp" />
