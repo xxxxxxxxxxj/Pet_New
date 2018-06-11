@@ -120,6 +120,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_f8_5));
         rvLocalCharging.addItemDecoration(divider);
+        mainLocalAdapter.setLatLng(serchLat, serchLng);
     }
 
     @Override

@@ -177,7 +177,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dip"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/icon_wx" />
+                        android:src="@mipmap/icon_xj" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -199,8 +199,7 @@
             <RelativeLayout
                 android:id="@+id/rl_addcharge_bottom_selecttime"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone">
+                android:layout_height="match_parent">
 
                 <View
                     android:layout_width="30dip"

@@ -552,9 +552,15 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 if (payWay == 1) {//微信
                     addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_select);
                     addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_unselect);
+                    addChargeBoDa.getIv_addcharge_bottom_xj().setImageResource(R.mipmap.icon_addcharge_unselect);
                 } else if (payWay == 2) {//支付宝
                     addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_unselect);
                     addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_select);
+                    addChargeBoDa.getIv_addcharge_bottom_xj().setImageResource(R.mipmap.icon_addcharge_unselect);
+                } else if (payWay == 3) {//现金
+                    addChargeBoDa.getIvAddchargeBottomWx().setImageResource(R.mipmap.icon_addcharge_unselect);
+                    addChargeBoDa.getIvAddchargeBottomZfb().setImageResource(R.mipmap.icon_addcharge_unselect);
+                    addChargeBoDa.getIv_addcharge_bottom_xj().setImageResource(R.mipmap.icon_addcharge_select);
                 }
             } else if (flag == 2) {//开放时间
                 addChargeBoDa.getTvAddchargeBottomTitle().setText("选择时间");

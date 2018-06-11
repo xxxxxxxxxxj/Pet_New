@@ -219,7 +219,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         switch (view.getId()) {
             case R.id.rl_myfragment_mycharge_right:
                 if (stations != null && stations.size() > 0) {
-                    pagePosition++;
                     if (stations.size() > pagePosition) {
                         pagePosition++;
                     } else {
