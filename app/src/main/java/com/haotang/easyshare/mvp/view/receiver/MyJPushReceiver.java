@@ -109,11 +109,7 @@ public class MyJPushReceiver extends BroadcastReceiver {
                         break;
                 }
             } else if (display == 2) {
-                if (!isAppOpen(context)) {
-                    context.startActivity(new Intent(context, MainActivity.class)
-                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                    | Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                }
+                isOpenApp(context);
                 Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra(WebViewActivity.URL_KEY, destination);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -127,6 +123,14 @@ public class MyJPushReceiver extends BroadcastReceiver {
         } catch (Exception e) {
             e.printStackTrace();
             RingLog.e("e = " + e.toString());
+            context.startActivity(new Intent(context, MainActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        }
+    }
+
+    private void isOpenApp(Context context) {
+        if (!isAppOpen(context)) {
             context.startActivity(new Intent(context, MainActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                             | Intent.FLAG_ACTIVITY_CLEAR_TOP));
