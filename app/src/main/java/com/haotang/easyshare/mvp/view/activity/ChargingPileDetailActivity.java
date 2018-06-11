@@ -319,7 +319,11 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 SystemUtil.cellPhone(ChargingPileDetailActivity.this, "");
                 break;
             case R.id.ll_chargingdetail_daohang:
-                SystemUtil.goNavigation(this, chargeLat, chargeLng, "我的位置", address, city);
+                if (serchLat > 0 && serchLng > 0) {
+                    SystemUtil.goNavigation(this, chargeLat, chargeLng, "", address, serchLat, serchLng);
+                } else if (lat > 0 && lng > 0) {
+                    SystemUtil.goNavigation(this, chargeLat, chargeLng, "", address, lat, lng);
+                }
                 break;
         }
     }

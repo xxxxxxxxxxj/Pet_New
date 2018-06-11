@@ -739,8 +739,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             mainFragmenBoDa.getLlMainbottomDaohang().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SystemUtil.goNavigation(mActivity, stationsBean.getLat(), stationsBean.getLng(), "我的位置",
-                            stationsBean.getAddress(), city);
+                    SystemUtil.goNavigation(mActivity, stationsBean.getLat(), stationsBean.getLng(), "",
+                            stationsBean.getAddress(),lat,lng);
                 }
             });
             mainFragmenBoDa.getLlMainbottomXq().setOnClickListener(new View.OnClickListener() {

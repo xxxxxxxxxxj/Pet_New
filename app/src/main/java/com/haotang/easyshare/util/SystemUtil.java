@@ -56,6 +56,9 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static android.R.attr.mode;
+import static cn.jpush.im.android.api.model.UserInfo.Field.region;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -391,7 +394,7 @@ public class SystemUtil {
     }
 
     public static void goNavigation(final Context context, final double lat, final double lng, final String saddr,
-                                    final String daddr, final String city) {
+                                    final String daddr, final double slat, final double slon) {
         ViewGroup customView = (ViewGroup) View.inflate(context, R.layout.map_bottom_dialog, null);
         TextView tv_map_bottomdia_gaode = (TextView) customView.findViewById(R.id.tv_map_bottomdia_gaode);
         TextView tv_map_bottomdia_baidu = (TextView) customView.findViewById(R.id.tv_map_bottomdia_baidu);
@@ -437,7 +440,7 @@ public class SystemUtil {
                 if (checkApkExist(context, AppConfig.GaoDeMapPackageName)) {
                     try {
                         Intent intent = Intent.getIntent("androidamap://route?sourceApplication=" + context.getResources().getString(R.string.app_name) +
-                                "&sname=" + saddr + "&dlat=" + lat + "&dlon=" + lng + "&dname=" + daddr +
+                                "&sname=" + saddr + "&slat=" + slat + "&slon=" + slon + "&dlat=" + lat + "&dlon=" + lng + "&dname=" + daddr +
                                 "&dev=0&m=0&t=0");
                         context.startActivity(intent);
                     } catch (Exception e) {
@@ -445,7 +448,7 @@ public class SystemUtil {
                         Intent intent = new Intent();
                         intent.setAction("android.intent.action.VIEW");
                         // 驾车导航
-                        intent.setData(Uri.parse("http://uri.amap.com/navigation?to=" + lng + "," + lat +
+                        intent.setData(Uri.parse("http://uri.amap.com/navigation?from=" + slon + "," + slat + "&to=" + lng + "," + lat +
                                 "&mode=car&src=nyx_super"));
                         context.startActivity(intent); // 启动调用
                     }
@@ -453,7 +456,7 @@ public class SystemUtil {
                     Intent intent = new Intent();
                     intent.setAction("android.intent.action.VIEW");
                     // 驾车导航
-                    intent.setData(Uri.parse("http://uri.amap.com/navigation?to=" + lng + "," + lat +
+                    intent.setData(Uri.parse("http://uri.amap.com/navigation?from=" + slon + "," + slat + "&to=" + lng + "," + lat +
                             "&mode=car&src=nyx_super"));
                     context.startActivity(intent); // 启动调用
                 }
@@ -466,26 +469,34 @@ public class SystemUtil {
                 if (checkApkExist(context, AppConfig.BaiDuMapPackageName)) {
                     try {
                         LngLat lngLat = CoodinateCovertor.bd_encrypt(new LngLat(lng, lat));
-                        Intent intent = Intent.getIntent("intent://map/direction?origin=latlng:" + lngLat.getLantitude()
-                                + "," + lngLat.getLongitude() +
-                                "|name:" + saddr + "&destination=" + daddr + "&mode=driving&region=" + city +
+                        LngLat slngLat = CoodinateCovertor.bd_encrypt(new LngLat(slon, slat));
+                        Intent intent = Intent.getIntent("intent://map/direction?origin=latlng:" + slngLat.getLantitude()
+                                + "," + slngLat.getLongitude() +
+                                "|name:" + saddr + "&destination=latlng:" + lngLat.getLantitude()
+                                + "," + lngLat.getLongitude() + "|name:" + daddr + "&mode=driving" +
                                 "&src=" + context.getResources().getString(R.string.app_name) + "#Intent;" +
                                 "scheme=bdapp;package=com.baidu.BaiduMap;end");
                         context.startActivity(intent); //启动调用
                     } catch (Exception e) {
-                        LngLat lngLat = CoodinateCovertor.bd_encrypt(new LngLat(lng, lat));
                         e.printStackTrace();
-                        String url = "http://api.map.baidu.com/direction?origin=latlng:" + lngLat.getLantitude() + "," + lngLat.getLongitude() +
-                                "|name:" + saddr + "&destination=" + daddr + "&mode=driving&region=" + city +
+                        LngLat slngLat = CoodinateCovertor.bd_encrypt(new LngLat(slon, slat));
+                        LngLat lngLat = CoodinateCovertor.bd_encrypt(new LngLat(lng, lat));
+                        String url = "http://api.map.baidu.com/direction?origin=latlng:" + slngLat.getLantitude() +
+                                "," + slngLat.getLongitude() +
+                                "|name:" + saddr + "&destination=latlng:" + lngLat.getLantitude()
+                                + "," + lngLat.getLongitude() + "|name:" + daddr + "&mode=driving" +
                                 "&output=html&src=" + context.getResources().getString(R.string.app_name);
                         Uri uri = Uri.parse(url);
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         context.startActivity(intent);
                     }
                 } else {
+                    LngLat slngLat = CoodinateCovertor.bd_encrypt(new LngLat(slon, slat));
                     LngLat lngLat = CoodinateCovertor.bd_encrypt(new LngLat(lng, lat));
-                    String url = "http://api.map.baidu.com/direction?origin=latlng:" + lngLat.getLantitude() + "," + lngLat.getLongitude() +
-                            "|name:" + saddr + "&destination=" + daddr + "&mode=driving&region=" + city +
+                    String url = "http://api.map.baidu.com/direction?origin=latlng:" + slngLat.getLantitude() +
+                            "," + slngLat.getLongitude() +
+                            "|name:" + saddr + "&destination=latlng:" + lngLat.getLantitude()
+                            + "," + lngLat.getLongitude() + "|name:" + daddr + "&mode=driving" +
                             "&output=html&src=" + context.getResources().getString(R.string.app_name);
                     Uri uri = Uri.parse(url);
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
