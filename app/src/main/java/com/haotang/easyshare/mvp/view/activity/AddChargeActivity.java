@@ -450,12 +450,18 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 builder.addFormDataPart("lat", String.valueOf(lat));
                 builder.addFormDataPart("telephone", etAddchargePhone.getText().toString().trim());
                 builder.addFormDataPart("title", etAddchargeZmc.getText().toString().trim());
-                builder.addFormDataPart("address", tvAddchargeZdz.getText().toString().trim());
                 builder.addFormDataPart("electricityPrice", etAddchargeCdf.getText().toString().trim() + "_" + tvAddchargeKfsj.getText().toString().trim());
                 builder.addFormDataPart("parkingPrice", etAddchargeTcf.getText().toString().trim() + "_" + upOrDown);
                 builder.addFormDataPart("serviceFee", etAddchargeFwf.getText().toString().trim());
-                builder.addFormDataPart("payWay", tvAddchargeZffs.getText().toString().trim());
-                builder.addFormDataPart("openTime", tvAddchargeKfsj.getText().toString().trim());
+                if (!tvAddchargeZdz.getText().toString().trim().equals("请选择站地址")) {
+                    builder.addFormDataPart("address", tvAddchargeZdz.getText().toString().trim());
+                }
+                if (!tvAddchargeZffs.getText().toString().trim().equals("请选择支付方式")) {
+                    builder.addFormDataPart("payWay", tvAddchargeZffs.getText().toString().trim());
+                }
+                if (!tvAddchargeKfsj.getText().toString().trim().equals("请选择开放时间")) {
+                    builder.addFormDataPart("openTime", tvAddchargeKfsj.getText().toString().trim());
+                }
                 builder.addFormDataPart("isPrivate", String.valueOf(isPrivate));
                 builder.addFormDataPart("remark", etAddchargeBzsm.getText().toString().trim());
                 if (kuaiOrMan == 0) {//快充
@@ -775,6 +781,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void updateSuccess(AddChargeBean data) {
+        disMissDialog();
         RingToast.show("编辑成功");
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
@@ -784,6 +791,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void updateFail(int code, String msg) {
+        disMissDialog();
         RingToast.show("编辑失败");
         RingLog.e(TAG, "updateFail() status = " + code + "---desc = " + msg);
     }

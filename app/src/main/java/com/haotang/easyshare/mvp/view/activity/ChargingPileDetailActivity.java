@@ -36,6 +36,7 @@ import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.verticalbanner.VerticalBannerView;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -415,6 +416,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
         is_collect = 1;
         ivChargingdetailSc.setImageResource(R.mipmap.sc);
         DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.COLLECT_OR_CANCEL_CHARGE));
+        RingToast.show("收藏站点成功");
     }
 
     @Override

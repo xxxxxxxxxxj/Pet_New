@@ -227,7 +227,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                 finish();
                 break;
             case R.id.tv_titlebar_other:
-                startActivity(new Intent(BrandAreaActivity.this, BrandCarActivity.class).putExtra("brandId", brandId));
+                startActivity(new Intent(BrandAreaActivity.this, SendPostActivity.class));
                 break;
         }
     }

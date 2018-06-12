@@ -113,11 +113,10 @@ public class BrandCarActivity extends BaseActivity<BrandCarPresenter> implements
     @Subscribe
     public void getCar(BrandCarBean.DataBean.DatasetBean.CarsBean carsBean) {
         if (carsBean != null) {
-            Intent intent = new Intent(BrandCarActivity.this, SendPostActivity.class);
+            Intent intent = new Intent();
             intent.putExtra("carId", carsBean.getId());
             intent.putExtra("carName", carsBean.getCar());
-            startActivity(intent);
-            setResult(RESULT_OK);
+            setResult(RESULT_OK, intent);
             finish();
         }
     }

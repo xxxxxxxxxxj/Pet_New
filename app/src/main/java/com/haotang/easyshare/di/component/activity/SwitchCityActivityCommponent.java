@@ -1,6 +1,5 @@
 package com.haotang.easyshare.di.component.activity;
 
-import com.haotang.easyshare.di.module.activity.SendPostActivityModule;
 import com.haotang.easyshare.di.module.activity.SwitchCityActivityModule;
 import com.haotang.easyshare.mvp.view.activity.SwitchCityActivity;
 import com.ljy.devring.di.scope.ActivityScope;
