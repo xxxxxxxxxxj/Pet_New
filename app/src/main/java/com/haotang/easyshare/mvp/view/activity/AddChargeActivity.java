@@ -47,6 +47,7 @@ import com.haotang.easyshare.mvp.view.viewholder.AddChargeBoDa;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.FileSizeUtil;
 import com.haotang.easyshare.util.SignUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -151,6 +152,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     private List<CommentImg> imgList = new ArrayList<CommentImg>();
     private List<String> imgPathList = new ArrayList<String>();
+    private List<String> localImgPathList = new ArrayList<String>();
     private CommentImgAdapter commentImgAdapter;
     private static final int IMG_NUM = 3;
     private AddChargeBoDa addChargeBoDa;
@@ -445,7 +447,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             case R.id.tv_titlebar_other:
                 showDialog();
                 //构建body
-                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
                 builder.addFormDataPart("lng", String.valueOf(lng));
                 builder.addFormDataPart("lat", String.valueOf(lat));
                 builder.addFormDataPart("telephone", etAddchargePhone.getText().toString().trim());
@@ -475,6 +477,9 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                         RingLog.e(TAG, "imgPathList.get(i) = " + imgPathList.get(i));
                         //构建要上传的文件
                         File file = new File(imgPathList.get(i));
+                        String formatFileSize = FileSizeUtil
+                                .formatFileSize(file.length(), false);
+                        RingLog.e(TAG, "formatFileSize = " + formatFileSize);
                         builder.addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
                                 , file));
                     }
@@ -712,8 +717,9 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 StringUtil.setText(etAddchargeSl, slowNum + "", "", View.VISIBLE, View.VISIBLE);
                 setKuaiOrMan(1);
             }
-            List<String> detailImgs = data.getDetailImgs();
+            final List<String> detailImgs = data.getDetailImgs();
             if (detailImgs != null && detailImgs.size() > 0) {
+                localImgPathList.clear();
                 for (int i = 0; i < detailImgs.size(); i++) {
                     String imgUrl = detailImgs.get(i);
                     if (StringUtil.isNotEmpty(imgUrl)) {
@@ -729,7 +735,11 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                                                     + String.valueOf(System.currentTimeMillis() + ".jpg");
                                             String imgPath = SystemUtil.saveFile(chargeImgFile, resource, fileName);
                                             RingLog.e(TAG, "imgPath = " + imgPath);
-                                            imgPathList.add(imgPath);
+                                            localImgPathList.add(imgPath);
+                                            if (localImgPathList.size() == detailImgs.size()) {
+                                                showDialog();
+                                                compressWithRx(localImgPathList);
+                                            }
                                         } catch (IOException e) {
                                             RingLog.e(TAG, "e = " + e.toString());
                                             e.printStackTrace();
@@ -738,37 +748,6 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                                 });
                     }
                 }
-                for (int i = 0; i < imgList.size(); i++) {
-                    CommentImg commentImg = imgList.get(i);
-                    if (commentImg.isAdd()) {
-                        imgList.remove(i);
-                    }
-                }
-                for (int i = 0; i < detailImgs.size(); i++) {
-                    imgList.add(new CommentImg(detailImgs.get(i), false));
-                }
-                if (imgList.size() > IMG_NUM) {
-                    for (int i = 0; i < imgList.size(); i++) {
-                        CommentImg commentImg = imgList.get(i);
-                        if (commentImg.isAdd()) {
-                            imgList.remove(i);
-                        }
-                    }
-                }
-                if (imgList.size() < IMG_NUM) {
-                    boolean isAdd = false;
-                    for (int i = 0; i < imgList.size(); i++) {
-                        CommentImg commentImg = imgList.get(i);
-                        if (commentImg.isAdd()) {
-                            isAdd = true;
-                            break;
-                        }
-                    }
-                    if (!isAdd) {
-                        imgList.add(new CommentImg("", true));
-                    }
-                }
-                commentImgAdapter.notifyDataSetChanged();
             }
         }
     }
