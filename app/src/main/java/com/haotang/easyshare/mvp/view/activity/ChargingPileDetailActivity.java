@@ -321,9 +321,9 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 break;
             case R.id.ll_chargingdetail_daohang:
                 if (serchLat > 0 && serchLng > 0) {
-                    SystemUtil.goNavigation(this, chargeLat, chargeLng, "", address, serchLat, serchLng);
+                    SystemUtil.goNavigation(this, chargeLat, chargeLng, "", address, serchLat, serchLng, uuid);
                 } else if (lat > 0 && lng > 0) {
-                    SystemUtil.goNavigation(this, chargeLat, chargeLng, "", address, lat, lng);
+                    SystemUtil.goNavigation(this, chargeLat, chargeLng, "", address, lat, lng, uuid);
                 }
                 break;
         }

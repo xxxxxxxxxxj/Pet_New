@@ -176,6 +176,20 @@ public class HomeBean {
         private String uuid;
         private int isPrivate;
 
+        @Override
+        public String toString() {
+            return "StationsBean{" +
+                    "electricityPrice='" + electricityPrice + '\'' +
+                    ", headImg='" + headImg + '\'' +
+                    ", serviceFee=" + serviceFee +
+                    ", source=" + source +
+                    ", times=" + times +
+                    ", title='" + title + '\'' +
+                    ", uuid='" + uuid + '\'' +
+                    ", isPrivate=" + isPrivate +
+                    '}';
+        }
+
         public int getIsPrivate() {
             return isPrivate;
         }

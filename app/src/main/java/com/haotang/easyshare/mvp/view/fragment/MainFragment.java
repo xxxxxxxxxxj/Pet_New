@@ -72,6 +72,7 @@ import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
 import com.haotang.easyshare.util.GlideUtil;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
@@ -352,6 +353,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 if (serchList != null && serchList.size() > 0 && serchList.size() > position) {
                     SerchResult serchResult = serchList.get(position);
                     if (serchResult != null && !serchResult.isFake()) {
+                        SharedPreferenceUtil.getInstance(mActivity).saveBoolean("isSerch", true);
                         etMainfragSerch.setText(serchResult.getName());
                         rll_mainfrag_serchresult.setVisibility(View.GONE);
                         lng = serchResult.getLng();
@@ -465,7 +467,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 }
             }
         }
-        mainLocalAdapter.setLatLng(lat,lng);
+        mainLocalAdapter.setLatLng(lat, lng);
         addMarkersToMap();// 往地图上添加marker
         LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
         for (int i = 0; i < list.size(); i++) {
@@ -740,7 +742,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 @Override
                 public void onClick(View v) {
                     SystemUtil.goNavigation(mActivity, stationsBean.getLat(), stationsBean.getLng(), "",
-                            stationsBean.getAddress(),lat,lng);
+                            stationsBean.getAddress(), lat, lng, stationsBean.getUuid());
                 }
             });
             mainFragmenBoDa.getLlMainbottomXq().setOnClickListener(new View.OnClickListener() {

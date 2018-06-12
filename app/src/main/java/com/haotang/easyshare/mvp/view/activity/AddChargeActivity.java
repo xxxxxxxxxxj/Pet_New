@@ -683,7 +683,6 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     public void detailSuccess(ChargeDetailBean data) {
-        disMissDialog();
         if (data != null) {
             uuid = data.getUuid();
             lat = data.getLat();
@@ -748,7 +747,11 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                                 });
                     }
                 }
+            }else{
+                disMissDialog();
             }
+        }else{
+            disMissDialog();
         }
     }
 

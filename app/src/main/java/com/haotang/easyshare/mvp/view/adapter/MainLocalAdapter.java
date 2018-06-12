@@ -76,7 +76,7 @@ public class MainLocalAdapter extends BaseQuickAdapter<MainFragChargeBean, BaseV
             iv_item_mainlocal_daohang.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SystemUtil.goNavigation(mContext, item.getLat(), item.getLng(), "", item.getAddress(), lat,lng);
+                    SystemUtil.goNavigation(mContext, item.getLat(), item.getLng(), "", item.getAddress(), lat, lng, item.getUuid());
                 }
             });
             rll_item_mainlocal_root.setOnClickListener(new View.OnClickListener() {

@@ -14,6 +14,9 @@ import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.ljy.devring.other.RingLog;
+
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * <p>Title:${type_name}</p>
@@ -50,6 +53,30 @@ public class ChargeFragment extends BaseFragment implements View.OnClickListener
     @Override
     protected int getContentLayout() {
         return R.layout.chargefragment;
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void getChargeData(HomeBean.StationsBean stationsBean) {
+        RingLog.e("stationsBean = " + stationsBean);
+        if (stationsBean != null) {
+            uuid = stationsBean.getUuid();
+            tvMyfragmentCdcs.bringToFront();
+            if (stationsBean.getIsPrivate() == 0) {//公共
+                ivMyfragmentGgorgr.setImageResource(R.mipmap.icon_gg);
+            } else if (stationsBean.getIsPrivate() == 1) {//个人
+                ivMyfragmentGgorgr.setImageResource(R.mipmap.icon_gr);
+            }
+            StringUtil.setText(tvMyfragmentName, stationsBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvMyfragmentCdcs, "充电" + stationsBean.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvMyfragmentCdf, "充电费：" + stationsBean.getElectricityPrice() + "元/度", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvMyfragmentFwf, "服务费：" + stationsBean.getServiceFee() + "元/度", "", View.VISIBLE, View.VISIBLE);
+            GlideUtil.loadNetImg(mActivity, stationsBean.getHeadImg(), ivMyfragmentImg, R.mipmap.ic_image_load);
+        }
     }
 
     @Override

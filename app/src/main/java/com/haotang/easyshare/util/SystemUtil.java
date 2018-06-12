@@ -42,8 +42,14 @@ import android.widget.Toast;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LngLat;
+import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
+import com.haotang.easyshare.mvp.model.http.NavApiService;
 import com.haotang.easyshare.mvp.view.activity.PhotoViewPagerActivity;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.other.RingLog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,13 +57,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static android.R.attr.mode;
-import static cn.jpush.im.android.api.model.UserInfo.Field.region;
 
 /**
  * <p>Title:${type_name}</p>
@@ -394,7 +398,7 @@ public class SystemUtil {
     }
 
     public static void goNavigation(final Context context, final double lat, final double lng, final String saddr,
-                                    final String daddr, final double slat, final double slon) {
+                                    final String daddr, final double slat, final double slon, final String uuid) {
         ViewGroup customView = (ViewGroup) View.inflate(context, R.layout.map_bottom_dialog, null);
         TextView tv_map_bottomdia_gaode = (TextView) customView.findViewById(R.id.tv_map_bottomdia_gaode);
         TextView tv_map_bottomdia_baidu = (TextView) customView.findViewById(R.id.tv_map_bottomdia_baidu);
@@ -436,6 +440,34 @@ public class SystemUtil {
         tv_map_bottomdia_gaode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SharedPreferenceUtil.getInstance(context).getBoolean("isSerch", false) && StringUtil.isNotEmpty(uuid)) {
+                    MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                            .addFormDataPart("uuid", uuid)
+                            .build();
+                    DevRing.httpManager().commonRequest(DevRing.httpManager().getService(NavApiService.class).callback(body)
+                            , new CommonObserver<HttpResult<AddChargeBean>>() {
+                                @Override
+                                public void onResult(HttpResult<AddChargeBean> result) {
+                                    if (result != null) {
+                                        if (result.getCode() == 0) {
+                                            RingLog.e("导航回调成功");
+                                        } else {
+                                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                                RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
+                                            } else {
+                                                RingLog.e("onError() status = " + AppConfig.SERVER_ERROR + "---desc = " + AppConfig.SERVER_ERROR_MSG);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onError(int errType, String errMessage) {
+                                    RingLog.e("onError() status = " + errType + "---desc = " + errMessage);
+                                }
+                            }, null);
+                    SharedPreferenceUtil.getInstance(context).removeData("isSerch");
+                }
                 pWinBottomDialog.dismiss();
                 if (checkApkExist(context, AppConfig.GaoDeMapPackageName)) {
                     try {
@@ -465,6 +497,34 @@ public class SystemUtil {
         tv_map_bottomdia_baidu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SharedPreferenceUtil.getInstance(context).getBoolean("isSerch", false) && StringUtil.isNotEmpty(uuid)) {
+                    MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                            .addFormDataPart("uuid", uuid)
+                            .build();
+                    DevRing.httpManager().commonRequest(DevRing.httpManager().getService(NavApiService.class).callback(body)
+                            , new CommonObserver<HttpResult<AddChargeBean>>() {
+                                @Override
+                                public void onResult(HttpResult<AddChargeBean> result) {
+                                    if (result != null) {
+                                        if (result.getCode() == 0) {
+                                            RingLog.e("导航回调成功");
+                                        } else {
+                                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                                RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
+                                            } else {
+                                                RingLog.e("onError() status = " + AppConfig.SERVER_ERROR + "---desc = " + AppConfig.SERVER_ERROR_MSG);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onError(int errType, String errMessage) {
+                                    RingLog.e("onError() status = " + errType + "---desc = " + errMessage);
+                                }
+                            }, null);
+                    SharedPreferenceUtil.getInstance(context).removeData("isSerch");
+                }
                 pWinBottomDialog.dismiss();
                 if (checkApkExist(context, AppConfig.BaiDuMapPackageName)) {
                     try {

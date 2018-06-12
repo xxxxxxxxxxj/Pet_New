@@ -2,7 +2,10 @@ package com.haotang.easyshare.mvp.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +22,7 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.SelectAddress;
 import com.haotang.easyshare.mvp.presenter.MyFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AboutActivity;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
@@ -61,6 +65,7 @@ import butterknife.OnClick;
  */
 public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMyFragmentView {
     private final static String TAG = MyFragment.class.getSimpleName();
+    private static final int CHARGEFRAG_WHAT = 111;
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.iv_myfragment_userimg)
@@ -116,7 +121,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     private String uuid;
     private String vipPrivilege;
     private int pagePosition;
-    private List<HomeBean.StationsBean> stations;
+    private List<HomeBean.StationsBean> stations = new ArrayList<HomeBean.StationsBean>();
+    private MyFragChargePagerAdapter myFragChargePagerAdapter;
 
     @Override
     public boolean isUseEventBus() {
@@ -179,6 +185,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             tvMyfragmentUsername.setText("立即登录");
             llMyfragmentMycdz.setVisibility(View.GONE);
         }
+        myFragChargePagerAdapter = new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments);
+        vpMyfragmentMycdz.setAdapter(myFragChargePagerAdapter);
     }
 
     @Override
@@ -202,6 +210,12 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             public void onPageSelected(int position) {
                 pagePosition = position;
                 RingLog.e(TAG, "onPageSelected position = " + position);
+                if (stations.size() > 0 && pagePosition >= 0 && stations.size() > pagePosition) {
+                    HomeBean.StationsBean stationsBean = stations.get(pagePosition);
+                    if (stationsBean != null) {
+                        DevRing.busManager().postEvent(stationsBean);
+                    }
+                }
             }
 
             @Override
@@ -219,7 +233,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         switch (view.getId()) {
             case R.id.rl_myfragment_mycharge_right:
                 if (stations != null && stations.size() > 0) {
-                    if (stations.size() > pagePosition) {
+                    if ((stations.size() - 1) > pagePosition) {
                         pagePosition++;
                     } else {
                         pagePosition = 0;
@@ -322,8 +336,9 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             StringUtil.setText(tvMyfragmentSycs, data.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentJjdh, data.getKf_phone(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetCircleImg(mActivity, data.getHeadImg(), ivMyfragmentUserimg, R.mipmap.ic_image_load_circle);
-            stations = data.getStations();
-            if (stations != null && stations.size() > 0) {
+            if (data.getStations() != null && data.getStations().size() > 0) {
+                stations.clear();
+                stations.addAll(data.getStations());
                 iv_myfragment_add.setVisibility(View.GONE);
                 StringUtil.setText(tv_myfragment_mycharge_num, "(" + stations.size() + ")", "", View.VISIBLE, View.VISIBLE);
                 mFragments.clear();
@@ -335,7 +350,13 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                     chargeFragment.setArguments(bundle);
                     mFragments.add(chargeFragment);
                 }
-                vpMyfragmentMycdz.setAdapter(new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments));
+                myFragChargePagerAdapter.notifyDataSetChanged();
+                if (stations.size() > pagePosition) {
+                    HomeBean.StationsBean stationsBean = stations.get(pagePosition);
+                    if (stationsBean != null) {
+                        DevRing.busManager().postEvent(stationsBean);
+                    }
+                }
             } else {
                 iv_myfragment_add.setVisibility(View.VISIBLE);
                 llMyfragmentMycdz.setVisibility(View.GONE);

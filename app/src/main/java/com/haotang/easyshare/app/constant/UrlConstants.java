@@ -187,6 +187,10 @@ public class UrlConstants {
      * 42.品牌和车型
      */
     public static final String BRAND_AND_CAR = "brand/car";
+    /**
+     * 43.导航成功回调
+     */
+    public static final String NAV_CALLBACK = "charging/info/navi/callback";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境
