@@ -480,7 +480,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                         String formatFileSize = FileSizeUtil
                                 .formatFileSize(file.length(), false);
                         RingLog.e(TAG, "formatFileSize = " + formatFileSize);
-                        builder.addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
+                        builder.addFormDataPart("files", file.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
                                 , file));
                     }
                 }

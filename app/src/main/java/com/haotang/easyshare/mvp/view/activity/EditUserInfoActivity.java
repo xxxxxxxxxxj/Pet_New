@@ -125,7 +125,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("userName", etEdituserinfoUsername.getText().toString().trim());
                 if (userImgFile != null && userImgFile.length() > 0) {
-                    builder.addFormDataPart("file", userImgFile.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
+                    builder.addFormDataPart("files", userImgFile.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
                             , userImgFile));
                 }
                 RequestBody body = builder.build();
