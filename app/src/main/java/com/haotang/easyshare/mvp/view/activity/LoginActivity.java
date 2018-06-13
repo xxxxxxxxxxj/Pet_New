@@ -104,7 +104,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     protected void setView(Bundle savedInstanceState) {
         Intent intent = getIntent();
         previous = intent.getIntExtra("previous", 0);
-        tvTitlebarTitle.setText("登陆");
+        tvTitlebarTitle.setText("登录");
         setLocation();
     }
 

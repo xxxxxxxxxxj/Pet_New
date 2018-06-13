@@ -213,7 +213,7 @@ public class WebViewActivity extends BaseActivity {
                 localContent = content;
                 localUrl = url;
                 localImg = img;
-                RingLog.e("share() title = " + title + ",content = " + content + ",img = " + img + ",uuid = " + uuid);
+                RingLog.e("share() title = " + title + ",content = " + content + ",img = " + img + ",url = " + url);
             }
 
             @JavascriptInterface
