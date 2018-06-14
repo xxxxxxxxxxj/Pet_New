@@ -67,6 +67,7 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
     public void getFlashFail(int status, String desc) {
         initTimer(0);
         RingLog.e(TAG, "FlashActivity getFlashFail() status = " + status + "---desc = " + desc);
+        SystemUtil.Exit(this,status);
     }
 
     @Override

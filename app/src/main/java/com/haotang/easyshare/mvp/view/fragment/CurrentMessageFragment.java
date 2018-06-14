@@ -8,10 +8,10 @@ import com.haotang.easyshare.di.module.fragment.CurrentMessageFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.presenter.CurrentMessageFragmentPresenter;
-import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.ICurrentMessageFragmentView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
@@ -84,5 +84,6 @@ public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentP
     public void saveFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "historyFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity,code);
     }
 }

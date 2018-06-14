@@ -68,7 +68,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     @BindView(R.id.ll_chargingdetail_barright)
     LinearLayout llChargingdetailBarright;
     @BindView(R.id.rl_chargingdetail_title)
-    RelativeLayout rlChargingdetailTitle;
+    LinearLayout rlChargingdetailTitle;
     @BindView(R.id.tv_chargingdetail_pl)
     TextView tvChargingdetailPl;
     @BindView(R.id.ll_chargingdetail_pl)
@@ -408,6 +408,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     public void detailFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -423,6 +424,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     public void followFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -437,6 +439,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     public void cancelFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

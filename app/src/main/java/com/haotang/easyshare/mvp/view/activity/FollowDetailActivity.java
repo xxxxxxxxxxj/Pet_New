@@ -32,7 +32,6 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -45,8 +44,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-
-import static android.R.attr.rating;
 
 /**
  * 关注的人详情页
@@ -325,6 +322,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     public void infoFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "infoFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -366,6 +364,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
             postListAdapter.loadMoreFail();
         }
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -379,6 +378,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     public void followFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "followFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -392,6 +392,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     public void cancelFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "cancelFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -404,6 +405,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     public void evalFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "evalFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -422,6 +424,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     public void praiseFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "praiseFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -437,6 +440,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     public void starsFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "starsFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

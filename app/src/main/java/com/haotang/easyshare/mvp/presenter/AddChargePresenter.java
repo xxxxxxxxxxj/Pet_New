@@ -8,6 +8,7 @@ import com.haotang.easyshare.mvp.model.imodel.IAddChargeModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
 import com.haotang.easyshare.mvp.view.iview.IAddChargeView;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;

@@ -16,17 +16,16 @@
         android:scaleType="fitXY"
         android:src="@mipmap/sirenguanjia" />
 
-    <com.flyco.roundview.RoundRelativeLayout
+    <RelativeLayout
         android:id="@+id/rll_mainfrag_serch"
         android:layout_width="match_parent"
-        android:layout_height="44dip"
-        android:layout_marginLeft="15dip"
-        android:layout_marginRight="15dip"
-        android:layout_marginTop="10dip"
+        android:layout_height="60dip"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
         android:paddingLeft="15dip"
-        android:paddingRight="15dip"
-        rv:rv_backgroundColor="@color/white"
-        rv:rv_cornerRadius="5dip">
+        android:background="@drawable/main_local_bg_shade"
+        android:paddingRight="15dip">
 
         <LinearLayout
             android:id="@+id/ll_mainfrag_city"
@@ -64,7 +63,7 @@
                 android:layout_height="5dip"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="2dip"
-                android:layout_marginTop="5dip"
+                android:layout_marginTop="10dip"
                 android:scaleType="fitXY"
                 android:src="@mipmap/redpoint" />
 
@@ -105,7 +104,7 @@
             android:textColorHint="@color/a999999"
             android:textCursorDrawable="@drawable/test_cursor"
             android:textSize="14sp" />
-    </com.flyco.roundview.RoundRelativeLayout>
+    </RelativeLayout>
 
     <com.flyco.roundview.RoundLinearLayout
         android:id="@+id/rll_mainfrag_serchresult"

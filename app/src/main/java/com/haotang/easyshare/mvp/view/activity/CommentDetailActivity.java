@@ -214,6 +214,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
                 refresh();
             }
         }));
+        SystemUtil.Exit(this,code);
     }
 
     @Override

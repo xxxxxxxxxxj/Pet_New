@@ -27,6 +27,7 @@ import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
 import com.haotang.easyshare.mvp.view.iview.ILocalChargingView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SignUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -253,6 +254,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
             }
         }));
         RingLog.e(TAG, "nearbyFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

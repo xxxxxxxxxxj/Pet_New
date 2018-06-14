@@ -16,6 +16,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.ICarInfoView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
@@ -117,6 +118,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
     public void myFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "myFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -131,6 +133,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
     public void saveFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

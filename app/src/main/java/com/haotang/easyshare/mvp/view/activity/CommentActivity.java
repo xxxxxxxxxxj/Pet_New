@@ -327,6 +327,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     public void saveFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -345,6 +346,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     public void tagsFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "tagsFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

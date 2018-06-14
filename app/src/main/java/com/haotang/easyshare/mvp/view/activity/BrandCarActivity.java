@@ -17,6 +17,7 @@ import com.haotang.easyshare.mvp.view.adapter.BrandCarForFirstLetterAdapter;
 import com.haotang.easyshare.mvp.view.iview.IBrandCarView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.SideBar;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -149,5 +150,6 @@ public class BrandCarActivity extends BaseActivity<BrandCarPresenter> implements
     public void carFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "carFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 }

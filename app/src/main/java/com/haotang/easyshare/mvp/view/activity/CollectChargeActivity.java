@@ -24,6 +24,7 @@ import com.haotang.easyshare.mvp.view.adapter.CollectChargeListAdapter;
 import com.haotang.easyshare.mvp.view.iview.ICollectChargeView;
 import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
@@ -251,6 +252,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
             }
         }));
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -264,6 +266,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
     public void cancelFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

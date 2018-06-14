@@ -14,7 +14,6 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerAllBrandsActivityCommponent;
 import com.haotang.easyshare.di.module.activity.AllBrandsActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
-import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.AllBrandsPresenter;
@@ -27,6 +26,7 @@ import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -37,8 +37,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.R.id.list;
 
 /**
  * 所有品牌
@@ -165,6 +163,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     public void listFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -180,6 +179,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     public void specialFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

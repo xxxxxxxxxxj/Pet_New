@@ -1,14 +1,12 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.KeyEvent;
-import android.view.View;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -23,7 +21,6 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.BootmBarBean;
 import com.haotang.easyshare.mvp.model.entity.res.ImageTabEntity;
 import com.haotang.easyshare.mvp.model.entity.res.LastVersionBean;
-import com.haotang.easyshare.mvp.model.entity.res.SelectAddress;
 import com.haotang.easyshare.mvp.presenter.MainPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
@@ -35,7 +32,6 @@ import com.haotang.easyshare.mvp.view.iview.IMainView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
-import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UpdateUtil;
 import com.ljy.devring.DevRing;
@@ -330,11 +326,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     public void getLatestVersionFail(int status, String desc) {
         RingLog.e(TAG, "MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
         RingToast.show("MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
+        SystemUtil.Exit(this,status);
     }
 
     @Override
     public void getBootmBarFail(int status, String desc) {
         RingLog.e(TAG, "MainActivity getBootmBarFail() status = " + status + "---desc = " + desc);
+        SystemUtil.Exit(this,status);
     }
 
     @Override

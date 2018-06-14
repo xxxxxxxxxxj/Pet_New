@@ -280,6 +280,13 @@ public class SystemUtil {
         return translateAnimation;
     }
 
+    public static void Exit(Context activity, int code) {
+        if (code == AppConfig.EXIT_USER_CODE) {
+            SharedPreferenceUtil.getInstance(activity).removeData("cellphone");
+            DevRing.configureHttp().getMapHeader().put("phone", "");
+        }
+    }
+
     private static class SaveObservable implements
             Observable.OnSubscribe<String> {
         private Bitmap drawingCache = null;
@@ -452,6 +459,7 @@ public class SystemUtil {
                                         if (result.getCode() == 0) {
                                             RingLog.e("导航回调成功");
                                         } else {
+                                            SystemUtil.Exit(context, result.getCode());
                                             if (StringUtil.isNotEmpty(result.getMsg())) {
                                                 RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
                                             } else {

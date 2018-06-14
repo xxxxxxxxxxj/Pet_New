@@ -22,7 +22,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.FollowListAdapter;
 import com.haotang.easyshare.mvp.view.iview.IMyFollowView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
-import com.ljy.devring.DevRing;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -157,6 +157,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
             }
         }));
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

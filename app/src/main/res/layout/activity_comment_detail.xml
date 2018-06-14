@@ -12,25 +12,36 @@
         android:id="@+id/ll_comment_detail_add"
         android:layout_width="match_parent"
         android:layout_height="49dip"
-        android:background="@mipmap/bg_shade_up"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="22dip"
-            android:layout_height="20dip"
-            android:layout_marginRight="5dip"
-            android:scaleType="fitXY"
-            android:src="@mipmap/icon_mainbottom_pl" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/aEEEEEE" />
 
-        <TextView
-            android:id="@+id/tv_comment_plnum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="添加评论"
-            android:textColor="@color/a666666"
-            android:textSize="15sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dip"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="22dip"
+                android:layout_height="20dip"
+                android:layout_marginRight="5dip"
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_mainbottom_pl" />
+
+            <TextView
+                android:id="@+id/tv_comment_plnum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="添加评论"
+                android:textColor="@color/a666666"
+                android:textSize="15sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout

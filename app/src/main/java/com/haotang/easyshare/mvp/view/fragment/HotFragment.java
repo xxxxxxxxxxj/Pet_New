@@ -35,6 +35,7 @@ import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.youth.banner.listener.OnBannerListener;
 
@@ -308,6 +309,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         disMissDialog();
         hotFragmenHeader.getRl_banner_top_hotfrag().setVisibility(View.GONE);
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity,code);
     }
 
     @Override
@@ -337,6 +339,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     public void hotFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "hotFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity,code);
     }
 
     @Override
@@ -378,5 +381,6 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
             hotPointAdapter.loadMoreFail();
         }
         RingLog.e(TAG, "newestFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity,code);
     }
 }

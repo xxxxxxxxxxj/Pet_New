@@ -679,6 +679,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         RingToast.show("保存失败");
         disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -759,6 +760,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     public void detailFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -776,6 +778,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         disMissDialog();
         RingToast.show("编辑失败");
         RingLog.e(TAG, "updateFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

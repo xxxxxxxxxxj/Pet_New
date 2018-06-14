@@ -6,8 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="49dip"
-        android:background="@mipmap/bg_shade_down"
+        android:layout_height="48dip"
+        android:background="@color/white"
         android:paddingRight="15dip">
 
         <ImageView
@@ -42,4 +42,9 @@
             android:textColor="@color/a333333"
             android:textSize="18sp" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/aEEEEEE" />
 </LinearLayout>

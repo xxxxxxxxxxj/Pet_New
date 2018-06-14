@@ -12,10 +12,10 @@ import com.haotang.easyshare.shareutil.ShareUtil;
 import com.haotang.easyshare.shareutil.share.ShareListener;
 import com.haotang.easyshare.shareutil.share.SharePlatform;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.other.RingLog;
-import com.ljy.devring.util.RxLifecycleUtil;
 
 import me.shaohui.bottomdialog.BaseBottomDialog;
 import okhttp3.MultipartBody;
@@ -73,6 +73,7 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
                                         if (result.getCode() == 0) {
                                             RingLog.e("分享回调成功");
                                         } else {
+                                            SystemUtil.Exit(v.getContext(),result.getCode());
                                             if (StringUtil.isNotEmpty(result.getMsg())) {
                                                 RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
                                             } else {

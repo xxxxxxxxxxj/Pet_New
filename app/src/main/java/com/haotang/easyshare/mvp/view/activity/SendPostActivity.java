@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.flyco.roundview.RoundRelativeLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerSendPostActivityCommponent;
@@ -324,6 +323,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     public void saveFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

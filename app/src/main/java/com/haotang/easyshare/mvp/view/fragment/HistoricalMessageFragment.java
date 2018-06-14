@@ -179,5 +179,6 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
             }
         }));
         RingLog.e(TAG, "historyFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity,code);
     }
 }

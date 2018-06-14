@@ -293,6 +293,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
             }
         }));
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -306,6 +307,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
     public void deleteFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "deleteFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

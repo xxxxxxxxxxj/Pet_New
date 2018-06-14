@@ -2,10 +2,7 @@ package com.haotang.easyshare.mvp.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,7 +19,6 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
-import com.haotang.easyshare.mvp.model.entity.res.SelectAddress;
 import com.haotang.easyshare.mvp.presenter.MyFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AboutActivity;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
@@ -170,12 +166,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @Override
     public void onResume() {
         super.onResume();
-        RingLog.e("mPresenter = " + mPresenter);
-        if (mPresenter != null) {
-            showDialog();
-            mPresenter.home();
-            mPresenter.my();
-        }
     }
 
     @Override
@@ -385,6 +375,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void homeFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "MyFragment homeFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity,code);
     }
 
     @Override
@@ -402,5 +393,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void myFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "MyFragment myFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity,code);
     }
 }

@@ -43,7 +43,6 @@ import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.roundview.RoundLinearLayout;
-import com.flyco.roundview.RoundRelativeLayout;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
@@ -120,7 +119,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @BindView(R.id.et_mainfrag_serch)
     EditText etMainfragSerch;
     @BindView(R.id.rll_mainfrag_serch)
-    RoundRelativeLayout rllMainfragSerch;
+    RelativeLayout rllMainfragSerch;
     @BindView(R.id.rll_mainfrag_serchresult)
     RoundLinearLayout rll_mainfrag_serchresult;
     @BindView(R.id.rv_mainfrag_serchresult)
@@ -187,6 +186,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private PopupWindow pWin;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
     private MainSerchResultAdapter mainSerchResultAdapter;
+    private double serchLng;
+    private double serchLat;
 
     @Override
     protected boolean isLazyLoad() {
@@ -305,8 +306,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() ==
                 RefreshFragmentEvent.REFRESH_MAINFRAGMET && mlocationClient != null) {
             RingLog.e("REFRESH_MAINFRAGMET");
-            //启动定位
-            mlocationClient.startLocation();
+            if (serchLat > 0 && serchLng > 0) {
+                refresh(serchLat, serchLng);
+            } else {
+                //启动定位
+                mlocationClient.startLocation();
+            }
         }
     }
 
@@ -359,7 +364,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         rll_mainfrag_serchresult.setVisibility(View.GONE);
                         lng = serchResult.getLng();
                         lat = serchResult.getLat();
-                        refresh();
+                        serchLng = serchResult.getLng();
+                        serchLat = serchResult.getLat();
+                        refresh(serchLat, serchLng);
                     }
                 }
             }
@@ -383,12 +390,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         });
     }
 
-    private void refresh() {
+    private void refresh(double localLat, double localLng) {
         adBean1 = null;
         adBean2 = null;
         adBean3 = null;
         showDialog();
-        mPresenter.homeIndex(lng, lat);
+        mPresenter.homeIndex(localLng, localLat);
     }
 
     /**
@@ -631,6 +638,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void getMainFragmentFail(int status, String desc) {
         disMissDialog();
         RingLog.e(TAG, "getMainFragmentFail() status = " + status + "---desc = " + desc);
+        SystemUtil.Exit(mActivity,status);
     }
 
     @Override
@@ -679,6 +687,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void listFail(int status, String desc) {
         RingLog.e(TAG, "listFail() status = " + status + "---desc = " + desc);
+        SystemUtil.Exit(mActivity,status);
     }
 
     @Override
@@ -822,6 +831,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void onLocationChanged(AMapLocation amapLocation) {
         if (amapLocation != null) {
             if (amapLocation.getErrorCode() == 0) {
+                serchLat = 0;
+                serchLng = 0;
                 //定位成功回调信息，设置相关消息
                 lat = amapLocation.getLatitude();//获取纬度
                 lng = amapLocation.getLongitude();//获取经度
@@ -832,7 +843,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         + lat + ", lng = "
                         + lng + ",city = " + city + ",cityCode = " + cityCode + ",address = " + amapLocation.getAddress());
                 if (lat > 0 && lng > 0) {
-                    refresh();
+                    refresh(lat, lng);
                     mlocationClient.stopLocation();
                 }
             } else {

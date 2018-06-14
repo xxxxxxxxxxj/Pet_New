@@ -31,6 +31,7 @@ import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.Banner;
@@ -271,6 +272,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
             brandAreaHotPointAdapter.loadMoreFail();
         }
         RingLog.e(TAG, "articleFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -326,6 +328,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
         disMissDialog();
         rl_brandarea_top.setVisibility(View.GONE);
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -340,6 +343,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
     public void list1Fail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "list1Fail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override

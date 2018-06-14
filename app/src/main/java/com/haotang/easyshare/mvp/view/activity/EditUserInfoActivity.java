@@ -24,6 +24,7 @@ import com.haotang.easyshare.mvp.view.widget.GlideCircleTransform;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
@@ -203,6 +204,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
     public void homeFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "homeFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 
     @Override
@@ -216,5 +218,6 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
     public void saveFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "homeFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this,code);
     }
 }
