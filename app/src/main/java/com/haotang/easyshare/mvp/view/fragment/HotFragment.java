@@ -191,9 +191,10 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Subscribe
     public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
-        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_HOTFRAGMET) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() ==
+                RefreshFragmentEvent.REFRESH_HOTFRAGMET && mPresenter != null) {
             RingLog.e("REFRESH_HOTFRAGMET");
-
+            refresh();
         }
     }
 

@@ -205,10 +205,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 currentTabIndex = position;
                 ctlMainactivity.setCurrentTab(currentTabIndex);
                 if (position == 0) {
+                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
                 } else if (position == 1) {
                     ctlMainactivity.hideMsg(1);
+                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HOTFRAGMET));
                 } else if (position == 2) {
                     ctlMainactivity.hideMsg(2);
+                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
                 }
             }
 

@@ -302,7 +302,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Subscribe
     public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
-        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_MAINFRAGMET) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() ==
+                RefreshFragmentEvent.REFRESH_MAINFRAGMET && mlocationClient != null) {
             RingLog.e("REFRESH_MAINFRAGMET");
             //启动定位
             mlocationClient.startLocation();

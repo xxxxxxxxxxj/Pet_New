@@ -65,7 +65,6 @@ import butterknife.OnClick;
  */
 public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMyFragmentView {
     private final static String TAG = MyFragment.class.getSimpleName();
-    private static final int CHARGEFRAG_WHAT = 111;
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.iv_myfragment_userimg)
@@ -116,6 +115,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     TextView tv_myfragment_mycharge_num;
     @BindView(R.id.iv_myfragment_add)
     ImageView iv_myfragment_add;
+    @BindView(R.id.iv_myfragment_bjusername)
+    ImageView iv_myfragment_bjusername;
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
     private String kf_phone = "";
     private String uuid;
@@ -135,7 +136,9 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Subscribe
     public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
-        if (SystemUtil.checkLogin(mActivity) && refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_MYFRAGMET) {
+        if (SystemUtil.checkLogin(mActivity) && refreshFragmentEvent != null &&
+                refreshFragmentEvent.getRefreshIndex() == RefreshFragmentEvent.REFRESH_MYFRAGMET
+                && mPresenter != null) {
             RingLog.e("REFRESH_MYFRAGMET");
             rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
@@ -167,6 +170,12 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @Override
     public void onResume() {
         super.onResume();
+        RingLog.e("mPresenter = " + mPresenter);
+        if (mPresenter != null) {
+            showDialog();
+            mPresenter.home();
+            mPresenter.my();
+        }
     }
 
     @Override
@@ -228,9 +237,17 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @OnClick({R.id.iv_myfragment_add, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
             R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
             R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
-            R.id.tv_myfragment_username, R.id.iv_myfragment_userimg, R.id.rl_myfragment_mycharge_right})
+            R.id.tv_myfragment_username, R.id.iv_myfragment_userimg, R.id.rl_myfragment_mycharge_right,
+            R.id.iv_myfragment_bjusername})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_myfragment_bjusername:
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, EditUserInfoActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
+                break;
             case R.id.rl_myfragment_mycharge_right:
                 if (stations != null && stations.size() > 0) {
                     if ((stations.size() - 1) > pagePosition) {
