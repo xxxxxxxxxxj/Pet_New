@@ -292,7 +292,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     protected void initData() {
         showDialog();
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
-                .addFormDataPart("category", "1").build();
+                .addFormDataPart("category", "5").build();
         mPresenter.list(body);
     }
 
