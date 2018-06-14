@@ -57,7 +57,10 @@ public class MyJPushReceiver extends BroadcastReceiver {
                 RingLog.d(TAG, "[MyJPushReceiver] 用户点击打开了通知");
                 String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
                 RingLog.e(TAG, "extras = " + extras);
-                donePush(context, extras);
+                //donePush(context, extras);
+                context.startActivity(new Intent(context, MainActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP));
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
                 RingLog.d(TAG, "[MyJPushReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
                 //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
