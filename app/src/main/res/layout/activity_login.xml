@@ -16,7 +16,8 @@
         android:layout_marginRight="15dip"
         android:layout_marginTop="30dip"
         android:orientation="vertical"
-        android:padding="15dip"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
         rv:rv_backgroundColor="@color/white"
         rv:rv_cornerRadius="10dip">
 
