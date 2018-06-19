@@ -19,7 +19,6 @@ import com.haotang.easyshare.shareutil.login.LoginPlatform;
 import com.haotang.easyshare.shareutil.login.LoginResult;
 import com.haotang.easyshare.shareutil.login.result.BaseToken;
 import com.haotang.easyshare.util.PayUtils;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.tencent.mm.sdk.openapi.BaseResp;

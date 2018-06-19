@@ -108,7 +108,7 @@ public class ChatActivity extends BaseActivity {
     }
 
     /**
-     * 收到消息
+     * 接收到撤回的消息
      *
      * @param event
      */
