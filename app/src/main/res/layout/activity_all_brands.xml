@@ -17,26 +17,45 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:padding="15dip">
 
-                <ImageView
-                    android:layout_width="20dip"
-                    android:layout_height="20dip"
-                    android:layout_marginRight="5dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/remenpingpai" />
-
                 <TextView
+                    android:id="@+id/tv_allbrands_zk"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="热门品牌"
-                    android:textColor="@color/a333333"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    android:layout_alignParentRight="true"
+                    android:text="展开"
+                    android:textColor="@color/a4A90E2"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dip"
+                    android:layout_toLeftOf="@id/tv_allbrands_zk">
+
+                    <ImageView
+                        android:layout_width="20dip"
+                        android:layout_height="20dip"
+                        android:layout_marginRight="5dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/remenpingpai" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="热门品牌"
+                        android:textColor="@color/a333333"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_allbrands_rmpp"
@@ -81,7 +100,7 @@
                 android:id="@+id/rv_allbrands_jxtj"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/f8f8ff8"/>
+                android:background="@color/f8f8ff8" />
 
         </LinearLayout>
     </ScrollView>

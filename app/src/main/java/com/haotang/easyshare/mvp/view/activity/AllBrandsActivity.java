@@ -46,14 +46,18 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     PermissionDialog permissionDialog;
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
+    @BindView(R.id.tv_allbrands_zk)
+    TextView tv_allbrands_zk;
     @BindView(R.id.rv_allbrands_rmpp)
     RecyclerView rvAllbrandsRmpp;
     @BindView(R.id.rv_allbrands_jxtj)
     RecyclerView rvAllbrandsJxtj;
     private List<HotCarBean.DataBean> carList = new ArrayList<HotCarBean.DataBean>();
+    private List<HotCarBean.DataBean> localCarList = new ArrayList<HotCarBean.DataBean>();
     private HotPointCarAdapter hotPointCarAdapter;
     private List<HotSpecialCarBean.DataBean> selectedCarList = new ArrayList<HotSpecialCarBean.DataBean>();
     private SelectedCarAdapter selectedCarAdapter;
+    private boolean isOpen = true;
 
     @Override
     protected int getContentLayout() {
@@ -76,6 +80,8 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
                 NoScollFullGridLayoutManager(rvAllbrandsRmpp, this, 5, GridLayoutManager.VERTICAL, false);
         noScollFullGridLayoutManager.setScrollEnabled(false);
         rvAllbrandsRmpp.setLayoutManager(noScollFullGridLayoutManager);
+        carList.clear();
+        localCarList.clear();
         hotPointCarAdapter = new HotPointCarAdapter(R.layout.item_hotfrag_top_car, carList);
         rvAllbrandsRmpp.setAdapter(hotPointCarAdapter);
 
@@ -88,6 +94,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
         rvAllbrandsJxtj.addItemDecoration(new DividerLinearItemDecoration(this, LinearLayoutManager.VERTICAL,
                 DensityUtil.dp2px(this, 15),
                 ContextCompat.getColor(this, R.color.af8f8f8)));
+        selectedCarList.clear();
         selectedCarAdapter = new SelectedCarAdapter(R.layout.item_allbrands_selectedcar
                 , selectedCarList);
         rvAllbrandsJxtj.setAdapter(selectedCarAdapter);
@@ -141,21 +148,47 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
         });
     }
 
-    @OnClick({R.id.iv_titlebar_back})
+    @OnClick({R.id.iv_titlebar_back, R.id.tv_allbrands_zk})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_titlebar_back:
                 finish();
                 break;
+            case R.id.tv_allbrands_zk:
+                break;
         }
+    }
+
+    private void setOpen() {
+        carList.clear();
+        if (isOpen) {//收起
+            for (int i = 0; i < 10; i++) {
+                carList.add(localCarList.get(i));
+            }
+        } else {//展开
+            carList.addAll(localCarList);
+        }
+        hotPointCarAdapter.notifyDataSetChanged();
+        isOpen = !isOpen;
     }
 
     @Override
     public void listSuccess(List<HotCarBean.DataBean> data) {
         disMissDialog();
+        carList.clear();
+        localCarList.clear();
         if (data != null && data.size() > 0) {
-            carList.addAll(data);
-            hotPointCarAdapter.notifyDataSetChanged();
+            localCarList.addAll(data);
+            if (data.size() > 10) {
+                tv_allbrands_zk.setVisibility(View.VISIBLE);
+                setOpen();
+            } else {
+                tv_allbrands_zk.setVisibility(View.GONE);
+                carList.addAll(data);
+                hotPointCarAdapter.notifyDataSetChanged();
+            }
+        } else {
+            tv_allbrands_zk.setVisibility(View.GONE);
         }
     }
 
@@ -163,12 +196,13 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     public void listFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(this,code);
+        SystemUtil.Exit(this, code);
     }
 
     @Override
     public void specialSuccess(List<HotSpecialCarBean.DataBean> data) {
         disMissDialog();
+        selectedCarList.clear();
         if (data != null && data.size() > 0) {
             selectedCarList.addAll(data);
             selectedCarAdapter.notifyDataSetChanged();
@@ -179,7 +213,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     public void specialFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(this,code);
+        SystemUtil.Exit(this, code);
     }
 
     @Override
