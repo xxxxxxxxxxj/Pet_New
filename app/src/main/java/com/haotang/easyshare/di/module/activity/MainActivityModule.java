@@ -5,9 +5,11 @@ import android.content.Context;
 import com.haotang.easyshare.mvp.model.MainModel;
 import com.haotang.easyshare.mvp.model.imodel.IMainModel;
 import com.haotang.easyshare.mvp.presenter.MainPresenter;
+import com.haotang.easyshare.mvp.view.fragment.ChargeIngFragment;
 import com.haotang.easyshare.mvp.view.fragment.HotFragment;
 import com.haotang.easyshare.mvp.view.fragment.MainFragment;
 import com.haotang.easyshare.mvp.view.fragment.MyFragment;
+import com.haotang.easyshare.mvp.view.fragment.SelectCarFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.di.scope.ActivityScope;
@@ -73,6 +75,18 @@ public class MainActivityModule {
     @ActivityScope
     HotFragment hotFragment() {
         return new HotFragment();
+    }
+
+    @Provides
+    @ActivityScope
+    ChargeIngFragment chargeIngFragment() {
+        return new ChargeIngFragment();
+    }
+
+    @Provides
+    @ActivityScope
+    SelectCarFragment selectCarFragment() {
+        return new SelectCarFragment();
     }
 
     @Provides

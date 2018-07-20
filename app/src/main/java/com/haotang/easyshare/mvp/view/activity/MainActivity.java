@@ -24,9 +24,11 @@ import com.haotang.easyshare.mvp.model.entity.res.LastVersionBean;
 import com.haotang.easyshare.mvp.presenter.MainPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
+import com.haotang.easyshare.mvp.view.fragment.ChargeIngFragment;
 import com.haotang.easyshare.mvp.view.fragment.HotFragment;
 import com.haotang.easyshare.mvp.view.fragment.MainFragment;
 import com.haotang.easyshare.mvp.view.fragment.MyFragment;
+import com.haotang.easyshare.mvp.view.fragment.SelectCarFragment;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
@@ -65,12 +67,14 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private long mExitTime;
     @Inject
     PermissionDialog permissionDialog;
-    private String[] mTitles = {"易享", "热点", "我的"};
+    private String[] mTitles = {"易享", "热点", "充电", "选车", "我的"};
     private int[] mIconUnselectIds = {
-            R.mipmap.tab_home_normal,
+            R.mipmap.tab_home_normal, R.mipmap.tab_hot_normal,
+            R.mipmap.tab_hot_normal,
             R.mipmap.tab_hot_normal, R.mipmap.tab_my_normal};
     private int[] mIconSelectIds = {
-            R.mipmap.tab_home_passed,
+            R.mipmap.tab_home_passed, R.mipmap.tab_hot_passed,
+            R.mipmap.tab_hot_passed,
             R.mipmap.tab_hot_passed, R.mipmap.tab_my_passed};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private ArrayList<BaseFragment> mFragments = new ArrayList<>();
@@ -78,6 +82,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     MainFragment mainFragment;
     @Inject
     HotFragment hotFragment;
+    @Inject
+    ChargeIngFragment chargeIngFragment;
+    @Inject
+    SelectCarFragment selectCarFragment;
     @Inject
     MyFragment myFragment;
     private int currentTabIndex = 0;
@@ -125,9 +133,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
         mFragments.add(mainFragment);
         mFragments.add(hotFragment);
+        mFragments.add(chargeIngFragment);
+        mFragments.add(selectCarFragment);
         mFragments.add(myFragment);
         vpMainactivity.setAdapter(new MainActivityPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
-        vpMainactivity.setOffscreenPageLimit(3);
+        vpMainactivity.setOffscreenPageLimit(5);
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new ImageTabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
         }
@@ -205,8 +215,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 } else if (position == 1) {
                     ctlMainactivity.hideMsg(1);
                     DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HOTFRAGMET));
-                } else if (position == 2) {
-                    ctlMainactivity.hideMsg(2);
+                } else if (position == 4) {
+                    ctlMainactivity.hideMsg(4);
                     DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
                 }
             }
@@ -326,13 +336,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     public void getLatestVersionFail(int status, String desc) {
         RingLog.e(TAG, "MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
         RingToast.show("MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
-        SystemUtil.Exit(this,status);
+        SystemUtil.Exit(this, status);
     }
 
     @Override
     public void getBootmBarFail(int status, String desc) {
         RingLog.e(TAG, "MainActivity getBootmBarFail() status = " + status + "---desc = " + desc);
-        SystemUtil.Exit(this,status);
+        SystemUtil.Exit(this, status);
     }
 
     @Override
@@ -377,18 +387,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             }
             if (nToBeComment > 0) {
                 //设置未读消息红点
-                ctlMainactivity.showDot(2);
-                MsgView rtv_2_2 = ctlMainactivity.getMsgView(2);
+                ctlMainactivity.showDot(4);
+                MsgView rtv_2_2 = ctlMainactivity.getMsgView(4);
                 if (rtv_2_2 != null) {
                     UnreadMsgUtils.setSize(rtv_2_2, DensityUtil.dp2px(this, 7.5f));
                 }
             } else {
-                ctlMainactivity.hideMsg(2);
+                ctlMainactivity.hideMsg(4);
             }
             if (currentTabIndex == 1) {
                 ctlMainactivity.hideMsg(1);
-            } else if (currentTabIndex == 2) {
-                ctlMainactivity.hideMsg(2);
+            } else if (currentTabIndex == 4) {
+                ctlMainactivity.hideMsg(4);
             }
         }
     }

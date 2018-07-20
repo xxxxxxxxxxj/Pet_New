@@ -57,7 +57,8 @@ import okhttp3.MultipartBody;
  * @author 徐俊
  * @date zhoujunxia on 2018/4/14 20:59
  */
-public class HotFragment extends BaseFragment<HotFragmentPresenter> implements OnBannerListener, View.OnClickListener, IHotFragmentView {
+public class HotFragment extends BaseFragment<HotFragmentPresenter> implements OnBannerListener, View.OnClickListener,
+        IHotFragmentView {
     protected final static String TAG = HotFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
