@@ -45,6 +45,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/ll_myfragment_yue"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -215,6 +216,7 @@
                 android:layout_marginBottom="15dip"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 rv:rv_backgroundColor="@color/white"
                 rv:rv_cornerRadius="5dip">
 

@@ -26,6 +26,7 @@ import com.haotang.easyshare.mvp.view.activity.CarInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.CollectChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.EditUserInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
+import com.haotang.easyshare.mvp.view.activity.MyBalanceActivity;
 import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
 import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeRecordActivity;
@@ -229,9 +230,16 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
             R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
             R.id.tv_myfragment_username, R.id.iv_myfragment_userimg, R.id.rl_myfragment_mycharge_right,
-            R.id.iv_myfragment_bjusername, R.id.rl_myfragment_cdjl})
+            R.id.iv_myfragment_bjusername, R.id.rl_myfragment_cdjl, R.id.ll_myfragment_yue})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ll_myfragment_yue:
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, MyBalanceActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
+                break;
             case R.id.rl_myfragment_cdjl:
                 if (SystemUtil.checkLogin(mActivity)) {
                     startActivity(new Intent(mActivity, RechargeRecordActivity.class));

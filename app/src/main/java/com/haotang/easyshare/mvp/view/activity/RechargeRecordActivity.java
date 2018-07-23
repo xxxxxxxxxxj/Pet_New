@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ public class RechargeRecordActivity extends BaseActivity<RechargeRecordPresenter
 
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
+    @BindView(R.id.rv_recharge_record)
+    RecyclerView rv_recharge_record;
 
     @Override
     protected int getContentLayout() {
