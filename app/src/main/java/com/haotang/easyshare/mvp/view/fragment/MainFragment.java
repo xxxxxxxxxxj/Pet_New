@@ -157,6 +157,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     ImageView iv_mainfrag_map_loc;
     @BindView(R.id.iv_mainfrag_gj)
     ImageView ivMainfragGj;
+    @BindView(R.id.rl_mainfrag_top_cancel)
+    TextView rl_mainfrag_top_cancel;
 
     private AMap aMap;
     private UiSettings mUiSettings;
@@ -380,12 +382,16 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 serchList.clear();
                 serchList.add(new SerchResult("目的地", "", 0, 0, true));
                 mainSerchResultAdapter.notifyDataSetChanged();
+                rl_mainfrag_top_cancel.setVisibility(View.VISIBLE);
+                rlMainfragSend.setVisibility(View.GONE);
             }
 
             @Override
             public void keyBoardHide(int height) {
                 RingLog.e("keyBoardHide height = " + height);
                 rll_mainfrag_serchresult.setVisibility(View.GONE);
+                rl_mainfrag_top_cancel.setVisibility(View.GONE);
+                rlMainfragSend.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -489,15 +495,19 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @OnClick({R.id.ll_mainfrag_city, R.id.rl_mainfrag_send, R.id.rtv_mainfrag_local, R.id.rl_mainfrag_localev,
             R.id.rl_mainfrag_localev_gg, R.id.rl_mainfrag_localev_gr, R.id.iv_mainfrag_rmht1, R.id.iv_mainfrag_rmht2,
-            R.id.iv_mainfrag_rmht3, R.id.iv_mainfrag_map_loc, R.id.iv_mainfrag_gj})
+            R.id.iv_mainfrag_rmht3, R.id.iv_mainfrag_map_loc, R.id.iv_mainfrag_gj, R.id.rl_mainfrag_top_cancel})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rl_mainfrag_top_cancel:
+                SystemUtil.goneJP(mActivity);
+                break;
             case R.id.iv_mainfrag_gj:
                 if (SystemUtil.checkLogin(mActivity)) {
                     startActivity(new Intent(mActivity, ButlerActivity.class));
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
+                break;
             case R.id.iv_mainfrag_map_loc:
                 if (lat > 0 && lng > 0) {
                     aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(lat, lng), 18, 0, 30)),
@@ -638,7 +648,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public void getMainFragmentFail(int status, String desc) {
         disMissDialog();
         RingLog.e(TAG, "getMainFragmentFail() status = " + status + "---desc = " + desc);
-        SystemUtil.Exit(mActivity,status);
+        SystemUtil.Exit(mActivity, status);
     }
 
     @Override
@@ -687,7 +697,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void listFail(int status, String desc) {
         RingLog.e(TAG, "listFail() status = " + status + "---desc = " + desc);
-        SystemUtil.Exit(mActivity,status);
+        SystemUtil.Exit(mActivity, status);
     }
 
     @Override

@@ -155,6 +155,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
                 finish();
                 break;
             case R.id.tv_allbrands_zk:
+                setOpen();
                 break;
         }
     }
@@ -165,8 +166,10 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
             for (int i = 0; i < 10; i++) {
                 carList.add(localCarList.get(i));
             }
+            tv_allbrands_zk.setText("展开");
         } else {//展开
             carList.addAll(localCarList);
+            tv_allbrands_zk.setText("收起");
         }
         hotPointCarAdapter.notifyDataSetChanged();
         isOpen = !isOpen;

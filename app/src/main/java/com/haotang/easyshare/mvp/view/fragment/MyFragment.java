@@ -20,7 +20,6 @@ import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
 import com.haotang.easyshare.mvp.presenter.MyFragmentPresenter;
-import com.haotang.easyshare.mvp.view.activity.AboutActivity;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
 import com.haotang.easyshare.mvp.view.activity.CarInfoActivity;
@@ -29,6 +28,7 @@ import com.haotang.easyshare.mvp.view.activity.EditUserInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
 import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
+import com.haotang.easyshare.mvp.view.activity.RechargeRecordActivity;
 import com.haotang.easyshare.mvp.view.activity.TestActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.MyFragChargePagerAdapter;
@@ -229,9 +229,16 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
             R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
             R.id.tv_myfragment_username, R.id.iv_myfragment_userimg, R.id.rl_myfragment_mycharge_right,
-            R.id.iv_myfragment_bjusername})
+            R.id.iv_myfragment_bjusername, R.id.rl_myfragment_cdjl})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rl_myfragment_cdjl:
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, RechargeRecordActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
+                break;
             case R.id.iv_myfragment_bjusername:
                 if (SystemUtil.checkLogin(mActivity)) {
                     startActivity(new Intent(mActivity, EditUserInfoActivity.class));
@@ -377,7 +384,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void homeFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "MyFragment homeFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(mActivity,code);
+        SystemUtil.Exit(mActivity, code);
     }
 
     @Override
@@ -395,6 +402,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void myFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "MyFragment myFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(mActivity,code);
+        SystemUtil.Exit(mActivity, code);
     }
 }

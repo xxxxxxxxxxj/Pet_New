@@ -1,11 +1,22 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
+import android.content.Intent;
+import android.graphics.Paint;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerChargeIngFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.ChargeIngFragmentModule;
 import com.haotang.easyshare.mvp.presenter.ChargeIngFragmentPresenter;
+import com.haotang.easyshare.mvp.view.activity.RechargeActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IChargeIngFragmentView;
+import com.haotang.easyshare.util.SystemUtil;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * <p>Title:${type_name}</p>
@@ -17,6 +28,17 @@ import com.haotang.easyshare.mvp.view.iview.IChargeIngFragmentView;
  */
 public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> implements IChargeIngFragmentView {
     protected final static String TAG = ChargeIngFragment.class.getSimpleName();
+    @BindView(R.id.tv_chargeing_titlebar_other)
+    TextView tvChargeingTitlebarOther;
+    @BindView(R.id.tv_chargeing_num)
+    TextView tvChargeingNum;
+    @BindView(R.id.iv_chargeing)
+    ImageView ivChargeing;
+    @BindView(R.id.tv_chargeing_money)
+    TextView tvChargeingMoney;
+    @BindView(R.id.tv_chargeing_ljcz)
+    TextView tvChargeingLjcz;
+    private String phone;
 
     @Override
     protected boolean isLazyLoad() {
@@ -34,6 +56,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 .chargeIngFragmentModule(new ChargeIngFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
+        tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
     }
 
     @Override
@@ -49,5 +73,19 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Override
     public void requestData() {
 
+    }
+
+    @OnClick({R.id.tv_chargeing_titlebar_other, R.id.iv_chargeing, R.id.tv_chargeing_ljcz})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_chargeing_titlebar_other:
+                SystemUtil.cellPhone(mActivity, phone);
+                break;
+            case R.id.iv_chargeing:
+                break;
+            case R.id.tv_chargeing_ljcz:
+                startActivity(new Intent(mActivity,RechargeActivity.class));
+                break;
+        }
     }
 }

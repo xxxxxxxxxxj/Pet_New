@@ -23,8 +23,8 @@
         android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:paddingLeft="15dip"
         android:background="@drawable/main_local_bg_shade"
+        android:paddingLeft="15dip"
         android:paddingRight="15dip">
 
         <LinearLayout
@@ -52,48 +52,64 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_mainfrag_send"
-            android:layout_width="25dip"
+            android:id="@+id/rl_mainfrag_top_right"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true">
 
-            <ImageView
-                android:id="@+id/iv_mainfrag_send_redpoint"
-                android:layout_width="5dip"
-                android:layout_height="5dip"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="2dip"
-                android:layout_marginTop="10dip"
-                android:scaleType="fitXY"
-                android:src="@mipmap/redpoint" />
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/rl_mainfrag_top_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="取消"
+                android:textColor="@color/a333333"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/rl_mainfrag_send"
+                android:layout_width="25dip"
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="20dip"
-                    android:layout_height="15dip"
-                    android:layout_marginBottom="5dip"
+                    android:id="@+id/iv_mainfrag_send_redpoint"
+                    android:layout_width="5dip"
+                    android:layout_height="5dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="2dip"
+                    android:layout_marginTop="10dip"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/shangchuanchongdianzhuang" />
+                    android:src="@mipmap/redpoint" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="上传"
-                    android:textColor="@color/a999999"
-                    android:textSize="8sp" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="20dip"
+                        android:layout_height="15dip"
+                        android:layout_marginBottom="5dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/shangchuanchongdianzhuang" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="上传"
+                        android:textColor="@color/a999999"
+                        android:textSize="8sp" />
+                </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
         <EditText
             android:id="@+id/et_mainfrag_serch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/rl_mainfrag_send"
+            android:layout_toLeftOf="@id/rl_mainfrag_top_right"
             android:layout_toRightOf="@id/ll_mainfrag_city"
             android:background="@null"
             android:cursorVisible="true"

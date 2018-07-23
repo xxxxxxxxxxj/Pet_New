@@ -96,12 +96,16 @@
                 android:layout_height="15dip"
                 android:background="@color/f8f8ff8" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_allbrands_jxtj"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/f8f8ff8" />
+                android:layout_height="wrap_content">
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_allbrands_jxtj"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/f8f8ff8" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
