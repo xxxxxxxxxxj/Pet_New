@@ -9,6 +9,17 @@
     rv:rv_backgroundColor="@color/white"
     rv:rv_cornerRadius="5dip">
 
+    <TextView
+        android:id="@+id/tv_item_allbands_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_round_red"
+        android:padding="2dip"
+        android:text="热销"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/iv_item_allbands_lxgj"
         android:layout_width="46dip"

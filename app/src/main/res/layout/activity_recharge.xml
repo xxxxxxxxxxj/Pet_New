@@ -140,6 +140,7 @@
                 android:layout_marginRight="15dip"
                 android:layout_marginTop="130dip"
                 android:text="立即充值"
+                android:background="@mipmap/bg_btn"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>

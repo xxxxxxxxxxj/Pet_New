@@ -37,6 +37,9 @@ public class SelectedCarAdapter extends BaseQuickAdapter<HotSpecialCarBean.DataB
         TextView tv_item_allbands_name = helper.getView(R.id.tv_item_allbands_name);
         TextView tv_item_allbands_xuhang = helper.getView(R.id.tv_item_allbands_xuhang);
         TextView tv_item_allbands_price = helper.getView(R.id.tv_item_allbands_price);
+        TextView tv_item_allbands_tag = helper.getView(R.id.tv_item_allbands_tag);
+        tv_item_allbands_tag.setVisibility(View.VISIBLE);
+        tv_item_allbands_tag.bringToFront();
         if (item != null) {
             GlideUtil.loadNetImg(mContext, item.getIcon(), iv_item_allbands_img, R.mipmap.ic_image_load);
             StringUtil.setText(tv_item_allbands_name, item.getCar(), "", View.VISIBLE, View.VISIBLE);

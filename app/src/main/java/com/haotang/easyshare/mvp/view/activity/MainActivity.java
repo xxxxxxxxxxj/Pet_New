@@ -70,12 +70,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private String[] mTitles = {"易享", "热点", "充电", "选车", "我的"};
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_normal, R.mipmap.tab_hot_normal,
-            R.mipmap.tab_hot_normal,
-            R.mipmap.tab_hot_normal, R.mipmap.tab_my_normal};
+            R.mipmap.tab_charge_normal,
+            R.mipmap.tab_selectcar_normal, R.mipmap.tab_my_normal};
     private int[] mIconSelectIds = {
             R.mipmap.tab_home_passed, R.mipmap.tab_hot_passed,
-            R.mipmap.tab_hot_passed,
-            R.mipmap.tab_hot_passed, R.mipmap.tab_my_passed};
+            R.mipmap.tab_charge_passed,
+            R.mipmap.tab_selectcar_passed, R.mipmap.tab_my_passed};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
     private ArrayList<BaseFragment> mFragments = new ArrayList<>();
     @Inject
