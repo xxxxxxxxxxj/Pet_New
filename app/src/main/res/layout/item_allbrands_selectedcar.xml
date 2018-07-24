@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dip"
     android:layout_marginRight="15dip"
-    android:padding="15dip"
+    android:paddingBottom="15dip"
+    android:paddingRight="15dip"
     rv:rv_backgroundColor="@color/white"
     rv:rv_cornerRadius="5dip">
 
@@ -14,11 +15,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_round_red"
-        android:padding="2dip"
+        android:paddingBottom="2dip"
+        android:paddingLeft="4dip"
+        android:paddingRight="4dip"
+        android:paddingTop="2dip"
         android:text="热销"
         android:textColor="@color/white"
-        android:textSize="10sp"
-        android:visibility="gone" />
+        android:textSize="10sp" />
 
     <ImageView
         android:id="@+id/iv_item_allbands_lxgj"
@@ -32,7 +35,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
         android:layout_marginRight="10dip"
+        android:layout_marginTop="15dip"
         android:layout_toLeftOf="@id/iv_item_allbands_lxgj"
         android:orientation="horizontal">
 
@@ -55,6 +60,8 @@
                 android:id="@+id/tv_item_allbands_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textSize="15sp" />

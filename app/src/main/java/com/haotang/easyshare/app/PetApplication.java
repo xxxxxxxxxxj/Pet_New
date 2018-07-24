@@ -15,6 +15,7 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.FileUtil;
 import com.umeng.commonsdk.UMConfigure;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.im.android.api.JMessageClient;
@@ -126,5 +127,6 @@ public class PetApplication extends Application {
         //设置是否对日志信息进行加密, 默认false(不加密).
         UMConfigure.setEncryptEnabled(true);
         UMConfigure.init(getApplicationContext(), AppConfig.UMENG_APPKEY, "easyshare_1", UMConfigure.DEVICE_TYPE_PHONE, "");
+        ZXingLibrary.initDisplayOpinion(this);
     }
 }

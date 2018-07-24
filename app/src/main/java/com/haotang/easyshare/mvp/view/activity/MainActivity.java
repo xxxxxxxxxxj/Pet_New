@@ -1,12 +1,17 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.Manifest;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -215,7 +220,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 } else if (position == 1) {
                     ctlMainactivity.hideMsg(1);
                     DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HOTFRAGMET));
+                } else if (position == 3) {
+                    initWindows();
                 } else if (position == 4) {
+                    initWindows();
                     ctlMainactivity.hideMsg(4);
                     DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
                 }
@@ -278,6 +286,26 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 return true;// 不会中断触摸事件的返回
             }
         });*/
+    }
+
+    private void initWindows() {
+        /*Window window = getWindow();
+        int color = getResources().getColor(android.R.color.transparent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Log.e("TAG", "1");
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //设置状态栏颜色
+            window.setStatusBarColor(color);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Log.e("TAG", "2");
+            //透明状态栏
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }*/
     }
 
     @Override

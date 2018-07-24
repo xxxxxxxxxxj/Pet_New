@@ -11,6 +11,7 @@ import com.haotang.easyshare.di.component.fragment.DaggerChargeIngFragmentCommpo
 import com.haotang.easyshare.di.module.fragment.ChargeIngFragmentModule;
 import com.haotang.easyshare.mvp.presenter.ChargeIngFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.RechargeActivity;
+import com.haotang.easyshare.mvp.view.activity.ScanCodeActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IChargeIngFragmentView;
 import com.haotang.easyshare.util.SystemUtil;
@@ -82,9 +83,10 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 SystemUtil.cellPhone(mActivity, phone);
                 break;
             case R.id.iv_chargeing:
+                startActivity(new Intent(mActivity, ScanCodeActivity.class));
                 break;
             case R.id.tv_chargeing_ljcz:
-                startActivity(new Intent(mActivity,RechargeActivity.class));
+                startActivity(new Intent(mActivity, RechargeActivity.class));
                 break;
         }
     }

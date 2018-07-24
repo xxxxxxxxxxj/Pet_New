@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="140dip"
+    android:layout_marginRight="10dip"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_item_selectcat_ad"
+        android:layout_width="118dip"
+        android:layout_height="140dip"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_image_load" />
+</LinearLayout>

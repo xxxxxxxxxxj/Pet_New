@@ -11,11 +11,13 @@ import android.widget.RelativeLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerSelectCarFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.SelectCarFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.presenter.SelectCarFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
+import com.haotang.easyshare.mvp.view.adapter.SelectCarAdAdapter;
 import com.haotang.easyshare.mvp.view.adapter.SelectedCarAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.ISelectCarFragmentView;
@@ -55,6 +57,8 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     private HotPointCarAdapter hotPointCarAdapter;
     private List<HotSpecialCarBean.DataBean> selectedCarList = new ArrayList<HotSpecialCarBean.DataBean>();
     private SelectedCarAdapter selectedCarAdapter;
+    private List<AdvertisementBean.DataBean> adList = new ArrayList<AdvertisementBean.DataBean>();
+    private SelectCarAdAdapter selectCarAdAdapter;
 
     @Override
     protected boolean isLazyLoad() {
@@ -72,6 +76,17 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
                 .selectCarFragmentModule(new SelectCarFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
+        rvSelectcarTop.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(mActivity);
+        linearLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvSelectcarTop.setLayoutManager(linearLayoutManager1);
+        selectCarAdAdapter = new SelectCarAdAdapter(R.layout.item_selectcat_ad, adList);
+        rvSelectcarTop.setAdapter(selectCarAdAdapter);
+        //添加自定义分割线
+        rvSelectcarTop.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL,
+                DensityUtil.dp2px(mActivity, 10),
+                ContextCompat.getColor(mActivity, R.color.transparent)));
+
         rvSelectcarRmpp.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -135,7 +150,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     public void hotFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "hotFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(mActivity,code);
+        SystemUtil.Exit(mActivity, code);
     }
 
     @Override

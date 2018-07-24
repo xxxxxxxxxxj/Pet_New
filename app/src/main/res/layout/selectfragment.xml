@@ -23,13 +23,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dip"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/ic_image_load" />
+                    android:src="@mipmap/bg_select_car_top" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_selectcar_top"
                     android:layout_width="match_parent"
                     android:layout_height="140dip"
-                    android:layout_alignParentBottom="true" />
+                    android:layout_alignParentBottom="true"
+                    android:paddingLeft="10dip"
+                    android:paddingRight="10dip" />
 
             </RelativeLayout>
 
