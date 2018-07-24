@@ -11,6 +11,7 @@ import com.haotang.easyshare.di.module.activity.MyBalanceActivityModule;
 import com.haotang.easyshare.mvp.presenter.MyBalancePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IMyBalanceView;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -55,6 +56,18 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

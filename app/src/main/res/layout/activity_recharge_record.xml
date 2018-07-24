@@ -7,9 +7,18 @@
 
     <include layout="@layout/title_bar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_recharge_record"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_recharge_record"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/f8f8ff8" />
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_recharge_record"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/f8f8ff8"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

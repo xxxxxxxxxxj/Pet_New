@@ -13,6 +13,7 @@ import com.haotang.easyshare.mvp.presenter.RechargePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IRechargeView;
 import com.ljy.devring.util.RingToast;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -98,5 +99,17 @@ public class RechargeActivity extends BaseActivity<RechargePresenter> implements
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }
