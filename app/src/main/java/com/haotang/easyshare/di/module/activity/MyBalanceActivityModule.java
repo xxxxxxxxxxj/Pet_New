@@ -5,8 +5,8 @@ import android.content.Context;
 import com.haotang.easyshare.mvp.model.MyBalanceModel;
 import com.haotang.easyshare.mvp.model.imodel.IMyBalanceModel;
 import com.haotang.easyshare.mvp.presenter.MyBalancePresenter;
+import com.haotang.easyshare.mvp.view.fragment.RechargeFragment;
 import com.haotang.easyshare.mvp.view.iview.IMyBalanceView;
-import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.ljy.devring.di.scope.ActivityScope;
 
 import dagger.Module;

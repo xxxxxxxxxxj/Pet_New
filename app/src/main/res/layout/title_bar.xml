@@ -29,6 +29,16 @@
             android:textSize="16sp"
             android:visibility="gone" />
 
+        <ImageView
+            android:id="@+id/iv_titlebar_other"
+            android:layout_width="25dip"
+            android:layout_height="5dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:src="@mipmap/icon_about"/>
+
         <TextView
             android:id="@+id/tv_titlebar_title"
             android:layout_width="match_parent"

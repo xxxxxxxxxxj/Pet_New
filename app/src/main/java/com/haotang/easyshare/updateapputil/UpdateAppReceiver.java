@@ -30,7 +30,7 @@ public class UpdateAppReceiver extends BroadcastReceiver {
         RingLog.d(TAG, "progress = " + progress + "---title = " + title);
         if (UpdateAppUtils.showNotification) {
             mNotification = new MyNotification(context, null, 1);
-            mNotification.showCustomizeNotification(R.mipmap.logo, "宠物家" + title,
+            mNotification.showCustomizeNotification(R.mipmap.logo, R.string.app_name + title,
                     R.layout.download_notif, progress);
         }
         if (state == MyNotification.DOWNLOAD_COMPLETE) {

@@ -13,7 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerRechargeRecordActivityCommponent;
 import com.haotang.easyshare.di.module.activity.RechargeRecordActivityModule;
-import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.entity.res.RechargeRecord;
 import com.haotang.easyshare.mvp.presenter.RechargeRecordPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -60,6 +59,9 @@ public class RechargeRecordActivity extends BaseActivity<RechargeRecordPresenter
         srl_recharge_record.setColorSchemeColors(Color.rgb(47, 223, 189));
         rv_recharge_record.setHasFixedSize(true);
         rv_recharge_record.setLayoutManager(new LinearLayoutManager(this));
+        for (int i = 0; i < 10; i++) {
+            list.add(new RechargeRecord("星星充电10005029", 48, 20.08, "2018-06-08 16:08", "2018-06-08 18:48", "160分钟"));
+        }
         rechargeRecordAdapter = new RechargeRecordAdapter(R.layout.item_rechargerecord, list);
         rv_recharge_record.setAdapter(rechargeRecordAdapter);
         //添加自定义分割线
