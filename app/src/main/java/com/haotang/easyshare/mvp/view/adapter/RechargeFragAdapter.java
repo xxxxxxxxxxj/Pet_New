@@ -33,6 +33,11 @@ public class RechargeFragAdapter extends BaseQuickAdapter<RechargeFrag, BaseView
             StringUtil.setText(tv_item_rechargefrag_price, "" + item.getPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_rechargefrag_name, item.getName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_rechargefrag_time, item.getTime(), "", View.VISIBLE, View.VISIBLE);
+            if (item.getPrice() >= 0) {
+                tv_item_rechargefrag_price.setTextColor(mContext.getResources().getColor(R.color.aD0021B));
+            } else {
+                tv_item_rechargefrag_price.setTextColor(mContext.getResources().getColor(R.color.a333333));
+            }
         }
     }
 }

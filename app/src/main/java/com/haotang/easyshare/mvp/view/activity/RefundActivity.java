@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +21,7 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.RefundResonAdapter;
 import com.haotang.easyshare.mvp.view.adapter.RefundSmAdapter;
 import com.haotang.easyshare.mvp.view.iview.IRefundView;
+import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
@@ -131,6 +133,19 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
                 finish();
                 break;
             case R.id.btn_refund_submit:
+                new AlertDialogNavAndPost(RefundActivity.this).builder().setTitle("")
+                        .setMsg("您确认要退款吗？")
+                        .setPositiveButton("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(RefundActivity.this, RefundResultActivity.class));
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
                 break;
         }
     }

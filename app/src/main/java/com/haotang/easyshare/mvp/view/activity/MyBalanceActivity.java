@@ -3,11 +3,8 @@ package com.haotang.easyshare.mvp.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.PopupWindow;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
@@ -31,8 +28,8 @@ import butterknife.OnClick;
 public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implements IMyBalanceView {
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
-    @BindView(R.id.iv_titlebar_other)
-    ImageView iv_titlebar_other;
+    @BindView(R.id.ll_titlebar_other)
+    LinearLayout ll_titlebar_other;
     @BindView(R.id.stl_my_balance)
     SlidingTabLayout stlMyBalance;
     @BindView(R.id.vp_my_balance)
@@ -57,7 +54,7 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     @Override
     protected void setView(Bundle savedInstanceState) {
         tvTitlebarTitle.setText("我的余额");
-        iv_titlebar_other.setVisibility(View.VISIBLE);
+        ll_titlebar_other.setVisibility(View.VISIBLE);
         mFragments.add(new RechargeFragment());
         mFragments.add(new RechargeFragment());
         mFragments.add(new RechargeFragment());
@@ -77,13 +74,13 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     protected void initEvent() {
     }
 
-    @OnClick({R.id.iv_titlebar_back, R.id.iv_titlebar_other, R.id.btn_my_balance_ljcz})
+    @OnClick({R.id.iv_titlebar_back, R.id.ll_titlebar_other, R.id.btn_my_balance_ljcz})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_titlebar_back:
                 finish();
                 break;
-            case R.id.iv_titlebar_other:
+            case R.id.ll_titlebar_other:
                 showPop();
                 break;
             case R.id.btn_my_balance_ljcz:
@@ -95,7 +92,7 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     private void showPop() {
         dismissPop();
         refundPopupWindow = new RefundPopupWindow(this, onClickListener);
-        refundPopupWindow.showAsDropDown(iv_titlebar_other, 0, 0);
+        refundPopupWindow.showAsDropDown(ll_titlebar_other, -130, -50);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {

@@ -36,12 +36,16 @@ public class RechargeRecordAdapter extends BaseQuickAdapter<RechargeRecord, Base
         TextView tv_item_rechargerecord_jssj = helper.getView(R.id.tv_item_rechargerecord_jssj);
         TextView tv_item_rechargerecord_cdsj = helper.getView(R.id.tv_item_rechargerecord_cdsj);
         LinearLayout ll_item_rechargerecord_root = helper.getView(R.id.ll_item_rechargerecord_root);
+        LinearLayout ll_item_rechargerecord = helper.getView(R.id.ll_item_rechargerecord);
         if (item != null) {
             if (helper.getLayoutPosition() == 0) {
                 RecyclerView.LayoutParams layoutParams =
                         (RecyclerView.LayoutParams) ll_item_rechargerecord_root.getLayoutParams();
                 layoutParams.topMargin = DensityUtil.dp2px(mContext, 15);
                 ll_item_rechargerecord_root.setLayoutParams(layoutParams);
+                ll_item_rechargerecord.setBackgroundResource(R.drawable.bg_round_blue);
+            } else {
+                ll_item_rechargerecord.setBackgroundResource(R.drawable.bg_round_white);
             }
             StringUtil.setText(tv_item_rechargerecord_price, "¥" + item.getPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_rechargerecord_name, item.getName(), "", View.VISIBLE, View.VISIBLE);

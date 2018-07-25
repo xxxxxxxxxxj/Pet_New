@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:rv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:id="@+id/ll_item_rechargerecord_root"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.flyco.roundview.RoundLinearLayout
+    <LinearLayout
+        android:id="@+id/ll_item_rechargerecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_round_white"
         android:orientation="vertical"
-        android:padding="15dip"
-        rv:rv_backgroundColor="@color/white"
-        rv:rv_cornerRadius="5dip">
+        android:padding="15dip">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -86,6 +85,6 @@
             android:text="充电时间："
             android:textColor="@color/a666666"
             android:textSize="12sp" />
-    </com.flyco.roundview.RoundLinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

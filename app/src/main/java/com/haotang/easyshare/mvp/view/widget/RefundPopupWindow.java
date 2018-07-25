@@ -34,15 +34,11 @@ public class RefundPopupWindow extends PopupWindow {
         tv_pop_mybalance.setOnClickListener(OnClickListener);
         // 设置SelectPicPopupWindow的View
         this.setContentView(inflate);
-        // 设置SelectPicPopupWindow弹出窗体的宽
-        this.setWidth(ViewGroup.LayoutParams.FILL_PARENT);
-        // 设置SelectPicPopupWindow弹出窗体的高
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         int width = wm.getDefaultDisplay().getWidth();
-        int height = wm.getDefaultDisplay().getHeight();
-        this.setWidth(width * 28 / 75);
-        this.setHeight(width * 28 / 75);
+        this.setWidth(width * 15 / 75);
+        this.setHeight(width * 10 / 75);
         this.setFocusable(true);
         ColorDrawable dw = new ColorDrawable(00000000);
         setBackgroundDrawable(dw);

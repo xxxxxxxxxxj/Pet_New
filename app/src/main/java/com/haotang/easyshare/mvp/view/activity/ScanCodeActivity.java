@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
@@ -32,11 +36,24 @@ import butterknife.OnClick;
  * 扫码界面
  */
 public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements IScanCodeView {
-    @BindView(R.id.tv_titlebar_title)
-    TextView tvTitlebarTitle;
+    @BindView(R.id.tv_scan_code_btn1)
+    TextView tvScanCodeBtn1;
+    @BindView(R.id.tv_scan_code_btn2)
+    TextView tvScanCodeBtn2;
+    @BindView(R.id.ll_scan_code_btn)
+    LinearLayout llScanCodeBtn;
+    @BindView(R.id.tv_scan_code_desc1)
+    TextView tvScanCodeDesc1;
+    @BindView(R.id.tv_scan_code_desc2)
+    TextView tvScanCodeDesc2;
+    @BindView(R.id.fl_my_container)
+    FrameLayout flMyContainer;
+    @BindView(R.id.rl_scan_code_play)
+    RelativeLayout rl_scan_code_play;
     private CaptureFragment captureFragment;
     @Inject
     PermissionDialog permissionDialog;
+    public boolean isOpen = false;
 
     @Override
     protected int getContentLayout() {
@@ -53,7 +70,7 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-        tvTitlebarTitle.setText("扫码");
+        rl_scan_code_play.bringToFront();
         captureFragment = new CaptureFragment();
         // 为二维码扫描界面设置定制化界面
         CodeUtils.setFragmentArgs(captureFragment, R.layout.my_camera);
@@ -140,11 +157,22 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
         });
     }
 
-    @OnClick({R.id.iv_titlebar_back})
+    @OnClick({R.id.iv_titlebar_back, R.id.tv_scan_code_btn1, R.id.tv_scan_code_btn2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_titlebar_back:
                 finish();
+                break;
+            case R.id.tv_scan_code_btn1:
+                if (!isOpen) {
+                    CodeUtils.isLightEnable(true);
+                    isOpen = true;
+                } else {
+                    CodeUtils.isLightEnable(false);
+                    isOpen = false;
+                }
+                break;
+            case R.id.tv_scan_code_btn2:
                 break;
         }
     }
