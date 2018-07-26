@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerScreenCarActivityCommponent;
 import com.haotang.easyshare.di.module.activity.ScreenCarActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.MainTabEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.ScreenCarCondition;
 import com.haotang.easyshare.mvp.presenter.ScreenCarPresenter;
@@ -23,12 +24,16 @@ import com.haotang.easyshare.mvp.view.adapter.ScreenCarModelAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ScreenCarPriceAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ScreenCarRenewalAdapter;
 import com.haotang.easyshare.mvp.view.adapter.SelectedCarAdapter;
+import com.haotang.easyshare.mvp.view.adapter.SelectedCarTopTagAdapter;
 import com.haotang.easyshare.mvp.view.iview.IScreenCarView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
+import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.util.DensityUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.yyydjk.library.DropDownMenu;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,6 +61,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
     private List<ScreenCarCondition> modelList = new ArrayList<ScreenCarCondition>();
     private List<ScreenCarCondition> renewalList = new ArrayList<ScreenCarCondition>();
     private List<ScreenCarCondition> categoryList = new ArrayList<ScreenCarCondition>();
+    private List<ScreenCarCondition> tagList = new ArrayList<ScreenCarCondition>();
     private ScreenCarCategoryAdapter screenCarCategoryAdapter;
     private ScreenCarPriceAdapter screenCarPriceAdapter;
     private ScreenCarModelAdapter screenCarModelAdapter;
@@ -64,6 +70,8 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
     private RecyclerView rv_screencar;
     private List<HotSpecialCarBean.DataBean> selectedCarList = new ArrayList<HotSpecialCarBean.DataBean>();
     private SelectedCarAdapter selectedCarAdapter;
+    private RecyclerView rv_screencar_toptag;
+    private SelectedCarTopTagAdapter selectedCarTopTagAdapter;
 
     @Override
     protected int getContentLayout() {
@@ -80,11 +88,26 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
         contentView = View.inflate(this, R.layout.screencar_contentview, null);
         srl_screencar = (SwipeRefreshLayout) contentView.findViewById(R.id.srl_screencar);
         rv_screencar = (RecyclerView) contentView.findViewById(R.id.rv_screencar);
+        rv_screencar_toptag = (RecyclerView) contentView.findViewById(R.id.rv_screencar_toptag);
     }
 
     @Override
     protected void setView(Bundle savedInstanceState) {
         tvTitlebarTitle.setText(brand);
+
+        rv_screencar_toptag.setHasFixedSize(true);
+        rv_screencar_toptag.setNestedScrollingEnabled(false);
+        NoScollFullGridLayoutManager noScollFullGridLayoutManager = new
+                NoScollFullGridLayoutManager(rv_screencar_toptag, this, 4, GridLayoutManager.VERTICAL, false);
+        noScollFullGridLayoutManager.setScrollEnabled(false);
+        rv_screencar_toptag.setLayoutManager(noScollFullGridLayoutManager);
+        rv_screencar_toptag.addItemDecoration(new GridSpacingItemDecoration(4,
+                getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
+                getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
+                true));
+        selectedCarTopTagAdapter = new SelectedCarTopTagAdapter(R.layout.item_screensar_toptag
+                , tagList);
+        rv_screencar_toptag.setAdapter(selectedCarTopTagAdapter);
 
         srl_screencar.setRefreshing(true);
         srl_screencar.setColorSchemeColors(Color.rgb(47, 223, 189));
@@ -113,9 +136,9 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                 true));
         for (int i = 0; i < 10; i++) {
             if (i == 0) {
-                priceList.add(new ScreenCarCondition(i + 1, "不限", false));
+                priceList.add(new ScreenCarCondition(i + 1, 1, "不限", false));
             } else {
-                priceList.add(new ScreenCarCondition(i + 1, "100万以上", false));
+                priceList.add(new ScreenCarCondition(i + 1, 1, "100万以上", false));
             }
         }
         screenCarPriceAdapter = new ScreenCarPriceAdapter(R.layout.item_screensar_condition
@@ -133,9 +156,9 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                 true));
         for (int i = 0; i < 10; i++) {
             if (i == 0) {
-                modelList.add(new ScreenCarCondition(i + 1, "不限", false));
+                modelList.add(new ScreenCarCondition(i + 1, 2, "不限", false));
             } else {
-                modelList.add(new ScreenCarCondition(i + 1, "大型车", false));
+                modelList.add(new ScreenCarCondition(i + 1, 2, "大型车", false));
             }
         }
         screenCarModelAdapter = new ScreenCarModelAdapter(R.layout.item_screensar_condition
@@ -153,9 +176,9 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                 true));
         for (int i = 0; i < 10; i++) {
             if (i == 0) {
-                renewalList.add(new ScreenCarCondition(i + 1, "不限", false));
+                renewalList.add(new ScreenCarCondition(i + 1, 3, "不限", false));
             } else {
-                renewalList.add(new ScreenCarCondition(i + 1, "400公里以上", false));
+                renewalList.add(new ScreenCarCondition(i + 1, 3, "400公里以上", false));
             }
         }
         screenCarRenewalAdapter = new ScreenCarRenewalAdapter(R.layout.item_screensar_condition
@@ -173,9 +196,9 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                 true));
         for (int i = 0; i < 10; i++) {
             if (i == 0) {
-                categoryList.add(new ScreenCarCondition(i + 1, "不限", false));
+                categoryList.add(new ScreenCarCondition(i + 1, 4, "不限", false));
             } else {
-                categoryList.add(new ScreenCarCondition(i + 1, "二手车", false));
+                categoryList.add(new ScreenCarCondition(i + 1, 4, "二手车", false));
             }
         }
         screenCarCategoryAdapter = new ScreenCarCategoryAdapter(R.layout.item_screensar_condition
@@ -205,6 +228,63 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
 
     @Override
     protected void initEvent() {
+        selectedCarTopTagAdapter.setOnTagDeleteListener(new SelectedCarTopTagAdapter.OnTagDeleteListener() {
+            @Override
+            public void OnTagDelete(int position) {
+                if (tagList.size() > position) {
+                    ScreenCarCondition screenCarCondition = tagList.get(position);
+                    if (screenCarCondition != null) {
+                        if (screenCarCondition.getClassId() == 1) {
+                            for (int i = 0; i < priceList.size(); i++) {
+                                ScreenCarCondition screenCarCondition1 = priceList.get(i);
+                                if (screenCarCondition1 != null && screenCarCondition1.getId() ==
+                                        screenCarCondition.getId()) {
+                                    priceList.get(i).setSelect(false);
+                                    break;
+                                }
+                            }
+                            dropDownMenu.setTabText(headers[0]);
+                            screenCarPriceAdapter.notifyDataSetChanged();
+                        } else if (screenCarCondition.getClassId() == 2) {
+                            for (int i = 0; i < modelList.size(); i++) {
+                                ScreenCarCondition screenCarCondition1 = modelList.get(i);
+                                if (screenCarCondition1 != null && screenCarCondition1.getId() ==
+                                        screenCarCondition.getId()) {
+                                    modelList.remove(i);
+                                    break;
+                                }
+                            }
+                            dropDownMenu.setTabText(headers[1]);
+                            screenCarModelAdapter.notifyDataSetChanged();
+                        } else if (screenCarCondition.getClassId() == 3) {
+                            for (int i = 0; i < renewalList.size(); i++) {
+                                ScreenCarCondition screenCarCondition1 = renewalList.get(i);
+                                if (screenCarCondition1 != null && screenCarCondition1.getId() ==
+                                        screenCarCondition.getId()) {
+                                    renewalList.remove(i);
+                                    break;
+                                }
+                            }
+                            dropDownMenu.setTabText(headers[2]);
+                            screenCarRenewalAdapter.notifyDataSetChanged();
+                        } else if (screenCarCondition.getClassId() == 4) {
+                            for (int i = 0; i < categoryList.size(); i++) {
+                                ScreenCarCondition screenCarCondition1 = categoryList.get(i);
+                                if (screenCarCondition1 != null && screenCarCondition1.getId() ==
+                                        screenCarCondition.getId()) {
+                                    categoryList.remove(i);
+                                    break;
+                                }
+                            }
+                            dropDownMenu.setTabText(headers[3]);
+                            screenCarCategoryAdapter.notifyDataSetChanged();
+                        }
+                        tagList.remove(position);
+                        selectedCarTopTagAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
         screenCarPriceAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -222,6 +302,19 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                     screenCarPriceAdapter.notifyDataSetChanged();
                     dropDownMenu.setTabText(position == 0 ? headers[0] : priceList.get(position).getName());
                     dropDownMenu.closeMenu();
+                    if (tagList.size() > 0) {
+                        for (int i = 0; i < tagList.size(); i++) {
+                            ScreenCarCondition screenCarCondition1 = tagList.get(i);
+                            if (screenCarCondition1 != null && screenCarCondition1.getClassId() == 1) {
+                                tagList.remove(i);
+                                break;
+                            }
+                        }
+                    }
+                    if (position > 0) {
+                        tagList.add(screenCarCondition);
+                    }
+                    selectedCarTopTagAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -240,8 +333,21 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                         screenCarCondition.setSelect(true);
                     }
                     screenCarModelAdapter.notifyDataSetChanged();
-                    dropDownMenu.setTabText(position == 0 ? headers[0] : modelList.get(position).getName());
+                    dropDownMenu.setTabText(position == 0 ? headers[1] : modelList.get(position).getName());
                     dropDownMenu.closeMenu();
+                    if (tagList.size() > 0) {
+                        for (int i = 0; i < tagList.size(); i++) {
+                            ScreenCarCondition screenCarCondition1 = tagList.get(i);
+                            if (screenCarCondition1 != null && screenCarCondition1.getClassId() == 2) {
+                                tagList.remove(i);
+                                break;
+                            }
+                        }
+                    }
+                    if (position > 0) {
+                        tagList.add(screenCarCondition);
+                    }
+                    selectedCarTopTagAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -260,8 +366,21 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                         screenCarCondition.setSelect(true);
                     }
                     screenCarRenewalAdapter.notifyDataSetChanged();
-                    dropDownMenu.setTabText(position == 0 ? headers[0] : renewalList.get(position).getName());
+                    dropDownMenu.setTabText(position == 0 ? headers[2] : renewalList.get(position).getName());
                     dropDownMenu.closeMenu();
+                    if (tagList.size() > 0) {
+                        for (int i = 0; i < tagList.size(); i++) {
+                            ScreenCarCondition screenCarCondition1 = tagList.get(i);
+                            if (screenCarCondition1 != null && screenCarCondition1.getClassId() == 3) {
+                                tagList.remove(i);
+                                break;
+                            }
+                        }
+                    }
+                    if (position > 0) {
+                        tagList.add(screenCarCondition);
+                    }
+                    selectedCarTopTagAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -280,8 +399,21 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                         screenCarCondition.setSelect(true);
                     }
                     screenCarCategoryAdapter.notifyDataSetChanged();
-                    dropDownMenu.setTabText(position == 0 ? headers[0] : categoryList.get(position).getName());
+                    dropDownMenu.setTabText(position == 0 ? headers[3] : categoryList.get(position).getName());
                     dropDownMenu.closeMenu();
+                    if (tagList.size() > 0) {
+                        for (int i = 0; i < tagList.size(); i++) {
+                            ScreenCarCondition screenCarCondition1 = tagList.get(i);
+                            if (screenCarCondition1 != null && screenCarCondition1.getClassId() == 4) {
+                                tagList.remove(i);
+                                break;
+                            }
+                        }
+                    }
+                    if (position > 0) {
+                        tagList.add(screenCarCondition);
+                    }
+                    selectedCarTopTagAdapter.notifyDataSetChanged();
                 }
             }
         });

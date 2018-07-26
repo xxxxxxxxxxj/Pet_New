@@ -10,8 +10,17 @@ package com.haotang.easyshare.mvp.model.entity.res;
  */
 public class ScreenCarCondition {
     private int id;
+    private int classId;
     private String name;
     private boolean select;
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
 
     public int getId() {
         return id;
@@ -40,8 +49,9 @@ public class ScreenCarCondition {
     public ScreenCarCondition() {
     }
 
-    public ScreenCarCondition(int id, String name, boolean select) {
+    public ScreenCarCondition(int id, int classId, String name, boolean select) {
         this.id = id;
+        this.classId = classId;
         this.name = name;
         this.select = select;
     }
