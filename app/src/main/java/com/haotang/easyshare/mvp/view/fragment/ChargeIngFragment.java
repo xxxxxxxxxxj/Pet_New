@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerChargeIngFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.ChargeIngFragmentModule;
@@ -39,6 +41,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     TextView tvChargeingMoney;
     @BindView(R.id.tv_chargeing_ljcz)
     TextView tvChargeingLjcz;
+    @BindView(R.id.ll_chargeing_start)
+    LinearLayout ll_chargeing_start;
     private String phone;
 
     @Override
@@ -59,6 +63,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 .inject(this);
         tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
+        Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
+        ll_chargeing_start.bringToFront();
     }
 
     @Override
@@ -76,13 +82,13 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
 
     }
 
-    @OnClick({R.id.tv_chargeing_titlebar_other, R.id.iv_chargeing, R.id.tv_chargeing_ljcz})
+    @OnClick({R.id.tv_chargeing_titlebar_other, R.id.rl_chargeing_start, R.id.tv_chargeing_ljcz})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_chargeing_titlebar_other:
                 SystemUtil.cellPhone(mActivity, phone);
                 break;
-            case R.id.iv_chargeing:
+            case R.id.rl_chargeing_start:
                 startActivity(new Intent(mActivity, ScanCodeActivity.class));
                 break;
             case R.id.tv_chargeing_ljcz:

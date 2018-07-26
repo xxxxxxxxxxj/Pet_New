@@ -73,13 +73,42 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_chargeing"
-        android:layout_width="178.5dip"
-        android:layout_height="178.5dip"
-        android:layout_centerInParent="true"
-        android:scaleType="fitXY"
-        android:src="@mipmap/ic_image_load" />
+    <RelativeLayout
+        android:id="@+id/rl_chargeing_start"
+        android:layout_width="200dip"
+        android:layout_height="200dip"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:id="@+id/ll_chargeing_start"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="44dip"
+                android:layout_height="44dip"
+                android:layout_marginBottom="10dip"
+                android:scaleType="fitXY"
+                android:src="@mipmap/charge_san" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="扫码充电"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_chargeing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_chargeing_gif" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
