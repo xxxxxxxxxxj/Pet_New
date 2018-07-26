@@ -8,14 +8,18 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerSelectCarFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.SelectCarFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.SelectCarFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
+import com.haotang.easyshare.mvp.view.activity.ScreenCarActivity;
+import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
 import com.haotang.easyshare.mvp.view.adapter.SelectCarAdAdapter;
 import com.haotang.easyshare.mvp.view.adapter.SelectedCarAdapter;
@@ -80,6 +84,10 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(mActivity);
         linearLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvSelectcarTop.setLayoutManager(linearLayoutManager1);
+        for (int i = 0; i < 10; i++) {
+            adList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg",
+                    1, "哈哈", "哈哈"));
+        }
         selectCarAdAdapter = new SelectCarAdAdapter(R.layout.item_selectcat_ad, adList);
         rvSelectcarTop.setAdapter(selectCarAdAdapter);
         //添加自定义分割线
@@ -155,7 +163,52 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
 
     @Override
     protected void initEvent() {
+        selectCarAdAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (adList != null && adList.size() > 0 && adList.size() > position) {
+                    AdvertisementBean.DataBean dataBean = adList.get(position);
+                    if (dataBean != null) {
+                        if (dataBean.getDisplay() == 1) {//原生
 
+                        } else if (dataBean.getDisplay() == 2) {//H5
+                            mActivity.startActivity(new Intent(mActivity, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, dataBean.getDestination()));
+                        }
+                    }
+                }
+            }
+        });
+        hotPointCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (carList != null && carList.size() > 0 && carList.size() > position) {
+                    HotCarBean.DataBean dataBean = carList.get(position);
+                    if (dataBean != null) {
+                        Intent intent = new Intent(mActivity, ScreenCarActivity.class);
+                        intent.putExtra("brandId", dataBean.getId());
+                        intent.putExtra("brand", dataBean.getBrand());
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+        selectedCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (selectedCarList.size() > 0 && selectedCarList.size() > position) {
+                    HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
+                    if (dataBean != null) {
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
+                            Intent intent = new Intent(mActivity, WebViewActivity.class);
+                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                            intent.putExtra("uuid", dataBean.getUuid());
+                            startActivity(intent);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override

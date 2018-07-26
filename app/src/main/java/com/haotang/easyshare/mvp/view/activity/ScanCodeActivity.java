@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -173,6 +172,8 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
                 }
                 break;
             case R.id.tv_scan_code_btn2:
+                startActivity(new Intent(ScanCodeActivity.this, InputChargeCodeActivity.class));
+                finish();
                 break;
         }
     }

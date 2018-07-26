@@ -61,6 +61,17 @@ public class HotSpecialCarBean {
         private String batteryLife;
         private PostBean.DataBean.ShareMap shareMap;
 
+        public DataBean(String car, String icon, int id, String price, String uuid, String batteryLife,
+                        PostBean.DataBean.ShareMap shareMap) {
+            this.car = car;
+            this.icon = icon;
+            this.id = id;
+            this.price = price;
+            this.uuid = uuid;
+            this.batteryLife = batteryLife;
+            this.shareMap = shareMap;
+        }
+
         public String getUuid() {
             return uuid;
         }

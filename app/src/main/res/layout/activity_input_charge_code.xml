@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:background="@color/black">
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_inputcharge_code_play"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_titlebar_back"
+            android:layout_width="44dip"
+            android:layout_height="44dip"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="15dip"
+            android:layout_marginTop="50dip"
+            android:text="请输入充电终端编号"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_inputcharge_code_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="目前支持全国16万根充电桩"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_inputcharge_code"
+                android:layout_width="260dip"
+                android:layout_height="64dip"
+                android:layout_marginBottom="20dip"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:hint="请输入终端编号"
+                android:paddingLeft="20dip"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_inputcharge_code_btn1"
+                    android:layout_width="120dip"
+                    android:layout_height="44dip"
+                    android:layout_marginRight="20dip"
+                    android:background="@drawable/bg_round_white25"
+                    android:gravity="center"
+                    android:text="切换扫码"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_inputcharge_code_btn2"
+                    android:layout_width="120dip"
+                    android:layout_height="44dip"
+                    android:background="@mipmap/bg_round_jianbian"
+                    android:gravity="center"
+                    android:text="确定"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
