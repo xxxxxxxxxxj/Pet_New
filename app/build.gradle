@@ -132,9 +132,9 @@ dependencies {
     compile 'com.yanzhenjie:recyclerview-swipe:1.1.4'
     compile 'com.github.MagicMashRoom:SuperShadow:v1.0.0'
     compile 'cn.yipianfengye.android:zxing-library:2.2'
+    compile 'com.github.dongjunkun:DropDownMenu:1.0.4'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
     annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile 'com.github.dongjunkun:DropDownMenu:1.0.4'
 }

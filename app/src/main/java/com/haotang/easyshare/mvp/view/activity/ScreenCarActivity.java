@@ -98,12 +98,12 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
         rv_screencar_toptag.setHasFixedSize(true);
         rv_screencar_toptag.setNestedScrollingEnabled(false);
         NoScollFullGridLayoutManager noScollFullGridLayoutManager = new
-                NoScollFullGridLayoutManager(rv_screencar_toptag, this, 4, GridLayoutManager.VERTICAL, false);
+                NoScollFullGridLayoutManager(rv_screencar_toptag, this, 3, GridLayoutManager.VERTICAL, false);
         noScollFullGridLayoutManager.setScrollEnabled(false);
         rv_screencar_toptag.setLayoutManager(noScollFullGridLayoutManager);
-        rv_screencar_toptag.addItemDecoration(new GridSpacingItemDecoration(4,
-                getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
-                getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
+        rv_screencar_toptag.addItemDecoration(new GridSpacingItemDecoration(3,
+                getResources().getDimensionPixelSize(R.dimen.verticalSpacing10),
+                getResources().getDimensionPixelSize(R.dimen.horizontalSpacing10),
                 true));
         selectedCarTopTagAdapter = new SelectedCarTopTagAdapter(R.layout.item_screensar_toptag
                 , tagList);
