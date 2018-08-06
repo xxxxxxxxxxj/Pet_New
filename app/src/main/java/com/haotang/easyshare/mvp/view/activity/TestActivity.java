@@ -27,7 +27,7 @@ import com.haotang.easyshare.shareutil.login.result.BaseToken;
 import com.haotang.easyshare.util.PayUtils;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
-import com.tencent.mm.sdk.openapi.BaseResp;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;

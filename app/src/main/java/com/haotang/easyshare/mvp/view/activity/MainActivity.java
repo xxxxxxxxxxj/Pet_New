@@ -62,7 +62,6 @@ import butterknife.BindView;
  */
 public class MainActivity extends BaseActivity<MainPresenter> implements IMainView {
     private final static String TAG = MainActivity.class.getSimpleName();
-    private static final float BASE_BOTTOM_DESC = 80;
     @BindString(R.string.exit_confirm)
     String mStrExitConfirm;
     @BindView(R.id.vp_mainactivity)
@@ -98,6 +97,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private int sx;
     private int sy;
     int screenWidth, screenHeight;
+    private static final float BASE_BOTTOM_DESC = 80;
 
     @Override
     protected int getContentLayout() {

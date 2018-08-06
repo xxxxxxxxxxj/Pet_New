@@ -19,16 +19,16 @@ import java.util.List;
  * @author 徐俊
  * @date XJ on 2018/7/25 10:02
  */
-public class RechargeTempAdapter extends BaseQuickAdapter<RechargeTemp, BaseViewHolder> {
-    public RechargeTempAdapter(int layoutResId, List<RechargeTemp> data) {
+public class RechargeTempAdapter extends BaseQuickAdapter<RechargeTemp.DataBean, BaseViewHolder> {
+    public RechargeTempAdapter(int layoutResId, List<RechargeTemp.DataBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, RechargeTemp item) {
+    protected void convert(BaseViewHolder helper, RechargeTemp.DataBean item) {
         TextView tv_itemrecharge_temp = helper.getView(R.id.tv_itemrecharge_temp);
         if (item != null) {
-            StringUtil.setText(tv_itemrecharge_temp, item.getName(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_itemrecharge_temp, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
             if (item.isSelect()) {
                 tv_itemrecharge_temp.setTextColor(mContext.getResources().getColor(R.color.a0271F0));
                 tv_itemrecharge_temp.setBackgroundResource(R.drawable.bg_round_027);

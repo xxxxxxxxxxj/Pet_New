@@ -13,11 +13,13 @@ import android.widget.TextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerScanCodeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.ScanCodeActivityModule;
+import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.presenter.ScanCodePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IScanCodeView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SystemTypeUtil;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.other.permission.PermissionListener;
@@ -30,6 +32,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * 扫码界面
@@ -96,24 +100,17 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
         @Override
         public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
             RingLog.d("result = " + result);
-            Intent resultIntent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putInt(CodeUtils.RESULT_TYPE, CodeUtils.RESULT_SUCCESS);
-            bundle.putString(CodeUtils.RESULT_STRING, result);
-            resultIntent.putExtras(bundle);
-            ScanCodeActivity.this.setResult(RESULT_OK, resultIntent);
-            ScanCodeActivity.this.finish();
+            showDialog();
+            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+            builder.addFormDataPart("code", result);
+            RequestBody body = builder.build();
+            mPresenter.start(body);
         }
 
         @Override
         public void onAnalyzeFailed() {
-            Intent resultIntent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putInt(CodeUtils.RESULT_TYPE, CodeUtils.RESULT_FAILED);
-            bundle.putString(CodeUtils.RESULT_STRING, "");
-            resultIntent.putExtras(bundle);
-            ScanCodeActivity.this.setResult(RESULT_OK, resultIntent);
-            ScanCodeActivity.this.finish();
+            RingLog.d("解析失败");
+            RingToast.show("解析失败");
         }
     };
 
@@ -182,5 +179,20 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
     protected void onDestroy() {
         super.onDestroy();
         activityListManager.removeActivity(this); //退出activity
+    }
+
+    @Override
+    public void startFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this, code);
+    }
+
+    @Override
+    public void startSuccess(StartChargeing.DataBean data) {
+        disMissDialog();
+        if (data != null) {
+
+        }
     }
 }

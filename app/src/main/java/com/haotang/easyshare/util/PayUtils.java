@@ -6,6 +6,11 @@ import android.os.Message;
 
 import com.alipay.sdk.app.PayTask;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.view.widget.LoadingProgressDailog;
+import com.ljy.devring.other.RingLog;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.Map;
 
@@ -25,7 +30,7 @@ import java.util.Map;
  */
 public class PayUtils {
     // 微信支付
-    /*public static void weChatPayment(Activity activity, String appId,
+    public static void weChatPayment(Activity activity, String appId,
                                      String partnerId, String prepayId, String packageValue,
                                      String nonceStr, String timeStamp, String sign,
                                      LoadingProgressDailog pDialog) {
@@ -41,9 +46,9 @@ public class PayUtils {
         createWXAPI.registerApp(appId);
         createWXAPI.sendReq(payReq);
         if (pDialog != null) {
-            pDialog.closeDialog();
+            pDialog.dismiss();
         }
-    }*/
+    }
 
     // 支付宝支付
     public static void payByAliPay(final Activity activity,
@@ -53,6 +58,7 @@ public class PayUtils {
             public void run() {
                 // 构造PayTask 对象
                 PayTask alipay = new PayTask(activity);
+                RingLog.d("alipay = " + alipay);
                 // 调用支付接口
                 Map<String, String> result = alipay.payV2(payStr, true);
                 Message msg = new Message();

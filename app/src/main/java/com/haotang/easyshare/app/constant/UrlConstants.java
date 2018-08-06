@@ -191,6 +191,18 @@ public class UrlConstants {
      * 43.导航成功回调
      */
     public static final String NAV_CALLBACK = "charging/info/navi/callback";
+    /**
+     * 44.可充值模板列表
+     */
+    public static final String RECHARGE_TEMP = "recharge/template/list";
+    /**
+     * 45.发起充值请求
+     */
+    public static final String RECHARGE_BUILD = "recharge/request/build";
+    /**
+     * 45.发起充电
+     */
+    public static final String START_CHARGEING = "order/charge/start";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

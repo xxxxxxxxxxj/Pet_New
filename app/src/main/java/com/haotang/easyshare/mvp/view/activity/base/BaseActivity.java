@@ -62,7 +62,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Nullable
     protected P mPresenter;
     protected ActivityListManager activityListManager = new ActivityListManager();
-    private LoadingProgressDailog dialog;
+    protected LoadingProgressDailog dialog;
 
     protected abstract int getContentLayout();//返回页面布局id
 

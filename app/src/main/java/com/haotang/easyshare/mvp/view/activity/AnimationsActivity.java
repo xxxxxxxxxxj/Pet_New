@@ -19,7 +19,6 @@ import com.haotang.easyshare.mvp.view.adapter.RechargeTempAdapter;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.util.DensityUtil;
-import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -40,7 +39,7 @@ public class AnimationsActivity extends BaseActivity {
     ImageView ivAnimations;
     @BindView(R.id.rv_animations)
     RecyclerView rvAnimations;
-    private List<RechargeTemp> rechargeTempList = new ArrayList<RechargeTemp>();
+    private List<RechargeTemp.DataBean> rechargeTempList = new ArrayList<RechargeTemp.DataBean>();
     private RechargeTempAdapter rechargeTempAdapter;
     private static final float BASE_TIME = 1500;
     private static final float MIN_DISTANCE = 40;
@@ -76,9 +75,6 @@ public class AnimationsActivity extends BaseActivity {
                 getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
                 getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
                 true));
-        for (int i = 0; i < 10; i++) {
-            rechargeTempList.add(new RechargeTemp("充10000", false));
-        }
         rechargeTempAdapter = new RechargeTempAdapter(R.layout.item_recharge_temp
                 , rechargeTempList);
         rvAnimations.setAdapter(rechargeTempAdapter);

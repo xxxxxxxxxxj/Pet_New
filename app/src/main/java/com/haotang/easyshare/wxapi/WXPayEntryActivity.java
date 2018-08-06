@@ -7,11 +7,11 @@ import android.os.Bundle;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.util.ActivityListManager;
 import com.ljy.devring.DevRing;
-import com.tencent.mm.sdk.openapi.BaseReq;
-import com.tencent.mm.sdk.openapi.BaseResp;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.mm.opensdk.modelbase.BaseReq;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 /**
  * <p>Title:${type_name}</p>
@@ -54,5 +54,6 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp baseResp) {
         DevRing.busManager().postEvent(baseResp);
+        finish();
     }
 }
