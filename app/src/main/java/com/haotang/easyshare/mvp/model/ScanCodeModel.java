@@ -1,6 +1,5 @@
 package com.haotang.easyshare.mvp.model;
 
-import com.haotang.easyshare.mvp.model.http.RechargeApiService;
 import com.haotang.easyshare.mvp.model.http.ScanCodeApiService;
 import com.haotang.easyshare.mvp.model.imodel.IScanCodeModel;
 import com.ljy.devring.DevRing;

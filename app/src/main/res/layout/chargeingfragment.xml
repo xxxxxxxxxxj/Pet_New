@@ -39,99 +39,294 @@
         android:layout_below="@id/rl_chargeing_titlebar"
         android:background="@color/aEEEEEE" />
 
-    <TextView
-        android:id="@+id/tv_chargeing_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/vw_chargeing_titlebar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dip"
-        android:layout_marginTop="30dip"
-        android:text="扫描充电桩上的二维码即可启动充电"
-        android:textColor="@color/a333333"
-        android:textSize="16sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_chargeing_desc"
-        android:gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="目前支持："
-            android:textColor="@color/a333333"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_chargeing_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="全国16万根充电桩"
-            android:textColor="@color/a0271F0"
-            android:textSize="16sp" />
-    </LinearLayout>
-
     <RelativeLayout
-        android:id="@+id/rl_chargeing_start"
-        android:layout_width="200dip"
-        android:layout_height="200dip"
-        android:layout_centerInParent="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/vw_chargeing_titlebar">
 
-        <LinearLayout
-            android:id="@+id/ll_chargeing_start"
+        <RelativeLayout
+            android:id="@+id/rl_chargeing_charge_before"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="44dip"
-                android:layout_height="44dip"
-                android:layout_marginBottom="10dip"
-                android:scaleType="fitXY"
-                android:src="@mipmap/charge_san" />
+            android:visibility="gone">
 
             <TextView
+                android:id="@+id/tv_chargeing_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="扫码充电"
-                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dip"
+                android:layout_marginTop="30dip"
+                android:text="扫描充电桩上的二维码即可启动充电"
+                android:textColor="@color/a333333"
                 android:textSize="16sp" />
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_chargeing_desc"
+                android:gravity="center">
 
-        <ImageView
-            android:id="@+id/iv_chargeing"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="目前支持："
+                    android:textColor="@color/a333333"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_chargeing_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="全国16万根充电桩"
+                    android:textColor="@color/a0271F0"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_chargeing_start"
+                android:layout_width="200dip"
+                android:layout_height="200dip"
+                android:layout_centerInParent="true">
+
+                <LinearLayout
+                    android:id="@+id/ll_chargeing_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="44dip"
+                        android:layout_height="44dip"
+                        android:layout_marginBottom="10dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/charge_san" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="扫码充电"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_chargeing"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/icon_chargeing_gif" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="40dip"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/tv_chargeing_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dip"
+                    android:text="当前可用：0.0元"
+                    android:textColor="@color/a333333"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_chargeing_ljcz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="立即充值"
+                    android:textColor="@color/a0271F0"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_chargeing_charge_after"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@mipmap/icon_chargeing_gif" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_chargeing_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dip"
+                android:layout_marginTop="30dip"
+                android:text="TextView"
+                android:textColor="@color/a333333"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_chargeing_gzbx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_chargeing_name"
+                android:layout_centerHorizontal="true"
+                android:text="故障报修"
+                android:textColor="@color/a4A90E2"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:layout_width="200dip"
+                android:layout_height="200dip"
+                android:layout_centerInParent="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_chargeing_kwh"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dip"
+                        android:text="0.00KWH"
+                        android:textColor="@color/white"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/tv_chargeing_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="充电中"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_chargeing_ing"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/icon_chargeing_gif" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="30dip"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="105dip"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dip"
+                    android:paddingTop="15dip">
+
+                    <LinearLayout
+                        android:layout_width="0dip"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_chargeing_cdf"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dip"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="0.00元"
+                            android:textColor="@color/a333333"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dip"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal|bottom"
+                            android:text="充电费"
+                            android:textColor="@color/a333333"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dip"
+                        android:layout_height="40dip"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/aEEEEEE" />
+
+                    <LinearLayout
+                        android:layout_width="0dip"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_chargeing_fwf"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dip"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="0.00元"
+                            android:textColor="@color/a333333"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dip"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal|bottom"
+                            android:text="服务费"
+                            android:textColor="@color/a333333"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dip"
+                        android:layout_height="40dip"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/aEEEEEE" />
+
+                    <LinearLayout
+                        android:layout_width="0dip"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_chargeing_zfy"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dip"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="0.00元"
+                            android:textColor="@color/a333333"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dip"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal|bottom"
+                            android:text="总费用"
+                            android:textColor="@color/a333333"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_chargeing_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginRight="15dip"
+                    android:background="@mipmap/bg_btn"
+                    android:text="结束充电"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dip"
-        android:gravity="center_horizontal">
-
-        <TextView
-            android:id="@+id/tv_chargeing_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dip"
-            android:text="当前可用：0.0元"
-            android:textColor="@color/a333333"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_chargeing_ljcz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="立即充值"
-            android:textColor="@color/a0271F0"
-            android:textSize="16sp" />
-    </LinearLayout>
 </RelativeLayout>
