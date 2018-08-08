@@ -97,6 +97,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private String provider;
     private boolean isBillSuccess;
     private String totalPrice;
+    private int stateTimeOut = 5;
+    private int billTimeOut = 5;
 
     @Override
     protected boolean isLazyLoad() {
@@ -135,7 +137,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         if (data != null) {
             orderId = data.getOrderId();
             StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
-            PollingUtils.startPollingService(getActivity(), 30, ChargeStateService.class, ChargeStateService.ACTION, orderId);
+            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
         }
     }
 
@@ -234,6 +236,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
 
     @Override
     public void ingSuccess(StartChargeing.DataBean data) {
+        PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
+
         rlChargeingChargeAfter.setVisibility(View.GONE);
         rlChargeingChargeBefore.setVisibility(View.VISIBLE);
         tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
@@ -252,7 +256,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
-                PollingUtils.startPollingService(getActivity(), 30, ChargeStateService.class, ChargeStateService.ACTION, orderId);
+                PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
             } else if (state == 2) {//结算中,轮询获取账单接口
                 rlChargeingChargeAfter.setVisibility(View.VISIBLE);
                 rlChargeingChargeBefore.setVisibility(View.GONE);
@@ -261,7 +265,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(btnChargeingSubmit, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
-                PollingUtils.startPollingService(getActivity(), 30, ChargeBillService.class, ChargeBillService.ACTION, orderId);
+                PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
             } else if (state == 3) {//待支付,轮询获取账单接口
                 rlChargeingChargeAfter.setVisibility(View.VISIBLE);
                 rlChargeingChargeBefore.setVisibility(View.GONE);
@@ -270,7 +274,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(btnChargeingSubmit, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
-                PollingUtils.startPollingService(getActivity(), 30, ChargeBillService.class, ChargeBillService.ACTION, orderId);
+                PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
             }
         }
     }
@@ -300,7 +304,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
         disMissDialog();
         StringUtil.setText(btnChargeingSubmit, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
-        PollingUtils.startPollingService(getActivity(), 30, ChargeBillService.class, ChargeBillService.ACTION, orderId);
+        PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
     }
 
     @Override

@@ -47,8 +47,7 @@
         <RelativeLayout
             android:id="@+id/rl_chargeing_charge_before"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/tv_chargeing_desc"
@@ -149,6 +148,7 @@
         <RelativeLayout
             android:id="@+id/rl_chargeing_charge_after"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="match_parent">
 
             <TextView

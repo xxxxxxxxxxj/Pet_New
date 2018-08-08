@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 
+import com.ljy.devring.other.RingLog;
+
 /**
  * Polling Tools
  *
@@ -30,7 +32,8 @@ public class PollingUtils {
         PendingIntent pendingIntent = PendingIntent.getService(context, 0,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         long triggerAtTime = SystemClock.elapsedRealtime();
-        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, triggerAtTime,
+        RingLog.e("triggerAtTime = "+triggerAtTime);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
                 seconds * 1000, pendingIntent);
     }
 
