@@ -220,11 +220,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 } else if (position == 1) {
                     ctlMainactivity.hideMsg(1);
                     DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HOTFRAGMET));
+                } else if (position == 2) {
+                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_CHARGEINGFRAGMET));
                 } else if (position == 3) {
-                    initWindows();
+                    DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_SELECTCARFRAGMET));
                 } else if (position == 4) {
-                    initWindows();
-                    ctlMainactivity.hideMsg(4);
                     DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MYFRAGMET));
                 }
             }

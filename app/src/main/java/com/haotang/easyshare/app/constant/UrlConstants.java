@@ -203,6 +203,22 @@ public class UrlConstants {
      * 45.发起充电
      */
     public static final String START_CHARGEING = "order/charge/start";
+    /**
+     * 46.获取进行中的订单
+     */
+    public static final String CHARGEING_ORDER = "order/charge/ing";
+    /**
+     * 47.查询充电状态
+     */
+    public static final String CHARGEING_STATE = "order/charge/state";
+    /**
+     * 48.结束充电
+     */
+    public static final String CHARGEING_STOP = "order/charge/stop";
+    /**
+     * 49.获取账单
+     */
+    public static final String CHARGEING_BILL = "order/charge/bill";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

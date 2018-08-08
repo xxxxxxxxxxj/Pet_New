@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerSelectCarFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.SelectCarFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
@@ -30,6 +31,8 @@ import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,6 +125,24 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
 
     @Override
     protected void initData() {
+        refresh();
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
+        if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() ==
+                RefreshFragmentEvent.REFRESH_SELECTCARFRAGMET && mPresenter != null) {
+            RingLog.e("REFRESH_SELECTCARFRAGMET");
+            refresh();
+        }
+    }
+
+    private void refresh() {
         showDialog();
         mPresenter.hot();
         mPresenter.special();
