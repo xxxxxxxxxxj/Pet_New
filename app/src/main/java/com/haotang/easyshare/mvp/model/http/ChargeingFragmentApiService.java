@@ -38,7 +38,7 @@ public interface ChargeingFragmentApiService {
      * @param build
      */
     @POST(UrlConstants.CHARGEING_STOP)
-    Observable<ChargeingState> stop(RequestBody build);
+    Observable<ChargeingState> stop(@Body RequestBody build);
 
     /**
      * 获取账单
@@ -46,5 +46,13 @@ public interface ChargeingFragmentApiService {
      * @param build
      */
     @POST(UrlConstants.CHARGEING_BILL)
-    Observable<ChargeingState> bill(RequestBody build);
+    Observable<ChargeingState> bill(@Body RequestBody build);
+
+    /**
+     * 支付账单
+     *
+     * @param build
+     */
+    @POST(UrlConstants.CHARGEING_BILL_PAY)
+    Observable<ChargeingState> pay(@Body RequestBody build);
 }

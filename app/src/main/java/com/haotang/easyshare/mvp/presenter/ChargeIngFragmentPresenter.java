@@ -165,4 +165,40 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));
     }
+
+    /**
+     * 支付账单
+     *
+     * @param build
+     */
+    public void pay(RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.pay(build), new CommonObserver<ChargeingState>() {
+            @Override
+            public void onResult(ChargeingState result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.paySuccess
+                                    (result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.payFail
+                                        (result.getCode(), result.getMsg());
+                            } else {
+                                mIView.payFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.payFail
+                            (errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
 }

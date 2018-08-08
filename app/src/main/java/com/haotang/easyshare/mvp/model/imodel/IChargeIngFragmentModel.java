@@ -39,4 +39,11 @@ public interface IChargeIngFragmentModel extends IBaseModel {
      * @param build
      */
     Observable bill(RequestBody build);
+
+    /**
+     * 支付账单
+     *
+     * @param build
+     */
+    Observable pay(RequestBody build);
 }

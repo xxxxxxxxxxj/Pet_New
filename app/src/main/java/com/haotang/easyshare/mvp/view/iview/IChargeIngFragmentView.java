@@ -29,4 +29,8 @@ public interface IChargeIngFragmentView extends IBaseView {
     void billSuccess(ChargeingState.DataBean data);
 
     void billFail(int code, String msg);
+
+    void paySuccess(ChargeingState.DataBean data);
+
+    void payFail(int code, String msg);
 }

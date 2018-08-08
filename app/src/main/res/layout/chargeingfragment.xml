@@ -181,6 +181,7 @@
                 android:layout_marginLeft="15dip"
                 android:layout_marginRight="15dip"
                 android:gravity="center"
+                android:background="@drawable/bg_round_eef6ee"
                 android:orientation="horizontal">
 
                 <TextView

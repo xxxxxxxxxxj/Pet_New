@@ -542,6 +542,16 @@
             android:value="74e4d37a922304ce21d5e3bbf0b596c2" />
 
         <service android:name="com.amap.api.location.APSService" />
+        <service android:name="com.haotang.easyshare.mvp.view.services.ChargeBillService">
+            <intent-filter>
+                <action android:name="com.haotang.easyshare.mvp.view.services.ChargeBillService" />
+            </intent-filter>
+        </service>
+        <service android:name="com.haotang.easyshare.mvp.view.services.ChargeStateService">
+            <intent-filter>
+                <action android:name="com.haotang.easyshare.mvp.view.services.ChargeStateService" />
+            </intent-filter>
+        </service>
         <!-- 高德地图结束 -->
     </application>
 

@@ -10,12 +10,14 @@ import android.widget.TextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerInputChargeCodeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.InputChargeCodeActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.presenter.InputChargeCodePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IInputChargeCodeView;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
@@ -122,7 +124,7 @@ public class InputChargeCodeActivity extends BaseActivity<InputChargeCodePresent
     public void startSuccess(StartChargeing.DataBean data) {
         disMissDialog();
         if (data != null) {
-
+            DevRing.busManager().postEvent(data);
         }
     }
 }

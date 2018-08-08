@@ -18,9 +18,13 @@ import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.presenter.ChargeIngFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.RechargeActivity;
+import com.haotang.easyshare.mvp.view.activity.RechargeRecordActivity;
 import com.haotang.easyshare.mvp.view.activity.ScanCodeActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IChargeIngFragmentView;
+import com.haotang.easyshare.mvp.view.services.ChargeBillService;
+import com.haotang.easyshare.mvp.view.services.ChargeStateService;
+import com.haotang.easyshare.util.PollingUtils;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
@@ -90,6 +94,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private int orderId;
     private String endCode;
     private String provider;
+    private boolean isBillSuccess;
+    private String totalPrice;
 
     @Override
     protected boolean isLazyLoad() {
@@ -124,7 +130,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     }
 
     @Subscribe
-    public void RefreshFragment(StartChargeing.DataBean data) {
+    public void getChargeData(StartChargeing.DataBean data) {
         if (data != null) {
             orderId = data.getOrderId();
             showDialog();
@@ -170,13 +176,21 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 break;
             case R.id.btn_chargeing_submit:
                 showDialog();
-                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                builder.addFormDataPart("orderId", orderId + "");
-                if (StringUtil.isNotEmpty(endCode) && StringUtil.isNotEmpty(provider) && (provider.equals("4") || provider.equals("7"))) {
-                    builder.addFormDataPart("endCode", endCode);
+                if (isBillSuccess) {
+                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                    builder.addFormDataPart("orderId", orderId + "");
+                    builder.addFormDataPart("price", totalPrice);
+                    RequestBody build = builder.build();
+                    mPresenter.pay(build);
+                } else {
+                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                    builder.addFormDataPart("orderId", orderId + "");
+                    if (StringUtil.isNotEmpty(endCode) && StringUtil.isNotEmpty(provider) && (provider.equals("4") || provider.equals("7"))) {
+                        builder.addFormDataPart("endCode", endCode);
+                    }
+                    RequestBody build = builder.build();
+                    mPresenter.stop(build);
                 }
-                RequestBody build = builder.build();
-                mPresenter.stop(build);
                 break;
             case R.id.tv_chargeing_gzbx:
                 break;
@@ -194,7 +208,15 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         disMissDialog();
         if (data != null) {
             orderId = data.getOrderId();
+            int state = data.getState();
             showDialog();
+            if (state == 1) {//进行中,轮询查询充电状态接口
+                PollingUtils.startPollingService(getActivity(), 30, ChargeStateService.class, ChargeStateService.ACTION, orderId);
+            } else if (state == 2) {//结算中,轮询获取账单接口
+                PollingUtils.startPollingService(getActivity(), 30, ChargeBillService.class, ChargeBillService.ACTION, orderId);
+            } else if (state == 3) {//待支付,轮询获取账单接口
+                PollingUtils.startPollingService(getActivity(), 30, ChargeBillService.class, ChargeBillService.ACTION, orderId);
+            }
             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
             builder.addFormDataPart("orderId", orderId + "");
             RequestBody build = builder.build();
@@ -264,7 +286,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     public void billSuccess(ChargeingState.DataBean data) {
         disMissDialog();
         if (data != null) {
-            StringUtil.setText(btnChargeingSubmit, "知道啦", "", View.VISIBLE, View.VISIBLE);
+            isBillSuccess = true;
+            totalPrice = data.getTotalPrice();
+            StringUtil.setText(btnChargeingSubmit, "支付", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingKwh, data.getPower(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingStatus, "充电中", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingCdf, data.getTotalPower() + "元", "", View.VISIBLE, View.VISIBLE);
@@ -275,6 +299,19 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
 
     @Override
     public void billFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity, code);
+    }
+
+    @Override
+    public void paySuccess(ChargeingState.DataBean data) {
+        disMissDialog();
+        startActivity(new Intent(getActivity(), RechargeRecordActivity.class).putExtra("flag", 1));
+    }
+
+    @Override
+    public void payFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);

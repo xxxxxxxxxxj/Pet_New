@@ -219,6 +219,10 @@ public class UrlConstants {
      * 49.获取账单
      */
     public static final String CHARGEING_BILL = "order/charge/bill";
+    /**
+     * 50.支付账单
+     */
+    public static final String CHARGEING_BILL_PAY = "order/charge/pay";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

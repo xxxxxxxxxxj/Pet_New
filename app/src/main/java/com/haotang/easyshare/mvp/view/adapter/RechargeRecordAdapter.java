@@ -23,8 +23,11 @@ import java.util.List;
  * @date XJ on 2018/7/24 14:33
  */
 public class RechargeRecordAdapter extends BaseQuickAdapter<RechargeRecord, BaseViewHolder> {
-    public RechargeRecordAdapter(int layoutResId, List<RechargeRecord> data) {
+    private final int flag;
+
+    public RechargeRecordAdapter(int layoutResId, List<RechargeRecord> data, int flag) {
         super(layoutResId, data);
+        this.flag = flag;
     }
 
     @Override
@@ -43,9 +46,11 @@ public class RechargeRecordAdapter extends BaseQuickAdapter<RechargeRecord, Base
                         (RecyclerView.LayoutParams) ll_item_rechargerecord_root.getLayoutParams();
                 layoutParams.topMargin = DensityUtil.dp2px(mContext, 15);
                 ll_item_rechargerecord_root.setLayoutParams(layoutParams);
-                ll_item_rechargerecord.setBackgroundResource(R.drawable.bg_round_blue);
-            } else {
-                ll_item_rechargerecord.setBackgroundResource(R.drawable.bg_round_white);
+                if (flag == 1) {
+                    ll_item_rechargerecord.setBackgroundResource(R.drawable.bg_round_blue);
+                } else {
+                    ll_item_rechargerecord.setBackgroundResource(R.drawable.bg_round_white);
+                }
             }
             StringUtil.setText(tv_item_rechargerecord_price, "¥" + item.getPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_rechargerecord_name, item.getName(), "", View.VISIBLE, View.VISIBLE);

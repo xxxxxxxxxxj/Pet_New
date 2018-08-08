@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -43,6 +44,7 @@ public class RechargeRecordActivity extends BaseActivity<RechargeRecordPresenter
     private int pageSize;
     private List<RechargeRecord> list = new ArrayList<RechargeRecord>();
     private RechargeRecordAdapter rechargeRecordAdapter;
+    private int flag;
 
     @Override
     protected int getContentLayout() {
@@ -51,6 +53,8 @@ public class RechargeRecordActivity extends BaseActivity<RechargeRecordPresenter
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        flag = intent.getIntExtra("flag", 0);
         activityListManager.addActivity(this);
         DaggerRechargeRecordActivityCommponent.builder().
                 rechargeRecordActivityModule(new RechargeRecordActivityModule(this, this)).build().inject(this);
@@ -62,7 +66,7 @@ public class RechargeRecordActivity extends BaseActivity<RechargeRecordPresenter
         for (int i = 0; i < 10; i++) {
             list.add(new RechargeRecord("星星充电10005029", 48, 20.08, "2018-06-08 16:08", "2018-06-08 18:48", "160分钟"));
         }
-        rechargeRecordAdapter = new RechargeRecordAdapter(R.layout.item_rechargerecord, list);
+        rechargeRecordAdapter = new RechargeRecordAdapter(R.layout.item_rechargerecord, list,flag);
         rv_recharge_record.setAdapter(rechargeRecordAdapter);
         //添加自定义分割线
         rv_recharge_record.addItemDecoration(new DividerLinearItemDecoration(this, LinearLayoutManager.VERTICAL,
