@@ -4,6 +4,17 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
+import com.haotang.easyshare.mvp.model.http.ChargeingFragmentApiService;
+import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.DevRing;
+import com.ljy.devring.http.support.observer.CommonObserver;
+import com.ljy.devring.other.RingLog;
+
+import okhttp3.MultipartBody;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -37,7 +48,32 @@ public class ChargeBillService extends Service {
     class PollingThread extends Thread {
         @Override
         public void run() {
+            MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                    .addFormDataPart("orderId", orderId + "")
+                    .build();
+            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ChargeingFragmentApiService.class).bill(body)
+                    , new CommonObserver<ChargeingBill>() {
+                        @Override
+                        public void onResult(ChargeingBill result) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    DevRing.busManager().postEvent(result.getData());
+                                } else {
+                                    SystemUtil.Exit(ChargeBillService.this, result.getCode());
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
+                                    } else {
+                                        RingLog.e("onError() status = " + AppConfig.SERVER_ERROR + "---desc = " + AppConfig.SERVER_ERROR_MSG);
+                                    }
+                                }
+                            }
+                        }
 
+                        @Override
+                        public void onError(int errType, String errMessage) {
+                            RingLog.e("onError() status = " + errType + "---desc = " + errMessage);
+                        }
+                    }, null);
         }
     }
 

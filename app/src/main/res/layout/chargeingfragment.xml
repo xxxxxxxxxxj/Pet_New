@@ -180,9 +180,10 @@
                 android:layout_below="@id/tv_chargeing_gzbx"
                 android:layout_marginLeft="15dip"
                 android:layout_marginRight="15dip"
-                android:gravity="center"
                 android:background="@drawable/bg_round_eef6ee"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_chargeing_jsmname"

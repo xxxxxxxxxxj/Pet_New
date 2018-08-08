@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.model.http;
 
 import com.haotang.easyshare.app.constant.UrlConstants;
+import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 
@@ -46,7 +47,7 @@ public interface ChargeingFragmentApiService {
      * @param build
      */
     @POST(UrlConstants.CHARGEING_BILL)
-    Observable<ChargeingState> bill(@Body RequestBody build);
+    Observable<ChargeingBill> bill(@Body RequestBody build);
 
     /**
      * 支付账单

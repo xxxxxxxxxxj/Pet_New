@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
@@ -18,17 +19,9 @@ public interface IChargeIngFragmentView extends IBaseView {
 
     void ingFail(int code, String msg);
 
-    void stateSuccess(ChargeingState.DataBean data);
-
-    void stateFail(int code, String msg);
-
     void stopFail(int errType, String errMessage);
 
     void stopSuccess(ChargeingState.DataBean data);
-
-    void billSuccess(ChargeingState.DataBean data);
-
-    void billFail(int code, String msg);
 
     void paySuccess(ChargeingState.DataBean data);
 

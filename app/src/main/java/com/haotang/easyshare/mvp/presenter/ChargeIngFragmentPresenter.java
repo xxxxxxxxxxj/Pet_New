@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.model.imodel.IChargeIngFragmentModel;
@@ -60,41 +61,6 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
     }
 
     /**
-     * 查询充电状态
-     *
-     * @param build
-     */
-    public void state(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.state(build), new CommonObserver<ChargeingState>() {
-            @Override
-            public void onResult(ChargeingState result) {
-                if (mIView != null) {
-                    if (result != null) {
-                        if (result.getCode() == 0) {
-                            mIView.stateSuccess
-                                    (result.getData());
-                        } else {
-                            if (StringUtil.isNotEmpty(result.getMsg())) {
-                                mIView.stateFail
-                                        (result.getCode(), result.getMsg());
-                            } else {
-                                mIView.stateFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onError(int errType, String errMessage) {
-                if (mIView != null) {
-                    mIView.stateFail(errType, errMessage);
-                }
-            }
-        }, RxLifecycleUtil.bindUntilDestroy(mIView));
-    }
-
-    /**
      * 结束充电
      *
      * @param build
@@ -124,42 +90,6 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.stopFail
-                            (errType, errMessage);
-                }
-            }
-        }, RxLifecycleUtil.bindUntilDestroy(mIView));
-    }
-
-    /**
-     * 获取账单
-     *
-     * @param build
-     */
-    public void bill(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.bill(build), new CommonObserver<ChargeingState>() {
-            @Override
-            public void onResult(ChargeingState result) {
-                if (mIView != null) {
-                    if (result != null) {
-                        if (result.getCode() == 0) {
-                            mIView.billSuccess
-                                    (result.getData());
-                        } else {
-                            if (StringUtil.isNotEmpty(result.getMsg())) {
-                                mIView.billFail
-                                        (result.getCode(), result.getMsg());
-                            } else {
-                                mIView.billFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onError(int errType, String errMessage) {
-                if (mIView != null) {
-                    mIView.billFail
                             (errType, errMessage);
                 }
             }

@@ -25,16 +25,6 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
     }
 
     /**
-     * 查询充电状态
-     *
-     * @param build
-     */
-    @Override
-    public Observable state(RequestBody build) {
-        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).state(build);
-    }
-
-    /**
      * 结束充电
      *
      * @param build
@@ -42,16 +32,6 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
     @Override
     public Observable stop(RequestBody build) {
         return DevRing.httpManager().getService(ChargeingFragmentApiService.class).stop(build);
-    }
-
-    /**
-     * 获取账单
-     *
-     * @param build
-     */
-    @Override
-    public Observable bill(RequestBody build) {
-        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).bill(build);
     }
 
     /**
