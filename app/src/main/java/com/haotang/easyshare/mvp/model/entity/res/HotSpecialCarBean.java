@@ -59,9 +59,10 @@ public class HotSpecialCarBean {
         private String price;
         private String uuid;
         private String batteryLife;
+        private String label;
         private PostBean.DataBean.ShareMap shareMap;
 
-        public DataBean(String car, String icon, int id, String price, String uuid, String batteryLife,
+        public DataBean(String car, String icon, int id, String price, String uuid, String batteryLife, String label,
                         PostBean.DataBean.ShareMap shareMap) {
             this.car = car;
             this.icon = icon;
@@ -70,6 +71,15 @@ public class HotSpecialCarBean {
             this.uuid = uuid;
             this.batteryLife = batteryLife;
             this.shareMap = shareMap;
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
         }
 
         public String getUuid() {

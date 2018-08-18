@@ -103,6 +103,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         //添加自定义分割线
         rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity, 15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
+
         hotFragmenHeader.getRvTopHotfrag().setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

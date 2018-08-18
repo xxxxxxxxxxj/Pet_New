@@ -12,7 +12,24 @@ public class ScreenCarCondition {
     private int id;
     private int classId;
     private String name;
+    private String value;
     private boolean select;
+
+    public ScreenCarCondition(int id, int classId, String name, String value, boolean select) {
+        this.id = id;
+        this.classId = classId;
+        this.name = name;
+        this.value = value;
+        this.select = select;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public int getClassId() {
         return classId;

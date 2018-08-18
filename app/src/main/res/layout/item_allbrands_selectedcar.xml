@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_round_red"
         android:paddingBottom="2dip"
+        android:visibility="gone"
         android:paddingLeft="4dip"
         android:paddingRight="4dip"
         android:paddingTop="2dip"

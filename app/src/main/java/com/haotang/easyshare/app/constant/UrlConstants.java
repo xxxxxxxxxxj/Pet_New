@@ -223,6 +223,14 @@ public class UrlConstants {
      * 50.支付账单
      */
     public static final String CHARGEING_BILL_PAY = "order/charge/pay";
+    /**
+     * 51.车型检索条件
+     */
+    public static final String SCREENCAR_ITEM = "brand/car/items";
+    /**
+     * 52.车型检索
+     */
+    public static final String SCREENCAR_QUERY = "brand/car/query";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境
