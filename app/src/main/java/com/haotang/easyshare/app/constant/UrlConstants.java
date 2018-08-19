@@ -247,6 +247,10 @@ public class UrlConstants {
      * 56.订单列表
      */
     public static final String RECHARGE_LIST = "order/charge/list";
+    /**
+     * 57.交易记录列表
+     */
+    public static final String HISTORY_LIST = "trade/history/list";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

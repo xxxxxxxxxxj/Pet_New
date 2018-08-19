@@ -32,4 +32,11 @@ public interface IChargeIngFragmentModel extends IBaseModel {
      * @param build
      */
     Observable pay(RequestBody build);
+
+    /**
+     * 故障报修
+     *
+     * @param build
+     */
+    Observable save(RequestBody build);
 }

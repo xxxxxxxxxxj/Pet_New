@@ -104,6 +104,10 @@ public class RechargeRecordActivity extends BaseActivity<RechargeRecordPresenter
         rechargeRecordAdapter.setEnableLoadMore(false);
         srl_recharge_record.setRefreshing(true);
         mNextRequestPage = 1;
+        getData();
+    }
+
+    private void getData() {
         showDialog();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("page", mNextRequestPage + "");
@@ -112,6 +116,7 @@ public class RechargeRecordActivity extends BaseActivity<RechargeRecordPresenter
     }
 
     private void loadMore() {
+        getData();
     }
 
     @Override

@@ -1,9 +1,10 @@
 package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
-import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
+import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.IChargeIngFragmentModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
 import com.haotang.easyshare.mvp.view.iview.IChargeIngFragmentView;
@@ -126,6 +127,42 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.payFail
+                            (errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 故障报修
+     *
+     * @param build
+     */
+    public void save(RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.save(build), new CommonObserver<HttpResult<AddChargeBean>>() {
+            @Override
+            public void onResult(HttpResult<AddChargeBean> result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.saveSuccess
+                                    (result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.saveFail
+                                        (result.getCode(), result.getMsg());
+                            } else {
+                                mIView.saveFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.saveFail
                             (errType, errMessage);
                 }
             }

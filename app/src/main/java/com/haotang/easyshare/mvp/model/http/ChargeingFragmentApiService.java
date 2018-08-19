@@ -1,9 +1,11 @@
 package com.haotang.easyshare.mvp.model.http;
 
 import com.haotang.easyshare.app.constant.UrlConstants;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
+import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -56,4 +58,11 @@ public interface ChargeingFragmentApiService {
      */
     @POST(UrlConstants.CHARGEING_BILL_PAY)
     Observable<ChargeingState> pay(@Body RequestBody build);
+
+    /**
+     * 故障报修
+     *
+     * @param build
+     */
+    Observable<HttpResult<AddChargeBean>> save(@Body RequestBody build);
 }

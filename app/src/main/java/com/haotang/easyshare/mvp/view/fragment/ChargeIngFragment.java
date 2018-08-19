@@ -9,11 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.bumptech.glide.Glide;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerChargeIngFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.ChargeIngFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
@@ -29,6 +34,7 @@ import com.haotang.easyshare.util.PollingUtils;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RingToast;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -45,7 +51,7 @@ import okhttp3.RequestBody;
  * @author 徐俊
  * @date XJ on 2018/7/20 14:36
  */
-public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> implements IChargeIngFragmentView {
+public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> implements IChargeIngFragmentView, AMapLocationListener {
     protected final static String TAG = ChargeIngFragment.class.getSimpleName();
     @BindView(R.id.tv_chargeing_titlebar_other)
     TextView tvChargeingTitlebarOther;
@@ -99,6 +105,10 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private String totalPrice;
     private int stateTimeOut = 5;
     private int billTimeOut = 5;
+    //声明mlocationClient对象
+    private AMapLocationClient mlocationClient;
+    //声明mLocationOption对象
+    private AMapLocationClientOption mLocationOption;
 
     @Override
     protected boolean isLazyLoad() {
@@ -116,6 +126,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 .chargeIngFragmentModule(new ChargeIngFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
+        setLocation();
     }
 
     @Override
@@ -230,14 +241,32 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 }
                 break;
             case R.id.tv_chargeing_gzbx:
+                //启动定位
+                mlocationClient.startLocation();
                 break;
         }
     }
 
+    private void setLocation() {
+        mlocationClient = new AMapLocationClient(getActivity());
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位监听
+        mlocationClient.setLocationListener(this);
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+        // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+        // 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+        // 在定位结束后，在合适的生命周期调用onDestroy()方法
+        // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+    }
+
     @Override
     public void ingSuccess(StartChargeing.DataBean data) {
-        PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
-
         rlChargeingChargeAfter.setVisibility(View.GONE);
         rlChargeingChargeBefore.setVisibility(View.VISIBLE);
         tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
@@ -318,5 +347,47 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         disMissDialog();
         RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
+    }
+
+    @Override
+    public void saveSuccess(AddChargeBean data) {
+        disMissDialog();
+        RingToast.show("已上报");
+    }
+
+    @Override
+    public void saveFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity, code);
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation amapLocation) {
+        if (amapLocation != null) {
+            if (amapLocation.getErrorCode() == 0) {
+                //定位成功回调信息，设置相关消息
+                double lat = amapLocation.getLatitude();//获取纬度
+                double lng = amapLocation.getLongitude();//获取经度
+                RingLog.d(TAG, "定位成功lat = "
+                        + lat + ", lng = "
+                        + lng);
+                if (lat > 0 && lng > 0) {
+                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                    builder.addFormDataPart("orderid", orderId + "");
+                    builder.addFormDataPart("stationId", "");
+                    builder.addFormDataPart("lng", lng + "");
+                    builder.addFormDataPart("lat", lat + "");
+                    RequestBody build = builder.build();
+                    mPresenter.save(build);
+                    mlocationClient.stopLocation();
+                }
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                RingLog.d(TAG, "location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
+            }
+        }
     }
 }

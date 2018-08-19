@@ -43,4 +43,14 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
     public Observable pay(RequestBody build) {
         return DevRing.httpManager().getService(ChargeingFragmentApiService.class).pay(build);
     }
+
+    /**
+     * 故障报修
+     *
+     * @param build
+     */
+    @Override
+    public Observable save(RequestBody build) {
+        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).save(build);
+    }
 }

@@ -56,10 +56,14 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
         tvTitlebarTitle.setText("我的余额");
         ll_titlebar_other.setVisibility(View.VISIBLE);
         for (int i = 0; i < mTitles.length; i++) {
-            mFragments.add(new RechargeFragment());
+            RechargeFragment rechargeFragment = new RechargeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("type", i);
+            rechargeFragment.setArguments(bundle);
+            mFragments.add(rechargeFragment);
         }
         vpMyBalance.setAdapter(new MainActivityPagerAdapter(getSupportFragmentManager(), mFragments, mTitles));
-        vpMyBalance.setOffscreenPageLimit(3);
+        vpMyBalance.setOffscreenPageLimit(mTitles.length);
         stlMyBalance.setViewPager(vpMyBalance);
         stlMyBalance.setCurrentTab(currentTabIndex);
         vpMyBalance.setCurrentItem(currentTabIndex);
