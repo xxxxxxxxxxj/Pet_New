@@ -1,6 +1,11 @@
 package com.haotang.easyshare.mvp.model;
 
+import com.haotang.easyshare.mvp.model.http.RefundApiService;
 import com.haotang.easyshare.mvp.model.imodel.IRefundModel;
+import com.ljy.devring.DevRing;
+
+import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -11,4 +16,28 @@ import com.haotang.easyshare.mvp.model.imodel.IRefundModel;
  * @date XJ on 2018/7/25 14:14
  */
 public class RefundModel implements IRefundModel {
+    /**
+     * 标签列表
+     * @param build
+     */
+    @Override
+    public Observable list(RequestBody build) {
+        return DevRing.httpManager().getService(RefundApiService.class).list(build);
+    }
+
+    /**
+     * 退款说明
+     */
+    @Override
+    public Observable explain() {
+        return DevRing.httpManager().getService(RefundApiService.class).explain();
+    }
+
+    /**
+     * 发起充值退款
+     */
+    @Override
+    public Observable refund(RequestBody build) {
+        return DevRing.httpManager().getService(RefundApiService.class).refund(build);
+    }
 }

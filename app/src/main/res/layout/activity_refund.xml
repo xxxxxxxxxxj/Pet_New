@@ -22,17 +22,18 @@
                 android:layout_height="15dip"
                 android:background="@color/af8f8f8" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingLeft="15dip"
-                android:paddingRight="15dip"
+            <RelativeLayout
                 android:paddingTop="15dip"
-                android:text="微信充值订单12个月内，支付宝充值订单6个月内，将原
-路退回，超出时间，请绑定您的支付宝账号进行退款"
-                android:textColor="@color/a333333"
-                android:textSize="14sp" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_refund_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dip"
+                    android:paddingRight="15dip" />
+            </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_refund_reason"

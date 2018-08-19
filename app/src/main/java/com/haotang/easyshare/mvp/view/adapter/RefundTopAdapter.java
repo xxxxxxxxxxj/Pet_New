@@ -16,10 +16,10 @@ import java.util.List;
  * <p>Company:北京昊唐科技有限公司</p>
  *
  * @author 徐俊
- * @date XJ on 2018/7/25 14:39
+ * @date zhoujunxia on 2018/8/19 12:42
  */
-public class RefundSmAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public RefundSmAdapter(int layoutResId, List<String> data) {
+public class RefundTopAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+    public RefundTopAdapter(int layoutResId, List<String> data) {
         super(layoutResId, data);
     }
 

@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.haotang.easyshare.di.module.activity.RefundResultActivityModule;
 import com.haotang.easyshare.mvp.presenter.RefundResultPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IRefundResultView;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -25,6 +27,7 @@ public class RefundResultActivity extends BaseActivity<RefundResultPresenter> im
     @BindView(R.id.tv_refund_result_lxkf)
     TextView tv_refund_result_lxkf;
     private String phone;
+    private String desc;
 
     @Override
     protected int getContentLayout() {
@@ -33,6 +36,8 @@ public class RefundResultActivity extends BaseActivity<RefundResultPresenter> im
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        desc = intent.getStringExtra("desc");
         activityListManager.addActivity(this);
         DaggerRefundResultActivityCommponent.builder().
                 refundResultActivityModule(new RefundResultActivityModule(this, this)).build().inject(this);
@@ -43,6 +48,7 @@ public class RefundResultActivity extends BaseActivity<RefundResultPresenter> im
         tvTitlebarTitle.setText("申请退款");
         tv_refund_result_lxkf.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tv_refund_result_lxkf.getPaint().setAntiAlias(true);//抗锯齿
+        StringUtil.setText(tvRefundResultDesc, desc, "", View.VISIBLE, View.VISIBLE);
     }
 
     @Override

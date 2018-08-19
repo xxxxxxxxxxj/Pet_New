@@ -14,17 +14,23 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerRefundActivityCommponent;
 import com.haotang.easyshare.di.module.activity.RefundActivityModule;
-import com.haotang.easyshare.mvp.model.entity.res.RefundReson;
-import com.haotang.easyshare.mvp.model.entity.res.RefundSm;
+import com.haotang.easyshare.mvp.model.entity.res.ReFundExplain;
+import com.haotang.easyshare.mvp.model.entity.res.ReFundSubmit;
+import com.haotang.easyshare.mvp.model.entity.res.ReFundTag;
 import com.haotang.easyshare.mvp.presenter.RefundPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.RefundResonAdapter;
 import com.haotang.easyshare.mvp.view.adapter.RefundSmAdapter;
+import com.haotang.easyshare.mvp.view.adapter.RefundTopAdapter;
 import com.haotang.easyshare.mvp.view.iview.IRefundView;
 import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
+import com.haotang.easyshare.util.StringUtil;
+import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -32,6 +38,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * 退款页
@@ -43,12 +51,17 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
     RecyclerView rvRefundReason;
     @BindView(R.id.rv_refund_sm)
     RecyclerView rvRefundSm;
+    @BindView(R.id.rv_refund_top)
+    RecyclerView rv_refund_top;
     @BindView(R.id.btn_refund_submit)
     Button btnRefundSubmit;
-    private List<RefundReson> resonList = new ArrayList<RefundReson>();
-    private List<RefundSm> smList = new ArrayList<RefundSm>();
+    private List<ReFundTag.DataBean> resonList = new ArrayList<ReFundTag.DataBean>();
+    private List<String> smList = new ArrayList<String>();
+    private List<String> topList = new ArrayList<String>();
     private RefundResonAdapter refundResonAdapter;
     private RefundSmAdapter refundSmAdapter;
+    private RefundTopAdapter refundTopAdapter;
+    private String id;
 
     @Override
     protected int getContentLayout() {
@@ -76,9 +89,6 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
                 getResources().getDimensionPixelSize(R.dimen.verticalSpacing10),
                 getResources().getDimensionPixelSize(R.dimen.horizontalSpacing10),
                 true));
-        for (int i = 0; i < 10; i++) {
-            resonList.add(new RefundReson("支持的桩较少", false));
-        }
         refundResonAdapter = new RefundResonAdapter(R.layout.item_refund_reson
                 , resonList);
         rvRefundReason.setAdapter(refundResonAdapter);
@@ -88,20 +98,34 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
         NoScollFullLinearLayoutManager noScollFullLinearLayoutManager = new NoScollFullLinearLayoutManager(this);
         noScollFullLinearLayoutManager.setScrollEnabled(false);
         rvRefundSm.setLayoutManager(noScollFullLinearLayoutManager);
-        for (int i = 0; i < 10; i++) {
-            smList.add(new RefundSm((i + 1) + ".退款金额仅包含实际充值金额，有系统活动赠送的金额不可退"));
-        }
         refundSmAdapter = new RefundSmAdapter(R.layout.item_refund_sm, smList);
         rvRefundSm.setAdapter(refundSmAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_white_5));
         rvRefundSm.addItemDecoration(divider);
+
+        rv_refund_top.setHasFixedSize(true);
+        rv_refund_top.setNestedScrollingEnabled(false);
+        NoScollFullLinearLayoutManager noScollFullLinearLayoutManager1 = new NoScollFullLinearLayoutManager(this);
+        noScollFullLinearLayoutManager1.setScrollEnabled(false);
+        rv_refund_top.setLayoutManager(noScollFullLinearLayoutManager1);
+        refundTopAdapter = new RefundTopAdapter(R.layout.item_refund_sm, topList);
+        rv_refund_top.setAdapter(refundTopAdapter);
+        //添加自定义分割线
+        DividerItemDecoration divider1 = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        divider1.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_white_5));
+        rv_refund_top.addItemDecoration(divider1);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        showDialog();
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("parentId", "1");
+        RequestBody build = builder.build();
+        mPresenter.list(build);
+        mPresenter.explain();
     }
 
     @Override
@@ -110,15 +134,9 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (resonList.size() > 0 && resonList.size() > position) {
-                    for (int i = 0; i < resonList.size(); i++) {
-                        RefundReson refundReson = resonList.get(i);
-                        if (refundReson != null && refundReson.isSelect()) {
-                            refundReson.setSelect(false);
-                        }
-                    }
-                    RefundReson refundReson = resonList.get(position);
-                    if (refundReson != null) {
-                        refundReson.setSelect(true);
+                    ReFundTag.DataBean dataBean = resonList.get(position);
+                    if (dataBean != null) {
+                        dataBean.setSelect(!dataBean.isSelect());
                     }
                     refundResonAdapter.notifyDataSetChanged();
                 }
@@ -133,19 +151,36 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
                 finish();
                 break;
             case R.id.btn_refund_submit:
-                new AlertDialogNavAndPost(RefundActivity.this).builder().setTitle("")
-                        .setMsg("您确认要退款吗？")
-                        .setPositiveButton("确定", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(RefundActivity.this, RefundResultActivity.class));
-                            }
-                        }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
+                id = "";
+                if (resonList.size() > 0) {
+                    for (int i = 0; i < resonList.size(); i++) {
+                        ReFundTag.DataBean dataBean = resonList.get(i);
+                        if (dataBean != null && dataBean.isSelect()) {
+                            id = id + dataBean.getId() + ",";
+                        }
                     }
-                }).show();
+                }
+                if (StringUtil.isNotEmpty(id)) {
+                    new AlertDialogNavAndPost(RefundActivity.this).builder().setTitle("")
+                            .setMsg("您确认要退款吗？")
+                            .setPositiveButton("确定", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showDialog();
+                                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                                    builder.addFormDataPart("reason", id.substring(0, id.length() - 1));
+                                    RequestBody build = builder.build();
+                                    mPresenter.refund(build);
+                                }
+                            }).setNegativeButton("取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
+                } else {
+                    RingToast.show("请先选择退款原因");
+                }
                 break;
         }
     }
@@ -166,5 +201,64 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
     protected void onDestroy() {
         super.onDestroy();
         activityListManager.removeActivity(this); //退出activity
+    }
+
+    @Override
+    public void listSuccess(List<ReFundTag.DataBean> data) {
+        disMissDialog();
+        if (data != null && data.size() > 0) {
+            resonList.clear();
+            resonList.addAll(data);
+            refundResonAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this, code);
+    }
+
+    @Override
+    public void explainFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "explainFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this, code);
+    }
+
+    @Override
+    public void explainSuccess(ReFundExplain.DataBean data) {
+        disMissDialog();
+        if (data != null) {
+            List<String> bottom = data.getBottom();
+            List<String> top = data.getTop();
+            if (bottom != null && bottom.size() > 0) {
+                smList.clear();
+                smList.addAll(bottom);
+                refundSmAdapter.notifyDataSetChanged();
+            }
+            if (top != null && top.size() > 0) {
+                topList.clear();
+                topList.addAll(top);
+                refundTopAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void refundSuccess(ReFundSubmit.DataBean data) {
+        disMissDialog();
+        if (data != null) {
+            String desc = data.getDesc();
+            startActivity(new Intent(RefundActivity.this, RefundResultActivity.class).putExtra("desc", desc));
+        }
+    }
+
+    @Override
+    public void refundFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "explainFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this, code);
     }
 }

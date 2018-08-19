@@ -73,9 +73,7 @@
                 android:lineSpacingMultiplier="1.3"
                 android:paddingLeft="50dip"
                 android:paddingRight="50dip"
-                android:text="您已于2018年07月12日成功提交退款申请
-款项将于7个工作日内
-退回至您的付款账户中，请耐心等待"
+                android:text="TextView"
                 android:textColor="@color/a666666"
                 android:textSize="14sp" />
         </LinearLayout>

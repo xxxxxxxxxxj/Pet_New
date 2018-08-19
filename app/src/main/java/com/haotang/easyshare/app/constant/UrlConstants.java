@@ -231,6 +231,22 @@ public class UrlConstants {
      * 52.车型检索
      */
     public static final String SCREENCAR_QUERY = "brand/car/query";
+    /**
+     * 53.标签列表
+     */
+    public static final String REFUND_TAG = "util/label/list";
+    /**
+     * 54.退款说明
+     */
+    public static final String REFUND_EXPLAN = "recharge/request/explain";
+    /**
+     * 55.发起充值退款
+     */
+    public static final String REFUND = "recharge/request/refund";
+    /**
+     * 56.订单列表
+     */
+    public static final String RECHARGE_LIST = "order/charge/list";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

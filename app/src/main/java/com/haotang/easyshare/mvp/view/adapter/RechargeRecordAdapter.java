@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.haotang.easyshare.R;
-import com.haotang.easyshare.mvp.model.entity.res.RechargeRecord;
+import com.haotang.easyshare.mvp.model.entity.res.ChargeList;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
 
@@ -22,16 +22,16 @@ import java.util.List;
  * @author 徐俊
  * @date XJ on 2018/7/24 14:33
  */
-public class RechargeRecordAdapter extends BaseQuickAdapter<RechargeRecord, BaseViewHolder> {
+public class RechargeRecordAdapter extends BaseQuickAdapter<ChargeList.DataBean.DatasetBean, BaseViewHolder> {
     private final int flag;
 
-    public RechargeRecordAdapter(int layoutResId, List<RechargeRecord> data, int flag) {
+    public RechargeRecordAdapter(int layoutResId, List<ChargeList.DataBean.DatasetBean> data, int flag) {
         super(layoutResId, data);
         this.flag = flag;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, final RechargeRecord item) {
+    protected void convert(BaseViewHolder helper, final ChargeList.DataBean.DatasetBean item) {
         TextView tv_item_rechargerecord_price = helper.getView(R.id.tv_item_rechargerecord_price);
         TextView tv_item_rechargerecord_name = helper.getView(R.id.tv_item_rechargerecord_name);
         TextView tv_item_rechargerecord_cdl = helper.getView(R.id.tv_item_rechargerecord_cdl);
@@ -52,12 +52,12 @@ public class RechargeRecordAdapter extends BaseQuickAdapter<RechargeRecord, Base
                     ll_item_rechargerecord.setBackgroundResource(R.drawable.bg_round_white);
                 }
             }
-            StringUtil.setText(tv_item_rechargerecord_price, "¥" + item.getPrice(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_rechargerecord_name, item.getName(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_rechargerecord_cdl, "充电量：" + item.getCdl() + "度", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_rechargerecord_kssj, "开始时间：" + item.getKssj(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_rechargerecord_jssj, "结束时间：" + item.getJssj(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_rechargerecord_cdsj, "充电时间：" + item.getCdsj(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_rechargerecord_price, "¥" + item.getTotalPrice(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_rechargerecord_name, item.getStationName(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_rechargerecord_cdl, "充电量：" + item.getTotalPower() + "度", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_rechargerecord_kssj, "开始时间：" + item.getStartTime(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_rechargerecord_jssj, "结束时间：" + item.getEndTime(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_rechargerecord_cdsj, "充电时间：" + item.getTotalTime() + "分钟", "", View.VISIBLE, View.VISIBLE);
         }
     }
 }
