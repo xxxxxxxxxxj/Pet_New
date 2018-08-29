@@ -18,11 +18,56 @@ public class GlideUtil {
                     && !imgUrl.startsWith("https://")) {
                 imgUrl = UrlConstants.getServiceBaseUrl() + imgUrl;
             }
-            Glide.with(mContext).load(imgUrl)
-                    .placeholder(placeholderResourceId) // 占位图
-                    .error(placeholderResourceId) // 出错的占位图
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(imageView);
+            if (imgUrl.toUpperCase().endsWith(".GIF")) {
+                Glide.with(mContext)
+                        .load(imgUrl)
+                        .asGif()
+                        .placeholder(placeholderResourceId)
+                        .error(placeholderResourceId)
+                        .dontAnimate() //去掉显示动画
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE) //DiskCacheStrategy.NONE
+                        .into(imageView);
+            } else {
+                Glide.with(mContext)
+                        .load(imgUrl)
+                        .placeholder(placeholderResourceId)
+                        .error(placeholderResourceId)
+                        .crossFade()
+                        .centerCrop()
+                        .into(imageView);
+            }
+        }
+    }
+
+    public static void loadNetImg(Context mContext, String imgUrl,
+                                  ImageView imageView, int placeholderResourceId, int imgWidth, int imgHeight) {
+        if (StringUtil.isNotEmpty(imgUrl)) {
+            if (!imgUrl.startsWith("http://")
+                    && !imgUrl.startsWith("https://")) {
+                imgUrl = UrlConstants.getServiceBaseUrl() + imgUrl;
+            }
+            if (imgUrl.toUpperCase().endsWith(".GIF")) {
+                Glide.with(mContext)
+                        .load(imgUrl)
+                        .asGif()
+                        .override(imgWidth, imgHeight)
+                        .placeholder(placeholderResourceId)
+                        .error(placeholderResourceId)
+                        .dontAnimate() //去掉显示动画
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE) //DiskCacheStrategy.NONE
+                        .into(imageView);
+            } else {
+                Glide.with(mContext)
+                        .load(imgUrl)
+                        .override(imgWidth, imgHeight)
+                        .placeholder(placeholderResourceId)
+                        .error(placeholderResourceId)
+                        .crossFade()
+                        .centerCrop()
+                        .into(imageView);
+            }
         }
     }
 
@@ -33,11 +78,56 @@ public class GlideUtil {
                     && !imgUrl.startsWith("https://")) {
                 imgUrl = UrlConstants.getServiceBaseUrl() + imgUrl;
             }
-            Glide.with(mContext).load(imgUrl).listener(listener)
-                    .placeholder(placeholderResourceId) // 占位图
-                    .error(placeholderResourceId) // 出错的占位图
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into(imageView);
+            if (imgUrl.toUpperCase().endsWith(".GIF")) {
+                Glide.with(mContext)
+                        .load(imgUrl)
+                        .asGif()
+                        .placeholder(placeholderResourceId)
+                        .error(placeholderResourceId)
+                        .dontAnimate() //去掉显示动画
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE) //DiskCacheStrategy.NONE
+                        .into(imageView);
+            } else {
+                Glide.with(mContext)
+                        .load(imgUrl)
+                        .placeholder(placeholderResourceId)
+                        .error(placeholderResourceId)
+                        .crossFade()
+                        .centerCrop()
+                        .into(imageView);
+            }
+        }
+    }
+
+    public static void loadNetImg(Context mContext, String imgUrl,
+                                  ImageView imageView, int placeholderResourceId, RequestListener listener,int imgWidth, int imgHeight) {
+        if (StringUtil.isNotEmpty(imgUrl)) {
+            if (!imgUrl.startsWith("http://")
+                    && !imgUrl.startsWith("https://")) {
+                imgUrl = UrlConstants.getServiceBaseUrl() + imgUrl;
+            }
+            if (imgUrl.toUpperCase().endsWith(".GIF")) {
+                Glide.with(mContext)
+                        .load(imgUrl)
+                        .asGif()
+                        .override(imgWidth, imgHeight)
+                        .placeholder(placeholderResourceId)
+                        .error(placeholderResourceId)
+                        .dontAnimate() //去掉显示动画
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE) //DiskCacheStrategy.NONE
+                        .into(imageView);
+            } else {
+                Glide.with(mContext)
+                        .load(imgUrl)
+                        .override(imgWidth, imgHeight)
+                        .placeholder(placeholderResourceId)
+                        .error(placeholderResourceId)
+                        .crossFade()
+                        .centerCrop()
+                        .into(imageView);
+            }
         }
     }
 

@@ -16,6 +16,8 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rl_selectcar_top"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="239dip">
 

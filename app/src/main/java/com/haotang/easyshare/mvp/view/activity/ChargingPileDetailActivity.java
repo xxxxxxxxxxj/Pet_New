@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +14,9 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.app.constant.UrlConstants;
@@ -20,14 +24,17 @@ import com.haotang.easyshare.di.component.activity.DaggerChargingPileDetailActiv
 import com.haotang.easyshare.di.module.activity.ChargingPileDetailActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.ChargingPileDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.UseNoticesAdapter;
 import com.haotang.easyshare.mvp.view.iview.IChargingPileDetailView;
+import com.haotang.easyshare.mvp.view.widget.DragView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
+import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.SignUtil;
@@ -49,6 +56,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
 
 import static com.haotang.easyshare.R.id.iv_chargingdetail_sc;
 
@@ -125,6 +133,8 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     TextView tvChargingdetailZdbz;
     @BindView(R.id.ll_chargingdetail_vbv)
     LinearLayout ll_chargingdetail_vbv;
+    @BindView(R.id.iv_chargedetail_wegit)
+    DragView iv_chargedetail_wegit;
     private String uuid;
     private String city;
     private double lat;
@@ -141,6 +151,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     private PostBean.DataBean.ShareMap shareMap;
     private double serchLat;
     private double serchLng;
+    private AdvertisementBean.DataBean dataBean;
 
     @Override
     protected int getContentLayout() {
@@ -237,7 +248,9 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "6").build();
+        mPresenter.list(body);
     }
 
     @Override
@@ -251,9 +264,20 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
         activityListManager.removeActivity(this); //退出activity
     }
 
-    @OnClick({R.id.iv_chargingdetail_back, iv_chargingdetail_sc, R.id.iv_chargingdetail_share, R.id.ll_chargingdetail_pl, R.id.iv_chargingdetail_lt, R.id.iv_chargingdetail_phone, R.id.ll_chargingdetail_daohang})
+    @OnClick({R.id.iv_chargingdetail_back, iv_chargingdetail_sc, R.id.iv_chargingdetail_share,
+            R.id.ll_chargingdetail_pl, R.id.iv_chargingdetail_lt, R.id.iv_chargingdetail_phone,
+            R.id.ll_chargingdetail_daohang, R.id.iv_chargedetail_wegit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_chargedetail_wegit:
+                if (dataBean != null) {
+                    if (dataBean.getDisplay() == 1) {//原生
+
+                    } else if (dataBean.getDisplay() == 2) {//H5
+                        startActivity(new Intent(ChargingPileDetailActivity.this, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, dataBean.getDestination()));
+                    }
+                }
+                break;
             case R.id.iv_chargingdetail_back:
                 finish();
                 break;
@@ -408,7 +432,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     public void detailFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(this,code);
+        SystemUtil.Exit(this, code);
     }
 
     @Override
@@ -424,7 +448,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     public void followFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(this,code);
+        SystemUtil.Exit(this, code);
     }
 
     @Override
@@ -439,7 +463,43 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     public void cancelFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(this,code);
+        SystemUtil.Exit(this, code);
+    }
+
+    @Override
+    public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        if (data != null && data.size() > 0) {
+            dataBean = data.get(0);
+            if (dataBean != null) {
+                final String img = dataBean.getImg();
+                if (StringUtil.isNotEmpty(img)) {
+                    Glide.with(ChargingPileDetailActivity.this)
+                            .load(img)
+                            .asBitmap()//强制Glide返回一个Bitmap对象
+                            .into(new SimpleTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    int width = bitmap.getWidth();
+                                    int height = bitmap.getHeight();
+                                    int dp2pxWidth = DensityUtil.dp2px(ChargingPileDetailActivity.this, width / 2);
+                                    int dp2pxHeight = DensityUtil.dp2px(ChargingPileDetailActivity.this, height / 2);
+                                    iv_chargedetail_wegit.setVisibility(View.VISIBLE);
+                                    iv_chargedetail_wegit.setImageWidth(dp2pxWidth);
+                                    iv_chargedetail_wegit.setImageHeight(dp2pxHeight);
+                                    GlideUtil.loadNetImg(ChargingPileDetailActivity.this, img, iv_chargedetail_wegit, 0,
+                                            dp2pxWidth, dp2pxHeight);
+                                }
+                            });
+                }
+            }
+        }
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this, code);
     }
 
     @Override

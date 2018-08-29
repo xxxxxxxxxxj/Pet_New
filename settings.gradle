@@ -1,1 +1,1 @@
-include ':app', ':FlycoTabLayout_Lib', ':photoview', ':matisse', ':FlycoRoundView_Lib', ':fragmentation_swipeback', ':fragmentation', ':fragmentation_core', ':wheelview', ':pickerview', ':reclib-qq', ':reclib-testemoticons'
+include ':app', ':FlycoTabLayout_Lib', ':photoview', ':matisse', ':FlycoRoundView_Lib', ':fragmentation_swipeback', ':fragmentation', ':fragmentation_core', ':wheelview', ':pickerview', ':reclib-qq', ':reclib-testemoticons', ':material_library'

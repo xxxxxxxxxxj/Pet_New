@@ -39,6 +39,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -60,11 +61,13 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     RecyclerView rvSelectcarRmpp;
     @BindView(R.id.rv_selectcar_jxtj)
     RecyclerView rvSelectcarJxtj;
+    @BindView(R.id.rl_selectcar_top)
+    RelativeLayout rl_selectcar_top;
     private List<HotCarBean.DataBean> carList = new ArrayList<HotCarBean.DataBean>();
     private HotPointCarAdapter hotPointCarAdapter;
     private List<HotSpecialCarBean.DataBean> selectedCarList = new ArrayList<HotSpecialCarBean.DataBean>();
     private SelectedCarAdapter selectedCarAdapter;
-    private List<AdvertisementBean.DataBean> adList = new ArrayList<AdvertisementBean.DataBean>();
+    private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
     private SelectCarAdAdapter selectCarAdAdapter;
 
     @Override
@@ -87,11 +90,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(mActivity);
         linearLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvSelectcarTop.setLayoutManager(linearLayoutManager1);
-        for (int i = 0; i < 10; i++) {
-            adList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg",
-                    1, "哈哈", "哈哈"));
-        }
-        selectCarAdAdapter = new SelectCarAdAdapter(R.layout.item_selectcat_ad, adList);
+        selectCarAdAdapter = new SelectCarAdAdapter(R.layout.item_selectcat_ad, bannerList);
         rvSelectcarTop.setAdapter(selectCarAdAdapter);
         //添加自定义分割线
         rvSelectcarTop.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL,
@@ -146,6 +145,9 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         showDialog();
         mPresenter.hot();
         mPresenter.special();
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "3").build();
+        mPresenter.list(body);
     }
 
     @Override
@@ -163,6 +165,26 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         disMissDialog();
         RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity, code);
+    }
+
+    @Override
+    public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        disMissDialog();
+        if (data != null && data.size() > 0) {
+            bannerList.clear();
+            bannerList.addAll(data);
+            rl_selectcar_top.setVisibility(View.VISIBLE);
+            selectCarAdAdapter.notifyDataSetChanged();
+        } else {
+            rl_selectcar_top.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -187,8 +209,8 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         selectCarAdAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (adList != null && adList.size() > 0 && adList.size() > position) {
-                    AdvertisementBean.DataBean dataBean = adList.get(position);
+                if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
+                    AdvertisementBean.DataBean dataBean = bannerList.get(position);
                     if (dataBean != null) {
                         if (dataBean.getDisplay() == 1) {//原生
 

@@ -5,6 +5,7 @@ import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -38,4 +39,9 @@ public interface IChargingPileDetailModel extends IBaseModel {
      * @param parmMap
      */
     Observable cancel(Map<String, String> parmMap);
+
+    /**
+     * 浮窗
+     */
+    Observable list(MultipartBody body);
 }

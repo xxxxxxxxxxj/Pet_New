@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.IChargingPileDetailModel;
@@ -13,6 +14,8 @@ import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
 import java.util.Map;
+
+import okhttp3.MultipartBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -124,6 +127,39 @@ public class ChargingPileDetailPresenter extends BasePresenter<IChargingPileDeta
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.cancelFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 浮窗
+     *
+     * @param body
+     */
+    public void list(MultipartBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<AdvertisementBean>() {
+            @Override
+            public void onResult(AdvertisementBean result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.listSuccess(result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.listFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.listFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.listFail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));

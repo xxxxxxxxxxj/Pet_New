@@ -34,10 +34,13 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     SlidingTabLayout stlMyBalance;
     @BindView(R.id.vp_my_balance)
     ViewPager vpMyBalance;
+    @BindView(R.id.tv_my_balance_balance)
+    TextView tv_my_balance_balance;
     private String[] mTitles = {"全部记录", "消费明细", "充值记录"};
     private ArrayList<BaseFragment> mFragments = new ArrayList<>();
     private int currentTabIndex;
     private RefundPopupWindow refundPopupWindow;
+    private double balance;
 
     @Override
     protected int getContentLayout() {
@@ -46,6 +49,7 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        balance = getIntent().getDoubleExtra("balance", 0);
         activityListManager.addActivity(this);
         DaggerMyBalanceActivityCommponent.builder().
                 myBalanceActivityModule(new MyBalanceActivityModule(this, this)).build().inject(this);
@@ -53,6 +57,7 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        tv_my_balance_balance.setText(String.valueOf(balance));
         tvTitlebarTitle.setText("我的余额");
         ll_titlebar_other.setVisibility(View.VISIBLE);
         for (int i = 0; i < mTitles.length; i++) {

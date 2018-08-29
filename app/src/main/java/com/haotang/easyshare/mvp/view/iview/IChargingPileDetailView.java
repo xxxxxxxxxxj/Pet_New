@@ -1,8 +1,11 @@
 package com.haotang.easyshare.mvp.view.iview;
 
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
+
+import java.util.List;
 
 /**
  * <p>Title:${type_name}</p>
@@ -25,4 +28,8 @@ public interface IChargingPileDetailView extends IBaseView{
     void cancelSuccess(AddChargeBean data);
 
     void cancelFail(int code, String msg);
+
+    void listSuccess(List<AdvertisementBean.DataBean> data);
+
+    void listFail(int code, String msg);
 }

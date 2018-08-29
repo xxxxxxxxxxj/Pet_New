@@ -397,6 +397,34 @@
                 rv:rv_cornerRadius="5dip">
 
                 <RelativeLayout
+                    android:id="@+id/rl_myfragment_coupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dip">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="我的优惠券"
+                        android:textColor="@color/a666666"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="7dip"
+                        android:layout_height="11dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/right_more" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dip"
+                    android:background="@color/aEEEEEE" />
+
+                <RelativeLayout
                     android:id="@+id/rl_myfragment_wdtz"
                     android:layout_width="match_parent"
                     android:layout_height="44dip">

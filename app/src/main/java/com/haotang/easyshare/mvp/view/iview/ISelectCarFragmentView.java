@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
@@ -22,4 +23,8 @@ public interface ISelectCarFragmentView extends IBaseView {
     void specialSuccess(List<HotSpecialCarBean.DataBean> data);
 
     void specialFail(int code, String msg);
+
+    void listFail(int errType, String errMessage);
+
+    void listSuccess(List<AdvertisementBean.DataBean> data);
 }

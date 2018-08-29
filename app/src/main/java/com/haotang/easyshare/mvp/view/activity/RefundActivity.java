@@ -258,6 +258,7 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
     @Override
     public void refundFail(int code, String msg) {
         disMissDialog();
+        RingToast.show(msg);
         RingLog.e(TAG, "explainFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(this, code);
     }

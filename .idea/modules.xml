@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/fragmentation/fragmentation.iml" filepath="$PROJECT_DIR$/fragmentation/fragmentation.iml" />
       <module fileurl="file://$PROJECT_DIR$/fragmentation_core/fragmentation_core.iml" filepath="$PROJECT_DIR$/fragmentation_core/fragmentation_core.iml" />
       <module fileurl="file://$PROJECT_DIR$/fragmentation_swipeback/fragmentation_swipeback.iml" filepath="$PROJECT_DIR$/fragmentation_swipeback/fragmentation_swipeback.iml" />
+      <module fileurl="file://$PROJECT_DIR$/material_library/material_library.iml" filepath="$PROJECT_DIR$/material_library/material_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/matisse/matisse.iml" filepath="$PROJECT_DIR$/matisse/matisse.iml" />
       <module fileurl="file://$PROJECT_DIR$/photoview/photoview.iml" filepath="$PROJECT_DIR$/photoview/photoview.iml" />
       <module fileurl="file://$PROJECT_DIR$/pickerview/pickerview.iml" filepath="$PROJECT_DIR$/pickerview/pickerview.iml" />

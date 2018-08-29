@@ -1,13 +1,9 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,6 +20,7 @@ import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
 import com.haotang.easyshare.mvp.presenter.MyFragmentPresenter;
+import com.haotang.easyshare.mvp.view.activity.AboutActivity;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
 import com.haotang.easyshare.mvp.view.activity.CarInfoActivity;
@@ -31,10 +28,10 @@ import com.haotang.easyshare.mvp.view.activity.CollectChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.EditUserInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.MyBalanceActivity;
+import com.haotang.easyshare.mvp.view.activity.MyCouponActivity;
 import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
 import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeRecordActivity;
-import com.haotang.easyshare.mvp.view.activity.TestActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.MyFragChargePagerAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
@@ -126,6 +123,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     private int pagePosition;
     private List<HomeBean.StationsBean> stations = new ArrayList<HomeBean.StationsBean>();
     private MyFragChargePagerAdapter myFragChargePagerAdapter;
+    private double balance;
 
     @Override
     public boolean isUseEventBus() {
@@ -234,12 +232,19 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
             R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
             R.id.tv_myfragment_username, R.id.iv_myfragment_userimg, R.id.rl_myfragment_mycharge_right,
-            R.id.iv_myfragment_bjusername, R.id.rl_myfragment_cdjl, R.id.ll_myfragment_yue})
+            R.id.iv_myfragment_bjusername, R.id.rl_myfragment_cdjl, R.id.ll_myfragment_yue, R.id.rl_myfragment_coupon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rl_myfragment_coupon:
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, MyCouponActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
+                break;
             case R.id.ll_myfragment_yue:
                 if (SystemUtil.checkLogin(mActivity)) {
-                    startActivity(new Intent(mActivity, MyBalanceActivity.class));
+                    startActivity(new Intent(mActivity, MyBalanceActivity.class).putExtra("balance", balance));
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
@@ -337,8 +342,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 }
                 break;
             case R.id.rl_myfragment_gy:
-                startActivity(new Intent(mActivity, TestActivity.class));
-                //startActivity(new Intent(mActivity, AboutActivity.class));
+                //startActivity(new Intent(mActivity, TestActivity.class));
+                startActivity(new Intent(mActivity, AboutActivity.class));
                 break;
             case R.id.rtv_myfragment_tuichu:
                 SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
@@ -358,6 +363,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             vipPrivilege = data.getVipPrivilege();
             uuid = data.getUuid();
             kf_phone = data.getKf_phone();
+            balance = data.getBalance();
             StringUtil.setText(tvMyfragmentUsername, data.getUserName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentYue, String.valueOf(data.getBalance()), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentVipjf, String.valueOf(data.getCoins()), "", View.VISIBLE, View.VISIBLE);
