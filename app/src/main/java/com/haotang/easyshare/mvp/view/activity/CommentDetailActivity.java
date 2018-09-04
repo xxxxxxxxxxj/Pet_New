@@ -189,10 +189,10 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
             } else {
                 if (mNextRequestPage == 1) {
                     commentDetailAdapter.loadMoreEnd(true);
+                    commentDetailAdapter.setEmptyView(setEmptyViewBase(2, "暂无评论", R.mipmap.no_data, null));
                 } else {
                     commentDetailAdapter.loadMoreEnd(false);
                 }
-                commentDetailAdapter.setEmptyView(setEmptyViewBase(2, "暂无评论", R.mipmap.no_data, null));
             }
         }
         commentDetailAdapter.notifyDataSetChanged();

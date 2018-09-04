@@ -182,10 +182,10 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
         } else {
             if (mNextRequestPage == 1) {
                 followListAdapter.loadMoreEnd(true);
+                followListAdapter.setEmptyView(setEmptyViewBase(2, "您还没有关注的人哦", R.mipmap.no_data, null));
             } else {
                 followListAdapter.loadMoreEnd(false);
             }
-            followListAdapter.setEmptyView(setEmptyViewBase(2, "您还没有关注的人哦", R.mipmap.no_data, null));
         }
         followListAdapter.notifyDataSetChanged();
     }

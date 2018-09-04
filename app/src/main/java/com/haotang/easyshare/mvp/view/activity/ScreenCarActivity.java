@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -236,6 +237,15 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
 
     @Override
     protected void initEvent() {
+        selectedCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if(selectedCarList.size() > position){
+                    HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
+                    startActivity(new Intent(ScreenCarActivity.this,CarDetailActivity.class).putExtra("carId",dataBean.getId()));
+                }
+            }
+        });
         selectedCarAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -525,10 +535,10 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
         } else {
             if (mNextRequestPage == 1) {
                 selectedCarAdapter.loadMoreEnd(true);
+                selectedCarAdapter.setEmptyView(setEmptyViewBase(2, "暂无数据", R.mipmap.no_data, null));
             } else {
                 selectedCarAdapter.loadMoreEnd(false);
             }
-            selectedCarAdapter.setEmptyView(setEmptyViewBase(2, "暂无数据", R.mipmap.no_data, null));
         }
         selectedCarAdapter.notifyDataSetChanged();
     }

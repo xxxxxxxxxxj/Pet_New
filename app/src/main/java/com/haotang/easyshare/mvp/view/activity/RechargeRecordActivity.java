@@ -170,10 +170,10 @@ public class RechargeRecordActivity extends BaseActivity<RechargeRecordPresenter
             } else {
                 if (mNextRequestPage == 1) {
                     rechargeRecordAdapter.loadMoreEnd(true);
+                    rechargeRecordAdapter.setEmptyView(setEmptyViewBase(2, "暂无充电记录", R.mipmap.no_data, null));
                 } else {
                     rechargeRecordAdapter.loadMoreEnd(false);
                 }
-                rechargeRecordAdapter.setEmptyView(setEmptyViewBase(2, "暂无充电记录", R.mipmap.no_data, null));
             }
             rechargeRecordAdapter.notifyDataSetChanged();
         }

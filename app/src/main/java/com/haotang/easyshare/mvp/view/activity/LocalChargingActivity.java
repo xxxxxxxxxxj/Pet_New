@@ -230,10 +230,10 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         } else {
             if (mNextRequestPage == 1) {
                 mainLocalAdapter.loadMoreEnd(true);
+                mainLocalAdapter.setEmptyView(setEmptyViewBase(2, "暂无充电桩", R.mipmap.no_data, null));
             } else {
                 mainLocalAdapter.loadMoreEnd(false);
             }
-            mainLocalAdapter.setEmptyView(setEmptyViewBase(2, "暂无充电桩", R.mipmap.no_data, null));
         }
         mainLocalAdapter.notifyDataSetChanged();
     }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dip"
+        android:paddingBottom="15dip"
+        android:gravity="center_horizontal"
+        android:id="@+id/tv_coupon_footer"
+        android:text="已过期>>"
+        android:textColor="@color/aBB996C"
+        android:textSize="15sp" />
+
+</LinearLayout>

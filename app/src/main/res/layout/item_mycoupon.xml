@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_item_mycoupon_root"
     android:layout_width="match_parent"
-    android:layout_height="90dip"
-    android:background="@color/red"
+    android:layout_height="103dip"
+    android:layout_marginLeft="15dip"
+    android:layout_marginRight="15dip"
+    android:background="@mipmap/bg_coupon_money"
+    android:orientation="vertical"
     android:padding="15dip">
-
-    <TextView
-        android:id="@+id/tv_item_mycoupon_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="使用时间："
-        android:textColor="@color/white"
-        android:textSize="11sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/tv_item_mycoupon_time">
+        android:layout_height="0dip"
+        android:layout_weight="1">
 
         <LinearLayout
             android:id="@+id/ll_item_mycoupon_jine"
@@ -59,7 +53,7 @@
                 android:layout_height="16dip"
                 android:layout_marginRight="5dip"
                 android:scaleType="fitXY"
-                android:src="@mipmap/about_logo" />
+                android:src="@mipmap/icon_coupon_money" />
 
             <TextView
                 android:id="@+id/tv_item_mycoupon_name"
@@ -70,4 +64,33 @@
                 android:textSize="15sp" />
         </LinearLayout>
     </RelativeLayout>
-</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/iv_item_mycoupon_guoqi"
+            android:layout_width="66.5dip"
+            android:layout_height="25dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_coupon_guoqi" />
+
+        <TextView
+            android:id="@+id/tv_item_mycoupon_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/iv_item_mycoupon_guoqi"
+            android:text="使用时间："
+            android:layout_marginRight="10dip"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

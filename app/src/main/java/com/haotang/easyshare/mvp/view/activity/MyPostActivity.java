@@ -269,10 +269,10 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
         } else {
             if (mNextRequestPage == 1) {
                 postListAdapter.loadMoreEnd(true);
+                postListAdapter.setEmptyView(setEmptyViewBase(2, "您还没有发布帖子哦", R.mipmap.no_data, null));
             } else {
                 postListAdapter.loadMoreEnd(false);
             }
-            postListAdapter.setEmptyView(setEmptyViewBase(2, "您还没有发布帖子哦", R.mipmap.no_data, null));
         }
         postListAdapter.notifyDataSetChanged();
     }

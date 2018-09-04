@@ -155,10 +155,10 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
         } else {
             if (mNextRequestPage == 1) {
                 historicalMessagelAdapter.loadMoreEnd(true);
+                historicalMessagelAdapter.setEmptyView(setEmptyViewBase(2, "暂无留言", R.mipmap.no_data, null));
             } else {
                 historicalMessagelAdapter.loadMoreEnd(false);
             }
-            historicalMessagelAdapter.setEmptyView(setEmptyViewBase(2, "暂无留言", R.mipmap.no_data, null));
         }
         historicalMessagelAdapter.notifyDataSetChanged();
     }

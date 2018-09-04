@@ -228,10 +228,10 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
         } else {
             if (mNextRequestPage == 1) {
                 collectChargeListAdapter.loadMoreEnd(true);
+                collectChargeListAdapter.setEmptyView(setEmptyViewBase(2, "暂无收藏的充电桩", R.mipmap.no_data, null));
             } else {
                 collectChargeListAdapter.loadMoreEnd(false);
             }
-            collectChargeListAdapter.setEmptyView(setEmptyViewBase(2, "暂无收藏的充电桩", R.mipmap.no_data, null));
         }
         collectChargeListAdapter.notifyDataSetChanged();
     }

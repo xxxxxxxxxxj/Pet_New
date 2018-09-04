@@ -234,18 +234,18 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
         } else {
             if (mNextRequestPage == 1) {
                 hotPointAdapter.loadMoreEnd(true);
+                String msg = "";
+                if (index == 1) {
+                    msg = "暂无最新帖";
+                } else if (index == 2) {
+                    msg = "暂无热门帖";
+                } else if (index == 3) {
+                    msg = "暂无问题车帖子";
+                }
+                hotPointAdapter.setEmptyView(setEmptyViewBase(2, msg, R.mipmap.no_data, null));
             } else {
                 hotPointAdapter.loadMoreEnd(false);
             }
-            String msg = "";
-            if (index == 1) {
-                msg = "暂无最新帖";
-            } else if (index == 2) {
-                msg = "暂无热门帖";
-            } else if (index == 3) {
-                msg = "暂无问题车帖子";
-            }
-            hotPointAdapter.setEmptyView(setEmptyViewBase(2, msg, R.mipmap.no_data, null));
         }
         hotPointAdapter.notifyDataSetChanged();
     }

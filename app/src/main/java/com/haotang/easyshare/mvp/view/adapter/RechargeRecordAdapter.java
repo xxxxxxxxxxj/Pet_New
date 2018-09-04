@@ -38,6 +38,7 @@ public class RechargeRecordAdapter extends BaseQuickAdapter<ChargeList.DataBean.
         TextView tv_item_rechargerecord_kssj = helper.getView(R.id.tv_item_rechargerecord_kssj);
         TextView tv_item_rechargerecord_jssj = helper.getView(R.id.tv_item_rechargerecord_jssj);
         TextView tv_item_rechargerecord_cdsj = helper.getView(R.id.tv_item_rechargerecord_cdsj);
+        TextView tv_item_rechargerecord_couponprice = helper.getView(R.id.tv_item_rechargerecord_couponprice);
         LinearLayout ll_item_rechargerecord_root = helper.getView(R.id.ll_item_rechargerecord_root);
         LinearLayout ll_item_rechargerecord = helper.getView(R.id.ll_item_rechargerecord);
         if (item != null) {
@@ -53,6 +54,7 @@ public class RechargeRecordAdapter extends BaseQuickAdapter<ChargeList.DataBean.
                 }
             }
             StringUtil.setText(tv_item_rechargerecord_price, "¥" + item.getTotalPrice(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_rechargerecord_couponprice, "", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_rechargerecord_name, item.getStationName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_rechargerecord_cdl, "充电量：" + item.getTotalPower() + "度", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_rechargerecord_kssj, "开始时间：" + item.getStartTime(), "", View.VISIBLE, View.VISIBLE);

@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -44,6 +45,8 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
     private MyCouponAdapter myCouponAdapter;
     private int page = 1;
     private List<MyCoupon.DataBean.DatasetBean> localList = new ArrayList<MyCoupon.DataBean.DatasetBean>();
+    private TextView tv_coupon_footer;
+    private int flag;
 
     @Override
     protected int getContentLayout() {
@@ -52,6 +55,7 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        flag = getIntent().getIntExtra("flag", 0);
         DaggerMyCouponActivityCommponent.builder().
                 myCouponActivityModule(new MyCouponActivityModule(this, this)).build().inject(this);
     }
@@ -61,7 +65,12 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
         tvTitlebarTitle.setText("我的优惠券");
         rvMycoupon.setHasFixedSize(true);
         rvMycoupon.setLayoutManager(new LinearLayoutManager(this));
-        myCouponAdapter = new MyCouponAdapter(R.layout.item_mycoupon, list);
+        myCouponAdapter = new MyCouponAdapter(R.layout.item_mycoupon, list, flag);
+        if (flag == 0) {
+            View inflate = View.inflate(this, R.layout.coupon_footer, null);
+            tv_coupon_footer = (TextView) inflate.findViewById(R.id.tv_coupon_footer);
+            myCouponAdapter.addFooterView(inflate);
+        }
         rvMycoupon.setAdapter(myCouponAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -76,6 +85,14 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
 
     @Override
     protected void initEvent() {
+        if (tv_coupon_footer != null) {
+            tv_coupon_footer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MyCouponActivity.this, MyCouponActivity.class).putExtra("flag", 1));
+                }
+            });
+        }
         mrlMycoupon.setMaterialRefreshListener(new MaterialRefreshListener() {
 
             @Override
@@ -102,7 +119,11 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
         localList.clear();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("page", page + "");
-        builder.addFormDataPart("state", "1");
+        if (flag == 0) {
+            builder.addFormDataPart("state", "1");
+        } else if (flag == 1) {
+            builder.addFormDataPart("state", "0");
+        }
         RequestBody build = builder.build();
         mPresenter.list(build);
     }
@@ -140,8 +161,13 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
             page++;
         } else {
             if (page == 1) {
-                myCouponAdapter.setEmptyView(setEmptyViewBase(2, "暂无优惠券哦~",
-                        R.mipmap.no_data, null));
+                if (flag == 0) {
+                    myCouponAdapter.setEmptyView(setEmptyViewBase(2, "暂无可用优惠券哦~",
+                            R.mipmap.no_data, null));
+                } else if (flag == 1) {
+                    myCouponAdapter.setEmptyView(setEmptyViewBase(2, "暂无过期优惠券哦~",
+                            R.mipmap.no_data, null));
+                }
             }
         }
         myCouponAdapter.notifyDataSetChanged();

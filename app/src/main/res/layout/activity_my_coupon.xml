@@ -23,8 +23,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_mycoupon"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/f8f8ff8"
-            android:padding="15dip" />
+            android:layout_height="match_parent"
+            android:background="@color/f8f8ff8"/>
     </com.cjj.MaterialRefreshLayout>
 </LinearLayout>
