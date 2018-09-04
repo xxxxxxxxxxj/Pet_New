@@ -1,16 +1,20 @@
 package com.haotang.easyshare.mvp.view.widget;
 
+import android.app.Activity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.http.ShareApiService;
 import com.haotang.easyshare.shareutil.ShareUtil;
 import com.haotang.easyshare.shareutil.share.ShareListener;
 import com.haotang.easyshare.shareutil.share.SharePlatform;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
@@ -49,6 +53,42 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
         this.mThumbUrlOrPath = thumbUrlOrPath;
     }
 
+    public void completeUrl(Activity activity) {
+        if (this.mTargetUrl != null && !TextUtils.isEmpty(this.mTargetUrl)) {
+            if (!this.mTargetUrl.startsWith("http:")
+                    && !this.mTargetUrl.startsWith("https:") && !this.mTargetUrl.startsWith("file:///")) {
+                this.mTargetUrl = UrlConstants.getServiceBaseUrl() + this.mTargetUrl;
+            }
+            if (this.mTargetUrl.contains("?")) {
+                this.mTargetUrl = this.mTargetUrl + "&system=android_" + SystemUtil.getCurrentVersion(activity)
+                        + "&imei="
+                        + SystemUtil.getIMEI(activity)
+                        + "&phone="
+                        + SharedPreferenceUtil.getInstance(activity).getString("cellphone", "") + "&phoneModel="
+                        + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                        + "&phoneSystemVersion=" + "Android "
+                        + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                        + System.currentTimeMillis();
+            } else {
+                this.mTargetUrl = this.mTargetUrl + "?system=android_" + SystemUtil.getCurrentVersion(activity)
+                        + "&imei="
+                        + SystemUtil.getIMEI(activity)
+                        + "&phone="
+                        + SharedPreferenceUtil.getInstance(activity).getString("cellphone", "") + "&phoneModel="
+                        + android.os.Build.BRAND + " " + android.os.Build.MODEL
+                        + "&phoneSystemVersion=" + "Android "
+                        + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
+                        + System.currentTimeMillis();
+            }
+        }
+        if (this.mThumbUrlOrPath != null && !TextUtils.isEmpty(this.mThumbUrlOrPath)) {
+            if (!this.mThumbUrlOrPath.startsWith("http:")
+                    && !this.mThumbUrlOrPath.startsWith("https:") && !this.mThumbUrlOrPath.startsWith("file:///")) {
+                this.mThumbUrlOrPath = UrlConstants.getServiceBaseUrl() + this.mThumbUrlOrPath;
+            }
+        }
+    }
+
     @Override
     public void bindView(final View v) {
         v.findViewById(R.id.share_qq).setOnClickListener(this);
@@ -73,7 +113,7 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
                                         if (result.getCode() == 0) {
                                             RingLog.e("分享回调成功");
                                         } else {
-                                            SystemUtil.Exit(v.getContext(),result.getCode());
+                                            SystemUtil.Exit(v.getContext(), result.getCode());
                                             if (StringUtil.isNotEmpty(result.getMsg())) {
                                                 RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
                                             } else {

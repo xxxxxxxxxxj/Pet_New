@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/f8f8ff8">
@@ -14,12 +13,12 @@
         android:id="@+id/tv_car_detail_submit"
         android:layout_width="match_parent"
         android:layout_height="49dip"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:text="立即预订"
-        android:gravity="center"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/bg_blue_jianbian"
-        android:layout_alignParentBottom="true" />
+        android:gravity="center"
+        android:text="立即预订"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,7 +38,6 @@
                 android:layout_height="200dip"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:visibility="gone"
                 app:indicator_drawable_selected="@drawable/selected_radius" />
 
             <RelativeLayout
@@ -47,8 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dip"
                 android:background="@color/white"
-                android:padding="15dip"
-                android:visibility="gone">
+                android:padding="15dip">
 
                 <LinearLayout
                     android:id="@+id/ll_car_detail_price"
@@ -76,10 +73,11 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dip"
                     android:layout_toLeftOf="@id/ll_car_detail_price"
+                    android:gravity="left"
                     android:orientation="vertical">
 
                     <TextView
@@ -106,8 +104,7 @@
                 android:layout_marginBottom="15dip"
                 android:background="@mipmap/bg_car_detail_vs"
                 android:orientation="vertical"
-                android:padding="15dip"
-                android:visibility="gone">
+                android:padding="15dip">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -166,7 +163,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="4s店价"
+                            android:text="团购价"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
@@ -190,59 +187,123 @@
                 android:orientation="vertical"
                 android:padding="15dip">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/ll_car_detail_tag"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dip"
-                    android:text="车辆标签"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_car_detail_tag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dip" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dip"
+                        android:text="车辆标签"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dip"
-                    android:text="车身颜色"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_car_detail_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/rv_car_detail_color"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/ll_car_detail_color"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="车身颜色"
-                    android:textColor="@color/a666666"
-                    android:textSize="12sp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dip"
+                        android:text="车身颜色"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_car_detail_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="车身颜色"
+                        android:textColor="@color/a666666"
+                        android:textSize="12sp" />
+                </LinearLayout>
             </LinearLayout>
 
-            <com.flyco.tablayout.SlidingTabLayout
-                android:id="@+id/stl_car_detail"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
-                android:background="@color/white"
-                tl:tl_divider_color="@color/aEEEEEE"
-                tl:tl_divider_padding="13dp"
-                tl:tl_divider_width="1dp"
-                tl:tl_indicator_color="@color/a4A90E2"
-                tl:tl_indicator_height="1.5dp"
-                tl:tl_indicator_width_equal_title="true"
-                tl:tl_tab_padding="22dp"
-                tl:tl_tab_space_equal="true"
-                tl:tl_textSelectColor="@color/a4A90E2"
-                tl:tl_textUnselectColor="@color/a333333"
-                tl:tl_underline_color="@color/aEEEEEE"
-                tl:tl_underline_height="1dp" />
+                android:layout_marginBottom="15dip"
+                android:background="@color/white">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/vp_car_detail"
+                <RelativeLayout
+                    android:id="@+id/rl_cardetail_clxq"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/vw_cardetail_clxq"
+                        android:layout_width="20dip"
+                        android:layout_height="2dip"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/a0271F0" />
+
+                    <TextView
+                        android:id="@+id/tv_cardetail_clxq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="车辆详情"
+                        android:textColor="@color/a0271F0"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="2dip"
+                    android:layout_height="18dip"
+                    android:layout_gravity="center"
+                    android:background="@color/aEEEEEE" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_cardetail_cxcs"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/vw_cardetail_cxcs"
+                        android:layout_width="20dip"
+                        android:layout_height="2dip"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/a0271F0"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_cardetail_cxcs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="车型参数"
+                        android:textColor="@color/a333333"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_car_detail_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

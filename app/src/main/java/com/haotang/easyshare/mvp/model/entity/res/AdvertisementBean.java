@@ -1,5 +1,8 @@
 package com.haotang.easyshare.mvp.model.entity.res;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -10,7 +13,7 @@ import java.util.List;
  * @author 徐俊
  * @date XJ on 2018/5/14 19:54
  */
-public class AdvertisementBean {
+public class AdvertisementBean{
 
     /**
      * code : 0
@@ -46,7 +49,7 @@ public class AdvertisementBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
         /**
          * img : http://img.sayiyinxiang.com/api/activity/imgs/fallout.jpg
          * display : 2
@@ -63,6 +66,16 @@ public class AdvertisementBean {
             this.display = display;
             this.destination = destination;
             this.title = title;
+        }
+
+        @Override
+        public String   toString() {
+            return "DataBean{" +
+                    "img='" + img + '\'' +
+                    ", display=" + display +
+                    ", destination='" + destination + '\'' +
+                    ", title='" + title + '\'' +
+                    '}';
         }
 
         public String getTitle() {
@@ -96,5 +109,32 @@ public class AdvertisementBean {
         public void setDestination(String destination) {
             this.destination = destination;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel arg0, int arg1) {
+            arg0.writeString(img);
+            arg0.writeInt(display);
+            arg0.writeString(destination);
+            arg0.writeString(title);
+        }
+
+        public static final Parcelable.Creator<DataBean> CREATOR = new Creator(){
+
+            @Override
+            public DataBean createFromParcel(Parcel source) {
+                DataBean p = new DataBean(source.readString(),source.readInt(),source.readString(),source.readString());
+                return p;
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
     }
 }

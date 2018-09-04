@@ -56,6 +56,7 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
     @Override
     protected void initView(Bundle savedInstanceState) {
         flag = getIntent().getIntExtra("flag", 0);
+        activityListManager.addActivity(this);
         DaggerMyCouponActivityCommponent.builder().
                 myCouponActivityModule(new MyCouponActivityModule(this, this)).build().inject(this);
     }

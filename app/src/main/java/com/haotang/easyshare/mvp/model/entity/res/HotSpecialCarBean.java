@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.model.entity.res;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public class HotSpecialCarBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * car : WEY P8
          * icon : http://img.sayiyinxiang.com/api/brand/imgs/15246548999678464248.jpg

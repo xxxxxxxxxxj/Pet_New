@@ -255,6 +255,14 @@ public class UrlConstants {
      * 58.我的优惠券列表
      */
     public static final String MYCOUPON = "coupon/list";
+    /**
+     * 59.车辆详情
+     */
+    public static final String CARDETAIL = "brand/car/detail";
+    /**
+     * 60.车型预定
+     */
+    public static final String CAR_PERSON_SAVE = "brand/appoint/save";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

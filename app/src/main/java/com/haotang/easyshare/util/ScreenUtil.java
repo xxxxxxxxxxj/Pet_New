@@ -1,5 +1,6 @@
 package com.haotang.easyshare.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -196,4 +197,17 @@ public class ScreenUtil {
 		return (view.getMeasuredHeight());
 	}
 
+	// 屏幕宽度（像素）
+	public static int getWindowWidth(Activity context) {
+		DisplayMetrics metric = new DisplayMetrics();
+		context.getWindowManager().getDefaultDisplay().getMetrics(metric);
+		return metric.widthPixels;
+	}
+
+	// 屏幕高度（像素）
+	public static int getWindowHeight(Activity context) {
+		DisplayMetrics metric = new DisplayMetrics();
+		context.getWindowManager().getDefaultDisplay().getMetrics(metric);
+		return metric.heightPixels;
+	}
 }
