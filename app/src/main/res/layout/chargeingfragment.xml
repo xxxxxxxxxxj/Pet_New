@@ -350,6 +350,55 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:id="@+id/rl_chargeing_coupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="39dip"
+                    android:visibility="gone"
+                    android:paddingLeft="15dip"
+                    android:paddingRight="15dip">
+
+                    <TextView
+                        android:id="@+id/tv_chargeing_coupon_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dip"
+                        android:gravity="center_vertical"
+                        android:text="优惠券"
+                        android:textColor="@color/a666666"
+                        android:textSize="15sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@id/tv_chargeing_coupon_title">
+
+                        <ImageView
+                            android:id="@+id/iv_chargeing_coupon"
+                            android:layout_width="7dip"
+                            android:layout_height="11dip"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/right_more" />
+
+                        <TextView
+                            android:id="@+id/tv_chargeing_coupon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dip"
+                            android:layout_toLeftOf="@id/iv_chargeing_coupon"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical|right"
+                            android:singleLine="true"
+                            android:text="选择优惠券"
+                            android:textColor="@color/a666666"
+                            android:textSize="15sp" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
                 <Button
                     android:id="@+id/btn_chargeing_submit"
                     android:layout_width="match_parent"

@@ -18,6 +18,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerChargeIngFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.ChargeIngFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
+import com.haotang.easyshare.mvp.model.entity.event.SelectCouponEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
@@ -26,6 +27,7 @@ import com.haotang.easyshare.mvp.presenter.ChargeIngFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.RechargeActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeRecordActivity;
 import com.haotang.easyshare.mvp.view.activity.ScanCodeActivity;
+import com.haotang.easyshare.mvp.view.activity.SelectCouponActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IChargeIngFragmentView;
 import com.haotang.easyshare.mvp.view.services.ChargeBillService;
@@ -53,6 +55,7 @@ import okhttp3.RequestBody;
  */
 public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> implements IChargeIngFragmentView, AMapLocationListener {
     protected final static String TAG = ChargeIngFragment.class.getSimpleName();
+    private static final int CHARING_TO_COUPON = 111;
     @BindView(R.id.tv_chargeing_titlebar_other)
     TextView tvChargeingTitlebarOther;
     @BindView(R.id.tv_chargeing_num)
@@ -97,6 +100,10 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     TextView tv_chargeing_jsmname;
     @BindView(R.id.tv_chargeing_jsm)
     TextView tv_chargeing_jsm;
+    @BindView(R.id.tv_chargeing_coupon)
+    TextView tv_chargeing_coupon;
+    @BindView(R.id.rl_chargeing_coupon)
+    RelativeLayout rl_chargeing_coupon;
     private String phone;
     private int orderId;
     private String endCode;
@@ -109,6 +116,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private AMapLocationClient mlocationClient;
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
+    private int couponId;
 
     @Override
     protected boolean isLazyLoad() {
@@ -132,6 +140,13 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Override
     public boolean isUseEventBus() {
         return true;
+    }
+
+    @Subscribe
+    public void RefreshFragment(SelectCouponEvent event) {//选择优惠券返回
+        if (event != null) {
+
+        }
     }
 
     @Subscribe
@@ -175,6 +190,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Subscribe
     public void getChargeBill(ChargeingBill.DataBean data) {
         if (data != null) {
+            rl_chargeing_coupon.setVisibility(View.VISIBLE);
             totalPrice = data.getTotalPrice();
             if (StringUtil.isNotEmpty(totalPrice)) {
                 isBillSuccess = true;
@@ -210,9 +226,12 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     }
 
     @OnClick({R.id.tv_chargeing_titlebar_other, R.id.rl_chargeing_start, R.id.tv_chargeing_ljcz,
-            R.id.btn_chargeing_submit, R.id.tv_chargeing_gzbx})
+            R.id.btn_chargeing_submit, R.id.tv_chargeing_gzbx,R.id.rl_chargeing_coupon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rl_chargeing_coupon:
+                startActivity(new Intent(mActivity, SelectCouponActivity.class).putExtra("price",Double.valueOf(totalPrice)));
+                break;
             case R.id.tv_chargeing_titlebar_other:
                 SystemUtil.cellPhone(mActivity, phone);
                 break;
@@ -228,6 +247,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                     builder.addFormDataPart("orderId", orderId + "");
                     builder.addFormDataPart("price", totalPrice);
+                    builder.addFormDataPart("couponId", couponId+"");
                     RequestBody build = builder.build();
                     mPresenter.pay(build);
                 } else {

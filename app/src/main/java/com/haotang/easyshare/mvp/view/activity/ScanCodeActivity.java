@@ -184,6 +184,8 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
     @Override
     public void startFail(int code, String msg) {
         disMissDialog();
+        RingToast.show(msg);
+        finish();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(this, code);
     }

@@ -263,6 +263,10 @@ public class UrlConstants {
      * 60.车型预定
      */
     public static final String CAR_PERSON_SAVE = "brand/appoint/save";
+    /**
+     * 61.匹配可用优惠券列表
+     */
+    public static final String MATCH_COUPON = "coupon/match";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

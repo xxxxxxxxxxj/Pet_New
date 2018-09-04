@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.model.entity.res;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -57,7 +58,7 @@ public class MyCoupon {
             this.dataset = dataset;
         }
 
-        public static class DatasetBean {
+        public static class DatasetBean implements Serializable{
             /**
              * amount : 5
              * amountTxt : 5元
@@ -77,8 +78,26 @@ public class MyCoupon {
             private String startTime;
             private int id;
             private int state;
+            private int isAvali;
             private String endTime;
             private String title;
+            private boolean isSelect;
+
+            public boolean isSelect() {
+                return isSelect;
+            }
+
+            public void setSelect(boolean select) {
+                isSelect = select;
+            }
+
+            public int getIsAvali() {
+                return isAvali;
+            }
+
+            public void setIsAvali(int isAvali) {
+                this.isAvali = isAvali;
+            }
 
             public int getAmount() {
                 return amount;
