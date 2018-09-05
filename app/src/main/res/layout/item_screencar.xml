@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.flyco.roundview.RoundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rv="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dip"
+    android:layout_marginRight="15dip"
+    android:paddingBottom="15dip"
+    android:paddingRight="15dip"
+    rv:rv_backgroundColor="@color/white"
+    rv:rv_cornerRadius="5dip">
+
+    <TextView
+        android:id="@+id/tv_item_allbands_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_round_red"
+        android:paddingBottom="2dip"
+        android:visibility="gone"
+        android:paddingLeft="4dip"
+        android:paddingRight="4dip"
+        android:paddingTop="2dip"
+        android:text="热销"
+        android:textColor="@color/white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/tv_item_allbands_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:text="TextView"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/aEB2828"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="15dip"
+        android:layout_toLeftOf="@id/tv_item_allbands_price"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_item_allbands_img"
+            android:layout_width="90dip"
+            android:layout_height="65dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dip"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_image_load" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dip"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_item_allbands_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="TextView"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_item_allbands_xuhang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/a666666"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</com.flyco.roundview.RoundRelativeLayout>

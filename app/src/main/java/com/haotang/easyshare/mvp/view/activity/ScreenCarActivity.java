@@ -20,11 +20,11 @@ import com.haotang.easyshare.mvp.model.entity.res.ScreenCarCondition;
 import com.haotang.easyshare.mvp.model.entity.res.ScreenCarItem;
 import com.haotang.easyshare.mvp.presenter.ScreenCarPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
+import com.haotang.easyshare.mvp.view.adapter.ScreenCarAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ScreenCarCategoryAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ScreenCarModelAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ScreenCarPriceAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ScreenCarRenewalAdapter;
-import com.haotang.easyshare.mvp.view.adapter.SelectedCarAdapter;
 import com.haotang.easyshare.mvp.view.adapter.SelectedCarTopTagAdapter;
 import com.haotang.easyshare.mvp.view.iview.IScreenCarView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
@@ -73,7 +73,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
     private SwipeRefreshLayout srl_screencar;
     private RecyclerView rv_screencar;
     private List<HotSpecialCarBean.DataBean> selectedCarList = new ArrayList<HotSpecialCarBean.DataBean>();
-    private SelectedCarAdapter selectedCarAdapter;
+    private ScreenCarAdapter screenCarAdapter;
     private RecyclerView rv_screencar_toptag;
     private SelectedCarTopTagAdapter selectedCarTopTagAdapter;
     private String price;
@@ -125,9 +125,9 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
         rv_screencar.addItemDecoration(new DividerLinearItemDecoration(this, LinearLayoutManager.VERTICAL,
                 DensityUtil.dp2px(this, 15),
                 ContextCompat.getColor(this, R.color.af8f8f8)));
-        selectedCarAdapter = new SelectedCarAdapter(R.layout.item_allbrands_selectedcar
+        screenCarAdapter = new ScreenCarAdapter(R.layout.item_screencar
                 , selectedCarList);
-        rv_screencar.setAdapter(selectedCarAdapter);
+        rv_screencar.setAdapter(screenCarAdapter);
 
         RecyclerView rvPrice = new RecyclerView(this);
         rvPrice.setBackgroundColor(getResources().getColor(R.color.white));
@@ -197,7 +197,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
 
     private void refresh() {
         showDialog();
-        selectedCarAdapter.setEnableLoadMore(false);
+        screenCarAdapter.setEnableLoadMore(false);
         srl_screencar.setRefreshing(true);
         mNextRequestPage = 1;
         getCarList();
@@ -237,7 +237,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
 
     @Override
     protected void initEvent() {
-        selectedCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        screenCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if(selectedCarList.size() > position){
@@ -250,7 +250,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                 }
             }
         });
-        selectedCarAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        screenCarAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 loadMore();
@@ -522,41 +522,41 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
         disMissDialog();
         if (mNextRequestPage == 1) {
             srl_screencar.setRefreshing(false);
-            selectedCarAdapter.setEnableLoadMore(true);
+            screenCarAdapter.setEnableLoadMore(true);
             selectedCarList.clear();
         }
-        selectedCarAdapter.loadMoreComplete();
+        screenCarAdapter.loadMoreComplete();
         if (data != null && data.size() > 0) {
             if (mNextRequestPage == 1) {
                 pageSize = data.size();
             } else {
                 if (data.size() < pageSize) {
-                    selectedCarAdapter.loadMoreEnd(false);
+                    screenCarAdapter.loadMoreEnd(false);
                 }
             }
             selectedCarList.addAll(data);
             mNextRequestPage++;
         } else {
             if (mNextRequestPage == 1) {
-                selectedCarAdapter.loadMoreEnd(true);
-                selectedCarAdapter.setEmptyView(setEmptyViewBase(2, "暂无数据", R.mipmap.no_data, null));
+                screenCarAdapter.loadMoreEnd(true);
+                screenCarAdapter.setEmptyView(setEmptyViewBase(2, "暂无数据", R.mipmap.no_data, null));
             } else {
-                selectedCarAdapter.loadMoreEnd(false);
+                screenCarAdapter.loadMoreEnd(false);
             }
         }
-        selectedCarAdapter.notifyDataSetChanged();
+        screenCarAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void queryFail(int code, String msg) {
         disMissDialog();
         if (mNextRequestPage == 1) {
-            selectedCarAdapter.setEnableLoadMore(true);
+            screenCarAdapter.setEnableLoadMore(true);
             srl_screencar.setRefreshing(false);
         } else {
-            selectedCarAdapter.loadMoreFail();
+            screenCarAdapter.loadMoreFail();
         }
-        selectedCarAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+        screenCarAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 refresh();

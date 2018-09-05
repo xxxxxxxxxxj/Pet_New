@@ -22,8 +22,8 @@ import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
 import com.haotang.easyshare.mvp.view.activity.ScreenCarActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
+import com.haotang.easyshare.mvp.view.adapter.ScreenCarAdapter;
 import com.haotang.easyshare.mvp.view.adapter.SelectCarAdAdapter;
-import com.haotang.easyshare.mvp.view.adapter.SelectedCarAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.ISelectCarFragmentView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
@@ -66,7 +66,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     private List<HotCarBean.DataBean> carList = new ArrayList<HotCarBean.DataBean>();
     private HotPointCarAdapter hotPointCarAdapter;
     private List<HotSpecialCarBean.DataBean> selectedCarList = new ArrayList<HotSpecialCarBean.DataBean>();
-    private SelectedCarAdapter selectedCarAdapter;
+    private ScreenCarAdapter screenCarAdapter;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
     private SelectCarAdAdapter selectCarAdAdapter;
 
@@ -117,9 +117,9 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
                 DensityUtil.dp2px(mActivity, 15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
         selectedCarList.clear();
-        selectedCarAdapter = new SelectedCarAdapter(R.layout.item_allbrands_selectedcar
+        screenCarAdapter = new ScreenCarAdapter(R.layout.item_screencar
                 , selectedCarList);
-        rvSelectcarJxtj.setAdapter(selectedCarAdapter);
+        rvSelectcarJxtj.setAdapter(screenCarAdapter);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         selectedCarList.clear();
         if (data != null && data.size() > 0) {
             selectedCarList.addAll(data);
-            selectedCarAdapter.notifyDataSetChanged();
+            screenCarAdapter.notifyDataSetChanged();
         }
     }
 
@@ -235,7 +235,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
                 }
             }
         });
-        selectedCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        screenCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (selectedCarList.size() > 0 && selectedCarList.size() > position) {
