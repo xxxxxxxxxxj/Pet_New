@@ -70,6 +70,7 @@ public class ChargeList {
              */
 
             private double totalPrice;
+            private double payPrice;
             private double totalTime;
             private String stationName;
             private String startTime;
@@ -77,6 +78,14 @@ public class ChargeList {
             private int id;
             private int state;
             private double totalPower;
+
+            public double getPayPrice() {
+                return payPrice;
+            }
+
+            public void setPayPrice(double payPrice) {
+                this.payPrice = payPrice;
+            }
 
             public double getTotalPrice() {
                 return totalPrice;

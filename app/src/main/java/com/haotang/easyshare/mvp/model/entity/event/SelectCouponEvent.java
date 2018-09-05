@@ -9,7 +9,7 @@ package com.haotang.easyshare.mvp.model.entity.event;
  * @date zhoujunxia on 2018/9/4 18:41
  */
 public class SelectCouponEvent {
-    private int amount;
+    private double amount;
     private String amountTxt;
     private String description;
     private int reduceType;
@@ -24,7 +24,7 @@ public class SelectCouponEvent {
     public SelectCouponEvent() {
     }
 
-    public SelectCouponEvent(int amount, String amountTxt, String description, int reduceType, String startTime, int id, int state, int isAvali, String endTime, String title, boolean isSelect) {
+    public SelectCouponEvent(double amount, String amountTxt, String description, int reduceType, String startTime, int id, int state, int isAvali, String endTime, String title, boolean isSelect) {
         this.amount = amount;
         this.amountTxt = amountTxt;
         this.description = description;
@@ -38,11 +38,11 @@ public class SelectCouponEvent {
         this.isSelect = isSelect;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

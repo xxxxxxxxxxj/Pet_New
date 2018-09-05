@@ -32,6 +32,7 @@ import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IChargeIngFragmentView;
 import com.haotang.easyshare.mvp.view.services.ChargeBillService;
 import com.haotang.easyshare.mvp.view.services.ChargeStateService;
+import com.haotang.easyshare.util.ComputeUtil;
 import com.haotang.easyshare.util.PollingUtils;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -117,6 +118,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
     private int couponId;
+    private int stationId;
 
     @Override
     protected boolean isLazyLoad() {
@@ -143,9 +145,17 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     }
 
     @Subscribe
-    public void RefreshFragment(SelectCouponEvent event) {//选择优惠券返回
+    public void getCoupon(SelectCouponEvent event) {//选择优惠券返回
         if (event != null) {
-
+            int reduceType = event.getReduceType();
+            couponId = event.getId();
+            if (reduceType == 1) {//减免券
+                tv_chargeing_coupon.setText("优惠券减免" + event.getAmount() + "元");
+                totalPrice = String.valueOf(ComputeUtil.sub(Double.valueOf(totalPrice), event.getAmount()));
+            } else if (reduceType == 2) {//折扣券
+                tv_chargeing_coupon.setText("打" + event.getAmount() + "折,优惠" + ComputeUtil.sub(Double.valueOf(totalPrice), ComputeUtil.mul(Double.valueOf(totalPrice), event.getAmount())) + "元");
+                totalPrice = String.valueOf(ComputeUtil.mul(Double.valueOf(totalPrice), event.getAmount()));
+            }
         }
     }
 
@@ -226,11 +236,11 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     }
 
     @OnClick({R.id.tv_chargeing_titlebar_other, R.id.rl_chargeing_start, R.id.tv_chargeing_ljcz,
-            R.id.btn_chargeing_submit, R.id.tv_chargeing_gzbx,R.id.rl_chargeing_coupon})
+            R.id.btn_chargeing_submit, R.id.tv_chargeing_gzbx, R.id.rl_chargeing_coupon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_chargeing_coupon:
-                startActivity(new Intent(mActivity, SelectCouponActivity.class).putExtra("price",Double.valueOf(totalPrice)));
+                startActivity(new Intent(mActivity, SelectCouponActivity.class).putExtra("price", Double.valueOf(totalPrice)));
                 break;
             case R.id.tv_chargeing_titlebar_other:
                 SystemUtil.cellPhone(mActivity, phone);
@@ -247,7 +257,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                     builder.addFormDataPart("orderId", orderId + "");
                     builder.addFormDataPart("price", totalPrice);
-                    builder.addFormDataPart("couponId", couponId+"");
+                    builder.addFormDataPart("couponId", couponId + "");
                     RequestBody build = builder.build();
                     mPresenter.pay(build);
                 } else {
@@ -395,7 +405,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 if (lat > 0 && lng > 0) {
                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                     builder.addFormDataPart("orderid", orderId + "");
-                    builder.addFormDataPart("stationId", "");
+                    builder.addFormDataPart("stationId", stationId+"");
                     builder.addFormDataPart("lng", lng + "");
                     builder.addFormDataPart("lat", lat + "");
                     RequestBody build = builder.build();

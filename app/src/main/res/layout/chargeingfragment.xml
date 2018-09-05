@@ -207,8 +207,9 @@
 
             <RelativeLayout
                 android:layout_width="200dip"
-                android:layout_height="200dip"
-                android:layout_centerInParent="true">
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="90dip"
+                android:layout_height="200dip">
 
                 <LinearLayout
                     android:id="@+id/ll_chargeing_ing"
@@ -354,8 +355,8 @@
                     android:id="@+id/rl_chargeing_coupon"
                     android:layout_width="match_parent"
                     android:layout_height="39dip"
-                    android:visibility="gone"
                     android:paddingLeft="15dip"
+                    android:visibility="gone"
                     android:paddingRight="15dip">
 
                     <TextView

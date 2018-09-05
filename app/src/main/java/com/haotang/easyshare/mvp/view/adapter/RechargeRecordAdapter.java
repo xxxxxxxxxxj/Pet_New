@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeList;
+import com.haotang.easyshare.util.ComputeUtil;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
 
@@ -52,6 +53,12 @@ public class RechargeRecordAdapter extends BaseQuickAdapter<ChargeList.DataBean.
                 } else {
                     ll_item_rechargerecord.setBackgroundResource(R.drawable.bg_round_white);
                 }
+            }
+            if (item.getPayPrice() != item.getTotalPrice()) {
+                tv_item_rechargerecord_couponprice.setVisibility(View.VISIBLE);
+                tv_item_rechargerecord_couponprice.setText("已优惠¥" + ComputeUtil.sub(Double.valueOf(item.getTotalPrice()), item.getPayPrice()));
+            } else {
+                tv_item_rechargerecord_couponprice.setVisibility(View.GONE);
             }
             StringUtil.setText(tv_item_rechargerecord_price, "¥" + item.getTotalPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_rechargerecord_couponprice, "", "", View.VISIBLE, View.VISIBLE);

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerInputChargeCodeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.InputChargeCodeActivityModule;
-import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.presenter.InputChargeCodePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -118,6 +117,8 @@ public class InputChargeCodeActivity extends BaseActivity<InputChargeCodePresent
         disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(this, code);
+        RingToast.show(msg);
+        finish();
     }
 
     @Override
