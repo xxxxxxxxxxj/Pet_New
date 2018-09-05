@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +17,9 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
-import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.SelectCarFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
+import com.haotang.easyshare.mvp.view.activity.CarDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.ScreenCarActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
@@ -206,6 +207,19 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
 
     @Override
     protected void initEvent() {
+        screenCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if(selectedCarList.size() > position){
+                    HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
+                    Intent intent = new Intent(getActivity(), CarDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("carDetailData", dataBean);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            }
+        });
         selectCarAdAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -231,23 +245,6 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
                         intent.putExtra("brandId", dataBean.getId());
                         intent.putExtra("brand", dataBean.getBrand());
                         startActivity(intent);
-                    }
-                }
-            }
-        });
-        screenCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (selectedCarList.size() > 0 && selectedCarList.size() > position) {
-                    HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
-                    if (dataBean != null) {
-                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
-                        if (shareMap != null) {
-                            Intent intent = new Intent(mActivity, WebViewActivity.class);
-                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
-                            intent.putExtra("uuid", dataBean.getUuid());
-                            startActivity(intent);
-                        }
                     }
                 }
             }

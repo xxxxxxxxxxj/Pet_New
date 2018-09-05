@@ -22,8 +22,10 @@ import com.haotang.easyshare.mvp.model.entity.event.SelectCouponEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
+import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.presenter.ChargeIngFragmentPresenter;
+import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeRecordActivity;
 import com.haotang.easyshare.mvp.view.activity.ScanCodeActivity;
@@ -32,6 +34,7 @@ import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IChargeIngFragmentView;
 import com.haotang.easyshare.mvp.view.services.ChargeBillService;
 import com.haotang.easyshare.mvp.view.services.ChargeStateService;
+import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.util.ComputeUtil;
 import com.haotang.easyshare.util.PollingUtils;
 import com.haotang.easyshare.util.StringUtil;
@@ -118,6 +121,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
     private int couponId;
+    private double balance;
 
     @Override
     protected boolean isLazyLoad() {
@@ -217,6 +221,15 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private void refresh() {
         showDialog();
         mPresenter.ing();
+        mPresenter.home();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mPresenter != null){
+            mPresenter.home();
+        }
     }
 
     @Override
@@ -245,10 +258,34 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 SystemUtil.cellPhone(mActivity, phone);
                 break;
             case R.id.rl_chargeing_start:
-                startActivity(new Intent(mActivity, ScanCodeActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    if (balance >= 10) {
+                        startActivity(new Intent(mActivity, ScanCodeActivity.class));
+                    } else {
+                        new AlertDialogNavAndPost(mActivity).builder().setTitle("")
+                                .setMsg("您的余额不足，请及时充值")
+                                .setPositiveButton("确定", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        startActivity(new Intent(mActivity, RechargeActivity.class));
+                                    }
+                                }).setNegativeButton("取消", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        }).show();
+                    }
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.tv_chargeing_ljcz:
-                startActivity(new Intent(mActivity, RechargeActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, RechargeActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.btn_chargeing_submit:
                 showDialog();
@@ -387,7 +424,22 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Override
     public void saveFail(int code, String msg) {
         disMissDialog();
-        RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
+        RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity, code);
+    }
+
+    @Override
+    public void homeSuccess(HomeBean data) {
+        disMissDialog();
+        if (data != null) {
+            balance = data.getBalance();
+        }
+    }
+
+    @Override
+    public void homeFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "homeFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
     }
 

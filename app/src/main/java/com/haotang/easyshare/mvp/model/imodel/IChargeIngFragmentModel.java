@@ -39,4 +39,9 @@ public interface IChargeIngFragmentModel extends IBaseModel {
      * @param build
      */
     Observable save(RequestBody build);
+
+    /**
+     * 用户主页信息
+     */
+    Observable home();
 }

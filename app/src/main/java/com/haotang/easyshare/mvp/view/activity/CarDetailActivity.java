@@ -170,11 +170,15 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
                 }
                 break;
             case R.id.tv_car_detail_submit:
-                Intent intent = new Intent(CarDetailActivity.this, CarPersonInfoActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("carDetailData", carDetailData);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                if (SystemUtil.checkLogin(CarDetailActivity.this)) {
+                    Intent intent = new Intent(CarDetailActivity.this, CarPersonInfoActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("carDetailData", carDetailData);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                } else {
+                    startActivity(new Intent(CarDetailActivity.this, LoginActivity.class));
+                }
                 break;
             case R.id.rl_cardetail_clxq:
                 flag = 1;

@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.view.iview;
 
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
+import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
@@ -30,4 +31,8 @@ public interface IChargeIngFragmentView extends IBaseView {
     void saveSuccess(AddChargeBean data);
 
     void saveFail(int code, String msg);
+
+    void homeSuccess(HomeBean data);
+
+    void homeFail(int code, String msg);
 }

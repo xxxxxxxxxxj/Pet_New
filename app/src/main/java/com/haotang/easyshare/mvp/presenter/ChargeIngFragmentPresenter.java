@@ -3,6 +3,7 @@ package com.haotang.easyshare.mvp.presenter;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
+import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.IChargeIngFragmentModel;
@@ -26,6 +27,39 @@ import okhttp3.RequestBody;
 public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragmentView, IChargeIngFragmentModel> {
     public ChargeIngFragmentPresenter(IChargeIngFragmentView iChargeIngFragmentView, IChargeIngFragmentModel iChargeIngFragmentModel) {
         super(iChargeIngFragmentView, iChargeIngFragmentModel);
+    }
+
+    /**
+     * 用户主页信息
+     */
+    public void home() {
+        DevRing.httpManager().commonRequest(mIModel.home(),
+                new CommonObserver<HttpResult<HomeBean>>() {
+                    @Override
+                    public void onResult(HttpResult<HomeBean> result) {
+                        if (mIView != null) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    mIView.homeSuccess(result.getData());
+                                } else {
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        mIView.homeFail(result.getCode(), result.getMsg());
+                                    } else {
+                                        mIView.homeFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG
+                                                + "-code=" + result.getCode());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int errType, String errMessage) {
+                        if (mIView != null) {
+                            mIView.homeFail(errType, errMessage);
+                        }
+                    }
+                }, RxLifecycleUtil.bindUntilDestroy(mIView));
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.model;
 
 import com.haotang.easyshare.mvp.model.http.ChargeingFragmentApiService;
+import com.haotang.easyshare.mvp.model.http.MyFragmentApiService;
 import com.haotang.easyshare.mvp.model.imodel.IChargeIngFragmentModel;
 import com.ljy.devring.DevRing;
 
@@ -52,5 +53,13 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
     @Override
     public Observable save(RequestBody build) {
         return DevRing.httpManager().getService(ChargeingFragmentApiService.class).save(build);
+    }
+
+    /**
+     * 用户主页信息
+     */
+    @Override
+    public Observable home() {
+        return DevRing.httpManager().getService(MyFragmentApiService.class).home();
     }
 }
