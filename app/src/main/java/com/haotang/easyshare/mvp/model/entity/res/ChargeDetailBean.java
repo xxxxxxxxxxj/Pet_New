@@ -54,7 +54,7 @@ public class ChargeDetailBean {
     private String openTime;
     private double lat;
     private int freeNum;
-    private double serviceFee;
+    private String serviceFee;
     private String remark;
     private int parkingIsUnderground;
     private List<String> detailImgs;
@@ -122,11 +122,11 @@ public class ChargeDetailBean {
         this.parkingIsUnderground = parkingIsUnderground;
     }
 
-    public double getServiceFee() {
+    public String getServiceFee() {
         return serviceFee;
     }
 
-    public void setServiceFee(double serviceFee) {
+    public void setServiceFee(String serviceFee) {
         this.serviceFee = serviceFee;
     }
 

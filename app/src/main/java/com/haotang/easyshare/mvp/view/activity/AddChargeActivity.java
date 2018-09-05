@@ -679,7 +679,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         RingToast.show("保存失败");
         disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(this,code);
+        SystemUtil.Exit(this, code);
     }
 
     @Override
@@ -692,11 +692,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             StringUtil.setText(tvAddchargeZdz, data.getAddress(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvAddchargeKfsj, data.getOpenTime(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargeCdf, data.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
-            if (SystemUtil.isDoubleEndWithZero(data.getServiceFee())) {
-                StringUtil.setText(etAddchargeFwf, SystemUtil.formatDouble(data.getServiceFee()) + "", "", View.VISIBLE, View.VISIBLE);
-            } else {
-                StringUtil.setText(etAddchargeFwf, data.getServiceFee() + "", "", View.VISIBLE, View.VISIBLE);
-            }
+            StringUtil.setText(etAddchargeFwf, data.getServiceFee() + "", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvAddchargeZffs, data.getPayWay(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargePhone, data.getPhone() + "", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargeTcf, data.getParkingPrice(), "", View.VISIBLE, View.VISIBLE);
@@ -748,10 +744,10 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                                 });
                     }
                 }
-            }else{
+            } else {
                 disMissDialog();
             }
-        }else{
+        } else {
             disMissDialog();
         }
     }
@@ -760,7 +756,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     public void detailFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(this,code);
+        SystemUtil.Exit(this, code);
     }
 
     @Override
@@ -778,7 +774,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         disMissDialog();
         RingToast.show("编辑失败");
         RingLog.e(TAG, "updateFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(this,code);
+        SystemUtil.Exit(this, code);
     }
 
     @Override
