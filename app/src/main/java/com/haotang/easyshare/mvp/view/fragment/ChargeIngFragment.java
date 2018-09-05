@@ -118,7 +118,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
     private int couponId;
-    private int stationId;
 
     @Override
     protected boolean isLazyLoad() {
@@ -405,7 +404,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 if (lat > 0 && lng > 0) {
                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                     builder.addFormDataPart("orderid", orderId + "");
-                    builder.addFormDataPart("stationId", stationId+"");
                     builder.addFormDataPart("lng", lng + "");
                     builder.addFormDataPart("lat", lat + "");
                     RequestBody build = builder.build();
