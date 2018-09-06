@@ -293,7 +293,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                     builder.addFormDataPart("orderId", orderId + "");
                     builder.addFormDataPart("price", totalPrice);
-                    builder.addFormDataPart("couponId", couponId + "");
+                    if(couponId > 0){
+                        builder.addFormDataPart("couponId", couponId + "");
+                    }
                     RequestBody build = builder.build();
                     mPresenter.pay(build);
                 } else {
