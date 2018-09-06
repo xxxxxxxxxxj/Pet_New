@@ -22,6 +22,7 @@ import com.haotang.easyshare.mvp.view.iview.ICarPersonInfoView;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 
@@ -115,6 +116,7 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
         StringUtil.setText(tvCardetailPersonName, carDetailData.getCar(), "", View.VISIBLE, View.VISIBLE);
         StringUtil.setText(tvCardetailPersonXuhang, carDetailData.getBatteryLife(), "", View.VISIBLE, View.VISIBLE);
         StringUtil.setText(tvCardetailPersonPrice, "¥" + carDetailData.getPrice(), "", View.VISIBLE, View.VISIBLE);
+        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx11);
     }
 
     private void setLocation() {

@@ -51,6 +51,7 @@ import com.haotang.easyshare.util.FileSizeUtil;
 import com.haotang.easyshare.util.SignUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
@@ -229,6 +230,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         rvAddchargeImg.setAdapter(commentImgAdapter);
 
         setLocation();
+        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx15);
     }
 
     private void setLocation() {

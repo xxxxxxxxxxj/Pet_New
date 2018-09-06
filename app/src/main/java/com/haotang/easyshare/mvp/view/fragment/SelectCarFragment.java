@@ -31,6 +31,7 @@ import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -139,6 +140,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
                 RefreshFragmentEvent.REFRESH_SELECTCARFRAGMET && mPresenter != null) {
             RingLog.e("REFRESH_SELECTCARFRAGMET");
             refresh();
+            UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx8);
         }
     }
 
@@ -261,6 +263,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         switch (v.getId()) {
             case R.id.rl_selectcar_rmpp:
                 startActivity(new Intent(mActivity, AllBrandsActivity.class));
+                UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx9);
                 break;
         }
     }

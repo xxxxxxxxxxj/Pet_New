@@ -36,6 +36,7 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 import com.youth.banner.listener.OnBannerListener;
 
@@ -157,6 +158,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     public void refresh(RefreshEvent data) {
         if (data != null && data.getRefreshIndex() == RefreshEvent.SEND_POST) {
             refresh();
+            UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx4);
         }
     }
 
@@ -209,6 +211,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 break;
             case R.id.rl_top_hotfrag_rmpp:
                 startActivity(new Intent(mActivity, AllBrandsActivity.class));
+                UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx6);
                 break;
         }
     }
@@ -227,6 +230,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                     if (dataBean != null) {
                         PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
                         if (shareMap != null) {
+                            UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx5);
                             Intent intent = new Intent(mActivity, WebViewActivity.class);
                             intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
                             intent.putExtra("uuid", dataBean.getUuid());

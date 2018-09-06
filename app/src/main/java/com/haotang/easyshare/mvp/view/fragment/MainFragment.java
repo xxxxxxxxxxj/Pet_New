@@ -74,6 +74,7 @@ import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.youth.banner.Banner;
@@ -314,6 +315,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 //启动定位
                 mlocationClient.startLocation();
             }
+            UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx1);
         }
     }
 
@@ -343,6 +345,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 poiSearch = new PoiSearch(mActivity, query);
                 poiSearch.setOnPoiSearchListener(MainFragment.this);
                 poiSearch.searchPOIAsyn();
+                UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx13);
             }
 
             @Override

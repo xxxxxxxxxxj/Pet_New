@@ -20,6 +20,7 @@ import com.haotang.easyshare.mvp.view.iview.IScanCodeView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SystemTypeUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.other.permission.PermissionListener;
@@ -79,6 +80,7 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
         CodeUtils.setFragmentArgs(captureFragment, R.layout.my_camera);
         captureFragment.setAnalyzeCallback(analyzeCallback);
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
+        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx12);
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.util.PayUtils;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -94,6 +95,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter> implements
         rechargeTempAdapter = new RechargeTempAdapter(R.layout.item_recharge_temp
                 , rechargeTempList);
         rvRechargeTemp.setAdapter(rechargeTempAdapter);
+        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx16);
     }
 
     @Override

@@ -22,6 +22,7 @@ import com.haotang.easyshare.mvp.view.iview.IRechargeRecordView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -77,6 +78,7 @@ public class RechargeRecordActivity extends BaseActivity<RechargeRecordPresenter
     @Override
     protected void setView(Bundle savedInstanceState) {
         tvTitlebarTitle.setText("充电记录");
+        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx17);
     }
 
     @Override

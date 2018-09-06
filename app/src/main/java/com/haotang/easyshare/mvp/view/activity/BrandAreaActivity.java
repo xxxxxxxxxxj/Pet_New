@@ -32,6 +32,7 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.Banner;
@@ -113,6 +114,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
         tv_brandarea_top = (TextView) top.findViewById(R.id.tv_brandarea_top);
         StringUtil.setText(tv_brandarea_rexiaotv, brand + "热销", "", View.VISIBLE, View.VISIBLE);
         tv_brandarea_top.bringToFront();
+        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx7);
     }
 
     @Override

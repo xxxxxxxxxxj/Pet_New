@@ -40,6 +40,7 @@ import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.SignUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.haotang.easyshare.verticalbanner.VerticalBannerView;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
@@ -175,6 +176,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
         } else {
             setLocation();
         }
+        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx3);
     }
 
     private void setLocation() {

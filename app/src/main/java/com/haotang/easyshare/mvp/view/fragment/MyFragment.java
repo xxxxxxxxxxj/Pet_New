@@ -41,6 +41,7 @@ import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 
@@ -145,6 +146,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             showDialog();
             mPresenter.home();
             mPresenter.my();
+            UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx14);
         }
     }
 
@@ -302,6 +304,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 break;
             case R.id.rl_myfragment_hytq:
                 if (SystemUtil.checkLogin(mActivity)) {
+                    UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx18);
                     startActivity(new Intent(mActivity, WebViewActivity.class).
                             putExtra(WebViewActivity.URL_KEY, vipPrivilege));
                 } else {

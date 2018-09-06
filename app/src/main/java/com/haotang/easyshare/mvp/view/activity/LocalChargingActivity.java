@@ -28,6 +28,7 @@ import com.haotang.easyshare.mvp.view.iview.ILocalChargingView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.SignUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -90,6 +91,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         } else {
             setLocation();
         }
+        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx2);
     }
 
     private void setLocation() {

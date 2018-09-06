@@ -32,6 +32,7 @@ import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
@@ -138,6 +139,7 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
         rvCarDetailPic.setLayoutManager(new LinearLayoutManager(this));
         carDetailPicAdapter = new CarDetailPicAdapter(R.layout.item_cardetail_pic, imgs, this);
         rvCarDetailPic.setAdapter(carDetailPicAdapter);
+        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx10);
     }
 
     @Override
