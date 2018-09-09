@@ -86,6 +86,7 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
     protected void onDestroy() {
         super.onDestroy();
         activityListManager.removeActivity(this); //退出activity
+        SystemUtil.goneJP(this);
     }
 
     @Override

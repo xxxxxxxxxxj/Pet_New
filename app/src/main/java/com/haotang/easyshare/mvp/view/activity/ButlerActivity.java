@@ -17,7 +17,7 @@ import com.haotang.easyshare.mvp.view.fragment.CurrentMessageFragment;
 import com.haotang.easyshare.mvp.view.fragment.HistoricalMessageFragment;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IButlerView;
-import com.ljy.devring.DevRing;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -105,6 +105,7 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
 
             @Override
             public void onPageSelected(int position) {
+                SystemUtil.goneJP(ButlerActivity.this);
                 RingLog.e("position = " + position);
                 if (position == 0) {
                     tvTitlebarOther.setVisibility(View.VISIBLE);

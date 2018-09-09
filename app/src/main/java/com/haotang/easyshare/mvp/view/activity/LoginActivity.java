@@ -217,6 +217,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     protected void onDestroy() {
         super.onDestroy();
         mlocationClient.stopLocation();
+        SystemUtil.goneJP(this);
         CountdownUtil.getInstance().cancel("LOGIN_TIMER");
         activityListManager.removeActivity(this); //退出activity
     }
@@ -229,12 +230,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 break;
             case R.id.tv_login_hqyzm:
                 if (StringUtil.isEmpty(StringUtil.checkEditText(etLoginPhone))) {
-                    etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
+                    RingToast.show("请输入手机号码");
+                    SystemUtil.goneJP(this);
                     return;
                 }
                 String replace = etLoginPhone.getText().toString().trim().replace(" ", "");
                 if (replace.length() != 11) {
-                    etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
+                    RingToast.show("请输入正确的手机号码");
+                    SystemUtil.goneJP(this);
                     return;
                 }
                 showDialog();
@@ -242,16 +245,19 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 break;
             case R.id.iv_login_login:
                 if (StringUtil.isEmpty(StringUtil.checkEditText(etLoginPhone))) {
-                    etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
+                    RingToast.show("请输入手机号码");
+                    SystemUtil.goneJP(this);
                     return;
                 }
                 String replace1 = etLoginPhone.getText().toString().trim().replace(" ", "");
                 if (replace1.length() != 11) {
-                    etLoginPhone.setAnimation(SystemUtil.shakeAnimation(5));
+                    RingToast.show("请输入正确的手机号码");
+                    SystemUtil.goneJP(this);
                     return;
                 }
                 if (StringUtil.isEmpty(StringUtil.checkEditText(etLoginYzm))) {
-                    etLoginYzm.setAnimation(SystemUtil.shakeAnimation(5));
+                    RingToast.show("请输入验证码");
+                    SystemUtil.goneJP(this);
                     return;
                 }
                 showDialog();
@@ -319,6 +325,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     public void sendVerifyCodeFail(int status, String desc) {
         disMissDialog();
+        RingToast.show(desc);
         RingLog.e(TAG, "LoginActivity sendVerifyCodeFail() status = " + status + "---desc = " + desc);
     }
 
@@ -343,6 +350,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     public void loginFail(int status, String desc) {
         disMissDialog();
+        RingToast.show(desc);
         RingLog.e(TAG, "LoginActivity loginFail() status = " + status + "---desc = " + desc);
     }
 
@@ -364,12 +372,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     @Override
     public void getWxOpenIdFail(int status, String desc) {
         disMissDialog();
+        RingToast.show(desc);
         RingLog.e(TAG, "LoginActivity getWxOpenIdFail() status = " + status + "---desc = " + desc);
     }
 
     @Override
     public void getWxUserInfoFail(int status, String desc) {
         disMissDialog();
+        RingToast.show(desc);
         RingLog.e(TAG, "LoginActivity getWxUserInfoFail() status = " + status + "---desc = " + desc);
     }
 

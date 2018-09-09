@@ -311,9 +311,11 @@
                     android:layout_alignParentRight="true"
                     android:layout_toRightOf="@id/tv_addcharge_phone"
                     android:background="@android:color/transparent"
+                    android:ems="10"
                     android:gravity="center_vertical|right"
                     android:hint="请输入联系电话"
-                    android:inputType="number"
+                    android:inputType="phone"
+                    android:maxLength="13"
                     android:textColor="@color/a333333"
                     android:textColorHint="@color/aBBBBBB"
                     android:textSize="14sp" />

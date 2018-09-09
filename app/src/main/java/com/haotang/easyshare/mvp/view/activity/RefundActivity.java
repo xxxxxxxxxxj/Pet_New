@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerRefundActivityCommponent;
 import com.haotang.easyshare.di.module.activity.RefundActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
 import com.haotang.easyshare.mvp.model.entity.res.ReFundExplain;
 import com.haotang.easyshare.mvp.model.entity.res.ReFundSubmit;
 import com.haotang.easyshare.mvp.model.entity.res.ReFundTag;
@@ -29,6 +30,7 @@ import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
@@ -250,6 +252,7 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
     public void refundSuccess(ReFundSubmit.DataBean data) {
         disMissDialog();
         if (data != null) {
+            DevRing.busManager().postEvent(new RefreshBalanceEvent());
             String desc = data.getDesc();
             startActivity(new Intent(RefundActivity.this, RefundResultActivity.class).putExtra("desc", desc));
         }

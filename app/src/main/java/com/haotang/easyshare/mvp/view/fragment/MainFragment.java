@@ -76,7 +76,6 @@ import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
-import com.ljy.devring.util.RingToast;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 
@@ -825,12 +824,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                             }
                         }
                         mainSerchResultAdapter.notifyDataSetChanged();
-                    } else {
-                        RingToast.show(R.string.no_result);
                     }
                 }
-            } else {
-                RingToast.show(R.string.no_result);
             }
         }
     }

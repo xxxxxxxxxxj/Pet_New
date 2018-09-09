@@ -77,6 +77,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
     protected void onDestroy() {
         super.onDestroy();
         activityListManager.removeActivity(this); //退出activity
+        SystemUtil.goneJP(this);
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.iv_carinfo_submit})

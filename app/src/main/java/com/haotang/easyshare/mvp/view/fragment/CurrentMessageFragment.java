@@ -11,6 +11,7 @@ import com.haotang.easyshare.mvp.presenter.CurrentMessageFragmentPresenter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.ICurrentMessageFragmentView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
@@ -68,6 +69,11 @@ public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentP
     }
 
     public void saveMsg() {
+        if (StringUtil.isEmpty(StringUtil.checkEditText(etCurrentmsg))) {
+            RingToast.show("请输入您的问题哦~");
+            SystemUtil.goneJP(getActivity());
+            return;
+        }
         showDialog();
         mPresenter.save(1, etCurrentmsg.getText().toString().trim());
     }
@@ -84,6 +90,6 @@ public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentP
     public void saveFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "historyFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(mActivity,code);
+        SystemUtil.Exit(mActivity, code);
     }
 }

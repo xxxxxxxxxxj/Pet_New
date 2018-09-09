@@ -102,6 +102,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SystemUtil.goneJP(this);
         activityListManager.removeActivity(this); //退出activity
     }
 

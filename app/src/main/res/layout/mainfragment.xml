@@ -108,7 +108,8 @@
         <EditText
             android:id="@+id/et_mainfrag_serch"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="35dip"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/rl_mainfrag_top_right"
             android:layout_toRightOf="@id/ll_mainfrag_city"
             android:background="@null"

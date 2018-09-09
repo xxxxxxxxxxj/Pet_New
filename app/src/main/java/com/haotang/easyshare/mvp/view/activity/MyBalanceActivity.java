@@ -11,6 +11,8 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerMyBalanceActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MyBalanceActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
+import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.presenter.MyBalancePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
@@ -18,7 +20,11 @@ import com.haotang.easyshare.mvp.view.fragment.RechargeFragment;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMyBalanceView;
 import com.haotang.easyshare.mvp.view.widget.RefundPopupWindow;
+import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -41,6 +47,19 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     private int currentTabIndex;
     private RefundPopupWindow refundPopupWindow;
     private double balance;
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshBalance(RefreshBalanceEvent event) {//充值返回
+        if (event != null) {
+            showDialog();
+            mPresenter.home();
+        }
+    }
 
     @Override
     protected int getContentLayout() {
@@ -139,5 +158,21 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     protected void onDestroy() {
         super.onDestroy();
         activityListManager.removeActivity(this); //退出activity
+    }
+
+    @Override
+    public void homeSuccess(HomeBean data) {
+        disMissDialog();
+        if (data != null) {
+            balance = data.getBalance();
+            tv_my_balance_balance.setText(String.valueOf(balance));
+        }
+    }
+
+    @Override
+    public void homeFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "homeFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this, code);
     }
 }

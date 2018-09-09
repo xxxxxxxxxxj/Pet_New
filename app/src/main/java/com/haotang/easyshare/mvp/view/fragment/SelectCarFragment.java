@@ -262,7 +262,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     public void onViewClicked(View v) {
         switch (v.getId()) {
             case R.id.rl_selectcar_rmpp:
-                startActivity(new Intent(mActivity, AllBrandsActivity.class));
+                startActivity(new Intent(mActivity, AllBrandsActivity.class).putExtra("flag",1));
                 UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx9);
                 break;
         }

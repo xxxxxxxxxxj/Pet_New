@@ -1,17 +1,12 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.Manifest;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -212,6 +207,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
             @Override
             public void onPageSelected(int position) {
+                SystemUtil.goneJP(MainActivity.this);
                 RingLog.e(TAG, "onPageSelected position = " + position);
                 currentTabIndex = position;
                 ctlMainactivity.setCurrentTab(currentTabIndex);

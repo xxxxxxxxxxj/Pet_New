@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerChargeIngFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.ChargeIngFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.event.SelectCouponEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
@@ -163,6 +164,14 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     }
 
     @Subscribe
+    public void RefreshBalance(RefreshBalanceEvent event) {//充值返回
+        if (event != null) {
+            showDialog();
+            mPresenter.home();
+        }
+    }
+
+    @Subscribe
     public void RefreshFragment(RefreshFragmentEvent refreshFragmentEvent) {
         if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() ==
                 RefreshFragmentEvent.REFRESH_CHARGEINGFRAGMET && mPresenter != null) {
@@ -227,7 +236,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Override
     public void onResume() {
         super.onResume();
-        if(mPresenter != null){
+        if (mPresenter != null) {
             mPresenter.home();
         }
     }
@@ -293,7 +302,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                     builder.addFormDataPart("orderId", orderId + "");
                     builder.addFormDataPart("price", totalPrice);
-                    if(couponId > 0){
+                    if (couponId > 0) {
                         builder.addFormDataPart("couponId", couponId + "");
                     }
                     RequestBody build = builder.build();
@@ -434,7 +443,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     public void homeSuccess(HomeBean data) {
         disMissDialog();
         if (data != null) {
+            phone = data.getKf_phone();
             balance = data.getBalance();
+            tvChargeingMoney.setText("当前可用：" + balance + "元");
         }
     }
 

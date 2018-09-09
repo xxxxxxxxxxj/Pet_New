@@ -85,6 +85,7 @@ public class InputChargeCodeActivity extends BaseActivity<InputChargeCodePresent
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SystemUtil.goneJP(this);
         activityListManager.removeActivity(this); //退出activity
     }
 

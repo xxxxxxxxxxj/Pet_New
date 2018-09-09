@@ -1,6 +1,8 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -145,8 +147,59 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
     }
 
     @Override
-    protected void initEvent() {
+    protected void onDestroy() {
+        super.onDestroy();
+        activityListManager.removeActivity(this); //退出activity
+        SystemUtil.goneJP(this);
+    }
 
+    @Override
+    protected void initEvent() {
+        etCardetailPersonPhone.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                if (s == null || s.length() == 0) return;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < s.length(); i++) {
+                    if (i != 3 && i != 8 && s.charAt(i) == ' ') {
+                        continue;
+                    } else {
+                        sb.append(s.charAt(i));
+                        if ((sb.length() == 4 || sb.length() == 9) && sb.charAt(sb.length() - 1) != ' ') {
+                            sb.insert(sb.length() - 1, ' ');
+                        }
+                    }
+                }
+                if (!sb.toString().equals(s.toString())) {
+                    int index = start + 1;
+                    if (sb.charAt(start) == ' ') {
+                        if (before == 0) {
+                            index++;
+                        } else {
+                            index--;
+                        }
+                    } else {
+                        if (before == 1) {
+                            index--;
+                        }
+                    }
+                    etCardetailPersonPhone.setText(sb.toString());
+                    etCardetailPersonPhone.setSelection(index);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_cardetail_person_submit})
@@ -156,6 +209,22 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
                 finish();
                 break;
             case R.id.tv_cardetail_person_submit:
+                if (StringUtil.isEmpty(StringUtil.checkEditText(etCardetailPersonXm))) {
+                    RingToast.show("请输入姓名");
+                    SystemUtil.goneJP(this);
+                    return;
+                }
+                if (StringUtil.isEmpty(StringUtil.checkEditText(etCardetailPersonPhone))) {
+                    RingToast.show("请输入手机号码");
+                    SystemUtil.goneJP(this);
+                    return;
+                }
+                String replace1 = etCardetailPersonPhone.getText().toString().trim().replace(" ", "");
+                if (replace1.length() != 11) {
+                    RingToast.show("请输入正确的手机号码");
+                    SystemUtil.goneJP(this);
+                    return;
+                }
                 showDialog();
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("carId", id + "");

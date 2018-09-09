@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -230,7 +232,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
         rvAddchargeImg.setAdapter(commentImgAdapter);
 
         setLocation();
-        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx15);
+        UmenUtil.UmengEventStatistics(this, UmenUtil.yxzx15);
     }
 
     private void setLocation() {
@@ -260,6 +262,51 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
 
     @Override
     protected void initEvent() {
+        etAddchargePhone.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                if (s == null || s.length() == 0) return;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < s.length(); i++) {
+                    if (i != 3 && i != 8 && s.charAt(i) == ' ') {
+                        continue;
+                    } else {
+                        sb.append(s.charAt(i));
+                        if ((sb.length() == 4 || sb.length() == 9) && sb.charAt(sb.length() - 1) != ' ') {
+                            sb.insert(sb.length() - 1, ' ');
+                        }
+                    }
+                }
+                if (!sb.toString().equals(s.toString())) {
+                    int index = start + 1;
+                    if (sb.charAt(start) == ' ') {
+                        if (before == 0) {
+                            index++;
+                        } else {
+                            index--;
+                        }
+                    } else {
+                        if (before == 1) {
+                            index--;
+                        }
+                    }
+                    etAddchargePhone.setText(sb.toString());
+                    etAddchargePhone.setSelection(index);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
         commentImgAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -394,6 +441,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     protected void onDestroy() {
         super.onDestroy();
         activityListManager.removeActivity(this); //退出activity
+        SystemUtil.goneJP(this);
     }
 
     private void setKuaiOrMan(int flag) {
@@ -444,6 +492,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 setisPrivate(0);
                 break;
             case R.id.iv_titlebar_back:
+                SystemUtil.goneJP(this);
                 finish();
                 break;
             case R.id.tv_titlebar_other:
@@ -452,7 +501,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE);
                 builder.addFormDataPart("lng", String.valueOf(lng));
                 builder.addFormDataPart("lat", String.valueOf(lat));
-                builder.addFormDataPart("telephone", etAddchargePhone.getText().toString().trim());
+                builder.addFormDataPart("telephone", etAddchargePhone.getText().toString().trim().replace(" ", ""));
                 builder.addFormDataPart("title", etAddchargeZmc.getText().toString().trim());
                 builder.addFormDataPart("electricityPrice", etAddchargeCdf.getText().toString().trim() + "_" + tvAddchargeKfsj.getText().toString().trim());
                 builder.addFormDataPart("parkingPrice", etAddchargeTcf.getText().toString().trim() + "_" + upOrDown);
@@ -812,6 +861,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             }
         }
     }
+
 
     @Override
     protected void onResume() {

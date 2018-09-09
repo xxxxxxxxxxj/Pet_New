@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
 /**
@@ -11,4 +12,7 @@ import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
  * @date XJ on 2018/7/23 17:44
  */
 public interface IMyBalanceView extends IBaseView{
+    void homeSuccess(HomeBean data);
+
+    void homeFail(int code, String msg);
 }

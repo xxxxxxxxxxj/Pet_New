@@ -18,7 +18,9 @@ import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
+/**
+ * 退款结果页
+ */
 public class RefundResultActivity extends BaseActivity<RefundResultPresenter> implements IRefundResultView {
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;

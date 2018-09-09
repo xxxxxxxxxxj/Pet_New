@@ -61,10 +61,21 @@
         </com.flyco.roundview.RoundRelativeLayout>
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_serchaddress_result"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="15dip"
-        android:paddingRight="15dip" />
+        android:layout_height="match_parent">
+
+        <com.amap.api.maps.MapView
+            android:id="@+id/mv_serchaddress_map"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_serchaddress_result"
+            android:layout_below="@id/mv_serchaddress_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip" />
+    </RelativeLayout>
 </LinearLayout>

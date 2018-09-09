@@ -313,6 +313,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SystemUtil.goneJP(this);
         activityListManager.removeActivity(this); //退出activity
     }
 

@@ -13,6 +13,13 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.CameraPosition;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
@@ -44,8 +51,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.haotang.easyshare.R.id.rll_mainfrag_serchresult;
-
 
 /**
  * 搜索地址页
@@ -60,15 +65,24 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
     RoundRelativeLayout rllSerchaddressSerch;
     @BindView(R.id.rv_serchaddress_result)
     RecyclerView rvSerchaddressResult;
+    @BindView(R.id.mv_serchaddress_map)
+    MapView mv_serchaddress_map;
     private PoiSearch.Query query;
     private PoiSearch poiSearch;
     private List<SerchResult> serchList = new ArrayList<SerchResult>();
+    private List<SerchResult> defaultList = new ArrayList<SerchResult>();
     private MainSerchResultAdapter mainSerchResultAdapter;
     //声明mlocationClient对象
     private AMapLocationClient mlocationClient;
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
     private String cityCode;
+    private AMap aMap;
+    private UiSettings mUiSettings;
+    private MyLocationStyle myLocationStyle;
+    private int flag;
+    private double lat;
+    private double lng;
 
     @Override
     protected int getContentLayout() {
@@ -84,13 +98,33 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        SystemUtil.goneJP(this);
+        serchList.clear();
         rvSerchaddressResult.setHasFixedSize(true);
         rvSerchaddressResult.setLayoutManager(new LinearLayoutManager(SerchAddressActivity.this));
         mainSerchResultAdapter = new MainSerchResultAdapter(R.layout.item_mainserchresult, serchList);
         rvSerchaddressResult.setAdapter(mainSerchResultAdapter);
         rvSerchaddressResult.addItemDecoration(new DividerItemDecoration(SerchAddressActivity.this,
                 DividerItemDecoration.VERTICAL));
+
+        mv_serchaddress_map.onCreate(savedInstanceState);// 此方法必须重写
+        if (aMap == null) {
+            aMap = mv_serchaddress_map.getMap();
+        }
+        mUiSettings = aMap.getUiSettings();
+        setUpMap();
         setLocation();
+    }
+
+    private void setUpMap() {
+        //定位
+        // 如果要设置定位的默认状态，可以在此处进行设置
+        myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
+        aMap.setMyLocationStyle(myLocationStyle);
+        mUiSettings.setMyLocationButtonEnabled(false);// 设置默认定位按钮是否显示
+        aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+        mUiSettings.setZoomControlsEnabled(false);
     }
 
     private void setLocation() {
@@ -120,27 +154,41 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
 
     @Override
     protected void initEvent() {
+        SoftKeyBoardListener.setListener(this, new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
+            @Override
+            public void keyBoardShow(int height) {
+                RingLog.e("keyBoardShow height = " + height);
+            }
+
+            @Override
+            public void keyBoardHide(int height) {
+                RingLog.e("keyBoardHide height = " + height);
+                flag = 1;
+                setMapOrResult();
+            }
+        });
         mainSerchResultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (!serchList.get(position).isFake()) {
-                    DevRing.busManager().postEvent(serchList.get(position));
-                    finish();
-                }
+                DevRing.busManager().postEvent(serchList.get(position));
+                finish();
             }
         });
         etSerchaddress.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2,
                                       int arg3) {
-                RingLog.d(TAG, "关键字 = " + StringUtil.checkEditText(etSerchaddress));
-                query = new PoiSearch.Query(StringUtil.checkEditText(etSerchaddress), "", cityCode);// 第一个参数表示搜索字符串，
-                // 第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
-                query.setPageSize(100);// 设置每页最多返回多少条poiitem
-                query.setPageNum(0);// 设置查第一页
-                poiSearch = new PoiSearch(SerchAddressActivity.this, query);
-                poiSearch.setOnPoiSearchListener(SerchAddressActivity.this);
-                poiSearch.searchPOIAsyn();
+                RingLog.e("关键字 = " + StringUtil.checkEditText(etSerchaddress));
+                if (StringUtil.isNotEmpty(StringUtil.checkEditText(etSerchaddress))) {
+                    flag = 2;
+                    query = new PoiSearch.Query(StringUtil.checkEditText(etSerchaddress), "", cityCode);// 第一个参数表示搜索字符串，
+                    // 第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+                    query.setPageSize(100);// 设置每页最多返回多少条poiitem
+                    query.setPageNum(0);// 设置查第一页
+                    poiSearch = new PoiSearch(SerchAddressActivity.this, query);
+                    poiSearch.setOnPoiSearchListener(SerchAddressActivity.this);
+                    poiSearch.searchPOIAsyn();
+                }
             }
 
             @Override
@@ -158,6 +206,7 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SystemUtil.goneJP(this);
         activityListManager.removeActivity(this); //退出activity
     }
 
@@ -182,22 +231,29 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
                 // 取得搜索到的poiitems有多少页
                 List<PoiItem> poiItems = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
                 if (poiItems != null && poiItems.size() > 0) {
-                    RingLog.d(TAG, "poiItems.size() = " + poiItems.size());
-                    RingLog.d(TAG, "poiItems = " + poiItems.toString());
+                    RingLog.e("poiItems.size() = " + poiItems.size());
+                    RingLog.e("poiItems = " + poiItems.toString());
                     serchList.clear();
-                    serchList.add(new SerchResult("目的地", "", 0, 0, true));
                     for (int i = 0; i < poiItems.size(); i++) {
                         PoiItem poiItem = poiItems.get(i);
                         if (poiItem != null) {
-                            RingLog.d(TAG, "poiItem.getTitle() = " + poiItem.getTitle());
-                            RingLog.d(TAG, "poiItem.getAdName() = " + poiItem.getAdName());
-                            RingLog.d(TAG, "poiItem.getLatLonPoint().getLatitude() = " + poiItem.getLatLonPoint().getLatitude());
-                            RingLog.d(TAG, "poiItem.getLatLonPoint().getLongitude() = " + poiItem.getLatLonPoint().getLongitude());
+                            RingLog.e("poiItem.getTitle() = " + poiItem.getTitle());
+                            RingLog.e("poiItem.getAdName() = " + poiItem.getAdName());
+                            RingLog.e("poiItem.getLatLonPoint().getLatitude() = " + poiItem.getLatLonPoint().getLatitude());
+                            RingLog.e("poiItem.getLatLonPoint().getLongitude() = " + poiItem.getLatLonPoint().getLongitude());
                             serchList.add(new SerchResult(poiItem.getTitle(), poiItem.getAdName(),
                                     poiItem.getLatLonPoint().getLatitude(), poiItem.getLatLonPoint().getLongitude()));
                         }
                     }
+                    if (flag == 1) {
+                        defaultList.clear();
+                        for (int i = 0; i < serchList.size(); i++) {
+                            defaultList.add(new SerchResult(serchList.get(i).getName(), serchList.get(i).getDesc(),
+                                    serchList.get(i).getLat(), serchList.get(i).getLng(), serchList.get(i).isFake()));
+                        }
+                    }
                     mainSerchResultAdapter.notifyDataSetChanged();
+                    setMapOrResult();
                 } else {
                     RingToast.show(R.string.no_result);
                 }
@@ -231,13 +287,44 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
             if (amapLocation.getErrorCode() == 0) {
                 //定位成功回调信息，设置相关消息
                 cityCode = amapLocation.getCityCode();
-                RingLog.d(TAG, "定位成功");
+                lat = amapLocation.getLatitude();
+                lng = amapLocation.getLongitude();
+                aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(lat, lng), 18, 0, 30)),
+                        1000, null);
+                RingLog.e("定位成功");
+                RingLog.e("amapLocation.getAddress() = " + amapLocation.getAddress());
+                flag = 1;
+                query = new PoiSearch.Query(amapLocation.getAddress(), "", cityCode);// 第一个参数表示搜索字符串，
+                // 第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+                query.setPageSize(100);// 设置每页最多返回多少条poiitem
+                query.setPageNum(0);// 设置查第一页
+                poiSearch = new PoiSearch(SerchAddressActivity.this, query);
+                poiSearch.setOnPoiSearchListener(SerchAddressActivity.this);
+                poiSearch.searchPOIAsyn();
+                mlocationClient.stopLocation();
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                RingLog.d(TAG, "location Error, ErrCode:"
+                RingLog.e("location Error, ErrCode:"
                         + amapLocation.getErrorCode() + ", errInfo:"
                         + amapLocation.getErrorInfo());
             }
+        }
+    }
+
+    private void setMapOrResult() {
+        if (flag == 1) {
+            SystemUtil.goneJP(this);
+            serchList.clear();
+            for (int i = 0; i < defaultList.size(); i++) {
+                serchList.add(new SerchResult(defaultList.get(i).getName(), defaultList.get(i).getDesc(),
+                        defaultList.get(i).getLat(), defaultList.get(i).getLng(), defaultList.get(i).isFake()));
+            }
+            mainSerchResultAdapter.notifyDataSetChanged();
+            mv_serchaddress_map.setVisibility(View.VISIBLE);
+            aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(new LatLng(lat, lng), 18, 0, 30)),
+                    1000, null);
+        } else if (flag == 2) {
+            mv_serchaddress_map.setVisibility(View.GONE);
         }
     }
 }

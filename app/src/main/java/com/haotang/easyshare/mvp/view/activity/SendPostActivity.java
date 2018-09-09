@@ -261,6 +261,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SystemUtil.goneJP(this);
         activityListManager.removeActivity(this); //退出activity
     }
 

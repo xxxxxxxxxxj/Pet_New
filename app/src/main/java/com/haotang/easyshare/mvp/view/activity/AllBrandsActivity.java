@@ -19,6 +19,7 @@ import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.AllBrandsPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
+import com.haotang.easyshare.mvp.view.adapter.ScreenCarAdapter;
 import com.haotang.easyshare.mvp.view.adapter.SelectedCarAdapter;
 import com.haotang.easyshare.mvp.view.iview.IAllBrandsView;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
@@ -58,6 +59,8 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     private List<HotSpecialCarBean.DataBean> selectedCarList = new ArrayList<HotSpecialCarBean.DataBean>();
     private SelectedCarAdapter selectedCarAdapter;
     private boolean isOpen = true;
+    private int flag;
+    private ScreenCarAdapter screenCarAdapter;
 
     @Override
     protected int getContentLayout() {
@@ -66,6 +69,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        flag = getIntent().getIntExtra("flag", 0);
         activityListManager.addActivity(this);
         DaggerAllBrandsActivityCommponent.builder().
                 allBrandsActivityModule(new AllBrandsActivityModule(this, this)).build().inject(this);
@@ -84,20 +88,67 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
         localCarList.clear();
         hotPointCarAdapter = new HotPointCarAdapter(R.layout.item_hotfrag_top_car, carList);
         rvAllbrandsRmpp.setAdapter(hotPointCarAdapter);
-
-        rvAllbrandsJxtj.setHasFixedSize(true);
-        rvAllbrandsJxtj.setNestedScrollingEnabled(false);
-        NoScollFullLinearLayoutManager noScollFullLinearLayoutManager = new NoScollFullLinearLayoutManager(this);
-        noScollFullLinearLayoutManager.setScrollEnabled(false);
-        rvAllbrandsJxtj.setLayoutManager(noScollFullLinearLayoutManager);
-        //添加自定义分割线
-        rvAllbrandsJxtj.addItemDecoration(new DividerLinearItemDecoration(this, LinearLayoutManager.VERTICAL,
-                DensityUtil.dp2px(this, 15),
-                ContextCompat.getColor(this, R.color.af8f8f8)));
-        selectedCarList.clear();
-        selectedCarAdapter = new SelectedCarAdapter(R.layout.item_allbrands_selectedcar
-                , selectedCarList);
-        rvAllbrandsJxtj.setAdapter(selectedCarAdapter);
+        if (flag == 0) {
+            rvAllbrandsJxtj.setHasFixedSize(true);
+            rvAllbrandsJxtj.setNestedScrollingEnabled(false);
+            NoScollFullLinearLayoutManager noScollFullLinearLayoutManager = new NoScollFullLinearLayoutManager(this);
+            noScollFullLinearLayoutManager.setScrollEnabled(false);
+            rvAllbrandsJxtj.setLayoutManager(noScollFullLinearLayoutManager);
+            //添加自定义分割线
+            rvAllbrandsJxtj.addItemDecoration(new DividerLinearItemDecoration(this, LinearLayoutManager.VERTICAL,
+                    DensityUtil.dp2px(this, 15),
+                    ContextCompat.getColor(this, R.color.af8f8f8)));
+            selectedCarList.clear();
+            selectedCarAdapter = new SelectedCarAdapter(R.layout.item_allbrands_selectedcar
+                    , selectedCarList);
+            rvAllbrandsJxtj.setAdapter(selectedCarAdapter);
+            selectedCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    if (selectedCarList.size() > 0 && selectedCarList.size() > position) {
+                        HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
+                        if (dataBean != null) {
+                            PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                            if (shareMap != null) {
+                                Intent intent = new Intent(AllBrandsActivity.this, WebViewActivity.class);
+                                intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                                intent.putExtra("uuid", dataBean.getUuid());
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                }
+            });
+        } else if (flag == 1) {
+            rvAllbrandsJxtj.setHasFixedSize(true);
+            rvAllbrandsJxtj.setNestedScrollingEnabled(false);
+            NoScollFullLinearLayoutManager noScollFullLinearLayoutManager = new NoScollFullLinearLayoutManager(this);
+            noScollFullLinearLayoutManager.setScrollEnabled(false);
+            rvAllbrandsJxtj.setLayoutManager(noScollFullLinearLayoutManager);
+            //添加自定义分割线
+            rvAllbrandsJxtj.addItemDecoration(new DividerLinearItemDecoration(this, LinearLayoutManager.VERTICAL,
+                    DensityUtil.dp2px(this, 15),
+                    ContextCompat.getColor(this, R.color.af8f8f8)));
+            selectedCarList.clear();
+            screenCarAdapter = new ScreenCarAdapter(R.layout.item_screencar
+                    , selectedCarList);
+            rvAllbrandsJxtj.setAdapter(screenCarAdapter);
+            screenCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    if (selectedCarList.size() > 0 && selectedCarList.size() > position) {
+                        HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
+                        if (dataBean != null) {
+                            Intent intent = new Intent(AllBrandsActivity.this, CarDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("carDetailData", dataBean);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -121,25 +172,15 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
                 if (carList != null && carList.size() > 0 && carList.size() > position) {
                     HotCarBean.DataBean dataBean = carList.get(position);
                     if (dataBean != null) {
-                        Intent intent = new Intent(AllBrandsActivity.this, BrandAreaActivity.class);
-                        intent.putExtra("brandId", dataBean.getId());
-                        intent.putExtra("brand", dataBean.getBrand());
-                        startActivity(intent);
-                    }
-                }
-            }
-        });
-        selectedCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (selectedCarList.size() > 0 && selectedCarList.size() > position) {
-                    HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
-                    if (dataBean != null) {
-                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
-                        if (shareMap != null) {
-                            Intent intent = new Intent(AllBrandsActivity.this, WebViewActivity.class);
-                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
-                            intent.putExtra("uuid", dataBean.getUuid());
+                        if (flag == 1) {
+                            Intent intent = new Intent(AllBrandsActivity.this, ScreenCarActivity.class);
+                            intent.putExtra("brandId", dataBean.getId());
+                            intent.putExtra("brand", dataBean.getBrand());
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(AllBrandsActivity.this, BrandAreaActivity.class);
+                            intent.putExtra("brandId", dataBean.getId());
+                            intent.putExtra("brand", dataBean.getBrand());
                             startActivity(intent);
                         }
                     }
@@ -208,7 +249,11 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
         selectedCarList.clear();
         if (data != null && data.size() > 0) {
             selectedCarList.addAll(data);
-            selectedCarAdapter.notifyDataSetChanged();
+            if (flag == 1) {
+                screenCarAdapter.notifyDataSetChanged();
+            } else {
+                selectedCarAdapter.notifyDataSetChanged();
+            }
         }
     }
 

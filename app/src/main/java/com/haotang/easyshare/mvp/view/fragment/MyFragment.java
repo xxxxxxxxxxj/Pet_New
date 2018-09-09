@@ -15,6 +15,7 @@ import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.fragment.DaggerMyFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MyFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
@@ -36,6 +37,7 @@ import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.MyFragChargePagerAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMyFragmentView;
+import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
@@ -133,6 +135,14 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     public void requestData() {
+    }
+
+    @Subscribe
+    public void RefreshBalance(RefreshBalanceEvent event) {//充值返回
+        if (event != null) {
+            showDialog();
+            mPresenter.home();
+        }
     }
 
     @Subscribe
@@ -349,11 +359,25 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 startActivity(new Intent(mActivity, AboutActivity.class));
                 break;
             case R.id.rtv_myfragment_tuichu:
-                SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
-                DevRing.configureHttp().getMapHeader().put("phone", "");
-                rtvMyfragmentTuichu.setVisibility(View.GONE);
-                tvMyfragmentUsername.setText("立即登录");
-                llMyfragmentMycdz.setVisibility(View.GONE);
+                new AlertDialogNavAndPost(getActivity()).builder().setTitle("")
+                        .setMsg("确定退出登录吗")
+                        .setPositiveButton("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
+                                DevRing.configureHttp().getMapHeader().put("phone", "");
+                                rtvMyfragmentTuichu.setVisibility(View.GONE);
+                                tvMyfragmentUsername.setText("立即登录");
+                                llMyfragmentMycdz.setVisibility(View.GONE);
+                                tvMyfragmentYue.setText("0");
+                                tvMyfragmentVipjf.setText("0");
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
                 break;
         }
     }

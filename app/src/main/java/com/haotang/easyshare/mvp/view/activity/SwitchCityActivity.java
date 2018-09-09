@@ -21,7 +21,7 @@ import com.haotang.easyshare.mvp.view.iview.ISwitchCityView;
 import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
-import com.ljy.devring.DevRing;
+import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.Banner;
@@ -128,6 +128,7 @@ public class SwitchCityActivity extends BaseActivity<SwitchCityPresenter> implem
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SystemUtil.goneJP(this);
         activityListManager.removeActivity(this); //退出activity
     }
 

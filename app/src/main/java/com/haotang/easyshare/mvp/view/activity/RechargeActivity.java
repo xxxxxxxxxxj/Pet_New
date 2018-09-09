@@ -15,6 +15,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.activity.DaggerRechargeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.RechargeActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
 import com.haotang.easyshare.mvp.model.entity.res.ALiPayResult;
 import com.haotang.easyshare.mvp.model.entity.res.RechargePayInfo;
 import com.haotang.easyshare.mvp.model.entity.res.RechargeTemp;
@@ -27,6 +28,7 @@ import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.util.PayUtils;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UmenUtil;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -239,6 +241,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter> implements
             if (baseResp.errCode == 0) {
                 RingLog.d(TAG, "支付成功");
                 RingToast.show("支付成功");
+                DevRing.busManager().postEvent(new RefreshBalanceEvent());
             } else {
                 // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                 RingLog.d(TAG, "支付失败");
@@ -264,6 +267,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter> implements
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
                         RingLog.d(TAG, "支付成功");
                         RingToast.show("支付成功");
+                        DevRing.busManager().postEvent(new RefreshBalanceEvent());
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         RingLog.d(TAG, "支付失败");
