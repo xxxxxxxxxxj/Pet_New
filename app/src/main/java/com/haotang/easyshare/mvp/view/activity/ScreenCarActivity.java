@@ -222,6 +222,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
         if (StringUtil.isNotEmpty(source)) {
             builder.addFormDataPart("source", source);
         }
+        builder.addFormDataPart("brandId", brandId + "");
         RequestBody build = builder.build();
         mPresenter.query(build);
     }
@@ -240,7 +241,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
         screenCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if(selectedCarList.size() > position){
+                if (selectedCarList.size() > position) {
                     HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
                     Intent intent = new Intent(ScreenCarActivity.this, CarDetailActivity.class);
                     Bundle bundle = new Bundle();
