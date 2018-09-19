@@ -5,7 +5,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 
 import butterknife.BindView;
@@ -20,8 +19,6 @@ import butterknife.ButterKnife;
  * @date XJ on 2018/4/26 14:56
  */
 public class MainFragmenBoDa {
-    @BindView(R.id.iv_mainbottom_bg)
-    ImageView ivMainbottomBg;
     @BindView(R.id.ll_mainbottom_xq)
     LinearLayout llMainbottomXq;
     @BindView(R.id.ll_mainbottom_pl)
@@ -71,10 +68,6 @@ public class MainFragmenBoDa {
 
     public void setLl_mainbottom(LinearLayout ll_mainbottom) {
         this.ll_mainbottom = ll_mainbottom;
-    }
-
-    public ImageView getIvMainbottomBg() {
-        return ivMainbottomBg;
     }
 
     public LinearLayout getLlMainbottomXq() {

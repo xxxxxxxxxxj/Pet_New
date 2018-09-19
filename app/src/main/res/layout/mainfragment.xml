@@ -130,9 +130,11 @@
         android:layout_below="@id/rll_mainfrag_serch"
         android:layout_marginLeft="15dip"
         android:layout_marginRight="15dip"
-        android:layout_marginTop="15dip"
+        android:layout_marginTop="5dip"
         android:orientation="vertical"
-        android:padding="15dip"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:paddingBottom="15dip"
         android:visibility="gone"
         rv:rv_backgroundColor="@color/white"
         rv:rv_cornerRadius="10dip">
@@ -196,6 +198,7 @@
                 android:id="@+id/ll_mainfrag_rmht"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical">
 
                 <LinearLayout

@@ -123,6 +123,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private AMapLocationClientOption mLocationOption;
     private int couponId;
     private double balance;
+    private String totalServiceFee;
 
     @Override
     protected boolean isLazyLoad() {
@@ -156,9 +157,12 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             if (reduceType == 1) {//减免券
                 tv_chargeing_coupon.setText("优惠券减免" + event.getAmount() + "元");
                 totalPrice = String.valueOf(ComputeUtil.sub(Double.valueOf(totalPrice), event.getAmount()));
+                StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
             } else if (reduceType == 2) {//折扣券
-                tv_chargeing_coupon.setText("打" + event.getAmount() + "折,优惠" + ComputeUtil.sub(Double.valueOf(totalPrice), ComputeUtil.mul(Double.valueOf(totalPrice), event.getAmount())) + "元");
-                totalPrice = String.valueOf(ComputeUtil.mul(Double.valueOf(totalPrice), event.getAmount()));
+                tv_chargeing_coupon.setText("服务费" + event.getAmount() + "折,优惠" + ComputeUtil.sub(Double.valueOf(totalServiceFee), ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount())) + "元");
+                totalPrice = String.valueOf(ComputeUtil.sub(Double.valueOf(totalPrice), ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount())));
+                StringUtil.setText(tvChargeingFwf, ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount()) + "元", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
             }
         }
     }
@@ -192,12 +196,14 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Subscribe
     public void getChargeState(ChargeingState.DataBean data) {
         if (data != null) {
+            totalPrice = data.getTotalPrice();
+            totalServiceFee = data.getTotalServiceFee();
             endCode = data.getEndCode();
             StringUtil.setText(tvChargeingKwh, data.getPower(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingStatus, "充电中", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingCdf, data.getTotalPower() + "元", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargeingFwf, data.getTotalServiceFee() + "元", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargeingZfy, data.getTotalPrice() + "元", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
             provider = data.getProvider();
             if (provider.equals("4") || provider.equals("7")) {
                 ll_chargeing_jsm.setVisibility(View.VISIBLE);
@@ -214,6 +220,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         if (data != null) {
             rl_chargeing_coupon.setVisibility(View.VISIBLE);
             totalPrice = data.getTotalPrice();
+            totalServiceFee = data.getTotalServiceFee();
             if (StringUtil.isNotEmpty(totalPrice)) {
                 isBillSuccess = true;
                 PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
@@ -222,8 +229,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             StringUtil.setText(tvChargeingKwh, data.getPower(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingStatus, "充电中", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingCdf, data.getTotalPower() + "元", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargeingFwf, data.getTotalServiceFee() + "元", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargeingZfy, data.getTotalPrice() + "元", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
         }
     }
 

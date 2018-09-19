@@ -437,6 +437,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="运 营 商 "
+                    android:layout_marginRight="10dip"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -467,6 +468,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="开放时间 "
+                    android:layout_marginRight="10dip"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -498,6 +500,7 @@
                     android:layout_height="wrap_content"
                     android:text="支付方式 "
                     android:textColor="@color/black"
+                    android:layout_marginRight="10dip"
                     android:textSize="14sp" />
 
                 <TextView
@@ -527,6 +530,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="停 车 费 "
+                    android:layout_marginRight="10dip"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -558,6 +562,7 @@
                     android:layout_height="wrap_content"
                     android:text="站点备注 "
                     android:textColor="@color/black"
+                    android:layout_marginRight="10dip"
                     android:textSize="14sp" />
 
                 <TextView

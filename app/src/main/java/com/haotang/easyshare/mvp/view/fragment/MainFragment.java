@@ -70,6 +70,7 @@ import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
+import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
@@ -314,7 +315,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 //启动定位
                 mlocationClient.startLocation();
             }
-            UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx1);
+            UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx1);
         }
     }
 
@@ -344,7 +345,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 poiSearch = new PoiSearch(mActivity, query);
                 poiSearch.setOnPoiSearchListener(MainFragment.this);
                 poiSearch.searchPOIAsyn();
-                UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx13);
+                UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx13);
             }
 
             @Override
@@ -730,6 +731,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             //进入退出的动画
             pWinBottomDialog.setAnimationStyle(R.style.mypopwindow_anim_style);
             pWinBottomDialog.setWidth(SystemUtil.getDisplayMetrics(mActivity)[0]);
+            pWinBottomDialog.setHeight(SystemUtil.getDisplayMetrics(mActivity)[1] - DensityUtil.dp2px(mActivity, 280) - DensityUtil.getStatusBarHeight(mActivity));
             pWinBottomDialog.showAtLocation(customView, Gravity.BOTTOM, 0, 0);
             mainFragmenBoDa.getLl_mainbottom().bringToFront();
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomName(), stationsBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
@@ -748,12 +750,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomKuaichongNum(), "快充" + stationsBean.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomManchongNum(), "慢充" + stationsBean.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomKongxianNum(), "空闲" + stationsBean.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
-            mainFragmenBoDa.getIvMainbottomBg().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pWinBottomDialog.dismiss();
-                }
-            });
             mainFragmenBoDa.getLl_mainbottom().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

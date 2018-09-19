@@ -7,7 +7,7 @@
     android:layout_marginLeft="15dip"
     android:layout_marginRight="15dip"
     android:paddingBottom="15dip"
-    android:paddingRight="15dip"
+    android:paddingRight="10dip"
     rv:rv_backgroundColor="@color/white"
     rv:rv_cornerRadius="5dip">
 
@@ -39,7 +39,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dip"
+        android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_marginTop="15dip"
         android:layout_toLeftOf="@id/tv_item_allbands_price"

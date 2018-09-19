@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerCarDetailActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CarDetailActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
@@ -164,6 +165,17 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
                 break;
             case R.id.ll_titlebar_other:
                 if (shareMap != null) {
+                    if (StringUtil.isNotEmpty(shareMap.getUrl())) {
+                        if (!shareMap.getUrl().startsWith("http:")
+                                && !shareMap.getUrl().startsWith("https:") && !shareMap.getUrl().startsWith("file:///")) {
+                            shareMap.setUrl(UrlConstants.getServiceBaseUrl() + shareMap.getUrl());
+                        }
+                        if (shareMap.getUrl().contains("?")) {
+                            shareMap.setUrl(shareMap.getUrl() + "&carid" + id);
+                        } else {
+                            shareMap.setUrl(shareMap.getUrl() + "?carid" + id);
+                        }
+                    }
                     ShareBottomDialog dialog = new ShareBottomDialog();
                     dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
                             shareMap.getUrl(), shareMap.getImg());

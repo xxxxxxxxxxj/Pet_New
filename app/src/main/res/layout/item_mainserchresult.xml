@@ -9,8 +9,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="15dip"
-        android:paddingTop="15dip">
+        android:paddingBottom="5dip"
+        android:paddingTop="5dip">
 
         <ImageView
             android:layout_width="20.5dip"
