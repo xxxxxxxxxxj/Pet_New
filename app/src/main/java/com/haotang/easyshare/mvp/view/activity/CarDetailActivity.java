@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -257,10 +261,26 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
             }
             StringUtil.setText(tvCarDetailName, data.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailXh, "续航" + data.getCar(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvCarDetailGfj, "官方价:¥" + data.getPrice() + "起", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvCarDetail4sprice, "¥" + data.getPrice() + "起", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailTgj, "团购价:¥" + data.getGroupPrice() + "起", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvCarDetailTgprice, "¥" + data.getGroupPrice() + "起", "", View.VISIBLE, View.VISIBLE);
+
+            SpannableString ss = new SpannableString("官方价:¥" + data.getPrice() + "起");
+            ss.setSpan(
+                    new ForegroundColorSpan(getResources().getColor(
+                            R.color.aD0021B)), "官方价:".length(), ss.length(),
+                    Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            ss.setSpan(new TextAppearanceSpan(this, R.style.textsize16),
+                    "官方价:¥".length(), ss.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            tvCarDetailGfj.setText(ss);
+
+            SpannableString ss1 = new SpannableString("¥" + data.getPrice() + "起");
+            ss1.setSpan(new TextAppearanceSpan(this, R.style.textsize15),0, 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            ss1.setSpan(new TextAppearanceSpan(this, R.style.textsize15),ss1.length()-2, ss1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            tvCarDetail4sprice.setText(ss1);
+
+            SpannableString ss2 = new SpannableString("¥" + data.getGroupPrice() + "起");
+            ss2.setSpan(new TextAppearanceSpan(this, R.style.textsize15),0, 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            ss2.setSpan(new TextAppearanceSpan(this, R.style.textsize15),ss2.length()-2, ss2.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            tvCarDetailTgprice.setText(ss2);
         }
     }
 

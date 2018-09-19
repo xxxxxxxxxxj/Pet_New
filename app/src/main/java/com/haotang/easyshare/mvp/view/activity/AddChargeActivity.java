@@ -548,9 +548,11 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 startActivity(new Intent(AddChargeActivity.this, AddAddressActivity.class));
                 break;
             case R.id.rl_addcharge_zffs:
+                SystemUtil.goneJP(this);
                 showBottomDialog(1);
                 break;
             case R.id.rl_addcharge_kfsj:
+                SystemUtil.goneJP(this);
                 showBottomDialog(2);
                 break;
             case R.id.ll_addcharge_kuai:

@@ -29,6 +29,7 @@ import java.util.List;
 import butterknife.BindView;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -151,7 +152,7 @@ public class RechargeFragment extends BaseFragment<RechargeFragmentPresenter> im
             } else {
                 if (mNextRequestPage == 1) {
                     rechargeFragAdapter.loadMoreEnd(true);
-                    rechargeFragAdapter.setEmptyView(setEmptyViewBase(2, "暂无记录", R.mipmap.no_data, null));
+                    rechargeFragAdapter.setEmptyView(setEmptyViewBase(2, "暂无记录", R.mipmap.no_data, DensityUtil.dp2px(mActivity, 200), DensityUtil.dp2px(mActivity, 200), null));
                 } else {
                     rechargeFragAdapter.loadMoreEnd(false);
                 }

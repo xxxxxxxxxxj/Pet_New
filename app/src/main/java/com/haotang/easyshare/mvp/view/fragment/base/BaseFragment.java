@@ -107,6 +107,26 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         return emptyView;
     }
 
+    protected View setEmptyViewBase(int flag, String msg, int resId,int width,int height, View.OnClickListener OnClickListener) {//1.无网络2.无数据或数据错误
+        View emptyView = View.inflate(mActivity, R.layout.emptyview, null);
+        ImageView iv_emptyview_img = (ImageView) emptyView.findViewById(R.id.iv_emptyview_img);
+        TextView tv_emptyview_desc = (TextView) emptyView.findViewById(R.id.tv_emptyview_desc);
+        ImageView iv_emptyview_retry = (ImageView) emptyView.findViewById(R.id.iv_emptyview_retry);
+        if (flag == 1) {
+            iv_emptyview_retry.setVisibility(View.VISIBLE);
+            iv_emptyview_retry.setOnClickListener(OnClickListener);
+        } else if (flag == 2) {
+            iv_emptyview_retry.setVisibility(View.GONE);
+        }
+        StringUtil.setText(tv_emptyview_desc, msg, "", View.VISIBLE, View.VISIBLE);
+        iv_emptyview_img.setImageResource(resId);
+        ViewGroup.LayoutParams layoutParams = iv_emptyview_img.getLayoutParams();
+        layoutParams.width = width;
+        layoutParams.height = height;
+        iv_emptyview_img.setLayoutParams(layoutParams);
+        return emptyView;
+    }
+
     protected void showDialog() {
         if (dialog != null && !dialog.isShowing()) {
             dialog.show();

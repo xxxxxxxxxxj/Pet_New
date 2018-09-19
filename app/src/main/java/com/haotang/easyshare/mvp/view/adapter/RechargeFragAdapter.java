@@ -36,7 +36,7 @@ public class RechargeFragAdapter extends BaseQuickAdapter<HistoryList.DataBean.D
                 StringUtil.setText(tv_item_rechargefrag_price, "+" + item.getAmount(), "", View.VISIBLE, View.VISIBLE);
                 tv_item_rechargefrag_price.setTextColor(mContext.getResources().getColor(R.color.aD0021B));
             } else {
-                StringUtil.setText(tv_item_rechargefrag_price, "-" + item.getAmount(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tv_item_rechargefrag_price, "" + item.getAmount(), "", View.VISIBLE, View.VISIBLE);
                 tv_item_rechargefrag_price.setTextColor(mContext.getResources().getColor(R.color.a333333));
             }
         }

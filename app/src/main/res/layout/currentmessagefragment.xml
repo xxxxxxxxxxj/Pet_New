@@ -7,30 +7,30 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:padding="15dip"
-        android:textColor="@color/a333333"
-        android:textSize="15sp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="15dip"
         android:text="请问你有什么问题，我可以帮到您？"
-        android:layout_height="wrap_content" />
+        android:textColor="@color/a333333"
+        android:textSize="15sp" />
 
     <EditText
         android:id="@+id/et_currentmsg"
         android:layout_width="match_parent"
         android:layout_height="117.5dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
         android:background="@drawable/bg_white_ridus"
         android:ems="10"
-        android:layout_marginLeft="15dip"
-        android:padding="15dip"
-        android:layout_marginRight="15dip"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:gravity="top|left"
         android:hint="输入您的想法和车友们碰撞一下心灵哦！"
         android:maxLength="500"
+        android:padding="15dip"
         android:textColor="@color/a333333"
         android:textColorHint="@color/aBBBBBB"
-        android:textSize="14sp"/>
+        android:textSize="14sp" />
 
 
 </LinearLayout>

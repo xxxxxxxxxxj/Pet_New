@@ -176,7 +176,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
         } else {
             setLocation();
         }
-        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx3);
+        UmenUtil.UmengEventStatistics(this, UmenUtil.yxzx3);
     }
 
     private void setLocation() {
@@ -391,7 +391,13 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             tvChargingdetailCdcs.bringToFront();
             StringUtil.setText(tvChargingdetailCdcs, "充电" + data.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailCdf, cdf, "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargingdetailFwf, "服务费：" + data.getServiceFee() + "元/度", "", View.VISIBLE, View.VISIBLE);
+            if (StringUtil.isNotEmpty(data.getServiceFee())) {
+                if (data.getServiceFee().endsWith("度")) {
+                    StringUtil.setText(tvChargingdetailFwf, "服务费：" + data.getServiceFee(), "", View.VISIBLE, View.VISIBLE);
+                } else {
+                    StringUtil.setText(tvChargingdetailFwf, "服务费：" + data.getServiceFee() + "元/度", "", View.VISIBLE, View.VISIBLE);
+                }
+            }
             StringUtil.setText(tvChargingdetailYys, data.getProvider(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailZffs, data.getPayWay(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailTcf, data.getParkingPrice(), "", View.VISIBLE, View.VISIBLE);

@@ -1,5 +1,7 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 
 import com.haotang.easyshare.R;
@@ -60,7 +62,25 @@ public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentP
 
     @Override
     protected void initEvent() {
+        etCurrentmsg.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (StringUtil.isEmpty(StringUtil.checkEditText(etCurrentmsg))&&
+                        s.toString().trim().length() >= 500) {
+                    RingToast.show("字数不能超过500");
+                }
+            }
+        });
     }
 
     @Override
