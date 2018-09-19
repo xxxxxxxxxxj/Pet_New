@@ -13,6 +13,7 @@ import com.flyco.roundview.RoundLinearLayout;
 import com.flyco.roundview.RoundRelativeLayout;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.di.component.fragment.DaggerMyFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MyFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
@@ -119,6 +120,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     ImageView iv_myfragment_add;
     @BindView(R.id.iv_myfragment_bjusername)
     ImageView iv_myfragment_bjusername;
+    @BindView(R.id.rl_myfragment_mycharge_right)
+    RelativeLayout rl_myfragment_mycharge_right;
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
     private String kf_phone = "";
     private String uuid;
@@ -156,7 +159,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             showDialog();
             mPresenter.home();
             mPresenter.my();
-            UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx14);
+            UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx14);
         }
     }
 
@@ -196,9 +199,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
         } else {
-            rtvMyfragmentTuichu.setVisibility(View.GONE);
-            tvMyfragmentUsername.setText("立即登录");
-            llMyfragmentMycdz.setVisibility(View.GONE);
+            exit();
         }
         myFragChargePagerAdapter = new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments);
         vpMyfragmentMycdz.setAdapter(myFragChargePagerAdapter);
@@ -314,7 +315,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 break;
             case R.id.rl_myfragment_hytq:
                 if (SystemUtil.checkLogin(mActivity)) {
-                    UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx18);
+                    UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx18);
                     startActivity(new Intent(mActivity, WebViewActivity.class).
                             putExtra(WebViewActivity.URL_KEY, vipPrivilege));
                 } else {
@@ -364,13 +365,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                         .setPositiveButton("确定", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
-                                DevRing.configureHttp().getMapHeader().put("phone", "");
-                                rtvMyfragmentTuichu.setVisibility(View.GONE);
-                                tvMyfragmentUsername.setText("立即登录");
-                                llMyfragmentMycdz.setVisibility(View.GONE);
-                                tvMyfragmentYue.setText("0");
-                                tvMyfragmentVipjf.setText("0");
+                                exit();
                             }
                         }).setNegativeButton("取消", new View.OnClickListener() {
                     @Override
@@ -384,6 +379,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Override
     public void homeSuccess(HomeBean data) {
+        iv_myfragment_bjusername.setVisibility(View.VISIBLE);
         disMissDialog();
         RingLog.e(TAG, "MyFragment homeSuccess()");
         if (data != null) {
@@ -398,6 +394,11 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             StringUtil.setText(tvMyfragmentJjdh, data.getKf_phone(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetCircleImg(mActivity, data.getHeadImg(), ivMyfragmentUserimg, R.mipmap.ic_image_load_circle);
             if (data.getStations() != null && data.getStations().size() > 0) {
+                if (data.getStations().size() > 1) {
+                    rl_myfragment_mycharge_right.setVisibility(View.VISIBLE);
+                } else {
+                    rl_myfragment_mycharge_right.setVisibility(View.GONE);
+                }
                 stations.clear();
                 stations.addAll(data.getStations());
                 iv_myfragment_add.setVisibility(View.GONE);
@@ -430,10 +431,12 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         disMissDialog();
         RingLog.e(TAG, "MyFragment homeFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
+        exitInfo(code);
     }
 
     @Override
     public void mySuccess(List<MyCarBean.DataBean> data) {
+        iv_myfragment_bjusername.setVisibility(View.VISIBLE);
         disMissDialog();
         if (data != null && data.size() > 0) {
             MyCarBean.DataBean dataBean = data.get(0);
@@ -448,5 +451,28 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         disMissDialog();
         RingLog.e(TAG, "MyFragment myFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
+        exitInfo(code);
+    }
+
+    private void exitInfo(int code) {
+        if (code == AppConfig.EXIT_USER_CODE) {
+            exit();
+        }
+    }
+
+    private void exit() {
+        SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
+        DevRing.configureHttp().getMapHeader().put("phone", "");
+        rtvMyfragmentTuichu.setVisibility(View.GONE);
+        tvMyfragmentUsername.setText("立即登录");
+        llMyfragmentMycdz.setVisibility(View.GONE);
+        tvMyfragmentYue.setText("0");
+        tvMyfragmentVipjf.setText("0");
+        iv_myfragment_bjusername.setVisibility(View.GONE);
+        ivMyfragmentUserimg.setImageResource(R.mipmap.ic_image_load_circle);
+        iv_myfragment_add.setVisibility(View.GONE);
+        tvMyfragmentClxx.setText("");
+        tvMyfragmentSycs.setText("");
+        rtvMyfragmentTuichu.setVisibility(View.GONE);
     }
 }

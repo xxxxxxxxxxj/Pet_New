@@ -73,7 +73,7 @@ public class AddAddressActivity extends BaseActivity<AddAddressPresenter> implem
     protected void setView(Bundle savedInstanceState) {
         tvTitlebarTitle.setText("添加地址");
         tvTitlebarOther.setVisibility(View.VISIBLE);
-        tvTitlebarOther.setText("添加地址");
+        tvTitlebarOther.setText("保存");
         etAddaddress.setFocusable(false);//让EditText失去焦点，然后获取点击事件
     }
 
