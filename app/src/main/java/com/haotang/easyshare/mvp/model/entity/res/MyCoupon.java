@@ -71,7 +71,7 @@ public class MyCoupon {
              * title : 新手有礼
              */
 
-            private int amount;
+            private double amount;
             private String amountTxt;
             private String description;
             private int reduceType;
@@ -99,11 +99,11 @@ public class MyCoupon {
                 this.isAvali = isAvali;
             }
 
-            public int getAmount() {
+            public double getAmount() {
                 return amount;
             }
 
-            public void setAmount(int amount) {
+            public void setAmount(double amount) {
                 this.amount = amount;
             }
 

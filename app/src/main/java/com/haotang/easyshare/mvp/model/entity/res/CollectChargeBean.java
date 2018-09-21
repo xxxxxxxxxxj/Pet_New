@@ -55,17 +55,17 @@ public class CollectChargeBean {
          * uuid : adb9c744e282402d892db8d8d6de9b48
          */
 
-        private double serviceFee;
+        private String serviceFee;
         private String headImg;
         private String price;
         private String title;
         private String uuid;
 
-        public double getServiceFee() {
+        public String getServiceFee() {
             return serviceFee;
         }
 
-        public void setServiceFee(double serviceFee) {
+        public void setServiceFee(String serviceFee) {
             this.serviceFee = serviceFee;
         }
 

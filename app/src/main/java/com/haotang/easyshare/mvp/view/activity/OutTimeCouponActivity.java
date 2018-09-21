@@ -1,6 +1,5 @@
 package com.haotang.easyshare.mvp.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,16 +11,15 @@ import android.widget.TextView;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.haotang.easyshare.R;
-import com.haotang.easyshare.di.component.activity.DaggerMyCouponActivityCommponent;
-import com.haotang.easyshare.di.module.activity.MyCouponActivityModule;
+import com.haotang.easyshare.di.component.activity.DaggerOutTimeCouponActivityCommponent;
+import com.haotang.easyshare.di.module.activity.OutTimeCouponActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.MyCoupon;
-import com.haotang.easyshare.mvp.presenter.MyCouponPresenter;
+import com.haotang.easyshare.mvp.presenter.OutTimeCouponPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MyCouponAdapter;
-import com.haotang.easyshare.mvp.view.iview.IMyCouponView;
+import com.haotang.easyshare.mvp.view.iview.IOutTimeCouponView;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
-import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,43 +30,39 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
- * 优惠券界面
+ * 过期优惠券界面
  */
-public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements IMyCouponView {
-    private final static String TAG = MyCouponActivity.class.getSimpleName();
+public class OutTimeCouponActivity extends BaseActivity<OutTimeCouponPresenter> implements IOutTimeCouponView {
+    private final static String TAG = OutTimeCouponActivity.class.getSimpleName();
+    private List<MyCoupon.DataBean.DatasetBean> list = new ArrayList<MyCoupon.DataBean.DatasetBean>();
+    private MyCouponAdapter myCouponAdapter;
+    private int page = 1;
+    private List<MyCoupon.DataBean.DatasetBean> localList = new ArrayList<MyCoupon.DataBean.DatasetBean>();
     @BindView(R.id.tv_titlebar_title)
     TextView tvTitlebarTitle;
     @BindView(R.id.rv_mycoupon)
     RecyclerView rvMycoupon;
     @BindView(R.id.mrl_mycoupon)
     MaterialRefreshLayout mrlMycoupon;
-    private List<MyCoupon.DataBean.DatasetBean> list = new ArrayList<MyCoupon.DataBean.DatasetBean>();
-    private MyCouponAdapter myCouponAdapter;
-    private int page = 1;
-    private List<MyCoupon.DataBean.DatasetBean> localList = new ArrayList<MyCoupon.DataBean.DatasetBean>();
-    private TextView tv_coupon_footer;
 
     @Override
     protected int getContentLayout() {
-        return R.layout.activity_my_coupon;
+        return R.layout.activity_out_time_coupon;
     }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         activityListManager.addActivity(this);
-        DaggerMyCouponActivityCommponent.builder().
-                myCouponActivityModule(new MyCouponActivityModule(this, this)).build().inject(this);
+        DaggerOutTimeCouponActivityCommponent.builder().
+                outTimeCouponActivityModule(new OutTimeCouponActivityModule(this, this)).build().inject(this);
     }
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-        tvTitlebarTitle.setText("我的优惠券");
+        tvTitlebarTitle.setText("过期的优惠券");
         rvMycoupon.setHasFixedSize(true);
         rvMycoupon.setLayoutManager(new LinearLayoutManager(this));
-        myCouponAdapter = new MyCouponAdapter(R.layout.item_mycoupon, list, 0);
-        View inflate = View.inflate(this, R.layout.coupon_footer, null);
-        tv_coupon_footer = (TextView) inflate.findViewById(R.id.tv_coupon_footer);
-        myCouponAdapter.addFooterView(inflate);
+        myCouponAdapter = new MyCouponAdapter(R.layout.item_mycoupon, list, 1);
         rvMycoupon.setAdapter(myCouponAdapter);
         //添加自定义分割线
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -79,16 +73,11 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+
     }
 
     @Override
     protected void initEvent() {
-        tv_coupon_footer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MyCouponActivity.this, OutTimeCouponActivity.class).putExtra("flag", 1));
-            }
-        });
         mrlMycoupon.setMaterialRefreshListener(new MaterialRefreshListener() {
 
             @Override
@@ -115,7 +104,7 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
         localList.clear();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("page", page + "");
-        builder.addFormDataPart("state", "1");
+        builder.addFormDataPart("state", "0");
         RequestBody build = builder.build();
         mPresenter.list(build);
     }
@@ -153,7 +142,7 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
             page++;
         } else {
             if (page == 1) {
-                myCouponAdapter.setEmptyView(setEmptyViewBase(2, "暂无可用优惠券哦~",
+                myCouponAdapter.setEmptyView(setEmptyViewBase(2, "暂无过期优惠券哦~",
                         R.mipmap.no_data, null));
             }
         }
@@ -173,17 +162,5 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
         }));
         RingLog.e(TAG, "queryFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(this, code);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 }
