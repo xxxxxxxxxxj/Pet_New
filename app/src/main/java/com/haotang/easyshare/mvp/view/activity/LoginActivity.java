@@ -163,35 +163,39 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
-                ivLoginLogin.setEnabled(false);
-                ivLoginLogin.setImageResource(R.mipmap.bg_login_no);
-                if (s == null || s.length() == 0) return;
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < s.length(); i++) {
-                    if (i != 3 && i != 8 && s.charAt(i) == ' ') {
-                        continue;
-                    } else {
-                        sb.append(s.charAt(i));
-                        if ((sb.length() == 4 || sb.length() == 9) && sb.charAt(sb.length() - 1) != ' ') {
-                            sb.insert(sb.length() - 1, ' ');
-                        }
-                    }
-                }
-                if (!sb.toString().equals(s.toString())) {
-                    int index = start + 1;
-                    if (sb.charAt(start) == ' ') {
-                        if (before == 0) {
-                            index++;
+                try {
+                    ivLoginLogin.setEnabled(false);
+                    ivLoginLogin.setImageResource(R.mipmap.bg_login_no);
+                    if (s == null || s.length() == 0) return;
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < s.length(); i++) {
+                        if (i != 3 && i != 8 && s.charAt(i) == ' ') {
+                            continue;
                         } else {
-                            index--;
-                        }
-                    } else {
-                        if (before == 1) {
-                            index--;
+                            sb.append(s.charAt(i));
+                            if ((sb.length() == 4 || sb.length() == 9) && sb.charAt(sb.length() - 1) != ' ') {
+                                sb.insert(sb.length() - 1, ' ');
+                            }
                         }
                     }
-                    etLoginPhone.setText(sb.toString());
-                    etLoginPhone.setSelection(index);
+                    if (!sb.toString().equals(s.toString())) {
+                        int index = start + 1;
+                        if (sb.charAt(start) == ' ') {
+                            if (before == 0) {
+                                index++;
+                            } else {
+                                index--;
+                            }
+                        } else {
+                            if (before == 1) {
+                                index--;
+                            }
+                        }
+                        etLoginPhone.setText(sb.toString());
+                        etLoginPhone.setSelection(index);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
