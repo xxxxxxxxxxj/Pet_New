@@ -49,8 +49,9 @@ public class ChargeingService extends Service {
                         @Override
                         public void onResult(StartChargeing result) {
                             if (result != null) {
+                                DevRing.busManager().postEvent(result.getData());
                                 if (result.getCode() == 0) {
-                                    DevRing.busManager().postEvent(result.getData());
+
                                 } else {
                                     SystemUtil.Exit(ChargeingService.this, result.getCode());
                                     if (StringUtil.isNotEmpty(result.getMsg())) {

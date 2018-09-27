@@ -189,6 +189,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Subscribe
     public void getChargeData(StartCodeChargeing data) {
         if (data != null) {
+            orderId = data.getOrderId();
             StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
             rlChargeingChargeAfter.setVisibility(View.VISIBLE);
             rlChargeingChargeBefore.setVisibility(View.GONE);
@@ -198,8 +199,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             ll_chargeing_ing.bringToFront();
             StringUtil.setText(tvChargeingStatus, "链接中...", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(btnChargeingSubmit, "充电链接中...", "", View.VISIBLE, View.VISIBLE);
-            PollingUtils.stopPollingService(getActivity(), ChargeingService.class, ChargeingService.ACTION);
-            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeingService.class, ChargeingService.ACTION, orderId);
+            PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeBillService.ACTION);
+            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
         }
     }
 
@@ -226,8 +227,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(tvChargeingStatus, "链接中...", "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(btnChargeingSubmit, "充电链接中...", "", View.VISIBLE, View.VISIBLE);
-                PollingUtils.stopPollingService(getActivity(), ChargeingService.class, ChargeingService.ACTION);
-                PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeingService.class, ChargeingService.ACTION, orderId);
+                PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeBillService.ACTION);
+                PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
             } else if (state == 1) {//进行中,轮询查询充电状态接口
                 rlChargeingChargeAfter.setVisibility(View.VISIBLE);
                 rlChargeingChargeBefore.setVisibility(View.GONE);
@@ -265,12 +266,14 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Subscribe
     public void getChargeState(ChargeingState.DataBean data) {
         if (data != null) {
+            StringUtil.setText(tvChargeingName, data.getProviderName(), "", View.VISIBLE, View.VISIBLE);
             totalPrice = data.getTotalPrice();
             totalServiceFee = data.getTotalServiceFee();
             endCode = data.getEndCode();
             StringUtil.setText(tvChargeingKwh, data.getPower(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingStatus, "充电中", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingCdf, data.getTotalPower() + "元", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
             provider = data.getProvider();
@@ -478,6 +481,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
 
     @Override
     public void ingFail(int code, String msg) {
+        RingToast.show(msg);
         disMissDialog();
         RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
@@ -494,6 +498,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         disMissDialog();
         RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
+        RingToast.show(msg);
     }
 
     @Override
@@ -516,6 +521,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         disMissDialog();
         RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
+        RingToast.show(msg);
     }
 
     @Override

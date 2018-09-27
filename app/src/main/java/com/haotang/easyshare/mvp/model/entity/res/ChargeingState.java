@@ -68,6 +68,15 @@ public class ChargeingState {
         private String soc;
         private String power;
         private String provider;
+        private String providerName;
+
+        public String getProviderName() {
+            return providerName;
+        }
+
+        public void setProviderName(String providerName) {
+            this.providerName = providerName;
+        }
 
         public String getCurrent() {
             return current;
