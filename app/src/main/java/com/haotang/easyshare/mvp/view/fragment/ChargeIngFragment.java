@@ -348,7 +348,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         startActivity(new Intent(mActivity, ScanCodeActivity.class));
                     } else {
                         new AlertDialogNavAndPost(mActivity).builder().setTitle("")
-                                .setMsg("您的余额不足，请及时充值")
+                                .setMsg("您的余额不足，请及时充值\n国家电网50元以上\n其他运营商5元以上")
                                 .setPositiveButton("确定", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
