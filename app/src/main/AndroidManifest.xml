@@ -577,6 +577,11 @@
                 <action android:name="com.haotang.easyshare.mvp.view.services.ChargeStateService" />
             </intent-filter>
         </service>
+        <service android:name=".mvp.view.services.ChargeingService">
+            <intent-filter>
+                <action android:name="com.haotang.easyshare.mvp.view.services.ChargeingService" />
+            </intent-filter>
+        </service>
         <!-- 高德地图结束 -->
     </application>
 

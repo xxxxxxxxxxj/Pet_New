@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerScanCodeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.ScanCodeActivityModule;
+import com.haotang.easyshare.mvp.model.entity.event.StartCodeChargeing;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.presenter.ScanCodePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -196,7 +197,8 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
     public void startSuccess(StartChargeing.DataBean data) {
         disMissDialog();
         if (data != null) {
-            DevRing.busManager().postEvent(data);
+            DevRing.busManager().postEvent(new StartCodeChargeing());
+            finish();
         }
     }
 }

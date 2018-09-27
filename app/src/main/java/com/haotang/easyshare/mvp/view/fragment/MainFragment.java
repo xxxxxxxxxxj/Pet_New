@@ -71,7 +71,6 @@ import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
-import com.haotang.easyshare.util.ComputeUtil;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.ScreenUtil;
@@ -736,7 +735,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             pWinBottomDialog.setWidth(SystemUtil.getDisplayMetrics(mActivity)[0]);
             float screenDensity = ScreenUtil.getScreenDensity(mActivity);
             Log.e("TAG", "screenDensity = " + screenDensity);
-            pWinBottomDialog.setHeight(SystemUtil.getDisplayMetrics(mActivity)[1] - DensityUtil.dp2px(mActivity, (float) ComputeUtil.mul(ComputeUtil.div(280, 3), screenDensity)) - DensityUtil.getStatusBarHeight(mActivity));
+            pWinBottomDialog.setHeight(SystemUtil.getDisplayMetrics(mActivity)[1] - DensityUtil.dp2px(mActivity, 280) - DensityUtil.getStatusBarHeight(mActivity));
             pWinBottomDialog.showAtLocation(customView, Gravity.BOTTOM, 0, 0);
             mainFragmenBoDa.getLl_mainbottom().bringToFront();
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomName(), stationsBean.getTitle(), "", View.VISIBLE, View.VISIBLE);

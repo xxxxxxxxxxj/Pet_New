@@ -50,7 +50,16 @@ public class StartChargeing {
          */
 
         private int orderId;
-        private int state;
+        private int state = -1;
+        private String providerName;
+
+        public String getProviderName() {
+            return providerName;
+        }
+
+        public void setProviderName(String providerName) {
+            this.providerName = providerName;
+        }
 
         public int getState() {
             return state;

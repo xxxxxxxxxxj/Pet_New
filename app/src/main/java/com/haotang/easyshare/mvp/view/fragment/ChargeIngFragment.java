@@ -20,6 +20,7 @@ import com.haotang.easyshare.di.module.fragment.ChargeIngFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.event.SelectCouponEvent;
+import com.haotang.easyshare.mvp.model.entity.event.StartCodeChargeing;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
@@ -35,6 +36,7 @@ import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IChargeIngFragmentView;
 import com.haotang.easyshare.mvp.view.services.ChargeBillService;
 import com.haotang.easyshare.mvp.view.services.ChargeStateService;
+import com.haotang.easyshare.mvp.view.services.ChargeingService;
 import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.util.ComputeUtil;
 import com.haotang.easyshare.util.PollingUtils;
@@ -75,8 +77,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     LinearLayout ll_chargeing_start;
     @BindView(R.id.rl_chargeing_start)
     RelativeLayout rlChargeingStart;
-    @BindView(R.id.rl_chargeing_charge_before)
-    RelativeLayout rlChargeingChargeBefore;
+    @BindView(R.id.ll_chargeing_charge_before)
+    LinearLayout rlChargeingChargeBefore;
     @BindView(R.id.tv_chargeing_name)
     TextView tvChargeingName;
     @BindView(R.id.tv_chargeing_gzbx)
@@ -95,8 +97,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     TextView tvChargeingZfy;
     @BindView(R.id.btn_chargeing_submit)
     Button btnChargeingSubmit;
-    @BindView(R.id.rl_chargeing_charge_after)
-    RelativeLayout rlChargeingChargeAfter;
+    @BindView(R.id.ll_chargeing_charge_after)
+    LinearLayout rlChargeingChargeAfter;
     @BindView(R.id.ll_chargeing_ing)
     LinearLayout ll_chargeing_ing;
     @BindView(R.id.ll_chargeing_jsm)
@@ -185,11 +187,78 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     }
 
     @Subscribe
+    public void getChargeData(StartCodeChargeing data) {
+        if (data != null) {
+            StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
+            rlChargeingChargeAfter.setVisibility(View.VISIBLE);
+            rlChargeingChargeBefore.setVisibility(View.GONE);
+            tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+            tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
+            Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
+            ll_chargeing_ing.bringToFront();
+            StringUtil.setText(tvChargeingStatus, "链接中...", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(btnChargeingSubmit, "充电链接中...", "", View.VISIBLE, View.VISIBLE);
+            PollingUtils.stopPollingService(getActivity(), ChargeingService.class, ChargeingService.ACTION);
+            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeingService.class, ChargeingService.ACTION, orderId);
+        }
+    }
+
+    @Subscribe
     public void getChargeData(StartChargeing.DataBean data) {
+        rlChargeingChargeAfter.setVisibility(View.GONE);
+        rlChargeingChargeBefore.setVisibility(View.VISIBLE);
+        tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
+        Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
+        ll_chargeing_start.bringToFront();
+        disMissDialog();
         if (data != null) {
             orderId = data.getOrderId();
-            StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
-            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
+            StringUtil.setText(tvChargeingName, data.getProviderName(), "", View.VISIBLE, View.VISIBLE);
+            int state = data.getState();
+            if (state == 0) {//链接中,插枪未充电
+                StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
+                rlChargeingChargeAfter.setVisibility(View.VISIBLE);
+                rlChargeingChargeBefore.setVisibility(View.GONE);
+                tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+                tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
+                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
+                ll_chargeing_ing.bringToFront();
+                StringUtil.setText(tvChargeingStatus, "链接中...", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(btnChargeingSubmit, "充电链接中...", "", View.VISIBLE, View.VISIBLE);
+                PollingUtils.stopPollingService(getActivity(), ChargeingService.class, ChargeingService.ACTION);
+                PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeingService.class, ChargeingService.ACTION, orderId);
+            } else if (state == 1) {//进行中,轮询查询充电状态接口
+                rlChargeingChargeAfter.setVisibility(View.VISIBLE);
+                rlChargeingChargeBefore.setVisibility(View.GONE);
+                tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+                tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
+                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
+                ll_chargeing_ing.bringToFront();
+                StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
+                PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeBillService.ACTION);
+                PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
+            } else if (state == 2) {//结算中,轮询获取账单接口
+                rlChargeingChargeAfter.setVisibility(View.VISIBLE);
+                rlChargeingChargeBefore.setVisibility(View.GONE);
+                tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+                tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
+                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
+                ll_chargeing_ing.bringToFront();
+                StringUtil.setText(btnChargeingSubmit, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
+                PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
+                PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
+            } else if (state == 3) {//待支付,轮询获取账单接口
+                rlChargeingChargeAfter.setVisibility(View.VISIBLE);
+                rlChargeingChargeBefore.setVisibility(View.GONE);
+                tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+                tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
+                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
+                ll_chargeing_ing.bringToFront();
+                StringUtil.setText(btnChargeingSubmit, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
+                PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
+                PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
+            }
         }
     }
 
@@ -207,7 +276,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             provider = data.getProvider();
             if (provider.equals("4") || provider.equals("7")) {
                 ll_chargeing_jsm.setVisibility(View.VISIBLE);
-                StringUtil.setText(tv_chargeing_jsmname, "", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tv_chargeing_jsmname, "国家电网结束验证码", "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(tv_chargeing_jsm, data.getEndCode(), "", View.VISIBLE, View.VISIBLE);
             } else {
                 ll_chargeing_jsm.setVisibility(View.GONE);
@@ -361,7 +430,19 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         if (data != null) {
             orderId = data.getOrderId();
             int state = data.getState();
-            if (state == 1) {//进行中,轮询查询充电状态接口
+            if (state == 0) {//链接中,插枪未充电
+                StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
+                rlChargeingChargeAfter.setVisibility(View.VISIBLE);
+                rlChargeingChargeBefore.setVisibility(View.GONE);
+                tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+                tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
+                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
+                ll_chargeing_ing.bringToFront();
+                StringUtil.setText(tvChargeingStatus, "链接中...", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(btnChargeingSubmit, "充电链接中...", "", View.VISIBLE, View.VISIBLE);
+                PollingUtils.stopPollingService(getActivity(), ChargeingService.class, ChargeingService.ACTION);
+                PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeingService.class, ChargeingService.ACTION, orderId);
+            } else if (state == 1) {//进行中,轮询查询充电状态接口
                 rlChargeingChargeAfter.setVisibility(View.VISIBLE);
                 rlChargeingChargeBefore.setVisibility(View.GONE);
                 tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
@@ -369,6 +450,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
+                PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
                 PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
             } else if (state == 2) {//结算中,轮询获取账单接口
                 rlChargeingChargeAfter.setVisibility(View.VISIBLE);
@@ -378,6 +460,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(btnChargeingSubmit, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
+                PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
                 PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
             } else if (state == 3) {//待支付,轮询获取账单接口
                 rlChargeingChargeAfter.setVisibility(View.VISIBLE);
@@ -387,6 +470,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(btnChargeingSubmit, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
+                PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
                 PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
             }
         }
@@ -417,6 +501,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
         disMissDialog();
         StringUtil.setText(btnChargeingSubmit, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
+        PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
         PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
     }
 
