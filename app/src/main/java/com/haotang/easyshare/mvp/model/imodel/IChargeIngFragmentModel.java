@@ -44,4 +44,11 @@ public interface IChargeIngFragmentModel extends IBaseModel {
      * 用户主页信息
      */
     Observable home();
+
+    /**
+     * 取消订单
+     *
+     * @param build
+     */
+    Observable cancelOrder(RequestBody build);
 }

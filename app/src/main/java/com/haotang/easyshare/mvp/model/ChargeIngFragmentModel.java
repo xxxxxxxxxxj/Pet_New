@@ -62,4 +62,14 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
     public Observable home() {
         return DevRing.httpManager().getService(MyFragmentApiService.class).home();
     }
+
+    /**
+     * 取消订单
+     *
+     * @param build
+     */
+    @Override
+    public Observable cancelOrder(RequestBody build) {
+        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).cancelOrder(build);
+    }
 }

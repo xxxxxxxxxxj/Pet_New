@@ -64,5 +64,14 @@ public interface ChargeingFragmentApiService {
      *
      * @param build
      */
+    @POST(UrlConstants.CHARGE_REPORT)
     Observable<HttpResult<AddChargeBean>> save(@Body RequestBody build);
+
+    /**
+     * 故障报修
+     *
+     * @param build
+     */
+    @POST(UrlConstants.CANCEL_ORDER)
+    Observable<HttpResult<AddChargeBean>> cancelOrder(@Body RequestBody build);
 }

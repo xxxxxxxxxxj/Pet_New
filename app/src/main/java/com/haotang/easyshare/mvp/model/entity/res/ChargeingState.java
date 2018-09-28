@@ -68,7 +68,16 @@ public class ChargeingState {
         private String soc;
         private String power;
         private String provider;
+        private int state = -1;
         private String providerName;
+
+        public int getState() {
+            return state;
+        }
+
+        public void setState(int state) {
+            this.state = state;
+        }
 
         public String getProviderName() {
             return providerName;

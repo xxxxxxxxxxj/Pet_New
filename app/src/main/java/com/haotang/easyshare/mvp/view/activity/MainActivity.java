@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.View;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -14,6 +15,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.flyco.tablayout.utils.UnreadMsgUtils;
 import com.flyco.tablayout.widget.MsgView;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerMainActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MainActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.MainTabEvent;
@@ -34,6 +36,7 @@ import com.haotang.easyshare.mvp.view.iview.IMainView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
+import com.haotang.easyshare.util.SystemTypeUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UpdateUtil;
 import com.ljy.devring.DevRing;
@@ -46,6 +49,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -180,10 +184,53 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 permissionDialog.show();
             }
         }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //申请必要权限
+        DevRing.permissionManager().requestEachCombined(MainActivity.this, new PermissionListener() {
+            @Override
+            public void onGranted(String permissionName) {
+                DevRing.configureHttp()//配置retrofit
+                        .setMapHeader(UrlConstants.getMapHeader(getApplicationContext()));//设置全局的header信息
+                Map<String, String> mapHeader = UrlConstants.getMapHeader(getApplicationContext());
+                RingLog.e("mapHeader = " + mapHeader.toString());
+            }
+
+            @Override
+            public void onDenied(String permissionName) {
+                DevRing.configureHttp()//配置retrofit
+                        .setMapHeader(UrlConstants.getMapHeaderNoImei(getApplicationContext()));//设置全局的header信息
+                //如果用户拒绝了其中一个授权请求，则提醒用户
+                RingToast.show("该功能需您授予\"获取手机信息和位置权限\"权限才可正常使用");
+            }
+
+            @Override
+            public void onDeniedWithNeverAsk(String permissionName) {
+                DevRing.configureHttp()//配置retrofit
+                        .setMapHeader(UrlConstants.getMapHeaderNoImei(getApplicationContext()));//设置全局的header信息
+                //如果用户拒绝了其中一个授权请求，且勾选了不再提醒，则需要引导用户到权限管理页面开启
+                permissionDialog.show();
+            }
+        }, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_COARSE_LOCATION);
     }
 
     @Override
     protected void initEvent() {
+        permissionDialog.setPositiveButton(R.string.permission_request_dialog_pos, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DevRing.configureHttp()//配置retrofit
+                        .setMapHeader(UrlConstants.getMapHeaderNoImei(getApplicationContext()));//设置全局的header信息
+                permissionDialog.dismiss();
+                SystemTypeUtil.goToPermissionManager(MainActivity.this);
+            }
+        });
+        permissionDialog.setNegativeButton(R.string.permission_request_dialog_nav, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DevRing.configureHttp()//配置retrofit
+                        .setMapHeader(UrlConstants.getMapHeaderNoImei(getApplicationContext()));//设置全局的header信息
+                permissionDialog.dismiss();
+            }
+        });
         ctlMainactivity.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {

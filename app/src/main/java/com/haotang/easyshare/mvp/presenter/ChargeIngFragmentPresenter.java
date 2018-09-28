@@ -202,4 +202,40 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));
     }
+
+    /**
+     * 取消订单
+     *
+     * @param build
+     */
+    public void cancelOrder(RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.cancelOrder(build), new CommonObserver<HttpResult<AddChargeBean>>() {
+            @Override
+            public void onResult(HttpResult<AddChargeBean> result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.cancelOrderSuccess
+                                    (result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.cancelOrderFail
+                                        (result.getCode(), result.getMsg());
+                            } else {
+                                mIView.cancelOrderFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.cancelOrderFail
+                            (errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
 }

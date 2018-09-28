@@ -35,4 +35,8 @@ public interface IChargeIngFragmentView extends IBaseView {
     void homeSuccess(HomeBean data);
 
     void homeFail(int code, String msg);
+
+    void cancelOrderSuccess(AddChargeBean data);
+
+    void cancelOrderFail(int code, String msg);
 }

@@ -267,6 +267,14 @@ public class UrlConstants {
      * 61.匹配可用优惠券列表
      */
     public static final String MATCH_COUPON = "coupon/match";
+    /**
+     * 62.取消订单
+     */
+    public static final String CANCEL_ORDER = "order/charge/timeout";
+    /**
+     * 63.故障保修
+     */
+    public static final String CHARGE_REPORT = "charging/report/save";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

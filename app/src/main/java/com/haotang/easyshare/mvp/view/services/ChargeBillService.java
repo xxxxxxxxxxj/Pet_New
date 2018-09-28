@@ -4,11 +4,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.http.ChargeingFragmentApiService;
-import com.haotang.easyshare.util.StringUtil;
-import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.other.RingLog;
@@ -56,16 +53,7 @@ public class ChargeBillService extends Service {
                         @Override
                         public void onResult(ChargeingBill result) {
                             if (result != null) {
-                                if (result.getCode() == 0) {
-                                    DevRing.busManager().postEvent(result.getData());
-                                } else {
-                                    SystemUtil.Exit(ChargeBillService.this, result.getCode());
-                                    if (StringUtil.isNotEmpty(result.getMsg())) {
-                                        RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
-                                    } else {
-                                        RingLog.e("onError() status = " + AppConfig.SERVER_ERROR + "---desc = " + AppConfig.SERVER_ERROR_MSG);
-                                    }
-                                }
+                                DevRing.busManager().postEvent(result);
                             }
                         }
 
