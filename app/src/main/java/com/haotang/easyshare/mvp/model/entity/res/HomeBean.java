@@ -169,7 +169,7 @@ public class HomeBean {
 
         private String electricityPrice;
         private String headImg;
-        private double serviceFee;
+        private String serviceFee;
         private int source;
         private int times;
         private String title;
@@ -214,11 +214,11 @@ public class HomeBean {
             this.headImg = headImg;
         }
 
-        public double getServiceFee() {
+        public String getServiceFee() {
             return serviceFee;
         }
 
-        public void setServiceFee(double serviceFee) {
+        public void setServiceFee(String serviceFee) {
             this.serviceFee = serviceFee;
         }
 
@@ -263,7 +263,7 @@ public class HomeBean {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(electricityPrice);
             dest.writeString(headImg);
-            dest.writeDouble(serviceFee);
+            dest.writeString(serviceFee);
             dest.writeInt(source);
             dest.writeInt(times);
             dest.writeString(title);
@@ -274,7 +274,7 @@ public class HomeBean {
             //顺序要和writeToParcel写的顺序一样
             electricityPrice = in.readString();
             headImg = in.readString();
-            serviceFee = in.readDouble();
+            serviceFee = in.readString();
             source = in.readInt();
             times = in.readInt();
             title = in.readString();

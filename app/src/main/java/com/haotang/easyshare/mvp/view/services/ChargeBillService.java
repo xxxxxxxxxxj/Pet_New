@@ -38,8 +38,12 @@ public class ChargeBillService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-        orderId = intent.getIntExtra("orderId", 0);
-        new PollingThread().start();
+        try {
+            orderId = intent.getIntExtra("orderId", 0);
+            new PollingThread().start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     class PollingThread extends Thread {

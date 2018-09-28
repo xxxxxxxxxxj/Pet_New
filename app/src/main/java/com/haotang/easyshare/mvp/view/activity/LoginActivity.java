@@ -244,6 +244,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     SystemUtil.goneJP(this);
                     return;
                 }
+                DevRing.configureHttp().getMapHeader().put("phone", etLoginPhone.getText().toString().trim().replace(" ", ""));
                 showDialog();
                 mPresenter.sendVerifyCode(etLoginPhone.getText().toString().trim().replace(" ", ""));
                 break;
@@ -264,6 +265,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     SystemUtil.goneJP(this);
                     return;
                 }
+                DevRing.configureHttp().getMapHeader().put("phone", etLoginPhone.getText().toString().trim().replace(" ", ""));
                 showDialog();
                 mPresenter.login(etLoginPhone.getText().toString().trim().replace(" ", ""), wxOpenId, lng, lat,
                         SharedPreferenceUtil.getInstance(LoginActivity.this).getString("jpush_id", ""),

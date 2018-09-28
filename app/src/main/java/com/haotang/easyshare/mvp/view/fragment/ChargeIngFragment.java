@@ -110,6 +110,10 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     TextView tv_chargeing_coupon;
     @BindView(R.id.rl_chargeing_coupon)
     RelativeLayout rl_chargeing_coupon;
+    @BindView(R.id.tv_chargeing_djs)
+    TextView tv_chargeing_djs;
+    @BindView(R.id.rl_chargeing_djs)
+    RelativeLayout rl_chargeing_djs;
     private String phone;
     private int orderId;
     private String endCode;
@@ -206,6 +210,13 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
+        PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
+    }
+
     @Subscribe
     public void getChargeState(ChargeingState event) {//轮询获取充电状态结果
         if (event != null) {
@@ -224,7 +235,11 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     totalPrice = data.getTotalPrice();
                     totalServiceFee = data.getTotalServiceFee();
                     endCode = data.getEndCode();
-                    StringUtil.setText(tvChargeingKwh, data.getPower(), "", View.VISIBLE, View.VISIBLE);
+                    if(StringUtil.isNotEmpty(data.getPower())){
+                        StringUtil.setText(tvChargeingKwh, ComputeUtil.div(Double.parseDouble(data.getPower()),1000)+"KWH", "", View.VISIBLE, View.VISIBLE);
+                    }else{
+                        StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
+                    }
                     StringUtil.setText(tvChargeingCdf, data.getTotalPower() + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
@@ -232,6 +247,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         ll_chargeing_jsm.setVisibility(View.GONE);
                         StringUtil.setText(tvChargeingStatus, "链接中...", "", View.VISIBLE, View.VISIBLE);
                         StringUtil.setText(btnChargeingSubmit, "充电链接中...", "", View.VISIBLE, View.VISIBLE);
+                        PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
+                        PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
                     } else if (state == 1) {//进行中,轮询查询充电状态接口
                         if(StringUtil.isNotEmpty(endCode)){
                             ll_chargeing_jsm.setVisibility(View.VISIBLE);
@@ -281,6 +298,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
 
     @Subscribe
     public void getChargeBill(ChargeingBill event) {//轮询获取账单结果
+        PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
+        PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
         if (event != null) {
             if (event.getCode() == 0) {
                 ChargeingBill.DataBean data = event.getData();
@@ -293,14 +312,18 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
                     }
                     StringUtil.setText(btnChargeingSubmit, "支付", "", View.VISIBLE, View.VISIBLE);
-                    StringUtil.setText(tvChargeingKwh, data.getPower(), "", View.VISIBLE, View.VISIBLE);
+                    if(StringUtil.isNotEmpty(data.getPower())){
+                        StringUtil.setText(tvChargeingKwh, ComputeUtil.div(Double.parseDouble(data.getPower()),1000)+"KWH", "", View.VISIBLE, View.VISIBLE);
+                    }else{
+                        StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
+                    }
                     StringUtil.setText(tvChargeingStatus, "充电结束", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingCdf, data.getTotalPower() + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
                 }
             } else {
-                RingToast.show(event.getMsg());
+                //RingToast.show(event.getMsg());
             }
         }
     }
@@ -339,7 +362,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_chargeing_coupon:
-                startActivity(new Intent(mActivity, SelectCouponActivity.class).putExtra("price", Double.valueOf(totalPrice)));
+                if(StringUtil.isNotEmpty(totalPrice)){
+                    startActivity(new Intent(mActivity, SelectCouponActivity.class).putExtra("price", Double.valueOf(totalPrice)));
+                }
                 break;
             case R.id.tv_chargeing_titlebar_other:
                 SystemUtil.cellPhone(mActivity, phone);

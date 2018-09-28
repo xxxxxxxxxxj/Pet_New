@@ -503,7 +503,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 builder.addFormDataPart("lat", String.valueOf(lat));
                 builder.addFormDataPart("telephone", etAddchargePhone.getText().toString().trim().replace(" ", ""));
                 builder.addFormDataPart("title", etAddchargeZmc.getText().toString().trim());
-                builder.addFormDataPart("electricityPrice", etAddchargeCdf.getText().toString().trim() + "_" + tvAddchargeKfsj.getText().toString().trim());
+                builder.addFormDataPart("electricityPrice", etAddchargeCdf.getText().toString().trim());
                 builder.addFormDataPart("parkingPrice", etAddchargeTcf.getText().toString().trim() + "_" + upOrDown);
                 builder.addFormDataPart("serviceFee", etAddchargeFwf.getText().toString().trim());
                 if (!tvAddchargeZdz.getText().toString().trim().equals("请选择站地址")) {

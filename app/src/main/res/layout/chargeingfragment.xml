@@ -51,11 +51,11 @@
             android:layout_below="@id/vw_chargeing_titlebar">
 
             <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
                 android:id="@+id/ll_chargeing_charge_before"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_chargeing_desc"
@@ -91,10 +91,10 @@
                 <RelativeLayout
                     android:id="@+id/rl_chargeing_start"
                     android:layout_width="200dip"
-                    android:layout_marginTop="70dip"
-                    android:layout_marginBottom="70dip"
                     android:layout_height="200dip"
-                    android:layout_centerInParent="true">
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="70dip"
+                    android:layout_marginTop="70dip">
 
                     <LinearLayout
                         android:id="@+id/ll_chargeing_start"
@@ -158,8 +158,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_chargeing_name"
@@ -256,6 +256,33 @@
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
                         android:src="@mipmap/icon_chargeing_gif" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_chargeing_djs"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dip"
+                    android:layout_marginBottom="30dip"
+                    android:layout_marginLeft="30dip"
+                    android:visibility="gone"
+                    android:layout_marginRight="30dip">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha="0.5"
+                        android:background="@color/black">
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_chargeing_djs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="链接中...120S"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -367,9 +394,9 @@
                         android:id="@+id/rl_chargeing_coupon"
                         android:layout_width="match_parent"
                         android:layout_height="39dip"
+                        android:visibility="gone"
                         android:paddingLeft="15dip"
-                        android:paddingRight="15dip"
-                        android:visibility="gone">
+                        android:paddingRight="15dip">
 
                         <TextView
                             android:id="@+id/tv_chargeing_coupon_title"

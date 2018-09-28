@@ -1,7 +1,7 @@
 package com.haotang.easyshare.mvp.view.adapter;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,8 +39,8 @@ public class SelectCouponAdapter  extends BaseQuickAdapter<MyCoupon.DataBean.Dat
         ImageView iv_item_mycoupon_select = helper.getView(R.id.iv_item_mycoupon_select);
         TextView tv_item_mycoupon_name = helper.getView(R.id.tv_item_mycoupon_name);
         if (helper.getLayoutPosition() == 0) {
-            FrameLayout.LayoutParams layoutParams =
-                    (FrameLayout.LayoutParams) ll_item_mycoupon_root.getLayoutParams();
+            RecyclerView.LayoutParams layoutParams =
+                    (RecyclerView.LayoutParams) ll_item_mycoupon_root.getLayoutParams();
             layoutParams.topMargin = DensityUtil.dp2px(mContext, 15);
             ll_item_mycoupon_root.setLayoutParams(layoutParams);
         }
