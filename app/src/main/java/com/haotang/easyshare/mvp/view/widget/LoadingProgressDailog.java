@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.util.StringUtil;
 
 public class LoadingProgressDailog extends Dialog {
 
@@ -24,6 +25,7 @@ public class LoadingProgressDailog extends Dialog {
         private boolean isShowMessage = true;
         private boolean isCancelable = false;
         private boolean isCancelOutside = false;
+        private TextView msgText;
 
 
         public Builder(Context context) {
@@ -39,6 +41,9 @@ public class LoadingProgressDailog extends Dialog {
 
         public Builder setMessage(String message) {
             this.message = message;
+            if(msgText != null){
+                StringUtil.setText(msgText,message,"",View.VISIBLE,View.VISIBLE);
+            }
             return this;
         }
 
@@ -80,7 +85,7 @@ public class LoadingProgressDailog extends Dialog {
             LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.dialog_loading, null);
             LoadingProgressDailog loadingProgressDailog = new LoadingProgressDailog(context, R.style.MyDialogStyle);
-            TextView msgText = (TextView) view.findViewById(R.id.tipTextView);
+            msgText = (TextView) view.findViewById(R.id.tipTextView);
             if (isShowMessage) {
                 msgText.setText(message);
             } else {

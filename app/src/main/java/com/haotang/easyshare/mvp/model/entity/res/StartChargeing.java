@@ -50,8 +50,17 @@ public class StartChargeing {
          */
 
         private int orderId;
+        private int timeout;
         private int state = -1;
         private String providerName;
+
+        public int getTimeout() {
+            return timeout;
+        }
+
+        public void setTimeout(int timeout) {
+            this.timeout = timeout;
+        }
 
         public String getProviderName() {
             return providerName;

@@ -30,8 +30,11 @@ import com.haotang.easyshare.mvp.view.fragment.MyFragment;
 import com.haotang.easyshare.mvp.view.fragment.SelectCarFragment;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainView;
+import com.haotang.easyshare.mvp.view.services.ChargeBillService;
+import com.haotang.easyshare.mvp.view.services.ChargeStateService;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.haotang.easyshare.util.PollingUtils;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UpdateUtil;
@@ -351,6 +354,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         super.onDestroy();
         DevRing.activityStackManager().exitApplication();
         Process.killProcess(Process.myPid());
+        PollingUtils.stopPollingService(this, ChargeBillService.class, ChargeBillService.ACTION);
+        PollingUtils.stopPollingService(this, ChargeStateService.class, ChargeStateService.ACTION);
     }
 
     @Override

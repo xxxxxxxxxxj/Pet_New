@@ -127,7 +127,7 @@ public class InputChargeCodeActivity extends BaseActivity<InputChargeCodePresent
     public void startSuccess(StartChargeing.DataBean data) {
         disMissDialog();
         if (data != null) {
-            DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId()));
+            DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId(),data.getTimeout()));
             finish();
         }
     }
