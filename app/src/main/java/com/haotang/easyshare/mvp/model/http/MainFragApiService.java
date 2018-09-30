@@ -4,8 +4,11 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Query;
 
 /**
@@ -21,5 +24,5 @@ public interface MainFragApiService {
      * 获取首页数据
      */
     @GET(UrlConstants.HOMEINDEX)
-    Observable<HttpResult<MainFragmentData>> homeIndex(@Query("lng") double lng, @Query("lat") double lat);
+    Observable<HttpResult<MainFragmentData>> homeIndex(@HeaderMap Map<String, String> headers, @Query("lng") double lng, @Query("lat") double lat);
 }

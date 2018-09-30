@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerSelectCouponActivityCommponent;
 import com.haotang.easyshare.di.module.activity.SelectCouponActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.SelectCouponEvent;
@@ -127,7 +128,7 @@ public class SelectCouponActivity extends BaseActivity<SelectCouponPresenter> im
         builder.addFormDataPart("page", page + "");
         builder.addFormDataPart("price", price + "");
         RequestBody build = builder.build();
-        mPresenter.match(build);
+        mPresenter.match(UrlConstants.getMapHeader(this),build);
     }
 
     private void refresh() {

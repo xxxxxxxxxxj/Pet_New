@@ -14,6 +14,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerCarPersonInfoActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CarPersonInfoActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
@@ -233,7 +234,7 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
                 builder.addFormDataPart("lat", lat + "");
                 builder.addFormDataPart("lng", lng + "");
                 RequestBody build = builder.build();
-                mPresenter.save(build);
+                mPresenter.save(UrlConstants.getMapHeader(this),build);
                 break;
         }
     }

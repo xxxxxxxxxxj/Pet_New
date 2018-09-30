@@ -4,8 +4,11 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Query;
 
 /**
@@ -21,5 +24,5 @@ public interface CurrentMessageApiService {
      * 发布留言
      */
     @GET(UrlConstants.SAVEMSG)
-    Observable<HttpResult<AddChargeBean>> save(@Query("contentType") int contentType, @Query("content") String content);
+    Observable<HttpResult<AddChargeBean>> save(@HeaderMap Map<String, String> headers, @Query("contentType") int contentType, @Query("content") String content);
 }

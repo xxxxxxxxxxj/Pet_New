@@ -105,7 +105,7 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
                     MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                             .addFormDataPart("uuid", uuid)
                             .build();
-                    DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callback(body)
+                    DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callback(UrlConstants.getMapHeader(getActivity()),body)
                             , new CommonObserver<HttpResult<AddChargeBean>>() {
                                 @Override
                                 public void onResult(HttpResult<AddChargeBean> result) {

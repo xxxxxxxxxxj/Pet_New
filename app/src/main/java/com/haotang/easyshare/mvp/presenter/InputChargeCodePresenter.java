@@ -10,6 +10,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -30,8 +32,8 @@ public class InputChargeCodePresenter extends BasePresenter<IInputChargeCodeView
      *
      * @param body
      */
-    public void start(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.start(body), new CommonObserver<StartChargeing>() {
+    public void start(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.start(headers,body), new CommonObserver<StartChargeing>() {
             @Override
             public void onResult(StartChargeing result) {
                 if (mIView != null) {

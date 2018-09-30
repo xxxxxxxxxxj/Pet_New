@@ -14,6 +14,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -32,8 +34,8 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
     /**
      * 下发验证码
      */
-    public void sendVerifyCode(String phone) {
-        DevRing.httpManager().commonRequest(mIModel.sendVerifyCode(phone),
+    public void sendVerifyCode(Map<String, String> headers, String phone) {
+        DevRing.httpManager().commonRequest(mIModel.sendVerifyCode(headers,phone),
                 new CommonObserver<HttpResult<SendVerifyCodeBean>>() {
                     @Override
                     public void onResult(HttpResult<SendVerifyCodeBean> result) {
@@ -65,8 +67,8 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
     /**
      * 登陆
      */
-    public void login(String phone, String wxOpenId, double lng, double lat, String registrationId, String code, String userName, String headImg) {
-        DevRing.httpManager().commonRequest(mIModel.login(phone, wxOpenId, lng, lat, registrationId, code, userName, headImg),
+    public void login(Map<String, String> headers,String phone, String wxOpenId, double lng, double lat, String registrationId, String code, String userName, String headImg) {
+        DevRing.httpManager().commonRequest(mIModel.login(headers,phone, wxOpenId, lng, lat, registrationId, code, userName, headImg),
                 new CommonObserver<HttpResult<LoginBean>>() {
                     @Override
                     public void onResult(HttpResult<LoginBean> result) {
@@ -100,8 +102,8 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
      *
      * @param body
      */
-    public void getWxOpenId(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.getWxOpenId(body),
+    public void getWxOpenId(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.getWxOpenId(headers,body),
                 new CommonObserver<HttpResult<WxLoginBean>>() {
                     @Override
                     public void onResult(HttpResult<WxLoginBean> result) {
@@ -136,8 +138,8 @@ public class LoginPresenter extends BasePresenter<ILoginView, ILoginModel> {
      *
      * @param body
      */
-    public void getWxUserInfo(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.getWxUserInfo(body),
+    public void getWxUserInfo(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.getWxUserInfo(headers,body),
                 new CommonObserver<HttpResult<WxUserInfoBean>>() {
                     @Override
                     public void onResult(HttpResult<WxUserInfoBean> result) {

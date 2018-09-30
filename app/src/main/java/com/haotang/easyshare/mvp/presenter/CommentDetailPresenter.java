@@ -11,6 +11,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -30,8 +32,8 @@ public class CommentDetailPresenter extends BasePresenter<ICommentDetailView, IC
      * @param uuid
      * @param mNextRequestPage
      */
-    public void list(String uuid, int mNextRequestPage) {
-        DevRing.httpManager().commonRequest(mIModel.list(uuid, mNextRequestPage), new CommonObserver<HttpResult<CommentBean>>() {
+    public void list(Map<String, String> headers, String uuid, int mNextRequestPage) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,uuid, mNextRequestPage), new CommonObserver<HttpResult<CommentBean>>() {
             @Override
             public void onResult(HttpResult<CommentBean> result) {
                 if (mIView != null) {

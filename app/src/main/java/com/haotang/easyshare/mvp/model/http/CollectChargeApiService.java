@@ -2,11 +2,11 @@ package com.haotang.easyshare.mvp.model.http;
 
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.CollectChargeBean;
-import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
-import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -22,5 +22,5 @@ public interface CollectChargeApiService {
      * 收藏的充电桩列表
      */
     @POST(UrlConstants.COLLECT_CHARGE)
-    Observable<CollectChargeBean> list();
+    Observable<CollectChargeBean> list(@HeaderMap Map<String, String> headers);
 }

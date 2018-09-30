@@ -2,10 +2,11 @@ package com.haotang.easyshare.mvp.model;
 
 import android.app.Activity;
 
-import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.http.FlashApiService;
 import com.haotang.easyshare.mvp.model.imodel.IFlashModel;
 import com.ljy.devring.DevRing;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -22,7 +23,7 @@ public class FlashModel implements IFlashModel {
      * 获取广告页数据
      */
     @Override
-    public Observable startPageConfig(Activity activity) {
-        return DevRing.httpManager().getService(FlashApiService.class).startPageConfig("");
+    public Observable startPageConfig(Map<String, String> headers, Activity activity) {
+        return DevRing.httpManager().getService(FlashApiService.class).startPageConfig(headers,"");
     }
 }

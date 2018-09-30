@@ -3,9 +3,12 @@ package com.haotang.easyshare.mvp.model.http;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -21,11 +24,11 @@ public interface PostListApiService {
      * 热门帖子列表
      */
     @POST(UrlConstants.HOT_POINT)
-    Observable<HotPoint> hot(@Body() RequestBody body);
+    Observable<HotPoint> hot(@HeaderMap Map<String, String> headers, @Body() RequestBody body);
 
     /**
      * 问题车帖子列表
      */
     @POST(UrlConstants.PROBLEM_CAR_POINT)
-    Observable<HotPoint> problemCar(@Body() RequestBody body);
+    Observable<HotPoint> problemCar(@HeaderMap Map<String, String> headers,@Body() RequestBody body);
 }

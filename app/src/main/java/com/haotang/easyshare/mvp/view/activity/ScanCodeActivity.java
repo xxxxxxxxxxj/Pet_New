@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerScanCodeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.ScanCodeActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.StartCodeChargeing;
@@ -107,7 +108,7 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
             builder.addFormDataPart("code", result);
             RequestBody body = builder.build();
-            mPresenter.start(body);
+            mPresenter.start(UrlConstants.getMapHeader(ScanCodeActivity.this),body);
         }
 
         @Override

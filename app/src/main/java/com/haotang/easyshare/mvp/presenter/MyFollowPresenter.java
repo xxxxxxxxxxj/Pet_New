@@ -10,6 +10,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -26,8 +28,8 @@ public class MyFollowPresenter extends BasePresenter<IMyFollowView, IMyFollowMod
     /**
      * 关注的人列表
      */
-    public void list() {
-        DevRing.httpManager().commonRequest(mIModel.list(), new CommonObserver<FollowBean>() {
+    public void list(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers), new CommonObserver<FollowBean>() {
             @Override
             public void onResult(FollowBean result) {
                 if (mIView != null) {

@@ -34,8 +34,8 @@ public class CommentPresenter extends BasePresenter<ICommentView, ICommentModel>
      *
      * @param filedMap
      */
-    public void save(Map<String, RequestBody> filedMap) {
-        DevRing.httpManager().commonRequest(mIModel.save(filedMap), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void save(Map<String, String> headers,Map<String, RequestBody> filedMap) {
+        DevRing.httpManager().commonRequest(mIModel.save(headers,filedMap), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
@@ -66,8 +66,8 @@ public class CommentPresenter extends BasePresenter<ICommentView, ICommentModel>
     /**
      * 评论标签
      */
-    public void tags() {
-        DevRing.httpManager().commonRequest(mIModel.tags(), new CommonObserver<CommentTags>() {
+    public void tags(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.tags(headers), new CommonObserver<CommentTags>() {
             @Override
             public void onResult(CommentTags result) {
                 if (mIView != null) {

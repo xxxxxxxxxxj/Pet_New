@@ -16,6 +16,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.bumptech.glide.Glide;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerChargeIngFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.ChargeIngFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
@@ -152,6 +153,12 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 .build()
                 .inject(this);
         setLocation();
+        rlChargeingChargeAfter.setVisibility(View.GONE);
+        rlChargeingChargeBefore.setVisibility(View.VISIBLE);
+        tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
+        Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
+        ll_chargeing_start.bringToFront();
     }
 
     @Override
@@ -181,7 +188,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     public void RefreshBalance(RefreshBalanceEvent event) {//充值返回
         if (event != null) {
             showDialog();
-            mPresenter.home();
+            mPresenter.home(UrlConstants.getMapHeader(mActivity));
         }
     }
 
@@ -232,7 +239,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                     builder.addFormDataPart("orderId", orderId + "");
                     RequestBody build = builder.build();
-                    mPresenter.cancelOrder(build);
+                    mPresenter.cancelOrder(UrlConstants.getMapHeader(mActivity),build);
                 }
             }, "CHARGEING_OUTTIME_TIMER");
         }
@@ -353,7 +360,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("orderId", orderId + "");
                 RequestBody build = builder.build();
-                mPresenter.cancelOrder(build);
+                mPresenter.cancelOrder(UrlConstants.getMapHeader(mActivity),build);
             }
         }
     }
@@ -391,16 +398,18 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     }
 
     private void refresh() {
-        showDialog();
-        mPresenter.ing();
-        mPresenter.home();
+        if (SystemUtil.checkLogin(mActivity)) {
+            showDialog();
+            mPresenter.ing(UrlConstants.getMapHeader(mActivity));
+            mPresenter.home(UrlConstants.getMapHeader(mActivity));
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if (mPresenter != null) {
-            mPresenter.home();
+            mPresenter.home(UrlConstants.getMapHeader(mActivity));
         }
     }
 
@@ -471,7 +480,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         builder.addFormDataPart("endCode", endCode);
                     }
                     RequestBody build = builder.build();
-                    mPresenter.stop(build);
+                    mPresenter.stop(UrlConstants.getMapHeader(mActivity),build);
                 } else if (state == 2) {//结算中,轮询获取账单接口
                 } else if (state == 3) {//待支付,轮询获取账单接口
                 } else if (state == 4) {//获取到账单，调取支付接口
@@ -483,7 +492,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         builder.addFormDataPart("couponId", couponId + "");
                     }
                     RequestBody build = builder.build();
-                    mPresenter.pay(build);
+                    mPresenter.pay(UrlConstants.getMapHeader(mActivity),build);
                 }
                 break;
             case R.id.tv_chargeing_gzbx:
@@ -700,7 +709,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     builder.addFormDataPart("lng", lng + "");
                     builder.addFormDataPart("lat", lat + "");
                     RequestBody build = builder.build();
-                    mPresenter.save(build);
+                    mPresenter.save(UrlConstants.getMapHeader(mActivity),build);
                     mlocationClient.stopLocation();
                 }
             } else {

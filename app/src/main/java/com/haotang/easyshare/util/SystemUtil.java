@@ -45,6 +45,7 @@ import android.widget.Toast;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LngLat;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
@@ -286,7 +287,6 @@ public class SystemUtil {
     public static void Exit(Context activity, int code) {
         if (code == AppConfig.EXIT_USER_CODE) {
             SharedPreferenceUtil.getInstance(activity).removeData("cellphone");
-            DevRing.configureHttp().getMapHeader().put("phone", "");
         }
     }
 
@@ -454,7 +454,7 @@ public class SystemUtil {
                     MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                             .addFormDataPart("uuid", uuid)
                             .build();
-                    DevRing.httpManager().commonRequest(DevRing.httpManager().getService(NavApiService.class).callback(body)
+                    DevRing.httpManager().commonRequest(DevRing.httpManager().getService(NavApiService.class).callback(UrlConstants.getMapHeader(context),body)
                             , new CommonObserver<HttpResult<AddChargeBean>>() {
                                 @Override
                                 public void onResult(HttpResult<AddChargeBean> result) {
@@ -512,7 +512,7 @@ public class SystemUtil {
                     MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                             .addFormDataPart("uuid", uuid)
                             .build();
-                    DevRing.httpManager().commonRequest(DevRing.httpManager().getService(NavApiService.class).callback(body)
+                    DevRing.httpManager().commonRequest(DevRing.httpManager().getService(NavApiService.class).callback(UrlConstants.getMapHeader(context),body)
                             , new CommonObserver<HttpResult<AddChargeBean>>() {
                                 @Override
                                 public void onResult(HttpResult<AddChargeBean> result) {

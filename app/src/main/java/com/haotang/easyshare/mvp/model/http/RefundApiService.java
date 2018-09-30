@@ -5,9 +5,12 @@ import com.haotang.easyshare.mvp.model.entity.res.ReFundExplain;
 import com.haotang.easyshare.mvp.model.entity.res.ReFundSubmit;
 import com.haotang.easyshare.mvp.model.entity.res.ReFundTag;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -25,17 +28,17 @@ public interface RefundApiService {
      * @param build
      */
     @POST(UrlConstants.REFUND_TAG)
-    Observable<ReFundTag> list(@Body RequestBody build);
+    Observable<ReFundTag> list(@HeaderMap Map<String, String> headers, @Body RequestBody build);
 
     /**
      * 退款说明
      */
     @POST(UrlConstants.REFUND_EXPLAN)
-    Observable<ReFundExplain> explain();
+    Observable<ReFundExplain> explain(@HeaderMap Map<String, String> headers);
 
     /**
      * 退款说明
      */
     @POST(UrlConstants.REFUND)
-    Observable<ReFundSubmit> refund(@Body RequestBody build);
+    Observable<ReFundSubmit> refund(@HeaderMap Map<String, String> headers,@Body RequestBody build);
 }

@@ -8,8 +8,8 @@ import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import okhttp3.RequestBody;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -31,18 +31,18 @@ public interface ChargingPileDetailApiService {
      * @param sign
      */
     @GET(UrlConstants.CHARGEDETAIL)
-    Observable<HttpResult<ChargeDetailBean>> detail(@Query("lng") double lng, @Query("lat") double lat,
+    Observable<HttpResult<ChargeDetailBean>> detail(@HeaderMap Map<String, String> headers, @Query("lng") double lng, @Query("lat") double lat,
                                                     @Query("uuid") String uuid, @Query("sign") String sign);
 
     /**
      * 收藏充电桩
      */
     @GET(UrlConstants.FOLLOW_CHARGE)
-    Observable<HttpResult<AddChargeBean>> follow(@QueryMap() Map<String, String> parms);
+    Observable<HttpResult<AddChargeBean>> follow(@HeaderMap Map<String, String> headers,@QueryMap() Map<String, String> parms);
 
     /**
      * 取消收藏充电桩
      */
     @GET(UrlConstants.CANCEL_FOLLOW_CHARGE)
-    Observable<HttpResult<AddChargeBean>> cancel(@QueryMap() Map<String, String> parms);
+    Observable<HttpResult<AddChargeBean>> cancel(@HeaderMap Map<String, String> headers,@QueryMap() Map<String, String> parms);
 }

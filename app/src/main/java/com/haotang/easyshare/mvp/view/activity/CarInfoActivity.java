@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerCarInfoActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CarInfoActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
@@ -65,7 +66,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.my();
+        mPresenter.my(UrlConstants.getMapHeader(this));
     }
 
     @Override
@@ -96,7 +97,7 @@ public class CarInfoActivity extends BaseActivity<CarInfoPresenter> implements I
                     builder.addFormDataPart("id", String.valueOf(id));
                 }
                 RequestBody build = builder.build();
-                mPresenter.save(build);
+                mPresenter.save(UrlConstants.getMapHeader(this),build);
                 break;
         }
     }

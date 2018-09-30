@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -18,15 +20,15 @@ public interface IRefundModel extends IBaseModel {
      * 标签列表
      * @param build
      */
-    Observable list(RequestBody build);
+    Observable list(Map<String, String> headers, RequestBody build);
 
     /**
      * 退款说明
      */
-    Observable explain();
+    Observable explain(Map<String, String> headers);
 
     /**
      * 发起充值退款
      */
-    Observable refund(RequestBody build);
+    Observable refund(Map<String, String> headers,RequestBody build);
 }

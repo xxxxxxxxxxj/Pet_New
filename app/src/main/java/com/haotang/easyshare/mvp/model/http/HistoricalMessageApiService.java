@@ -2,12 +2,12 @@ package com.haotang.easyshare.mvp.model.http;
 
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.HistoricalMsg;
-import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
-import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 
 /**
  * <p>Title:${type_name}</p>
@@ -22,5 +22,5 @@ public interface HistoricalMessageApiService {
      * 管家留言列表
      */
     @GET(UrlConstants.HISTORYMSG)
-    Observable<HistoricalMsg> history();
+    Observable<HistoricalMsg> history(@HeaderMap Map<String, String> headers);
 }

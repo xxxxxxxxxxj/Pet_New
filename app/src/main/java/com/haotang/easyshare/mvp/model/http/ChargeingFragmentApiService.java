@@ -7,9 +7,12 @@ import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -25,7 +28,7 @@ public interface ChargeingFragmentApiService {
      * 获取进行中的订单
      */
     @POST(UrlConstants.CHARGEING_ORDER)
-    Observable<StartChargeing> ing();
+    Observable<StartChargeing> ing(@HeaderMap Map<String, String> headers);
 
     /**
      * 查询充电状态
@@ -33,7 +36,7 @@ public interface ChargeingFragmentApiService {
      * @param build
      */
     @POST(UrlConstants.CHARGEING_STATE)
-    Observable<ChargeingState> state(@Body RequestBody build);
+    Observable<ChargeingState> state(@HeaderMap Map<String, String> headers,@Body RequestBody build);
 
     /**
      * 结束充电
@@ -41,7 +44,7 @@ public interface ChargeingFragmentApiService {
      * @param build
      */
     @POST(UrlConstants.CHARGEING_STOP)
-    Observable<ChargeingState> stop(@Body RequestBody build);
+    Observable<ChargeingState> stop(@HeaderMap Map<String, String> headers,@Body RequestBody build);
 
     /**
      * 获取账单
@@ -49,7 +52,7 @@ public interface ChargeingFragmentApiService {
      * @param build
      */
     @POST(UrlConstants.CHARGEING_BILL)
-    Observable<ChargeingBill> bill(@Body RequestBody build);
+    Observable<ChargeingBill> bill(@HeaderMap Map<String, String> headers,@Body RequestBody build);
 
     /**
      * 支付账单
@@ -57,7 +60,7 @@ public interface ChargeingFragmentApiService {
      * @param build
      */
     @POST(UrlConstants.CHARGEING_BILL_PAY)
-    Observable<ChargeingState> pay(@Body RequestBody build);
+    Observable<ChargeingState> pay(@HeaderMap Map<String, String> headers,@Body RequestBody build);
 
     /**
      * 故障报修
@@ -65,7 +68,7 @@ public interface ChargeingFragmentApiService {
      * @param build
      */
     @POST(UrlConstants.CHARGE_REPORT)
-    Observable<HttpResult<AddChargeBean>> save(@Body RequestBody build);
+    Observable<HttpResult<AddChargeBean>> save(@HeaderMap Map<String, String> headers,@Body RequestBody build);
 
     /**
      * 故障报修
@@ -73,5 +76,5 @@ public interface ChargeingFragmentApiService {
      * @param build
      */
     @POST(UrlConstants.CANCEL_ORDER)
-    Observable<HttpResult<AddChargeBean>> cancelOrder(@Body RequestBody build);
+    Observable<HttpResult<AddChargeBean>> cancelOrder(@HeaderMap Map<String, String> headers,@Body RequestBody build);
 }

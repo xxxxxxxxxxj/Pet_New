@@ -5,6 +5,8 @@ import com.haotang.easyshare.mvp.model.http.MainFragApiService;
 import com.haotang.easyshare.mvp.model.imodel.IMainFragmentModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -21,8 +23,8 @@ public class MainFragmentModel implements IMainFragmentModel {
      * 获取首页数据
      */
     @Override
-    public Observable homeIndex(double lng, double lat) {
-        return DevRing.httpManager().getService(MainFragApiService.class).homeIndex(lng, lat);
+    public Observable homeIndex(Map<String, String> headers, double lng, double lat) {
+        return DevRing.httpManager().getService(MainFragApiService.class).homeIndex(headers,lng, lat);
     }
 
     /**
@@ -32,7 +34,7 @@ public class MainFragmentModel implements IMainFragmentModel {
      * @param body
      */
     @Override
-    public Observable list(RequestBody body) {
-        return DevRing.httpManager().getService(HotFragmentApiService.class).list(body);
+    public Observable list(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).list(headers,body);
     }
 }

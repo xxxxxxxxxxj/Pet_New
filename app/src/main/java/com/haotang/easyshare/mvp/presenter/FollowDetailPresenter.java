@@ -16,7 +16,6 @@ import com.ljy.devring.util.RxLifecycleUtil;
 
 import java.util.Map;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -37,8 +36,8 @@ public class FollowDetailPresenter extends BasePresenter<IFollowDetailView, IFol
      *
      * @param uuid
      */
-    public void info(String uuid) {
-        DevRing.httpManager().commonRequest(mIModel.info(uuid), new CommonObserver<HttpResult<HomeBean>>() {
+    public void info(Map<String, String> headers,String uuid) {
+        DevRing.httpManager().commonRequest(mIModel.info(headers,uuid), new CommonObserver<HttpResult<HomeBean>>() {
             @Override
             public void onResult(HttpResult<HomeBean> result) {
                 if (mIView != null) {
@@ -68,8 +67,8 @@ public class FollowDetailPresenter extends BasePresenter<IFollowDetailView, IFol
     /**
      * 用户帖子列表
      */
-    public void list(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<PostBean>() {
+    public void list(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,body), new CommonObserver<PostBean>() {
             @Override
             public void onResult(PostBean result) {
                 if (mIView != null) {
@@ -102,8 +101,8 @@ public class FollowDetailPresenter extends BasePresenter<IFollowDetailView, IFol
      *
      * @param build
      */
-    public void follow(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.follow(build), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void follow(Map<String, String> headers,RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.follow(headers,build), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
@@ -135,8 +134,8 @@ public class FollowDetailPresenter extends BasePresenter<IFollowDetailView, IFol
      *
      * @param build
      */
-    public void cancel(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.cancel(build), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void cancel(Map<String, String> headers,RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.cancel(headers,build), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
@@ -166,8 +165,8 @@ public class FollowDetailPresenter extends BasePresenter<IFollowDetailView, IFol
     /**
      * 评价用户
      */
-    public void eval(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.eval(body), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void eval(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.eval(headers,body), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
@@ -198,8 +197,8 @@ public class FollowDetailPresenter extends BasePresenter<IFollowDetailView, IFol
     /**
      * 点赞
      */
-    public void praise(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.praise(body), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void praise(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.praise(headers,body), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
@@ -230,8 +229,8 @@ public class FollowDetailPresenter extends BasePresenter<IFollowDetailView, IFol
     /**
      * 评价星级
      */
-    public void stars() {
-        DevRing.httpManager().commonRequest(mIModel.stars(), new CommonObserver<StarsBean>() {
+    public void stars(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.stars(headers), new CommonObserver<StarsBean>() {
             @Override
             public void onResult(StarsBean result) {
                 if (mIView != null) {

@@ -3,9 +3,12 @@ package com.haotang.easyshare.mvp.model.http;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.MyCoupon;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -22,5 +25,5 @@ public interface SelectCouponApiService {
      * @param body
      */
     @POST(UrlConstants.MATCH_COUPON)
-    Observable<MyCoupon> match(@Body() RequestBody body);
+    Observable<MyCoupon> match(@HeaderMap Map<String, String> headers, @Body() RequestBody body);
 }

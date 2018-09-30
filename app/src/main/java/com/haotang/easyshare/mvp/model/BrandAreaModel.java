@@ -5,6 +5,8 @@ import com.haotang.easyshare.mvp.model.http.HotFragmentApiService;
 import com.haotang.easyshare.mvp.model.imodel.IBrandAreaModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -21,8 +23,8 @@ public class BrandAreaModel implements IBrandAreaModel {
      * 品牌热帖
      */
     @Override
-    public Observable article(RequestBody body) {
-        return DevRing.httpManager().getService(BrandAreaApiService.class).article(body);
+    public Observable article(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(BrandAreaApiService.class).article(headers,body);
     }
 
     /**
@@ -32,7 +34,7 @@ public class BrandAreaModel implements IBrandAreaModel {
      * @param body
      */
     @Override
-    public Observable list(RequestBody body) {
-        return DevRing.httpManager().getService(HotFragmentApiService.class).list(body);
+    public Observable list(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).list(headers,body);
     }
 }

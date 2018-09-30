@@ -3,9 +3,12 @@ package com.haotang.easyshare.mvp.model.http;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.CarDetail;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -22,5 +25,5 @@ public interface CarDetailApiService {
      * @param body
      */
     @POST(UrlConstants.CARDETAIL)
-    Observable<CarDetail> detail(@Body() RequestBody body);
+    Observable<CarDetail> detail(@HeaderMap Map<String, String> headers, @Body() RequestBody body);
 }

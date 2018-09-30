@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -17,10 +19,10 @@ public interface IMyPostModel extends IBaseModel {
     /**
      * 用户帖子列表
      */
-    Observable list(RequestBody body);
+    Observable list(Map<String, String> headers, RequestBody body);
 
     /**
      * 删除帖子
      */
-    Observable delete(RequestBody body);
+    Observable delete(Map<String, String> headers,RequestBody body);
 }

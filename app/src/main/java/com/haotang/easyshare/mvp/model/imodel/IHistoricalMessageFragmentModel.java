@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -16,5 +18,5 @@ public interface IHistoricalMessageFragmentModel extends IBaseModel{
     /**
      * 管家留言列表
      */
-    Observable history();
+    Observable history(Map<String, String> headers);
 }

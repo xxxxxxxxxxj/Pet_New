@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -20,5 +22,5 @@ public interface ILocalChargingModel extends IBaseModel{
      * @param mNextRequestPage
      * @param sign
      */
-    Observable nearby(double lng, double lat, int mNextRequestPage, String sign);
+    Observable nearby(Map<String, String> headers, double lng, double lat, int mNextRequestPage, String sign);
 }

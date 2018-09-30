@@ -10,6 +10,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -30,8 +32,8 @@ public class CarDetailPresenter extends BasePresenter<ICarDetailView, ICarDetail
      *
      * @param body
      */
-    public void detail(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.detail(body), new CommonObserver<CarDetail>() {
+    public void detail(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.detail(headers,body), new CommonObserver<CarDetail>() {
             @Override
             public void onResult(CarDetail result) {
                 if (mIView != null) {

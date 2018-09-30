@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerMyBalanceActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MyBalanceActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
@@ -57,7 +58,7 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     public void RefreshBalance(RefreshBalanceEvent event) {//充值返回
         if (event != null) {
             showDialog();
-            mPresenter.home();
+            mPresenter.home(UrlConstants.getMapHeader(this));
         }
     }
 

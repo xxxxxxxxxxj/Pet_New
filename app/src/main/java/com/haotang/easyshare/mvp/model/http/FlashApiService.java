@@ -3,8 +3,11 @@ package com.haotang.easyshare.mvp.model.http;
 import com.haotang.easyshare.mvp.model.entity.res.FlashBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Url;
 
 /**
@@ -20,5 +23,5 @@ public interface FlashApiService {
      * 获取广告页数据
      */
     @GET
-    Observable<HttpResult<FlashBean>> startPageConfig(@Url String url);
+    Observable<HttpResult<FlashBean>> startPageConfig(@HeaderMap Map<String, String> headers, @Url String url);
 }

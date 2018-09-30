@@ -12,6 +12,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -30,9 +32,9 @@ public class CarInfoPresenter extends BasePresenter<ICarInfoView, ICarInfoModel>
     /**
      * 用户车辆信息
      */
-    public void my() {
+    public void my(Map<String, String> headers) {
         DevRing.httpManager().commonRequest(mIModel.my
-                        (),
+                        (headers),
                 new CommonObserver<MyCarBean>() {
                     @Override
                     public void onResult(MyCarBean result) {
@@ -65,8 +67,8 @@ public class CarInfoPresenter extends BasePresenter<ICarInfoView, ICarInfoModel>
     /**
      * 保存或修改用户车辆信息
      */
-    public void save(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.save(body),
+    public void save(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.save(headers,body),
                 new CommonObserver<HttpResult<AddChargeBean>>() {
                     @Override
                     public void onResult(HttpResult<AddChargeBean> result) {

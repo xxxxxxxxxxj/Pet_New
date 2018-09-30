@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.model.http.ChargeingFragmentApiService;
 import com.ljy.devring.DevRing;
@@ -41,7 +42,7 @@ public class ChargeingService extends Service {
     class PollingThread extends Thread {
         @Override
         public void run() {
-            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ChargeingFragmentApiService.class).ing()
+            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ChargeingFragmentApiService.class).ing(UrlConstants.getMapHeader(getApplicationContext()))
                     , new CommonObserver<StartChargeing>() {
                         @Override
                         public void onResult(StartChargeing result) {

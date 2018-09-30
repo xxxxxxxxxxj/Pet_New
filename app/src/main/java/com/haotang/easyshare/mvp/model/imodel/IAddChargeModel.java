@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -17,7 +19,7 @@ public interface IAddChargeModel extends IBaseModel {
     /**
      * 上传充电桩
      */
-    Observable save(RequestBody body);
+    Observable save(Map<String, String> headers, RequestBody body);
 
     /**
      * 充电桩详情
@@ -27,10 +29,10 @@ public interface IAddChargeModel extends IBaseModel {
      * @param uuid
      * @param md5
      */
-    Observable detail(double lng, double lat, String uuid, String md5);
+    Observable detail(Map<String, String> headers,double lng, double lat, String uuid, String md5);
 
     /**
      * 编辑充电桩
      */
-    Observable update(RequestBody body);
+    Observable update(Map<String, String> headers,RequestBody body);
 }

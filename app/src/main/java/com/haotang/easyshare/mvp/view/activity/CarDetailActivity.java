@@ -153,7 +153,7 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("id", id + "");
         RequestBody build = builder.build();
-        mPresenter.detail(build);
+        mPresenter.detail(UrlConstants.getMapHeader(this),build);
     }
 
     @Override

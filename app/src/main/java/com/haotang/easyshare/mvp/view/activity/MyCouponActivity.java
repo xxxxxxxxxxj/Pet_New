@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerMyCouponActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MyCouponActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.MyCoupon;
@@ -117,7 +118,7 @@ public class MyCouponActivity extends BaseActivity<MyCouponPresenter> implements
         builder.addFormDataPart("page", page + "");
         builder.addFormDataPart("state", "1");
         RequestBody build = builder.build();
-        mPresenter.list(build);
+        mPresenter.list(UrlConstants.getMapHeader(this),build);
     }
 
     private void refresh() {

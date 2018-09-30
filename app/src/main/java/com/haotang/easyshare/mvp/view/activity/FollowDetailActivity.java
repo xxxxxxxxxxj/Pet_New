@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerFollowDetailActivityCommponent;
 import com.haotang.easyshare.di.module.activity.FollowDetailActivityModule;
 import com.haotang.easyshare.materialratingbar.MaterialRatingBar;
@@ -112,12 +113,12 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.info(uuid);
+        mPresenter.info(UrlConstants.getMapHeader(this),uuid);
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("uuid", uuid);
         builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
         RequestBody build = builder.build();
-        mPresenter.list(build);
+        mPresenter.list(UrlConstants.getMapHeader(this),build);
     }
 
     @Override
@@ -137,7 +138,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                         builder.addFormDataPart("uuid", dataBean.getUuid());
                         RequestBody build = builder.build();
-                        mPresenter.praise(build);
+                        mPresenter.praise(UrlConstants.getMapHeader(FollowDetailActivity.this),build);
                     }
                 }
             }
@@ -177,9 +178,9 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                 builder.addFormDataPart("uuid", uuid);
                 RequestBody build = builder.build();
                 if (isCollect == 0) {//是否已关注(0:否、1:是)
-                    mPresenter.follow(build);
+                    mPresenter.follow(UrlConstants.getMapHeader(this),build);
                 } else if (isCollect == 1) {
-                    mPresenter.cancel(build);
+                    mPresenter.cancel(UrlConstants.getMapHeader(this),build);
                 }
                 break;
             case R.id.iv_followdetail_top_pingjia:
@@ -195,12 +196,12 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         postListAdapter.setEnableLoadMore(false);
         srlFollowdetail.setRefreshing(true);
         mNextRequestPage = 1;
-        mPresenter.info(uuid);
+        mPresenter.info(UrlConstants.getMapHeader(this),uuid);
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("uuid", uuid);
         builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
         RequestBody build = builder.build();
-        mPresenter.list(build);
+        mPresenter.list(UrlConstants.getMapHeader(this),build);
     }
 
     private void loadMore() {
@@ -208,7 +209,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
         builder.addFormDataPart("uuid", uuid);
         builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
         RequestBody build = builder.build();
-        mPresenter.list(build);
+        mPresenter.list(UrlConstants.getMapHeader(this),build);
     }
 
     private void showBottomDialog() {
@@ -258,7 +259,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
                             .addFormDataPart("uuid", uuid)
                             .addFormDataPart("stars", String.valueOf((int) stars))
                             .build();
-                    mPresenter.eval(body);
+                    mPresenter.eval(UrlConstants.getMapHeader(FollowDetailActivity.this),body);
                     pWinBottomDialog.dismiss();
                 }
             });
@@ -276,7 +277,7 @@ public class FollowDetailActivity extends BaseActivity<FollowDetailPresenter> im
             });
         }
         showDialog();
-        mPresenter.stars();
+        mPresenter.stars(UrlConstants.getMapHeader(this));
     }
 
     private void setStar() {

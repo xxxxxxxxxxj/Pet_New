@@ -16,6 +16,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LoginActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
@@ -41,8 +42,6 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
-
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -244,9 +243,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     SystemUtil.goneJP(this);
                     return;
                 }
-                DevRing.configureHttp().getMapHeader().put("phone", etLoginPhone.getText().toString().trim().replace(" ", ""));
                 showDialog();
-                mPresenter.sendVerifyCode(etLoginPhone.getText().toString().trim().replace(" ", ""));
+                mPresenter.sendVerifyCode(UrlConstants.getMapHeader(this),etLoginPhone.getText().toString().trim().replace(" ", ""));
                 break;
             case R.id.iv_login_login:
                 if (StringUtil.isEmpty(StringUtil.checkEditText(etLoginPhone))) {
@@ -265,9 +263,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                     SystemUtil.goneJP(this);
                     return;
                 }
-                DevRing.configureHttp().getMapHeader().put("phone", etLoginPhone.getText().toString().trim().replace(" ", ""));
                 showDialog();
-                mPresenter.login(etLoginPhone.getText().toString().trim().replace(" ", ""), wxOpenId, lng, lat,
+                mPresenter.login(UrlConstants.getMapHeader(this),etLoginPhone.getText().toString().trim().replace(" ", ""), wxOpenId, lng, lat,
                         SharedPreferenceUtil.getInstance(LoginActivity.this).getString("jpush_id", ""),
                         etLoginYzm.getText().toString().trim().replace(" ", ""), userName, headImg);
                 break;
@@ -283,7 +280,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                             builder.addFormDataPart("code", result.getmCcode());
                             RequestBody body = builder.build();
-                            mPresenter.getWxOpenId(body);
+                            mPresenter.getWxOpenId(UrlConstants.getMapHeader(LoginActivity.this),body);
                         }
                     }
 
@@ -341,9 +338,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         RingLog.e(TAG, "loginSuccess");
         SharedPreferenceUtil.getInstance(LoginActivity.this).saveString("cellphone",
                 etLoginPhone.getText().toString().trim().replace(" ", ""));
-        DevRing.configureHttp().getMapHeader().put("phone", SharedPreferenceUtil.getInstance(this).getString("cellphone", ""));
-        Map<String, String> mapHeader = DevRing.configureHttp().getMapHeader();
-        RingLog.e("mapHeader = " + mapHeader.toString());
         if (data != null) {
             DevRing.busManager().postEvent(data);
         }
@@ -365,13 +359,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         disMissDialog();
         if (data != null && StringUtil.isNotEmpty(data.getOpenId())) {
             showDialog();
-            DevRing.configureHttp().getMapHeader().put("wxOpenId", data.getOpenId());
-            Map<String, String> mapHeader = DevRing.configureHttp().getMapHeader();
-            RingLog.e("mapHeader = " + mapHeader.toString());
             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
             builder.addFormDataPart("wxOpenId", data.getOpenId());
             RequestBody body = builder.build();
-            mPresenter.getWxUserInfo(body);
+            mPresenter.getWxUserInfo(UrlConstants.getMapHeader(this),body);
         }
     }
 

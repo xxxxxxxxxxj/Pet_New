@@ -2,10 +2,11 @@ package com.haotang.easyshare.mvp.model;
 
 import android.app.Activity;
 
-import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.http.MainActivityApiService;
 import com.haotang.easyshare.mvp.model.imodel.IMainModel;
 import com.ljy.devring.DevRing;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -20,12 +21,12 @@ import io.reactivex.Observable;
 public class MainModel implements IMainModel {
 
     @Override
-    public Observable getLatestVersion(Activity activity, int systemType, String version, String time) {
-        return DevRing.httpManager().getService(MainActivityApiService.class).getLatestVersion("", systemType, version, time);
+    public Observable getLatestVersion(Map<String, String> headers, Activity activity, int systemType, String version, String time) {
+        return DevRing.httpManager().getService(MainActivityApiService.class).getLatestVersion(headers,"", systemType, version, time);
     }
 
     @Override
-    public Observable getBottomBar(Activity activity) {
-        return DevRing.httpManager().getService(MainActivityApiService.class).getBottomBar("");
+    public Observable getBottomBar(Map<String, String> headers,Activity activity) {
+        return DevRing.httpManager().getService(MainActivityApiService.class).getBottomBar(headers,"");
     }
 }

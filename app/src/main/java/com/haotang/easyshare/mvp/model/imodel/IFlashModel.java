@@ -4,6 +4,8 @@ import android.app.Activity;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -15,5 +17,5 @@ import io.reactivex.Observable;
  * @date XJ on 2018/4/11 18:39
  */
 public interface IFlashModel extends IBaseModel {
-    Observable startPageConfig(Activity activity);
+    Observable startPageConfig(Map<String, String> headers, Activity activity);
 }

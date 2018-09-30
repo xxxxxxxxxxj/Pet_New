@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.BrandCarApiService;
 import com.haotang.easyshare.mvp.model.imodel.IBrandCarModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -19,7 +21,7 @@ public class BrandCarModel implements IBrandCarModel {
      * 品牌车型
      */
     @Override
-    public Observable car() {
-        return DevRing.httpManager().getService(BrandCarApiService.class).car();
+    public Observable car(Map<String, String> headers) {
+        return DevRing.httpManager().getService(BrandCarApiService.class).car(headers);
     }
 }

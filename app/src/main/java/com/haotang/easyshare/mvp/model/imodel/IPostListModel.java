@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -17,15 +19,15 @@ public interface IPostListModel extends IBaseModel {
     /**
      * 最新帖子列表
      */
-    Observable newest(RequestBody body);
+    Observable newest(Map<String, String> headers, RequestBody body);
 
     /**
      * 热门帖子列表
      */
-    Observable hot(RequestBody body);
+    Observable hot(Map<String, String> headers,RequestBody body);
 
     /**
      * 问题车帖子列表
      */
-    Observable problemCar(RequestBody body);
+    Observable problemCar(Map<String, String> headers,RequestBody body);
 }

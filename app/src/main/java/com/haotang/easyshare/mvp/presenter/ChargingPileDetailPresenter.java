@@ -38,8 +38,8 @@ public class ChargingPileDetailPresenter extends BasePresenter<IChargingPileDeta
      * @param uuid
      * @param md5
      */
-    public void detail(double lng, double lat, String uuid, String md5) {
-        DevRing.httpManager().commonRequest(mIModel.detail(lng, lat, uuid, md5), new CommonObserver<HttpResult<ChargeDetailBean>>() {
+    public void detail(Map<String, String> headers,double lng, double lat, String uuid, String md5) {
+        DevRing.httpManager().commonRequest(mIModel.detail(headers,lng, lat, uuid, md5), new CommonObserver<HttpResult<ChargeDetailBean>>() {
             @Override
             public void onResult(HttpResult<ChargeDetailBean> result) {
                 if (mIView != null) {
@@ -71,8 +71,8 @@ public class ChargingPileDetailPresenter extends BasePresenter<IChargingPileDeta
      *
      * @param parmMap
      */
-    public void follow(Map<String, String> parmMap) {
-        DevRing.httpManager().commonRequest(mIModel.follow(parmMap), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void follow(Map<String, String> headers,Map<String, String> parmMap) {
+        DevRing.httpManager().commonRequest(mIModel.follow(headers,parmMap), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
@@ -104,8 +104,8 @@ public class ChargingPileDetailPresenter extends BasePresenter<IChargingPileDeta
      *
      * @param parmMap
      */
-    public void cancel(Map<String, String> parmMap) {
-        DevRing.httpManager().commonRequest(mIModel.cancel(parmMap), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void cancel(Map<String, String> headers,Map<String, String> parmMap) {
+        DevRing.httpManager().commonRequest(mIModel.cancel(headers,parmMap), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
@@ -137,8 +137,8 @@ public class ChargingPileDetailPresenter extends BasePresenter<IChargingPileDeta
      *
      * @param body
      */
-    public void list(MultipartBody body) {
-        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<AdvertisementBean>() {
+    public void list(Map<String, String> headers,MultipartBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,body), new CommonObserver<AdvertisementBean>() {
             @Override
             public void onResult(AdvertisementBean result) {
                 if (mIView != null) {

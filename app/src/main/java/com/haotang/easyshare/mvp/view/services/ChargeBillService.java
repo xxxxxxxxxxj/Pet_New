@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.http.ChargeingFragmentApiService;
 import com.ljy.devring.DevRing;
@@ -52,7 +53,7 @@ public class ChargeBillService extends Service {
             MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                     .addFormDataPart("orderId", orderId + "")
                     .build();
-            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ChargeingFragmentApiService.class).bill(body)
+            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ChargeingFragmentApiService.class).bill(UrlConstants.getMapHeader(getApplicationContext()),body)
                     , new CommonObserver<ChargeingBill>() {
                         @Override
                         public void onResult(ChargeingBill result) {

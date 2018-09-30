@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.MyFollowApiService;
 import com.haotang.easyshare.mvp.model.imodel.IMyFollowModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -19,7 +21,7 @@ public class MyFollowModel implements IMyFollowModel {
      * 关注的人列表
      */
     @Override
-    public Observable list() {
-        return DevRing.httpManager().getService(MyFollowApiService.class).list();
+    public Observable list(Map<String, String> headers) {
+        return DevRing.httpManager().getService(MyFollowApiService.class).list(headers);
     }
 }

@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -16,5 +18,5 @@ public interface ICurrentMessageFragmentModel extends IBaseModel{
     /**
      * 发布留言
      */
-    Observable save(int contentType, String content);
+    Observable save(Map<String, String> headers, int contentType, String content);
 }

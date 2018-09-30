@@ -11,6 +11,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -29,8 +31,8 @@ public class RechargePresenter extends BasePresenter<IRechargeView, IRechargeMod
     /**
      * 可充值模板列表
      */
-    public void list() {
-        DevRing.httpManager().commonRequest(mIModel.list(), new CommonObserver<RechargeTemp>() {
+    public void list(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers), new CommonObserver<RechargeTemp>() {
             @Override
             public void onResult(RechargeTemp result) {
                 if (mIView != null) {
@@ -62,8 +64,8 @@ public class RechargePresenter extends BasePresenter<IRechargeView, IRechargeMod
     /**
      * 发起充值请求
      */
-    public void build(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.build(body), new CommonObserver<RechargePayInfo>() {
+    public void build(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.build(headers,body), new CommonObserver<RechargePayInfo>() {
             @Override
             public void onResult(RechargePayInfo result) {
                 if (mIView != null) {

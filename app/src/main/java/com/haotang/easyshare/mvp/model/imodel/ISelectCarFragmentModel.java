@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -17,12 +19,12 @@ public interface ISelectCarFragmentModel extends IBaseModel {
     /**
      * 热门品牌
      */
-    Observable hot();
+    Observable hot(Map<String, String> headers);
 
     /**
      * 热门车型
      */
-    Observable special();
+    Observable special(Map<String, String> headers);
 
     /**
      * 广告
@@ -30,5 +32,5 @@ public interface ISelectCarFragmentModel extends IBaseModel {
      *
      * @param body
      */
-    Observable list(RequestBody body);
+    Observable list(Map<String, String> headers,RequestBody body);
 }

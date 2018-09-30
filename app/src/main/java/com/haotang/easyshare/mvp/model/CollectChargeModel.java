@@ -22,8 +22,8 @@ public class CollectChargeModel implements ICollectChargeModel {
      * 收藏的充电桩列表
      */
     @Override
-    public Observable list() {
-        return DevRing.httpManager().getService(CollectChargeApiService.class).list();
+    public Observable list(Map<String, String> headers) {
+        return DevRing.httpManager().getService(CollectChargeApiService.class).list(headers);
     }
 
     /**
@@ -32,7 +32,7 @@ public class CollectChargeModel implements ICollectChargeModel {
      * @param parmMap
      */
     @Override
-    public Observable cancel(Map<String, String> parmMap) {
-        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).cancel(parmMap);
+    public Observable cancel(Map<String, String> headers,Map<String, String> parmMap) {
+        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).cancel(headers,parmMap);
     }
 }

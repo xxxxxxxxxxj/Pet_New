@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerSelectCarFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.SelectCarFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
@@ -146,11 +147,11 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
 
     private void refresh() {
         showDialog();
-        mPresenter.hot();
-        mPresenter.special();
+        mPresenter.hot(UrlConstants.getMapHeader(mActivity));
+        mPresenter.special(UrlConstants.getMapHeader(mActivity));
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "3").build();
-        mPresenter.list(body);
+        mPresenter.list(UrlConstants.getMapHeader(mActivity),body);
     }
 
     @Override

@@ -538,10 +538,10 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 if (StringUtil.isNotEmpty(uuid)) {
                     builder.addFormDataPart("uuid", uuid);
                     RequestBody build = builder.build();
-                    mPresenter.update(build);
+                    mPresenter.update(UrlConstants.getMapHeader(this),build);
                 } else {
                     RequestBody build = builder.build();
-                    mPresenter.save(build);
+                    mPresenter.save(UrlConstants.getMapHeader(this),build);
                 }
                 break;
             case R.id.rl_addcharge_zdz:
@@ -852,7 +852,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                         RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
                         String md5 = SignUtil.sign(mapHeader, "MD5");
                         RingLog.d(TAG, "md5 =  " + md5);
-                        mPresenter.detail(localLng, localLat, uuid, md5);
+                        mPresenter.detail(UrlConstants.getMapHeader(this),localLng, localLat, uuid, md5);
                     }
                 }
             } else {

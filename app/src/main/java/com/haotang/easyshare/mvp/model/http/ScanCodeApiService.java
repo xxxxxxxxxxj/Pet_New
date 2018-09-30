@@ -3,9 +3,12 @@ package com.haotang.easyshare.mvp.model.http;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -23,5 +26,5 @@ public interface ScanCodeApiService {
      * @param body
      */
     @POST(UrlConstants.START_CHARGEING)
-    Observable<StartChargeing> start(@Body RequestBody body);
+    Observable<StartChargeing> start(@HeaderMap Map<String, String> headers, @Body RequestBody body);
 }

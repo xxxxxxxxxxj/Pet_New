@@ -12,6 +12,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -30,8 +32,8 @@ public class MainFragmentPresenter extends BasePresenter<IMainFragmentView, IMai
     /**
      * 获取首页数据
      */
-    public void homeIndex(double lng, double lat) {
-        DevRing.httpManager().commonRequest(mIModel.homeIndex(lng, lat), new CommonObserver<HttpResult<MainFragmentData>>() {
+    public void homeIndex(Map<String, String> headers, double lng, double lat) {
+        DevRing.httpManager().commonRequest(mIModel.homeIndex(headers,lng, lat), new CommonObserver<HttpResult<MainFragmentData>>() {
             @Override
             public void onResult(HttpResult<MainFragmentData> result) {
                 if (mIView != null) {
@@ -64,8 +66,8 @@ public class MainFragmentPresenter extends BasePresenter<IMainFragmentView, IMai
      *
      * @param body
      */
-    public void list(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<AdvertisementBean>() {
+    public void list(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,body), new CommonObserver<AdvertisementBean>() {
             @Override
             public void onResult(AdvertisementBean result) {
                 if (mIView != null) {

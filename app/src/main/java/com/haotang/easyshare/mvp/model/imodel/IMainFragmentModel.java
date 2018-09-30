@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -17,7 +19,7 @@ public interface IMainFragmentModel extends IBaseModel {
     /**
      * 获取首页数据
      */
-    Observable homeIndex(double lng, double lat);
+    Observable homeIndex(Map<String, String> headers, double lng, double lat);
 
     /**
      * 广告
@@ -25,5 +27,5 @@ public interface IMainFragmentModel extends IBaseModel {
      *
      * @param body
      */
-    Observable list(RequestBody body);
+    Observable list(Map<String, String> headers,RequestBody body);
 }

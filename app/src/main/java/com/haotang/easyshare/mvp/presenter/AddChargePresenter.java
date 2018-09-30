@@ -8,10 +8,11 @@ import com.haotang.easyshare.mvp.model.imodel.IAddChargeModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
 import com.haotang.easyshare.mvp.view.iview.IAddChargeView;
 import com.haotang.easyshare.util.StringUtil;
-import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
+
+import java.util.Map;
 
 import okhttp3.RequestBody;
 
@@ -31,8 +32,8 @@ public class AddChargePresenter extends BasePresenter<IAddChargeView, IAddCharge
     /**
      * 编辑充电桩
      */
-    public void update(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.update(body), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void update(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.update(headers,body), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
@@ -67,8 +68,8 @@ public class AddChargePresenter extends BasePresenter<IAddChargeView, IAddCharge
      * @param uuid
      * @param md5
      */
-    public void detail(double lng, double lat, String uuid, String md5) {
-        DevRing.httpManager().commonRequest(mIModel.detail(lng, lat, uuid, md5), new CommonObserver<HttpResult<ChargeDetailBean>>() {
+    public void detail(Map<String, String> headers,double lng, double lat, String uuid, String md5) {
+        DevRing.httpManager().commonRequest(mIModel.detail(headers,lng, lat, uuid, md5), new CommonObserver<HttpResult<ChargeDetailBean>>() {
             @Override
             public void onResult(HttpResult<ChargeDetailBean> result) {
                 if (mIView != null) {
@@ -98,8 +99,8 @@ public class AddChargePresenter extends BasePresenter<IAddChargeView, IAddCharge
     /**
      * 上传充电桩
      */
-    public void save(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.save(body), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void save(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.save(headers,body), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {

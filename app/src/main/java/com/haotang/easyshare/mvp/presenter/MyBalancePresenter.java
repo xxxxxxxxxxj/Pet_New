@@ -11,6 +11,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -27,8 +29,8 @@ public class MyBalancePresenter extends BasePresenter<IMyBalanceView, IMyBalance
     /**
      * 用户主页信息
      */
-    public void home() {
-        DevRing.httpManager().commonRequest(mIModel.home(),
+    public void home(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.home(headers),
                 new CommonObserver<HttpResult<HomeBean>>() {
                     @Override
                     public void onResult(HttpResult<HomeBean> result) {

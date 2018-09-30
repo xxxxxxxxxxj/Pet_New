@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -18,5 +20,5 @@ public interface ICommentDetailModel extends IBaseModel{
      * @param uuid
      * @param mNextRequestPage
      */
-    Observable list(String uuid, int mNextRequestPage);
+    Observable list(Map<String, String> headers, String uuid, int mNextRequestPage);
 }

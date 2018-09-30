@@ -10,6 +10,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -29,8 +31,8 @@ public class SelectCouponPresenter extends BasePresenter<ISelectCouponView, ISel
      * 匹配可用优惠券列表
      * @param body
      */
-    public void match(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.match(body), new CommonObserver<MyCoupon>() {
+    public void match(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.match(headers,body), new CommonObserver<MyCoupon>() {
             @Override
             public void onResult(MyCoupon result) {
                 if (mIView != null) {

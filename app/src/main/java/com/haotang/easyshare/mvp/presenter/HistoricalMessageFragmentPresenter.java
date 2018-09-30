@@ -2,7 +2,6 @@ package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.HistoricalMsg;
-import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.IHistoricalMessageFragmentModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
 import com.haotang.easyshare.mvp.view.iview.IHistoricalMessageFragmentView;
@@ -11,7 +10,7 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title:${type_name}</p>
@@ -29,8 +28,8 @@ public class HistoricalMessageFragmentPresenter extends BasePresenter<IHistorica
     /**
      * 管家留言列表
      */
-    public void history() {
-        DevRing.httpManager().commonRequest(mIModel.history(),
+    public void history(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.history(headers),
                 new CommonObserver<HistoricalMsg>() {
                     @Override
                     public void onResult(HistoricalMsg result) {

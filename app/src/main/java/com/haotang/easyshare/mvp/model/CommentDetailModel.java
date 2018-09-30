@@ -1,9 +1,10 @@
 package com.haotang.easyshare.mvp.model;
 
-import com.haotang.easyshare.mvp.model.http.ChargingPileDetailApiService;
 import com.haotang.easyshare.mvp.model.http.CommentDetailApiService;
 import com.haotang.easyshare.mvp.model.imodel.ICommentDetailModel;
 import com.ljy.devring.DevRing;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -22,7 +23,7 @@ public class CommentDetailModel implements ICommentDetailModel {
      * @param mNextRequestPage
      */
     @Override
-    public Observable list(String uuid, int mNextRequestPage) {
-        return DevRing.httpManager().getService(CommentDetailApiService.class).list(uuid,mNextRequestPage);
+    public Observable list(Map<String, String> headers, String uuid, int mNextRequestPage) {
+        return DevRing.httpManager().getService(CommentDetailApiService.class).list(headers,uuid,mNextRequestPage);
     }
 }

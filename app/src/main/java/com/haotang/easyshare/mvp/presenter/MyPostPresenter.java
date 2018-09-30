@@ -12,6 +12,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -30,8 +32,8 @@ public class MyPostPresenter extends BasePresenter<IMyPostView, IMyPostModel> {
     /**
      * 用户帖子列表
      */
-    public void list(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<PostBean>() {
+    public void list(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,body), new CommonObserver<PostBean>() {
             @Override
             public void onResult(PostBean result) {
                 if (mIView != null) {
@@ -61,8 +63,8 @@ public class MyPostPresenter extends BasePresenter<IMyPostView, IMyPostModel> {
     /**
      * 删除帖子
      */
-    public void delete(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.delete(body), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void delete(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.delete(headers,body), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {

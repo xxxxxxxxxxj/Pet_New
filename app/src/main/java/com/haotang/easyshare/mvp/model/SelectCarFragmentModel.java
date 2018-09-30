@@ -5,6 +5,8 @@ import com.haotang.easyshare.mvp.model.http.HotFragmentApiService;
 import com.haotang.easyshare.mvp.model.imodel.ISelectCarFragmentModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -21,16 +23,16 @@ public class SelectCarFragmentModel implements ISelectCarFragmentModel {
      * 热门品牌
      */
     @Override
-    public Observable hot() {
-        return DevRing.httpManager().getService(HotFragmentApiService.class).hot();
+    public Observable hot(Map<String, String> headers) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).hot(headers);
     }
 
     /**
      * 热门车型
      */
     @Override
-    public Observable special() {
-        return DevRing.httpManager().getService(AllBrandsApiService.class).special();
+    public Observable special(Map<String, String> headers) {
+        return DevRing.httpManager().getService(AllBrandsApiService.class).special(headers);
     }
 
     /**
@@ -40,7 +42,7 @@ public class SelectCarFragmentModel implements ISelectCarFragmentModel {
      * @param body
      */
     @Override
-    public Observable list(RequestBody body) {
-        return DevRing.httpManager().getService(HotFragmentApiService.class).list(body);
+    public Observable list(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).list(headers,body);
     }
 }

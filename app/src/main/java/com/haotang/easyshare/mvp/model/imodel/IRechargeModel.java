@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -17,10 +19,10 @@ public interface IRechargeModel extends IBaseModel {
     /**
      * 可充值模板列表
      */
-    Observable list();
+    Observable list(Map<String, String> headers);
 
     /**
      * 发起充值请求
      */
-    Observable build(RequestBody body);
+    Observable build(Map<String, String> headers,RequestBody body);
 }

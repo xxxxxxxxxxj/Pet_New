@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerScreenCarActivityCommponent;
 import com.haotang.easyshare.di.module.activity.ScreenCarActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
@@ -191,7 +192,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.items();
+        mPresenter.items(UrlConstants.getMapHeader(this));
         refresh();
     }
 
@@ -224,7 +225,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
         }
         builder.addFormDataPart("brandId", brandId + "");
         RequestBody build = builder.build();
-        mPresenter.query(build);
+        mPresenter.query(UrlConstants.getMapHeader(this),build);
     }
 
     @OnClick({R.id.iv_titlebar_back})

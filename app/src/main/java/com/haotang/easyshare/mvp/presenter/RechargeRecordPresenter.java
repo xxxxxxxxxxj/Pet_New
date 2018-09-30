@@ -10,6 +10,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -29,8 +31,8 @@ public class RechargeRecordPresenter extends BasePresenter<IRechargeRecordView, 
      * 订单列表
      * @param build
      */
-    public void list(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.list(build), new CommonObserver<ChargeList>() {
+    public void list(Map<String, String> headers, RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,build), new CommonObserver<ChargeList>() {
             @Override
             public void onResult(ChargeList
                                          result) {

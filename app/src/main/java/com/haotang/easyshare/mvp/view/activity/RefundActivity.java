@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerRefundActivityCommponent;
 import com.haotang.easyshare.di.module.activity.RefundActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
@@ -126,8 +127,8 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("parentId", "1");
         RequestBody build = builder.build();
-        mPresenter.list(build);
-        mPresenter.explain();
+        mPresenter.list(UrlConstants.getMapHeader(this),build);
+        mPresenter.explain(UrlConstants.getMapHeader(this));
     }
 
     @Override
@@ -172,7 +173,7 @@ public class RefundActivity extends BaseActivity<RefundPresenter> implements IRe
                                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                                     builder.addFormDataPart("reason", id.substring(0, id.length() - 1));
                                     RequestBody build = builder.build();
-                                    mPresenter.refund(build);
+                                    mPresenter.refund(UrlConstants.getMapHeader(RefundActivity.this),build);
                                 }
                             }).setNegativeButton("取消", new View.OnClickListener() {
                         @Override

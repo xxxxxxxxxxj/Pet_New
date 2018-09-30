@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerCommentDetailActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CommentDetailActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
@@ -89,7 +90,7 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.list(uuid, mNextRequestPage);
+        mPresenter.list(UrlConstants.getMapHeader(this),uuid, mNextRequestPage);
     }
 
     @Override
@@ -113,11 +114,11 @@ public class CommentDetailActivity extends BaseActivity<CommentDetailPresenter> 
         commentDetailAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         srlCommentDetail.setRefreshing(true);
         mNextRequestPage = 1;
-        mPresenter.list(uuid, mNextRequestPage);
+        mPresenter.list(UrlConstants.getMapHeader(this),uuid, mNextRequestPage);
     }
 
     private void loadMore() {
-        mPresenter.list(uuid, mNextRequestPage);
+        mPresenter.list(UrlConstants.getMapHeader(this),uuid, mNextRequestPage);
     }
 
     @Override

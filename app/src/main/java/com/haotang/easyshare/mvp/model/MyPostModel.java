@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.FollowDetailApiService;
 import com.haotang.easyshare.mvp.model.imodel.IMyPostModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -20,15 +22,15 @@ public class MyPostModel implements IMyPostModel {
      * 用户帖子列表
      */
     @Override
-    public Observable list(RequestBody body) {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).list(body);
+    public Observable list(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).list(headers,body);
     }
 
     /**
      * 删除帖子
      */
     @Override
-    public Observable delete(RequestBody body) {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).delete(body);
+    public Observable delete(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).delete(headers,body);
     }
 }

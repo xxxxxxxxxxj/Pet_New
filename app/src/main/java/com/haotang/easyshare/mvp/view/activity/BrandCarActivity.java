@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerBrandCarActivityCommponent;
 import com.haotang.easyshare.di.module.activity.BrandCarActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.BrandCarBean;
@@ -93,7 +94,7 @@ public class BrandCarActivity extends BaseActivity<BrandCarPresenter> implements
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.car();
+        mPresenter.car(UrlConstants.getMapHeader(this));
     }
 
     @Override

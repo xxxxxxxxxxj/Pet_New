@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.LocalChargingApiService;
 import com.haotang.easyshare.mvp.model.imodel.ILocalChargingModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -23,7 +25,7 @@ public class LocalChargingModel implements ILocalChargingModel {
      * @param sign
      */
     @Override
-    public Observable nearby(double lng, double lat, int mNextRequestPage, String sign) {
-        return DevRing.httpManager().getService(LocalChargingApiService.class).nearby(lng, lat,mNextRequestPage,sign);
+    public Observable nearby(Map<String, String> headers, double lng, double lat, int mNextRequestPage, String sign) {
+        return DevRing.httpManager().getService(LocalChargingApiService.class).nearby(headers,lng, lat,mNextRequestPage,sign);
     }
 }

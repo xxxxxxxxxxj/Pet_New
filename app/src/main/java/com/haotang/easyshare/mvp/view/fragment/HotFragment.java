@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerHotFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.HotFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
@@ -296,18 +297,18 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         mNextRequestPage = 1;
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "2").build();
-        mPresenter.list(body);
-        mPresenter.hot();
+        mPresenter.list(UrlConstants.getMapHeader(mActivity),body);
+        mPresenter.hot(UrlConstants.getMapHeader(mActivity));
 
         MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .build();
-        mPresenter.newest(body1);
+        mPresenter.newest(UrlConstants.getMapHeader(mActivity),body1);
     }
 
     private void loadMore() {
         MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .build();
-        mPresenter.newest(body1);
+        mPresenter.newest(UrlConstants.getMapHeader(mActivity),body1);
     }
 
     @Override

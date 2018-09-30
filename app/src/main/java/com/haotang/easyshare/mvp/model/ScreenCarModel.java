@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.ScreenCarApiService;
 import com.haotang.easyshare.mvp.model.imodel.IScreenCarModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -20,15 +22,15 @@ public class ScreenCarModel implements IScreenCarModel {
      * 车型检索条件
      */
     @Override
-    public Observable items() {
-        return DevRing.httpManager().getService(ScreenCarApiService.class).items();
+    public Observable items(Map<String, String> headers) {
+        return DevRing.httpManager().getService(ScreenCarApiService.class).items(headers);
     }
 
     /**
      * 车型检索
      */
     @Override
-    public Observable query(RequestBody build) {
-        return DevRing.httpManager().getService(ScreenCarApiService.class).query(build);
+    public Observable query(Map<String, String> headers,RequestBody build) {
+        return DevRing.httpManager().getService(ScreenCarApiService.class).query(headers,build);
     }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerCollectChargeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CollectChargeActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
@@ -132,7 +133,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
                                         showDialog();
                                         parmMap.clear();
                                         parmMap.put("uuid", dataBean.getUuid());
-                                        mPresenter.cancel(parmMap);
+                                        mPresenter.cancel(UrlConstants.getMapHeader(CollectChargeActivity.this),parmMap);
                                     }
                                 }).setNegativeButton("取消", new View.OnClickListener() {
                             @Override
@@ -149,7 +150,7 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.list();
+        mPresenter.list(UrlConstants.getMapHeader(this));
     }
 
     @Override
@@ -184,11 +185,11 @@ public class CollectChargeActivity extends BaseActivity<CollectChargePresenter> 
         collectChargeListAdapter.setEnableLoadMore(false);
         srlCollectCharge.setRefreshing(true);
         mNextRequestPage = 1;
-        mPresenter.list();
+        mPresenter.list(UrlConstants.getMapHeader(this));
     }
 
     private void loadMore() {
-        mPresenter.list();
+        mPresenter.list(UrlConstants.getMapHeader(this));
     }
 
     @Override

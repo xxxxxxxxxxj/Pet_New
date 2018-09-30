@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerCommentActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CommentActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
@@ -131,7 +132,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.tags();
+        mPresenter.tags(UrlConstants.getMapHeader(this));
     }
 
     @Override
@@ -269,7 +270,7 @@ public class CommentActivity extends BaseActivity<CommentPresenter> implements I
                 filedMap.put("uuid", rb_uuid);
                 filedMap.put("tags", rb_tags);
                 filedMap.put("content", rb_content);
-                mPresenter.save(filedMap);
+                mPresenter.save(UrlConstants.getMapHeader(this),filedMap);
                 break;
         }
     }

@@ -14,6 +14,7 @@ import com.flyco.roundview.RoundRelativeLayout;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerMyFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MyFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
@@ -144,7 +145,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void RefreshBalance(RefreshBalanceEvent event) {//充值返回
         if (event != null) {
             showDialog();
-            mPresenter.home();
+            mPresenter.home(UrlConstants.getMapHeader(mActivity));
         }
     }
 
@@ -157,19 +158,21 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
             showDialog();
-            mPresenter.home();
-            mPresenter.my();
+            mPresenter.home(UrlConstants.getMapHeader(mActivity));
+            mPresenter.my(UrlConstants.getMapHeader(mActivity));
             UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx14);
         }
     }
 
     @Subscribe
     public void getLoginInfo(LoginBean data) {
-        rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
-        llMyfragmentMycdz.setVisibility(View.VISIBLE);
-        showDialog();
-        mPresenter.home();
-        mPresenter.my();
+        if(data != null){
+            rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
+            llMyfragmentMycdz.setVisibility(View.VISIBLE);
+            showDialog();
+            mPresenter.home(UrlConstants.getMapHeader(mActivity));
+            mPresenter.my(UrlConstants.getMapHeader(mActivity));
+        }
     }
 
     @Override
@@ -209,8 +212,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     protected void initData() {
         if (SystemUtil.checkLogin(mActivity)) {
             showDialog();
-            mPresenter.home();
-            mPresenter.my();
+            mPresenter.home(UrlConstants.getMapHeader(mActivity));
+            mPresenter.my(UrlConstants.getMapHeader(mActivity));
         }
     }
 
@@ -462,7 +465,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     private void exit() {
         SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
-        DevRing.configureHttp().getMapHeader().put("phone", "");
         rtvMyfragmentTuichu.setVisibility(View.GONE);
         tvMyfragmentUsername.setText("立即登录");
         llMyfragmentMycdz.setVisibility(View.GONE);

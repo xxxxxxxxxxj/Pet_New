@@ -12,6 +12,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -31,8 +33,8 @@ public class RefundPresenter extends BasePresenter<IRefundView, IRefundModel> {
      * 标签列表
      * @param build
      */
-    public void list(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.list(build), new CommonObserver<ReFundTag>() {
+    public void list(Map<String, String> headers, RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,build), new CommonObserver<ReFundTag>() {
             @Override
             public void onResult(ReFundTag result) {
                 if (mIView != null) {
@@ -65,8 +67,8 @@ public class RefundPresenter extends BasePresenter<IRefundView, IRefundModel> {
     /**
      * 退款说明
      */
-    public void explain() {
-        DevRing.httpManager().commonRequest(mIModel.explain(), new CommonObserver<ReFundExplain>() {
+    public void explain(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.explain(headers), new CommonObserver<ReFundExplain>() {
             @Override
             public void onResult(ReFundExplain result) {
                 if (mIView != null) {
@@ -99,8 +101,8 @@ public class RefundPresenter extends BasePresenter<IRefundView, IRefundModel> {
     /**
      * 发起充值退款
      */
-    public void refund(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.refund(build), new CommonObserver<ReFundSubmit>() {
+    public void refund(Map<String, String> headers,RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.refund(headers,build), new CommonObserver<ReFundSubmit>() {
             @Override
             public void onResult(ReFundSubmit result) {
                 if (mIView != null) {

@@ -4,9 +4,12 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.ScreenCarItem;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -22,7 +25,7 @@ public interface ScreenCarApiService {
      * 车型检索条件
      */
     @POST(UrlConstants.SCREENCAR_ITEM)
-    Observable<ScreenCarItem> items();
+    Observable<ScreenCarItem> items(@HeaderMap Map<String, String> headers);
 
     /**
      * 车型检索
@@ -30,5 +33,5 @@ public interface ScreenCarApiService {
      * @param build
      */
     @POST(UrlConstants.SCREENCAR_QUERY)
-    Observable<HotSpecialCarBean> query(@Body RequestBody build);
+    Observable<HotSpecialCarBean> query(@HeaderMap Map<String, String> headers, @Body RequestBody build);
 }

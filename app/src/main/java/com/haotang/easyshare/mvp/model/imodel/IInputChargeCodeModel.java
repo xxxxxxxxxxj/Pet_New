@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -19,5 +21,5 @@ public interface IInputChargeCodeModel extends IBaseModel {
      *
      * @param body
      */
-    Observable start(RequestBody body);
+    Observable start(Map<String, String> headers, RequestBody body);
 }

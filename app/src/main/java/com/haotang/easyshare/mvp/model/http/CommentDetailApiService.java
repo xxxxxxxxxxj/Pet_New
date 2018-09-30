@@ -4,8 +4,11 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Query;
 
 /**
@@ -23,5 +26,5 @@ public interface CommentDetailApiService {
      * @param mNextRequestPage
      */
     @GET(UrlConstants.COMMENT_LIST)
-    Observable<HttpResult<CommentBean>> list(@Query("uuid") String uuid, @Query("page") int mNextRequestPage);
+    Observable<HttpResult<CommentBean>> list(@HeaderMap Map<String, String> headers, @Query("uuid") String uuid, @Query("page") int mNextRequestPage);
 }

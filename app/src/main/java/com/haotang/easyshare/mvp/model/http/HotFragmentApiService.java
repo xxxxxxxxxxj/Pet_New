@@ -5,9 +5,12 @@ import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -26,17 +29,17 @@ public interface HotFragmentApiService {
      * @param body
      */
     @POST(UrlConstants.ADVERTISEMENT)
-    Observable<AdvertisementBean> list(@Body() RequestBody body);
+    Observable<AdvertisementBean> list(@HeaderMap Map<String, String> headers, @Body() RequestBody body);
 
     /**
      * 热门品牌
      */
     @POST(UrlConstants.HOT_CAR_BRAND)
-    Observable<HotCarBean> hot();
+    Observable<HotCarBean> hot(@HeaderMap Map<String, String> headers);
 
     /**
      * 最新帖子列表
      */
     @POST(UrlConstants.NEWEST_POINT)
-    Observable<HotPoint> newest(@Body() RequestBody body);
+    Observable<HotPoint> newest(@HeaderMap Map<String, String> headers,@Body() RequestBody body);
 }

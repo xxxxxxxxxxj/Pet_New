@@ -13,6 +13,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:欢迎页页面的Presenter层</p>
@@ -29,8 +31,8 @@ public class FlashPresenter extends BasePresenter<IFlashView, IFlashModel> {
     /**
      * 获取广告页数据
      */
-    public void startPageConfig(Activity activity) {
-        DevRing.httpManager().commonRequest(mIModel.startPageConfig(activity), new CommonObserver<HttpResult<FlashBean>>() {
+    public void startPageConfig(Map<String, String> headers, Activity activity) {
+        DevRing.httpManager().commonRequest(mIModel.startPageConfig(headers,activity), new CommonObserver<HttpResult<FlashBean>>() {
             @Override
             public void onResult(HttpResult<FlashBean> result) {
                 if (mIView != null) {

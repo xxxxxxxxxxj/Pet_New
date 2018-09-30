@@ -11,6 +11,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -29,8 +31,8 @@ public class BrandAreaPresenter extends BasePresenter<IBrandAreaView, IBrandArea
     /**
      * 品牌热帖
      */
-    public void article(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.article(body), new CommonObserver<HotPoint>() {
+    public void article(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.article(headers,body), new CommonObserver<HotPoint>() {
             @Override
             public void onResult(HotPoint result) {
                 if (mIView != null) {
@@ -64,8 +66,8 @@ public class BrandAreaPresenter extends BasePresenter<IBrandAreaView, IBrandArea
      *
      * @param body
      */
-    public void list(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<AdvertisementBean>() {
+    public void list(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,body), new CommonObserver<AdvertisementBean>() {
             @Override
             public void onResult(AdvertisementBean result) {
                 if (mIView != null) {
@@ -99,8 +101,8 @@ public class BrandAreaPresenter extends BasePresenter<IBrandAreaView, IBrandArea
      *
      * @param body
      */
-    public void list1(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<AdvertisementBean>() {
+    public void list1(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,body), new CommonObserver<AdvertisementBean>() {
             @Override
             public void onResult(AdvertisementBean result) {
                 if (mIView != null) {

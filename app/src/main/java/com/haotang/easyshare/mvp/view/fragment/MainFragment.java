@@ -46,6 +46,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.roundview.RoundLinearLayout;
 import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MainFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
@@ -298,7 +299,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         showDialog();
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "5").build();
-        mPresenter.list(body);
+        mPresenter.list(UrlConstants.getMapHeader(mActivity),body);
     }
 
     @Override
@@ -406,7 +407,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         adBean2 = null;
         adBean3 = null;
         showDialog();
-        mPresenter.homeIndex(localLng, localLat);
+        mPresenter.homeIndex(UrlConstants.getMapHeader(mActivity),localLng, localLat);
     }
 
     /**

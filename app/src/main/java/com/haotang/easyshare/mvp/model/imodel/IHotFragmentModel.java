@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -20,15 +22,15 @@ public interface IHotFragmentModel extends IBaseModel {
      *
      * @param body
      */
-    Observable list(RequestBody body);
+    Observable list(Map<String, String> headers, RequestBody body);
 
     /**
      * 热门品牌
      */
-    Observable hot();
+    Observable hot(Map<String, String> headers);
 
     /**
      * 最新帖子列表
      */
-    Observable newest(RequestBody body);
+    Observable newest(Map<String, String> headers,RequestBody body);
 }

@@ -4,9 +4,12 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -22,5 +25,5 @@ public interface SendPostApiService {
      * 发帖
      */
     @POST(UrlConstants.SENDPOST)
-    Observable<HttpResult<AddChargeBean>> save(@Body() RequestBody body);
+    Observable<HttpResult<AddChargeBean>> save(@HeaderMap Map<String, String> headers, @Body() RequestBody body);
 }

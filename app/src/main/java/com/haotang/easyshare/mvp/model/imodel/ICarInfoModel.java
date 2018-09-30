@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -17,10 +19,10 @@ public interface ICarInfoModel extends IBaseModel {
     /**
      * 用户车辆信息
      */
-    Observable my();
+    Observable my(Map<String, String> headers);
 
     /**
      * 保存或修改用户车辆信息
      */
-    Observable save(RequestBody body);
+    Observable save(Map<String, String> headers, RequestBody body);
 }

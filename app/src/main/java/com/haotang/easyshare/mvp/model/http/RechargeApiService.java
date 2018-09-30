@@ -4,9 +4,12 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.RechargePayInfo;
 import com.haotang.easyshare.mvp.model.entity.res.RechargeTemp;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -24,11 +27,11 @@ public interface RechargeApiService {
      * @return
      */
     @POST(UrlConstants.RECHARGE_TEMP)
-    Observable<RechargeTemp> list();
+    Observable<RechargeTemp> list(@HeaderMap Map<String, String> headers);
 
     /**
      * 发起充值请求
      */
     @POST(UrlConstants.RECHARGE_BUILD)
-    Observable<RechargePayInfo> build(@Body RequestBody body);
+    Observable<RechargePayInfo> build(@HeaderMap Map<String, String> headers, @Body RequestBody body);
 }

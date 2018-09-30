@@ -18,11 +18,11 @@ public interface ICollectChargeModel extends IBaseModel{
     /**
      * 收藏的充电桩列表
      */
-    Observable list();
+    Observable list(Map<String, String> headers);
     /**
      * 取消收藏充电桩
      *
      * @param parmMap
      */
-    Observable cancel(Map<String, String> parmMap);
+    Observable cancel(Map<String, String> headers,Map<String, String> parmMap);
 }

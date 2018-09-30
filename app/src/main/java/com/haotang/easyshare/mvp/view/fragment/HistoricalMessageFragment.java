@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerHistoricalMessageFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.HistoricalMessageFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
@@ -126,11 +127,11 @@ public class HistoricalMessageFragment extends BaseFragment<HistoricalMessageFra
         historicalMessagelAdapter.setEnableLoadMore(false);
         srlHistorymsg.setRefreshing(true);
         mNextRequestPage = 1;
-        mPresenter.history();
+        mPresenter.history(UrlConstants.getMapHeader(mActivity));
     }
 
     private void loadMore() {
-        mPresenter.history();
+        mPresenter.history(UrlConstants.getMapHeader(mActivity));
     }
 
     @Override

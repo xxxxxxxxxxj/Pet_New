@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.RefundApiService;
 import com.haotang.easyshare.mvp.model.imodel.IRefundModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -21,23 +23,23 @@ public class RefundModel implements IRefundModel {
      * @param build
      */
     @Override
-    public Observable list(RequestBody build) {
-        return DevRing.httpManager().getService(RefundApiService.class).list(build);
+    public Observable list(Map<String, String> headers, RequestBody build) {
+        return DevRing.httpManager().getService(RefundApiService.class).list(headers,build);
     }
 
     /**
      * 退款说明
      */
     @Override
-    public Observable explain() {
-        return DevRing.httpManager().getService(RefundApiService.class).explain();
+    public Observable explain(Map<String, String> headers) {
+        return DevRing.httpManager().getService(RefundApiService.class).explain(headers);
     }
 
     /**
      * 发起充值退款
      */
     @Override
-    public Observable refund(RequestBody build) {
-        return DevRing.httpManager().getService(RefundApiService.class).refund(build);
+    public Observable refund(Map<String, String> headers,RequestBody build) {
+        return DevRing.httpManager().getService(RefundApiService.class).refund(headers,build);
     }
 }

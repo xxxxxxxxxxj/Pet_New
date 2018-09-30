@@ -5,6 +5,8 @@ import com.haotang.easyshare.mvp.model.http.PostListApiService;
 import com.haotang.easyshare.mvp.model.imodel.IPostListModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -21,23 +23,23 @@ public class PostListModel implements IPostListModel {
      * 最新帖子列表
      */
     @Override
-    public Observable newest(RequestBody body) {
-        return DevRing.httpManager().getService(HotFragmentApiService.class).newest(body);
+    public Observable newest(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).newest(headers,body);
     }
 
     /**
      * 热门帖子列表
      */
     @Override
-    public Observable hot(RequestBody body) {
-        return DevRing.httpManager().getService(PostListApiService.class).hot(body);
+    public Observable hot(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(PostListApiService.class).hot(headers,body);
     }
 
     /**
      * 问题车帖子列表
      */
     @Override
-    public Observable problemCar(RequestBody body) {
-        return DevRing.httpManager().getService(PostListApiService.class).problemCar(body);
+    public Observable problemCar(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(PostListApiService.class).problemCar(headers,body);
     }
 }

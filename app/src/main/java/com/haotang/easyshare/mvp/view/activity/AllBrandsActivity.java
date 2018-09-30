@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerAllBrandsActivityCommponent;
 import com.haotang.easyshare.di.module.activity.AllBrandsActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
@@ -154,8 +155,8 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.list();
-        mPresenter.special();
+        mPresenter.list(UrlConstants.getMapHeader(this));
+        mPresenter.special(UrlConstants.getMapHeader(this));
     }
 
     @Override

@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.HistoricalMessageApiService;
 import com.haotang.easyshare.mvp.model.imodel.IHistoricalMessageFragmentModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -19,7 +21,7 @@ public class HistoricalMessageFragmentModel implements IHistoricalMessageFragmen
      * 管家留言列表
      */
     @Override
-    public Observable history() {
-        return DevRing.httpManager().getService(HistoricalMessageApiService.class).history();
+    public Observable history(Map<String, String> headers) {
+        return DevRing.httpManager().getService(HistoricalMessageApiService.class).history(headers);
     }
 }

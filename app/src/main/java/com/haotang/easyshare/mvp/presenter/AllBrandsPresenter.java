@@ -11,6 +11,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -27,8 +29,8 @@ public class AllBrandsPresenter extends BasePresenter<IAllBrandsView, IAllBrands
     /**
      * 所有品牌
      */
-    public void list() {
-        DevRing.httpManager().commonRequest(mIModel.list(), new CommonObserver<HotCarBean>() {
+    public void list(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers), new CommonObserver<HotCarBean>() {
             @Override
             public void onResult(HotCarBean result) {
                 if (mIView != null) {
@@ -59,8 +61,8 @@ public class AllBrandsPresenter extends BasePresenter<IAllBrandsView, IAllBrands
     /**
      * 热门车型
      */
-    public void special() {
-        DevRing.httpManager().commonRequest(mIModel.special(), new CommonObserver<HotSpecialCarBean>() {
+    public void special(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.special(headers), new CommonObserver<HotSpecialCarBean>() {
             @Override
             public void onResult(HotSpecialCarBean result) {
                 if (mIView != null) {

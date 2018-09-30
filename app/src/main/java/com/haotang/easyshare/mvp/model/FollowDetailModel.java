@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.FollowDetailApiService;
 import com.haotang.easyshare.mvp.model.imodel.IFollowDetailModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -22,16 +24,16 @@ public class FollowDetailModel implements IFollowDetailModel {
      * @param uuid
      */
     @Override
-    public Observable info(String uuid) {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).info(uuid);
+    public Observable info(Map<String, String> headers, String uuid) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).info(headers,uuid);
     }
 
     /**
      * 用户帖子列表
      */
     @Override
-    public Observable list(RequestBody body) {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).list(body);
+    public Observable list(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).list(headers,body);
     }
 
     /**
@@ -40,39 +42,39 @@ public class FollowDetailModel implements IFollowDetailModel {
      * @param build
      */
     @Override
-    public Observable follow(RequestBody build) {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).follow(build);
+    public Observable follow(Map<String, String> headers,RequestBody build) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).follow(headers,build);
     }
 
     /**
      * 取消关注用户
      */
     @Override
-    public Observable cancel(RequestBody body) {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).cancel(body);
+    public Observable cancel(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).cancel(headers,body);
     }
 
     /**
      * 评价用户
      */
     @Override
-    public Observable eval(RequestBody body) {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).eval(body);
+    public Observable eval(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).eval(headers,body);
     }
 
     /**
      * 点赞
      */
     @Override
-    public Observable praise(RequestBody body) {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).praise(body);
+    public Observable praise(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).praise(headers,body);
     }
 
     /**
      * 评价星级
      */
     @Override
-    public Observable stars() {
-        return DevRing.httpManager().getService(FollowDetailApiService.class).stars();
+    public Observable stars(Map<String, String> headers) {
+        return DevRing.httpManager().getService(FollowDetailApiService.class).stars(headers);
     }
 }

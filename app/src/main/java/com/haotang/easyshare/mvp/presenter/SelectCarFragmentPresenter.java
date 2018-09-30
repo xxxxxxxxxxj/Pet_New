@@ -12,6 +12,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -30,8 +32,8 @@ public class SelectCarFragmentPresenter extends BasePresenter<ISelectCarFragment
     /**
      * 热门品牌
      */
-    public void hot() {
-        DevRing.httpManager().commonRequest(mIModel.hot(), new CommonObserver<HotCarBean>() {
+    public void hot(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.hot(headers), new CommonObserver<HotCarBean>() {
             @Override
             public void onResult(HotCarBean result) {
                 if (mIView != null) {
@@ -62,8 +64,8 @@ public class SelectCarFragmentPresenter extends BasePresenter<ISelectCarFragment
     /**
      * 热门车型
      */
-    public void special() {
-        DevRing.httpManager().commonRequest(mIModel.special(), new CommonObserver<HotSpecialCarBean>() {
+    public void special(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.special(headers), new CommonObserver<HotSpecialCarBean>() {
             @Override
             public void onResult(HotSpecialCarBean result) {
                 if (mIView != null) {
@@ -98,8 +100,8 @@ public class SelectCarFragmentPresenter extends BasePresenter<ISelectCarFragment
      *
      * @param body
      */
-    public void list(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<AdvertisementBean>() {
+    public void list(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,body), new CommonObserver<AdvertisementBean>() {
             @Override
             public void onResult(AdvertisementBean result) {
                 if (mIView != null) {

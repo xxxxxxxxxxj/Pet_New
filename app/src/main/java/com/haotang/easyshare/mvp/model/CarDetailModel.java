@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.CarDetailApiService;
 import com.haotang.easyshare.mvp.model.imodel.ICarDetailModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -21,7 +23,7 @@ public class CarDetailModel implements ICarDetailModel {
      * @param body
      */
     @Override
-    public Observable detail(RequestBody body) {
-        return DevRing.httpManager().getService(CarDetailApiService.class).detail(body);
+    public Observable detail(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(CarDetailApiService.class).detail(headers,body);
     }
 }

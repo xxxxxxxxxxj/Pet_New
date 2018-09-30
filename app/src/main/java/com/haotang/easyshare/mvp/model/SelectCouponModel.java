@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.SelectCouponApiService;
 import com.haotang.easyshare.mvp.model.imodel.ISelectCouponModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -21,7 +23,7 @@ public class SelectCouponModel implements ISelectCouponModel {
      * @param body
      */
     @Override
-    public Observable match(RequestBody body) {
-        return DevRing.httpManager().getService(SelectCouponApiService.class).match(body);
+    public Observable match(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(SelectCouponApiService.class).match(headers,body);
     }
 }

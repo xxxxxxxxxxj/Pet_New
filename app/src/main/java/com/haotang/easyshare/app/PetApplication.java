@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.haotang.easyshare.MyEventBusIndex;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.db.greendao.GreenDBManager;
 import com.haotang.easyshare.mvp.model.imageload.FrescoManager;
 import com.haotang.easyshare.shareutil.ShareConfig;
@@ -59,6 +60,11 @@ public class PetApplication extends Application {
         //如果提供的配置方法还无法满足你的需求，那可以通过以下方法获取builder进行你的定制
 //        DevRing.configureHttp().getOkHttpClientBuilder();
 //        DevRing.configureHttp().getRetrofitBuilder();*/
+
+        DevRing.configureHttp()//配置retrofit
+                .setBaseUrl(UrlConstants.getServiceBaseUrl())//设置BaseUrl
+                .setConnectTimeout(15)//设置请求超时时长，单位秒
+                .setIsUseLog(AppConfig.isShowLog);//设置是否开启Log，默认不开启
 
 
         //图片加载模块（可替换，demo演示了如何使用Fresco替换默认的Glide）

@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -19,39 +21,39 @@ public interface IFollowDetailModel extends IBaseModel {
      *
      * @param uuid
      */
-    Observable info(String uuid);
+    Observable info(Map<String, String> headers, String uuid);
 
     /**
      * 用户帖子列表
      */
-    Observable list(RequestBody body);
+    Observable list(Map<String, String> headers,RequestBody body);
 
     /**
      * 关注用户
      *
      * @param build
      */
-    Observable follow(RequestBody build);
+    Observable follow(Map<String, String> headers,RequestBody build);
 
     /**
      * 取消关注用户
      *
      * @param build
      */
-    Observable cancel(RequestBody build);
+    Observable cancel(Map<String, String> headers,RequestBody build);
 
     /**
      * 评价用户
      */
-    Observable eval(RequestBody body);
+    Observable eval(Map<String, String> headers,RequestBody body);
 
     /**
      * 点赞
      */
-    Observable praise(RequestBody body);
+    Observable praise(Map<String, String> headers,RequestBody body);
 
     /**
      * 评价星级
      */
-    Observable stars();
+    Observable stars(Map<String, String> headers);
 }

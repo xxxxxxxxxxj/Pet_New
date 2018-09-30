@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerRechargeFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.RechargeFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.res.HistoryList;
@@ -121,7 +122,7 @@ public class RechargeFragment extends BaseFragment<RechargeFragmentPresenter> im
         builder.addFormDataPart("page", mNextRequestPage + "");
         builder.addFormDataPart("type", type + "");
         RequestBody build = builder.build();
-        mPresenter.list(build);
+        mPresenter.list(UrlConstants.getMapHeader(mActivity),build);
     }
 
     private void loadMore() {

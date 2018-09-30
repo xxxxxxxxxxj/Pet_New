@@ -100,7 +100,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
         builder.addFormDataPart("uuid", uuid);
         builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
         RequestBody build = builder.build();
-        mPresenter.list(build);
+        mPresenter.list(UrlConstants.getMapHeader(this),build);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                                     builder.addFormDataPart("uuid", list.get(position).getUuid());
                                     RequestBody body = builder.build();
-                                    mPresenter.delete(body);
+                                    mPresenter.delete(UrlConstants.getMapHeader(MyPostActivity.this),body);
                                 }
                             }).setNegativeButton("取消", new View.OnClickListener() {
                         @Override
@@ -217,7 +217,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
         builder.addFormDataPart("uuid", uuid);
         builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
         RequestBody build = builder.build();
-        mPresenter.list(build);
+        mPresenter.list(UrlConstants.getMapHeader(this),build);
     }
 
     private void loadMore() {
@@ -226,7 +226,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
         builder.addFormDataPart("uuid", uuid);
         builder.addFormDataPart("page", String.valueOf(mNextRequestPage));
         RequestBody build = builder.build();
-        mPresenter.list(build);
+        mPresenter.list(UrlConstants.getMapHeader(this),build);
     }
 
     @Override

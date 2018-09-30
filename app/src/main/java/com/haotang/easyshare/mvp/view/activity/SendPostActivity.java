@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerSendPostActivityCommponent;
 import com.haotang.easyshare.di.module.activity.SendPostActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
@@ -292,7 +293,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                                 , file));
                     }
                     RequestBody build = builder.build();
-                    mPresenter.save(build);
+                    mPresenter.save(UrlConstants.getMapHeader(this),build);
                 } else {
                     RingToast.show("请先选择车型");
                     startActivityForResult(new Intent(SendPostActivity.this, BrandCarActivity.class), REQUESTCODE_BRANDCAR);

@@ -11,6 +11,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -27,8 +29,8 @@ public class CurrentMessageFragmentPresenter extends BasePresenter<ICurrentMessa
     /**
      * 发布留言
      */
-    public void save(int contentType, String content) {
-        DevRing.httpManager().commonRequest(mIModel.save(contentType,content), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void save(Map<String, String> headers, int contentType, String content) {
+        DevRing.httpManager().commonRequest(mIModel.save(headers,contentType,content), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {

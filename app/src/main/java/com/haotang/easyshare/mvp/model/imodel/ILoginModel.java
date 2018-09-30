@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -17,24 +19,24 @@ public interface ILoginModel extends IBaseModel {
     /**
      * 下发验证码
      */
-    Observable sendVerifyCode(String phone);
+    Observable sendVerifyCode(Map<String, String> headers, String phone);
 
     /**
      * 登陆
      */
-    Observable login(String phone, String wxOpenId, double lng, double lat, String registrationId, String code, String userName, String headImg);
+    Observable login(Map<String, String> headers,String phone, String wxOpenId, double lng, double lat, String registrationId, String code, String userName, String headImg);
 
     /**
      * 微信获取WxOpenId
      *
      * @param body
      */
-    Observable getWxOpenId(RequestBody body);
+    Observable getWxOpenId(Map<String, String> headers,RequestBody body);
 
     /**
      * 微信获取用户信息
      *
      * @param body
      */
-    Observable getWxUserInfo(RequestBody body);
+    Observable getWxUserInfo(Map<String, String> headers,RequestBody body);
 }

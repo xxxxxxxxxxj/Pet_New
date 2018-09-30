@@ -1,9 +1,10 @@
 package com.haotang.easyshare.mvp.model;
 
 import com.haotang.easyshare.mvp.model.http.AllBrandsApiService;
-import com.haotang.easyshare.mvp.model.http.HotFragmentApiService;
 import com.haotang.easyshare.mvp.model.imodel.IAllBrandsModel;
 import com.ljy.devring.DevRing;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -20,15 +21,15 @@ public class AllBrandsModel implements IAllBrandsModel {
      * 所有品牌
      */
     @Override
-    public Observable list() {
-        return DevRing.httpManager().getService(AllBrandsApiService.class).list();
+    public Observable list(Map<String, String> headers) {
+        return DevRing.httpManager().getService(AllBrandsApiService.class).list(headers);
     }
 
     /**
      * 热门车型
      */
     @Override
-    public Observable special() {
-        return DevRing.httpManager().getService(AllBrandsApiService.class).special();
+    public Observable special(Map<String, String> headers) {
+        return DevRing.httpManager().getService(AllBrandsApiService.class).special(headers);
     }
 }

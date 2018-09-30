@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.ScanCodeApiService;
 import com.haotang.easyshare.mvp.model.imodel.IInputChargeCodeModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -22,7 +24,7 @@ public class InputChargeCodeModel implements IInputChargeCodeModel {
      * @param body
      */
     @Override
-    public Observable start(RequestBody body) {
-        return DevRing.httpManager().getService(ScanCodeApiService.class).start(body);
+    public Observable start(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(ScanCodeApiService.class).start(headers,body);
     }
 }

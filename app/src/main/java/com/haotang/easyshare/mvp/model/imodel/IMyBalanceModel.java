@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -16,5 +18,5 @@ public interface IMyBalanceModel extends IBaseModel {
     /**
      * 用户主页信息
      */
-    Observable home();
+    Observable home(Map<String, String> headers);
 }

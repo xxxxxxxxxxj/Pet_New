@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerPostListActivityCommponent;
 import com.haotang.easyshare.di.module.activity.PostListActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
@@ -103,11 +104,11 @@ public class PostListActivity extends BaseActivity<PostListPresenter> implements
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .build();
         if (index == 1) {//最新帖
-            mPresenter.newest(body);
+            mPresenter.newest(UrlConstants.getMapHeader(this),body);
         } else if (index == 2) {//热门帖
-            mPresenter.hot(body);
+            mPresenter.hot(UrlConstants.getMapHeader(this),body);
         } else if (index == 3) {//问题车
-            mPresenter.problemCar(body);
+            mPresenter.problemCar(UrlConstants.getMapHeader(this),body);
         }
     }
 

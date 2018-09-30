@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -16,10 +18,10 @@ public interface IAllBrandsModel extends IBaseModel {
     /**
      * 所有品牌
      */
-    Observable list();
+    Observable list(Map<String, String> headers);
 
     /**
      * 热门车型
      */
-    Observable special();
+    Observable special(Map<String, String> headers);
 }

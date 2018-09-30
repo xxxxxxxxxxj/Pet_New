@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -17,38 +19,38 @@ public interface IChargeIngFragmentModel extends IBaseModel {
     /**
      * 获取进行中的订单
      */
-    Observable ing();
+    Observable ing(Map<String, String> headers);
 
     /**
      * 结束充电
      *
      * @param build
      */
-    Observable stop(RequestBody build);
+    Observable stop(Map<String, String> headers,RequestBody build);
 
     /**
      * 支付账单
      *
      * @param build
      */
-    Observable pay(RequestBody build);
+    Observable pay(Map<String, String> headers,RequestBody build);
 
     /**
      * 故障报修
      *
      * @param build
      */
-    Observable save(RequestBody build);
+    Observable save(Map<String, String> headers,RequestBody build);
 
     /**
      * 用户主页信息
      */
-    Observable home();
+    Observable home(Map<String, String> headers);
 
     /**
      * 取消订单
      *
      * @param build
      */
-    Observable cancelOrder(RequestBody build);
+    Observable cancelOrder(Map<String, String> headers,RequestBody build);
 }

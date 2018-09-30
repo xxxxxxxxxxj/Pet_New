@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerRechargeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.RechargeActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
@@ -103,7 +104,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter> implements
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.list();
+        mPresenter.list(UrlConstants.getMapHeader(this));
     }
 
     @Override
@@ -173,7 +174,7 @@ public class RechargeActivity extends BaseActivity<RechargePresenter> implements
                 builder.addFormDataPart("templateId", String.valueOf(templateId));
                 builder.addFormDataPart("payWay", String.valueOf(payWay));
                 RequestBody body = builder.build();
-                mPresenter.build(body);
+                mPresenter.build(UrlConstants.getMapHeader(this),body);
                 break;
         }
     }

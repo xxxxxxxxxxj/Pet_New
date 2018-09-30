@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -18,5 +20,5 @@ public interface IRechargeFragmentModel extends IBaseModel {
      *交易记录列表
      * @param build
      */
-    Observable list(RequestBody build);
+    Observable list(Map<String, String> headers, RequestBody build);
 }

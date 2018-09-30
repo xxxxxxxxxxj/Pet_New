@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerInputChargeCodeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.InputChargeCodeActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.StartCodeChargeing;
@@ -109,7 +110,7 @@ public class InputChargeCodeActivity extends BaseActivity<InputChargeCodePresent
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("code", etInputchargeCode.getText().toString().trim());
                 RequestBody body = builder.build();
-                mPresenter.start(body);
+                mPresenter.start(UrlConstants.getMapHeader(this),body);
                 break;
         }
     }

@@ -14,6 +14,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -30,8 +32,8 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
     /**
      * 获取最新版本
      */
-    public void getLatestVersion(Activity activity, int systemType, String version, String time) {
-        DevRing.httpManager().commonRequest(mIModel.getLatestVersion(activity, systemType, version, time),
+    public void getLatestVersion(Map<String, String> headers, Activity activity, int systemType, String version, String time) {
+        DevRing.httpManager().commonRequest(mIModel.getLatestVersion(headers,activity, systemType, version, time),
                 new CommonObserver<HttpResult<LastVersionBean>>() {
             @Override
             public void onResult(HttpResult<LastVersionBean> result) {
@@ -59,8 +61,8 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
     /**
      * 获取底部bar
      */
-    public void getBottomBar(Activity activity) {
-        DevRing.httpManager().commonRequest(mIModel.getBottomBar(activity),
+    public void getBottomBar(Map<String, String> headers,Activity activity) {
+        DevRing.httpManager().commonRequest(mIModel.getBottomBar(headers,activity),
                 new CommonObserver<HttpResult<BootmBarBean>>() {
             @Override
             public void onResult(HttpResult<BootmBarBean> result) {

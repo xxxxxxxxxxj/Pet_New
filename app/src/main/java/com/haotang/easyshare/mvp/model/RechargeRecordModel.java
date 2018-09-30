@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.RechargeRecordApiService;
 import com.haotang.easyshare.mvp.model.imodel.IRechargeRecordModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -21,7 +23,7 @@ public class RechargeRecordModel implements IRechargeRecordModel {
      * @param build
      */
     @Override
-    public Observable list(RequestBody build) {
-        return DevRing.httpManager().getService(RechargeRecordApiService.class).list(build);
+    public Observable list(Map<String, String> headers, RequestBody build) {
+        return DevRing.httpManager().getService(RechargeRecordApiService.class).list(headers,build);
     }
 }

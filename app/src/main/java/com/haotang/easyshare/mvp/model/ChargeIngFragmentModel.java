@@ -5,6 +5,8 @@ import com.haotang.easyshare.mvp.model.http.MyFragmentApiService;
 import com.haotang.easyshare.mvp.model.imodel.IChargeIngFragmentModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -21,8 +23,8 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
      * 获取进行中的订单
      */
     @Override
-    public Observable ing() {
-        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).ing();
+    public Observable ing(Map<String, String> headers) {
+        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).ing(headers);
     }
 
     /**
@@ -31,8 +33,8 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
      * @param build
      */
     @Override
-    public Observable stop(RequestBody build) {
-        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).stop(build);
+    public Observable stop(Map<String, String> headers,RequestBody build) {
+        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).stop(headers,build);
     }
 
     /**
@@ -41,8 +43,8 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
      * @param build
      */
     @Override
-    public Observable pay(RequestBody build) {
-        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).pay(build);
+    public Observable pay(Map<String, String> headers,RequestBody build) {
+        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).pay(headers,build);
     }
 
     /**
@@ -51,16 +53,16 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
      * @param build
      */
     @Override
-    public Observable save(RequestBody build) {
-        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).save(build);
+    public Observable save(Map<String, String> headers,RequestBody build) {
+        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).save(headers,build);
     }
 
     /**
      * 用户主页信息
      */
     @Override
-    public Observable home() {
-        return DevRing.httpManager().getService(MyFragmentApiService.class).home();
+    public Observable home(Map<String, String> headers) {
+        return DevRing.httpManager().getService(MyFragmentApiService.class).home(headers);
     }
 
     /**
@@ -69,7 +71,7 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
      * @param build
      */
     @Override
-    public Observable cancelOrder(RequestBody build) {
-        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).cancelOrder(build);
+    public Observable cancelOrder(Map<String, String> headers,RequestBody build) {
+        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).cancelOrder(headers,build);
     }
 }

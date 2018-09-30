@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -16,5 +18,5 @@ public interface IMyFollowModel extends IBaseModel{
     /**
      * 关注的人列表
      */
-    Observable list();
+    Observable list(Map<String, String> headers);
 }

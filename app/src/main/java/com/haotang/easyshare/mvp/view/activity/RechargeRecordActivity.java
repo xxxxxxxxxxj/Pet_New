@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerRechargeRecordActivityCommponent;
 import com.haotang.easyshare.di.module.activity.RechargeRecordActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeList;
@@ -114,7 +115,7 @@ public class RechargeRecordActivity extends BaseActivity<RechargeRecordPresenter
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("page", mNextRequestPage + "");
         RequestBody build = builder.build();
-        mPresenter.list(build);
+        mPresenter.list(UrlConstants.getMapHeader(this),build);
     }
 
     private void loadMore() {

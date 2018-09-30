@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerEditUserInfoActivityCommponent;
 import com.haotang.easyshare.di.module.activity.EditUserInfoActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
@@ -91,7 +92,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.home();
+        mPresenter.home(UrlConstants.getMapHeader(this));
     }
 
     @Override
@@ -131,7 +132,7 @@ public class EditUserInfoActivity extends BaseActivity<EditUserInfoPresenter> im
                             , userImgFile));
                 }
                 RequestBody body = builder.build();
-                mPresenter.save(body);
+                mPresenter.save(UrlConstants.getMapHeader(this),body);
                 break;
             case R.id.iv_titlebar_back:
                 finish();

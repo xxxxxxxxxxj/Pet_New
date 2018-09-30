@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.haotang.easyshare.R;
-import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerFlashActivityCommponent;
 import com.haotang.easyshare.di.module.activity.FlashActivityModule;
@@ -25,8 +24,6 @@ import com.ljy.devring.other.RingLog;
 import com.ljy.devring.other.permission.PermissionListener;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
-
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -96,18 +93,9 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
         DevRing.permissionManager().requestEachCombined(FlashActivity.this, new PermissionListener() {
             @Override
             public void onGranted(String permissionName) {
-                DevRing.configureHttp()//配置retrofit
-                        .setBaseUrl(UrlConstants.getServiceBaseUrl())//设置BaseUrl
-                        .setConnectTimeout(15)//设置请求超时时长，单位秒
-                        .setMapHeader(UrlConstants.getMapHeader(getApplicationContext()))
-                        .setIsUseLog(AppConfig.isShowLog);//设置是否开启Log，默认不开启
-                Map<String, String> mapHeader = UrlConstants.getMapHeader(getApplicationContext());
-                Map<String, String> mapHeader1 = DevRing.configureHttp().getMapHeader();
-                RingLog.e("mapHeader = " + mapHeader.toString());
-                RingLog.e("mapHeader1 = " + mapHeader1.toString());
                 //全部权限都被授予的话，则弹出底部选项
                 if (SharedPreferenceUtil.getInstance(FlashActivity.this).getBoolean("guide", false)) {
-                    mPresenter.startPageConfig(FlashActivity.this);
+                    mPresenter.startPageConfig(UrlConstants.getMapHeader(FlashActivity.this),FlashActivity.this);
                 } else {
                     initTimer(0);
                 }
@@ -115,19 +103,10 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
 
             @Override
             public void onDenied(String permissionName) {
-                DevRing.configureHttp()//配置retrofit
-                        .setBaseUrl(UrlConstants.getServiceBaseUrl())//设置BaseUrl
-                        .setConnectTimeout(15)//设置请求超时时长，单位秒
-                        .setMapHeader(UrlConstants.getMapHeaderNoImei(getApplicationContext()))
-                        .setIsUseLog(AppConfig.isShowLog);//设置是否开启Log，默认不开启
-                Map<String, String> mapHeader = UrlConstants.getMapHeader(getApplicationContext());
-                Map<String, String> mapHeader1 = DevRing.configureHttp().getMapHeader();
-                RingLog.e("mapHeader = " + mapHeader.toString());
-                RingLog.e("mapHeader1 = " + mapHeader1.toString());
                 //如果用户拒绝了其中一个授权请求，则提醒用户
                 RingToast.show("该功能需您授予\"获取手机信息和位置权限\"权限才可正常使用");
                 if (SharedPreferenceUtil.getInstance(FlashActivity.this).getBoolean("guide", false)) {
-                    mPresenter.startPageConfig(FlashActivity.this);
+                    mPresenter.startPageConfig(UrlConstants.getMapHeader(FlashActivity.this),FlashActivity.this);
                 } else {
                     initTimer(0);
                 }
@@ -135,15 +114,6 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
 
             @Override
             public void onDeniedWithNeverAsk(String permissionName) {
-                DevRing.configureHttp()//配置retrofit
-                        .setBaseUrl(UrlConstants.getServiceBaseUrl())//设置BaseUrl
-                        .setConnectTimeout(15)//设置请求超时时长，单位秒
-                        .setMapHeader(UrlConstants.getMapHeaderNoImei(getApplicationContext()))
-                        .setIsUseLog(AppConfig.isShowLog);//设置是否开启Log，默认不开启
-                Map<String, String> mapHeader = UrlConstants.getMapHeader(getApplicationContext());
-                Map<String, String> mapHeader1 = DevRing.configureHttp().getMapHeader();
-                RingLog.e("mapHeader = " + mapHeader.toString());
-                RingLog.e("mapHeader1 = " + mapHeader1.toString());
                 //如果用户拒绝了其中一个授权请求，且勾选了不再提醒，则需要引导用户到权限管理页面开启
                 permissionDialog.show();
             }
@@ -195,11 +165,9 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
         permissionDialog.setPositiveButton(R.string.permission_request_dialog_pos, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DevRing.configureHttp()//配置retrofit
-                        .setMapHeader(UrlConstants.getMapHeaderNoImei(getApplicationContext()));//设置全局的header信息
                 permissionDialog.dismiss();
                 if (SharedPreferenceUtil.getInstance(FlashActivity.this).getBoolean("guide", false)) {
-                    mPresenter.startPageConfig(FlashActivity.this);
+                    mPresenter.startPageConfig(UrlConstants.getMapHeader(FlashActivity.this),FlashActivity.this);
                 } else {
                     initTimer(0);
                 }
@@ -209,11 +177,9 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
         permissionDialog.setNegativeButton(R.string.permission_request_dialog_nav, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DevRing.configureHttp()//配置retrofit
-                        .setMapHeader(UrlConstants.getMapHeaderNoImei(getApplicationContext()));//设置全局的header信息
                 permissionDialog.dismiss();
                 if (SharedPreferenceUtil.getInstance(FlashActivity.this).getBoolean("guide", false)) {
-                    mPresenter.startPageConfig(FlashActivity.this);
+                    mPresenter.startPageConfig(UrlConstants.getMapHeader(FlashActivity.this),FlashActivity.this);
                 } else {
                     initTimer(0);
                 }

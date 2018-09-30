@@ -30,8 +30,8 @@ public class CollectChargePresenter extends BasePresenter<ICollectChargeView, IC
     /**
      * 收藏的充电桩列表
      */
-    public void list() {
-        DevRing.httpManager().commonRequest(mIModel.list(), new CommonObserver<CollectChargeBean>() {
+    public void list(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers), new CommonObserver<CollectChargeBean>() {
             @Override
             public void onResult(CollectChargeBean result) {
                 if (mIView != null) {
@@ -64,8 +64,8 @@ public class CollectChargePresenter extends BasePresenter<ICollectChargeView, IC
      *
      * @param parmMap
      */
-    public void cancel(Map<String, String> parmMap) {
-        DevRing.httpManager().commonRequest(mIModel.cancel(parmMap), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void cancel(Map<String, String> headers,Map<String, String> parmMap) {
+        DevRing.httpManager().commonRequest(mIModel.cancel(headers,parmMap), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {

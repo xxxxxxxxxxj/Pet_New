@@ -3,7 +3,10 @@ package com.haotang.easyshare.mvp.model.http;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.BrandCarBean;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 /**
@@ -19,5 +22,5 @@ public interface BrandCarApiService {
      * 品牌车型
      */
     @POST(UrlConstants.BRAND_AND_CAR)
-    Observable<BrandCarBean> car();
+    Observable<BrandCarBean> car(@HeaderMap Map<String, String> headers);
 }

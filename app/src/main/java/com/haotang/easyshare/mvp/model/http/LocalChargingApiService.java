@@ -5,9 +5,11 @@ import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Query;
 
 /**
@@ -28,6 +30,6 @@ public interface LocalChargingApiService {
      * @param sign
      */
     @GET(UrlConstants.NEARBY)
-    Observable<HttpResult<List<MainFragChargeBean>>> nearby(@Query("lng") double lng, @Query("lat") double lat,
+    Observable<HttpResult<List<MainFragChargeBean>>> nearby(@HeaderMap Map<String, String> headers, @Query("lng") double lng, @Query("lat") double lat,
                                                             @Query("page") int mNextRequestPage, @Query("sign") String sign);
 }

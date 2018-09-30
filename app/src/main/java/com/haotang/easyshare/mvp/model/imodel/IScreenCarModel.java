@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -17,10 +19,10 @@ public interface IScreenCarModel extends IBaseModel {
     /**
      * 车型检索条件
      */
-    Observable items();
+    Observable items(Map<String, String> headers);
 
     /**
      * 车型检索
      */
-    Observable query(RequestBody build);
+    Observable query(Map<String, String> headers,RequestBody build);
 }

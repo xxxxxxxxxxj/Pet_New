@@ -28,8 +28,8 @@ public class ChargingPileDetailModel implements IChargingPileDetailModel {
      * @param md5
      */
     @Override
-    public Observable detail(double lng, double lat, String uuid, String md5) {
-        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).detail(lng, lat, uuid, md5);
+    public Observable detail(Map<String, String> headers,double lng, double lat, String uuid, String md5) {
+        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).detail(headers,lng, lat, uuid, md5);
     }
 
     /**
@@ -38,8 +38,8 @@ public class ChargingPileDetailModel implements IChargingPileDetailModel {
      * @param parmMap
      */
     @Override
-    public Observable follow(Map<String, String> parmMap) {
-        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).follow(parmMap);
+    public Observable follow(Map<String, String> headers,Map<String, String> parmMap) {
+        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).follow(headers,parmMap);
     }
 
     /**
@@ -48,15 +48,15 @@ public class ChargingPileDetailModel implements IChargingPileDetailModel {
      * @param parmMap
      */
     @Override
-    public Observable cancel(Map<String, String> parmMap) {
-        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).cancel(parmMap);
+    public Observable cancel(Map<String, String> headers,Map<String, String> parmMap) {
+        return DevRing.httpManager().getService(ChargingPileDetailApiService.class).cancel(headers,parmMap);
     }
 
     /**
      * 浮窗
      */
     @Override
-    public Observable list(MultipartBody body) {
-        return DevRing.httpManager().getService(HotFragmentApiService.class).list(body);
+    public Observable list(Map<String, String> headers,MultipartBody body) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).list(headers,body);
     }
 }

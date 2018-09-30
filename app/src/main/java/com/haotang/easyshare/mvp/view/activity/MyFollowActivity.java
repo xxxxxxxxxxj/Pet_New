@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerMyFollowActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MyFollowActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.FollowBean;
@@ -84,7 +85,7 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        mPresenter.list();
+        mPresenter.list(UrlConstants.getMapHeader(this));
     }
 
     @Override
@@ -119,11 +120,11 @@ public class MyFollowActivity extends BaseActivity<MyFollowPresenter> implements
         followListAdapter.setEnableLoadMore(false);
         srlMyFollow.setRefreshing(true);
         mNextRequestPage = 1;
-        mPresenter.list();
+        mPresenter.list(UrlConstants.getMapHeader(this));
     }
 
     private void loadMore() {
-        mPresenter.list();
+        mPresenter.list(UrlConstants.getMapHeader(this));
     }
 
     @Override

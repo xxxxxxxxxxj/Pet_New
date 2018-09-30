@@ -4,8 +4,11 @@ import com.haotang.easyshare.mvp.model.entity.res.BootmBarBean;
 import com.haotang.easyshare.mvp.model.entity.res.LastVersionBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -22,7 +25,7 @@ public interface MainActivityApiService {
      * 获取最新版本
      */
     @GET
-    Observable<HttpResult<LastVersionBean>> getLatestVersion(@Url String url, @Query("systemType") int systemType,
+    Observable<HttpResult<LastVersionBean>> getLatestVersion(@HeaderMap Map<String, String> headers, @Url String url, @Query("systemType") int systemType,
                                                              @Query("version") String version,
                                                              @Query("time") String time);
 
@@ -30,5 +33,5 @@ public interface MainActivityApiService {
      * 获取底部bar
      */
     @GET
-    Observable<HttpResult<BootmBarBean>> getBottomBar(@Url String url);
+    Observable<HttpResult<BootmBarBean>> getBottomBar(@HeaderMap Map<String, String> headers,@Url String url);
 }

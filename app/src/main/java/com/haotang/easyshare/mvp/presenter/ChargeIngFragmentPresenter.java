@@ -14,6 +14,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -32,8 +34,8 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
     /**
      * 用户主页信息
      */
-    public void home() {
-        DevRing.httpManager().commonRequest(mIModel.home(),
+    public void home(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.home(headers),
                 new CommonObserver<HttpResult<HomeBean>>() {
                     @Override
                     public void onResult(HttpResult<HomeBean> result) {
@@ -65,8 +67,8 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
     /**
      * 获取进行中的订单
      */
-    public void ing() {
-        DevRing.httpManager().commonRequest(mIModel.ing(), new CommonObserver<StartChargeing>() {
+    public void ing(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.ing(headers), new CommonObserver<StartChargeing>() {
             @Override
             public void onResult(StartChargeing result) {
                 if (mIView != null) {
@@ -100,8 +102,8 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
      *
      * @param build
      */
-    public void stop(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.stop(build), new CommonObserver<ChargeingState>() {
+    public void stop(Map<String, String> headers,RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.stop(headers,build), new CommonObserver<ChargeingState>() {
             @Override
             public void onResult(ChargeingState result) {
                 if (mIView != null) {
@@ -136,8 +138,8 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
      *
      * @param build
      */
-    public void pay(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.pay(build), new CommonObserver<ChargeingState>() {
+    public void pay(Map<String, String> headers,RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.pay(headers,build), new CommonObserver<ChargeingState>() {
             @Override
             public void onResult(ChargeingState result) {
                 if (mIView != null) {
@@ -172,8 +174,8 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
      *
      * @param build
      */
-    public void save(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.save(build), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void save(Map<String, String> headers,RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.save(headers,build), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {
@@ -208,8 +210,8 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
      *
      * @param build
      */
-    public void cancelOrder(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.cancelOrder(build), new CommonObserver<HttpResult<AddChargeBean>>() {
+    public void cancelOrder(Map<String, String> headers,RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.cancelOrder(headers,build), new CommonObserver<HttpResult<AddChargeBean>>() {
             @Override
             public void onResult(HttpResult<AddChargeBean> result) {
                 if (mIView != null) {

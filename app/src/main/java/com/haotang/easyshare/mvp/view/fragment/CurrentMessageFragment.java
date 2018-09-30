@@ -5,6 +5,7 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerCurrentMessageFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.CurrentMessageFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
@@ -95,7 +96,7 @@ public class CurrentMessageFragment extends BaseFragment<CurrentMessageFragmentP
             return;
         }
         showDialog();
-        mPresenter.save(1, etCurrentmsg.getText().toString().trim());
+        mPresenter.save(UrlConstants.getMapHeader(mActivity),1, etCurrentmsg.getText().toString().trim());
     }
 
     @Override

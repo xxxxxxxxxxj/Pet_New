@@ -24,24 +24,24 @@ public interface IChargingPileDetailModel extends IBaseModel {
      * @param uuid
      * @param md5
      */
-    Observable detail(double lng, double lat, String uuid, String md5);
+    Observable detail(Map<String, String> headers,double lng, double lat, String uuid, String md5);
 
     /**
      * 收藏充电桩
      *
      * @param parmMap
      */
-    Observable follow(Map<String, String> parmMap);
+    Observable follow(Map<String, String> headers,Map<String, String> parmMap);
 
     /**
      * 取消收藏充电桩
      *
      * @param parmMap
      */
-    Observable cancel(Map<String, String> parmMap);
+    Observable cancel(Map<String, String> headers,Map<String, String> parmMap);
 
     /**
      * 浮窗
      */
-    Observable list(MultipartBody body);
+    Observable list(Map<String, String> headers,MultipartBody body);
 }

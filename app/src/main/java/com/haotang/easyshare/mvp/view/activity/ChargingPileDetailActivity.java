@@ -235,7 +235,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
             String md5 = SignUtil.sign(mapHeader, "MD5");
             RingLog.d(TAG, "md5 =  " + md5);
-            mPresenter.detail(serchLng, serchLat, uuid, md5);
+            mPresenter.detail(UrlConstants.getMapHeader(this),serchLng, serchLat, uuid, md5);
         } else if (lat > 0 && lng > 0) {
             mapHeader.put("lng", String.valueOf(lng));
             mapHeader.put("lat", String.valueOf(lat));
@@ -244,7 +244,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
             String md5 = SignUtil.sign(mapHeader, "MD5");
             RingLog.d(TAG, "md5 =  " + md5);
-            mPresenter.detail(lng, lat, uuid, md5);
+            mPresenter.detail(UrlConstants.getMapHeader(this),lng, lat, uuid, md5);
         }
     }
 
@@ -252,7 +252,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     protected void initData(Bundle savedInstanceState) {
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "6").build();
-        mPresenter.list(body);
+        mPresenter.list(UrlConstants.getMapHeader(this),body);
     }
 
     @Override
@@ -289,9 +289,9 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                     parmMap.clear();
                     parmMap.put("uuid", uuid);
                     if (is_collect == 0) {//是否已收藏(0:否、1:是)
-                        mPresenter.follow(parmMap);
+                        mPresenter.follow(UrlConstants.getMapHeader(this),parmMap);
                     } else if (is_collect == 1) {
-                        mPresenter.cancel(parmMap);
+                        mPresenter.cancel(UrlConstants.getMapHeader(this),parmMap);
                     }
                 } else {
                     startActivity(new Intent(this, LoginActivity.class));

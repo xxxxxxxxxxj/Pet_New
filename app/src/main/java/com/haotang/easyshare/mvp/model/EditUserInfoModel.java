@@ -5,6 +5,8 @@ import com.haotang.easyshare.mvp.model.http.MyFragmentApiService;
 import com.haotang.easyshare.mvp.model.imodel.IEditUserInfoModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -21,8 +23,8 @@ public class EditUserInfoModel implements IEditUserInfoModel {
      * 用户主页信息
      */
     @Override
-    public Observable home() {
-        return DevRing.httpManager().getService(MyFragmentApiService.class).home();
+    public Observable home(Map<String, String> headers) {
+        return DevRing.httpManager().getService(MyFragmentApiService.class).home(headers);
     }
 
     /**
@@ -31,7 +33,7 @@ public class EditUserInfoModel implements IEditUserInfoModel {
      * @param body
      */
     @Override
-    public Observable save(RequestBody body) {
-        return DevRing.httpManager().getService(EditUserInfoApiService.class).save(body);
+    public Observable save(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(EditUserInfoApiService.class).save(headers,body);
     }
 }

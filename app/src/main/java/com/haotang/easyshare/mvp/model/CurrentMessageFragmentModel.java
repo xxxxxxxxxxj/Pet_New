@@ -4,6 +4,8 @@ import com.haotang.easyshare.mvp.model.http.CurrentMessageApiService;
 import com.haotang.easyshare.mvp.model.imodel.ICurrentMessageFragmentModel;
 import com.ljy.devring.DevRing;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 
 /**
@@ -19,7 +21,7 @@ public class CurrentMessageFragmentModel implements ICurrentMessageFragmentModel
      * 发布留言
      */
     @Override
-    public Observable save(int contentType, String content) {
-        return DevRing.httpManager().getService(CurrentMessageApiService.class).save(contentType,content);
+    public Observable save(Map<String, String> headers, int contentType, String content) {
+        return DevRing.httpManager().getService(CurrentMessageApiService.class).save(headers,contentType,content);
     }
 }

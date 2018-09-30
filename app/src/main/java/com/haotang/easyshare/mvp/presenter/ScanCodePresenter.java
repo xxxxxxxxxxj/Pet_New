@@ -1,7 +1,6 @@
 package com.haotang.easyshare.mvp.presenter;
 
 import com.haotang.easyshare.app.AppConfig;
-import com.haotang.easyshare.mvp.model.entity.res.RechargePayInfo;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.model.imodel.IScanCodeModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
@@ -10,6 +9,8 @@ import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
+
+import java.util.Map;
 
 import okhttp3.RequestBody;
 
@@ -31,8 +32,8 @@ public class ScanCodePresenter extends BasePresenter<IScanCodeView, IScanCodeMod
      *
      * @param body
      */
-    public void start(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.start(body), new CommonObserver<StartChargeing>() {
+    public void start(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.start(headers,body), new CommonObserver<StartChargeing>() {
             @Override
             public void onResult(StartChargeing result) {
                 if (mIView != null) {

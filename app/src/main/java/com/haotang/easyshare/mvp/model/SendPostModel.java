@@ -1,9 +1,10 @@
 package com.haotang.easyshare.mvp.model;
 
-import com.haotang.easyshare.mvp.model.http.AddChargeApiService;
 import com.haotang.easyshare.mvp.model.http.SendPostApiService;
 import com.haotang.easyshare.mvp.model.imodel.ISendPostModel;
 import com.ljy.devring.DevRing;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -21,7 +22,7 @@ public class SendPostModel implements ISendPostModel {
      * 发帖
      */
     @Override
-    public Observable save(RequestBody body) {
-        return DevRing.httpManager().getService(SendPostApiService.class).save(body);
+    public Observable save(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(SendPostApiService.class).save(headers,body);
     }
 }

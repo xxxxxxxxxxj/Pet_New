@@ -12,6 +12,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -33,8 +35,8 @@ public class HotFragmentPresenter extends BasePresenter<IHotFragmentView, IHotFr
      *
      * @param body
      */
-    public void list(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<AdvertisementBean>() {
+    public void list(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,body), new CommonObserver<AdvertisementBean>() {
             @Override
             public void onResult(AdvertisementBean result) {
                 if (mIView != null) {
@@ -64,8 +66,8 @@ public class HotFragmentPresenter extends BasePresenter<IHotFragmentView, IHotFr
     /**
      * 热门品牌
      */
-    public void hot() {
-        DevRing.httpManager().commonRequest(mIModel.hot(), new CommonObserver<HotCarBean>() {
+    public void hot(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.hot(headers), new CommonObserver<HotCarBean>() {
             @Override
             public void onResult(HotCarBean result) {
                 if (mIView != null) {
@@ -96,8 +98,8 @@ public class HotFragmentPresenter extends BasePresenter<IHotFragmentView, IHotFr
     /**
      * 最新帖子列表
      */
-    public void newest(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.newest(body), new CommonObserver<HotPoint>() {
+    public void newest(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.newest(headers,body), new CommonObserver<HotPoint>() {
             @Override
             public void onResult(HotPoint result) {
                 if (mIView != null) {

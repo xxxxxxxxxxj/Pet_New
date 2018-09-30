@@ -2,8 +2,9 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
-import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -17,5 +18,5 @@ public interface IBrandCarModel extends IBaseModel {
     /**
      * 品牌车型
      */
-    Observable car();
+    Observable car(Map<String, String> headers);
 }

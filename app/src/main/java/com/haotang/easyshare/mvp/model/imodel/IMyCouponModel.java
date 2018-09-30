@@ -2,6 +2,8 @@ package com.haotang.easyshare.mvp.model.imodel;
 
 import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
@@ -18,5 +20,5 @@ public interface IMyCouponModel  extends IBaseModel{
      * 我的优惠券列表
      * @param body
      */
-    Observable list(RequestBody body);
+    Observable list(Map<String, String> headers, RequestBody body);
 }

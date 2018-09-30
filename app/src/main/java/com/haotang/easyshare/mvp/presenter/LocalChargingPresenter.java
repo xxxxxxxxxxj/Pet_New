@@ -12,6 +12,7 @@ import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title:${type_name}</p>
@@ -34,8 +35,8 @@ public class LocalChargingPresenter extends BasePresenter<ILocalChargingView, IL
      * @param mNextRequestPage
      * @param sign
      */
-    public void nearby(double lng, double lat, int mNextRequestPage, String sign) {
-        DevRing.httpManager().commonRequest(mIModel.nearby(lng, lat, mNextRequestPage, sign), new CommonObserver<HttpResult<List<MainFragChargeBean>>>() {
+    public void nearby(Map<String, String> headers, double lng, double lat, int mNextRequestPage, String sign) {
+        DevRing.httpManager().commonRequest(mIModel.nearby(headers,lng, lat, mNextRequestPage, sign), new CommonObserver<HttpResult<List<MainFragChargeBean>>>() {
             @Override
             public void onResult(HttpResult<List<MainFragChargeBean>> result) {
                 if (mIView != null) {

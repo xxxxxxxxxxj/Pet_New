@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerBrandAreaActivityCommponent;
 import com.haotang.easyshare.di.module.activity.BrandAreaActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
@@ -124,15 +125,15 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                 .addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .addFormDataPart("brandId", String.valueOf(brandId))
                 .build();
-        mPresenter.article(body);
+        mPresenter.article(UrlConstants.getMapHeader(this),body);
 
         MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "3").build();
-        mPresenter.list(body1);
+        mPresenter.list(UrlConstants.getMapHeader(this),body1);
 
         MultipartBody body2 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "4").build();
-        mPresenter.list1(body2);
+        mPresenter.list1(UrlConstants.getMapHeader(this),body2);
     }
 
     @Override
@@ -204,15 +205,15 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                 .addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .addFormDataPart("brandId", String.valueOf(brandId))
                 .build();
-        mPresenter.article(body);
+        mPresenter.article(UrlConstants.getMapHeader(this),body);
 
         MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "3").build();
-        mPresenter.list(body1);
+        mPresenter.list(UrlConstants.getMapHeader(this),body1);
 
         MultipartBody body2 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "4").build();
-        mPresenter.list1(body2);
+        mPresenter.list1(UrlConstants.getMapHeader(this),body2);
     }
 
     private void loadMore() {
@@ -220,7 +221,7 @@ public class BrandAreaActivity extends BaseActivity<BrandAreaPresenter> implemen
                 .addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .addFormDataPart("brandId", String.valueOf(brandId))
                 .build();
-        mPresenter.article(body);
+        mPresenter.article(UrlConstants.getMapHeader(this),body);
     }
 
     @OnClick({R.id.iv_titlebar_back, R.id.tv_titlebar_other})

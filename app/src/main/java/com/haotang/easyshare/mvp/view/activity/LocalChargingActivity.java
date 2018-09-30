@@ -207,7 +207,7 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
         String md5 = SignUtil.sign(mapHeader, "MD5");
         RingLog.d(TAG, "md5 =  " + md5);
-        mPresenter.nearby(serchLng, serchLat, mNextRequestPage, md5);
+        mPresenter.nearby(UrlConstants.getMapHeader(this),serchLng, serchLat, mNextRequestPage, md5);
     }
 
     @Override

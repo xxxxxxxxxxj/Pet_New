@@ -11,6 +11,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -29,8 +31,8 @@ public class ScreenCarPresenter extends BasePresenter<IScreenCarView, IScreenCar
     /**
      * 车型检索条件
      */
-    public void items() {
-        DevRing.httpManager().commonRequest(mIModel.items(), new CommonObserver<ScreenCarItem>() {
+    public void items(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.items(headers), new CommonObserver<ScreenCarItem>() {
             @Override
             public void onResult(ScreenCarItem result) {
                 if (mIView != null) {
@@ -63,8 +65,8 @@ public class ScreenCarPresenter extends BasePresenter<IScreenCarView, IScreenCar
     /**
      * 车型检索条件
      */
-    public void query(RequestBody build) {
-        DevRing.httpManager().commonRequest(mIModel.query(build), new CommonObserver<HotSpecialCarBean>() {
+    public void query(Map<String, String> headers,RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.query(headers,build), new CommonObserver<HotSpecialCarBean>() {
             @Override
             public void onResult(HotSpecialCarBean result) {
                 if (mIView != null) {

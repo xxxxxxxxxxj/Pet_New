@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerOutTimeCouponActivityCommponent;
 import com.haotang.easyshare.di.module.activity.OutTimeCouponActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.MyCoupon;
@@ -106,7 +107,7 @@ public class OutTimeCouponActivity extends BaseActivity<OutTimeCouponPresenter> 
         builder.addFormDataPart("page", page + "");
         builder.addFormDataPart("state", "0");
         RequestBody build = builder.build();
-        mPresenter.list(build);
+        mPresenter.list(UrlConstants.getMapHeader(this),build);
     }
 
     private void refresh() {

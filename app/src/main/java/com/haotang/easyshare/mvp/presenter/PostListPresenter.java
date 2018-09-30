@@ -10,6 +10,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -28,8 +30,8 @@ public class PostListPresenter extends BasePresenter<IPostListView, IPostListMod
     /**
      * 最新帖子列表
      */
-    public void newest(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.newest(body), new CommonObserver<HotPoint>() {
+    public void newest(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.newest(headers,body), new CommonObserver<HotPoint>() {
             @Override
             public void onResult(HotPoint result) {
                 if (mIView != null) {
@@ -61,8 +63,8 @@ public class PostListPresenter extends BasePresenter<IPostListView, IPostListMod
     /**
      * 热门帖子列表
      */
-    public void hot(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.hot(body), new CommonObserver<HotPoint>() {
+    public void hot(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.hot(headers,body), new CommonObserver<HotPoint>() {
             @Override
             public void onResult(HotPoint result) {
                 if (mIView != null) {
@@ -92,8 +94,8 @@ public class PostListPresenter extends BasePresenter<IPostListView, IPostListMod
     /**
      * 问题车帖子列表
      */
-    public void problemCar(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.problemCar(body), new CommonObserver<HotPoint>() {
+    public void problemCar(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.problemCar(headers,body), new CommonObserver<HotPoint>() {
             @Override
             public void onResult(HotPoint result) {
                 if (mIView != null) {

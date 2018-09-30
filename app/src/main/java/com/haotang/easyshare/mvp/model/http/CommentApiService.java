@@ -9,6 +9,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
@@ -29,11 +30,11 @@ public interface CommentApiService {
      */
     @Multipart
     @POST(UrlConstants.COMMENT_SAVE)
-    Observable<HttpResult<AddChargeBean>> save(@PartMap() Map<String, RequestBody> files);
+    Observable<HttpResult<AddChargeBean>> save(@HeaderMap Map<String, String> headers, @PartMap() Map<String, RequestBody> files);
 
     /**
      * 评论标签
      */
     @POST(UrlConstants.COMMENT_TAGS)
-    Observable<CommentTags> tags();
+    Observable<CommentTags> tags(@HeaderMap Map<String, String> headers);
 }

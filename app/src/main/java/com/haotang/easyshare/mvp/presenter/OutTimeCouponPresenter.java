@@ -10,6 +10,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.util.RxLifecycleUtil;
 
+import java.util.Map;
+
 import okhttp3.RequestBody;
 
 /**
@@ -30,8 +32,8 @@ public class OutTimeCouponPresenter extends BasePresenter<IOutTimeCouponView, IO
      *
      * @param body
      */
-    public void list(RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.list(body), new CommonObserver<MyCoupon>() {
+    public void list(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.list(headers,body), new CommonObserver<MyCoupon>() {
             @Override
             public void onResult(MyCoupon result) {
                 if (mIView != null) {
