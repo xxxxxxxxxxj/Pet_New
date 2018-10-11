@@ -239,7 +239,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                     builder.addFormDataPart("orderId", orderId + "");
                     RequestBody build = builder.build();
-                    mPresenter.cancelOrder(UrlConstants.getMapHeader(mActivity),build);
+                    mPresenter.cancelOrder(UrlConstants.getMapHeader(mActivity), build);
                 }
             }, "CHARGEING_OUTTIME_TIMER");
         }
@@ -302,7 +302,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     totalServiceFee = data.getTotalServiceFee();
                     endCode = data.getEndCode();
                     if (StringUtil.isNotEmpty(data.getPower())) {
-                        StringUtil.setText(tvChargeingKwh, ComputeUtil.div(Double.parseDouble(data.getPower()), 1000) + "KWH", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(tvChargeingKwh, ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)) + "KWH", "", View.VISIBLE, View.VISIBLE);
                     } else {
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                     }
@@ -360,7 +360,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                 builder.addFormDataPart("orderId", orderId + "");
                 RequestBody build = builder.build();
-                mPresenter.cancelOrder(UrlConstants.getMapHeader(mActivity),build);
+                mPresenter.cancelOrder(UrlConstants.getMapHeader(mActivity), build);
             }
         }
     }
@@ -382,7 +382,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     }
                     StringUtil.setText(btnChargeingSubmit, "支付", "", View.VISIBLE, View.VISIBLE);
                     if (StringUtil.isNotEmpty(data.getPower())) {
-                        StringUtil.setText(tvChargeingKwh, ComputeUtil.div(Double.parseDouble(data.getPower()), 1000) + "KWH", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(tvChargeingKwh, ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)) + "KWH", "", View.VISIBLE, View.VISIBLE);
                     } else {
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                     }
@@ -480,7 +480,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         builder.addFormDataPart("endCode", endCode);
                     }
                     RequestBody build = builder.build();
-                    mPresenter.stop(UrlConstants.getMapHeader(mActivity),build);
+                    mPresenter.stop(UrlConstants.getMapHeader(mActivity), build);
                 } else if (state == 2) {//结算中,轮询获取账单接口
                 } else if (state == 3) {//待支付,轮询获取账单接口
                 } else if (state == 4) {//获取到账单，调取支付接口
@@ -492,7 +492,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         builder.addFormDataPart("couponId", couponId + "");
                     }
                     RequestBody build = builder.build();
-                    mPresenter.pay(UrlConstants.getMapHeader(mActivity),build);
+                    mPresenter.pay(UrlConstants.getMapHeader(mActivity), build);
                 }
                 break;
             case R.id.tv_chargeing_gzbx:
@@ -709,7 +709,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     builder.addFormDataPart("lng", lng + "");
                     builder.addFormDataPart("lat", lat + "");
                     RequestBody build = builder.build();
-                    mPresenter.save(UrlConstants.getMapHeader(mActivity),build);
+                    mPresenter.save(UrlConstants.getMapHeader(mActivity), build);
                     mlocationClient.stopLocation();
                 }
             } else {
