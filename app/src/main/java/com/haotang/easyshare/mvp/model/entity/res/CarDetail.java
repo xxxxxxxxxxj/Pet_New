@@ -49,10 +49,19 @@ public class CarDetail {
         private String car;
         private String price;
         private String groupPrice;
+        private String shopPrice;
         private ArrayList<AdvertisementBean.DataBean> detailImgs;
         private List<String> category;
         private String batteryLife;
         private PostBean.DataBean.ShareMap shareMap;
+
+        public String getShopPrice() {
+            return shopPrice;
+        }
+
+        public void setShopPrice(String shopPrice) {
+            this.shopPrice = shopPrice;
+        }
 
         public List<String> getColor() {
             return color;

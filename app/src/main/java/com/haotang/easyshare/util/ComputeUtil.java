@@ -137,6 +137,14 @@ public class ComputeUtil {
         return b.divide(one, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
+    public static void main(String[] args) {
+        double a = 0.123;
+        double b = 0.456;
+        System.out.println(a * b);
+        System.out.println(ComputeUtil.mul(a, b));
+
+    }
+
     /**
      * 使double类型保留points位小数
      *
@@ -147,13 +155,5 @@ public class ComputeUtil {
         BigDecimal bigDecimal = new BigDecimal(new Double(num).toString());
         return bigDecimal.setScale(points, BigDecimal.ROUND_HALF_UP)
                 .doubleValue();
-    }
-
-    public static void main(String[] args) {
-        double a = 0.123;
-        double b = 0.456;
-        System.out.println(a * b);
-        System.out.println(ComputeUtil.mul(a, b));
-
     }
 }

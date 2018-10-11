@@ -272,7 +272,7 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
                     "官方价:¥".length(), ss.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             tvCarDetailGfj.setText(ss);
 
-            SpannableString ss1 = new SpannableString("¥" + data.getPrice() + "起");
+            SpannableString ss1 = new SpannableString("¥" + data.getShopPrice() + "起");
             ss1.setSpan(new TextAppearanceSpan(this, R.style.textsize15),0, 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             ss1.setSpan(new TextAppearanceSpan(this, R.style.textsize15),ss1.length()-2, ss1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             tvCarDetail4sprice.setText(ss1);

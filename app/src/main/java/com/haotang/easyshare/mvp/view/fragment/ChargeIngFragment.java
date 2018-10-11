@@ -302,7 +302,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     totalServiceFee = data.getTotalServiceFee();
                     endCode = data.getEndCode();
                     if (StringUtil.isNotEmpty(data.getPower())) {
-                        StringUtil.setText(tvChargeingKwh, ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)) + "KWH", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(tvChargeingKwh, ComputeUtil.formatDouble(ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)), 2) + "KWH", "", View.VISIBLE, View.VISIBLE);
                     } else {
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                     }
@@ -382,7 +382,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     }
                     StringUtil.setText(btnChargeingSubmit, "支付", "", View.VISIBLE, View.VISIBLE);
                     if (StringUtil.isNotEmpty(data.getPower())) {
-                        StringUtil.setText(tvChargeingKwh, ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)) + "KWH", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(tvChargeingKwh, ComputeUtil.formatDouble(ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)), 2) + "KWH", "", View.VISIBLE, View.VISIBLE);
                     } else {
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                     }
