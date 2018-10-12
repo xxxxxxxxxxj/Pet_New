@@ -205,7 +205,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         if (timeOut > 0) {
             if (timeOutDialog == null) {
                 timeOutBuilder = new LoadingProgressDailog.Builder(mActivity)
-                        .setMessage("充电链接中..." + timeOut + "S")
+                        .setMessage("充电链接中..." + timeOut + "S\n 请及时查看状态哦")
                         .setCancelable(false)
                         .setCancelOutside(false);
                 timeOutDialog = timeOutBuilder.create();
@@ -220,7 +220,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     Log.e("TAG", "millisUntilFinished = " + (millisUntilFinished / 1000));
                     if (timeOutBuilder != null) {
                         Log.e("TAG", "充电链接中... = " + (millisUntilFinished / 1000));
-                        timeOutBuilder.setMessage("充电链接中..." + (millisUntilFinished / 1000) + "S");
+                        timeOutBuilder.setMessage("充电链接中..." + (millisUntilFinished / 1000) + "S\n 请及时查看状态哦");
                     }
                 }
 
@@ -303,8 +303,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     totalPrice = data.getTotalPrice();
                     totalServiceFee = data.getTotalServiceFee();
                     endCode = data.getEndCode();
-                    if (StringUtil.isNotEmpty(data.getPower())) {
-                        StringUtil.setText(tvChargeingKwh, ComputeUtil.formatDouble(ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)), 2) + "KWH", "", View.VISIBLE, View.VISIBLE);
+                    if (StringUtil.isNotEmpty(data.getTotalPower())) {
+                        //StringUtil.setText(tvChargeingKwh, ComputeUtil.formatDouble(ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)), 2) + "KWH", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(tvChargeingKwh, data.getTotalPower() + "KWH", "", View.VISIBLE, View.VISIBLE);
                     } else {
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                     }
@@ -383,8 +384,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
                     }
                     StringUtil.setText(btnChargeingSubmit, "支付", "", View.VISIBLE, View.VISIBLE);
-                    if (StringUtil.isNotEmpty(data.getPower())) {
-                        StringUtil.setText(tvChargeingKwh, ComputeUtil.formatDouble(ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)), 2) + "KWH", "", View.VISIBLE, View.VISIBLE);
+                    if (StringUtil.isNotEmpty(data.getTotalPower())) {
+                        //StringUtil.setText(tvChargeingKwh, ComputeUtil.formatDouble(ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)), 2) + "KWH", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(tvChargeingKwh, data.getTotalPower() + "KWH", "", View.VISIBLE, View.VISIBLE);
                     } else {
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                     }
@@ -394,7 +396,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
                 }
             } else {
-                RingToast.show(event.getMsg());
+                RingToast.show("账单在飞来的路上，请耐心等候哦");
             }
         }
     }
