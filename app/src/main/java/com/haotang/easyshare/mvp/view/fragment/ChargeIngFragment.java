@@ -485,14 +485,15 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             case R.id.btn_chargeing_submit:
                 if (state == 0) {//连接中,插枪未充电
                 } else if (state == 1) {//进行中,轮询查询充电状态接口
-                    showDialog();
-                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                    builder.addFormDataPart("orderId", orderId + "");
                     if (StringUtil.isNotEmpty(endCode)) {
-                        builder.addFormDataPart("endCode", endCode);
+                        RingToast.show("请在充电桩上输入结束码");
+                    } else {
+                        showDialog();
+                        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                        builder.addFormDataPart("orderId", orderId + "");
+                        RequestBody build = builder.build();
+                        mPresenter.stop(UrlConstants.getMapHeader(mActivity), build);
                     }
-                    RequestBody build = builder.build();
-                    mPresenter.stop(UrlConstants.getMapHeader(mActivity), build);
                 } else if (state == 2) {//结算中,轮询获取账单接口
                 } else if (state == 3) {//待支付,轮询获取账单接口
                 } else if (state == 4) {//获取到账单，调取支付接口
