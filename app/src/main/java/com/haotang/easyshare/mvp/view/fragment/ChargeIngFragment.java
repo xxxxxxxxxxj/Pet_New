@@ -205,7 +205,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         if (timeOut > 0) {
             if (timeOutDialog == null) {
                 timeOutBuilder = new LoadingProgressDailog.Builder(mActivity)
-                        .setMessage("充电链接中..." + timeOut + "S\n请及时查看状态哦")
+                        .setMessage("充电连接中..." + timeOut + "S\n请及时查看状态哦")
                         .setCancelable(false)
                         .setCancelOutside(false);
                 timeOutDialog = timeOutBuilder.create();
@@ -219,15 +219,15 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 public void onTick(long millisUntilFinished) {
                     Log.e("TAG", "millisUntilFinished = " + (millisUntilFinished / 1000));
                     if (timeOutBuilder != null) {
-                        Log.e("TAG", "充电链接中... = " + (millisUntilFinished / 1000));
-                        timeOutBuilder.setMessage("充电链接中..." + (millisUntilFinished / 1000) + "S\n请及时查看状态哦");
+                        Log.e("TAG", "充电连接中... = " + (millisUntilFinished / 1000));
+                        timeOutBuilder.setMessage("充电连接中..." + (millisUntilFinished / 1000) + "S\n请及时查看状态哦");
                     }
                 }
 
                 @Override
                 public void onFinish() {
                     closeTimeOutDialog();
-                    RingToast.show("链接超时,未能成功启动");
+                    RingToast.show("连接超时,未能成功启动");
                     rlChargeingChargeAfter.setVisibility(View.GONE);
                     rlChargeingChargeBefore.setVisibility(View.VISIBLE);
                     tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
@@ -269,8 +269,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
             Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
             ll_chargeing_ing.bringToFront();
-            StringUtil.setText(tvChargeingStatus, "链接中...", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(btnChargeingSubmit, "充电链接中...", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
             PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
             PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
         }
@@ -312,10 +312,10 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     StringUtil.setText(tvChargeingCdf, data.getTotalPowerPrice() + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
-                    if (state == 0) {//链接中,插枪未充电
+                    if (state == 0) {//连接中,插枪未充电
                         ll_chargeing_jsm.setVisibility(View.GONE);
-                        StringUtil.setText(tvChargeingStatus, "链接中...", "", View.VISIBLE, View.VISIBLE);
-                        StringUtil.setText(btnChargeingSubmit, "充电链接中...", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
                         PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
                         PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
                     } else if (state == 1) {//进行中,轮询查询充电状态接口
@@ -475,7 +475,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 }
                 break;
             case R.id.btn_chargeing_submit:
-                if (state == 0) {//链接中,插枪未充电
+                if (state == 0) {//连接中,插枪未充电
                 } else if (state == 1) {//进行中,轮询查询充电状态接口
                     showDialog();
                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -538,7 +538,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             orderId = data.getOrderId();
             state = data.getState();
             StringUtil.setText(tvChargeingName, data.getProviderName(), "", View.VISIBLE, View.GONE);
-            if (state == 0) {//链接中,插枪未充电
+            if (state == 0) {//连接中,插枪未充电
                 //启动倒计时
                 showTimeOutDialog(data.getTimeout());
                 StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
@@ -548,8 +548,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
                 Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
-                StringUtil.setText(tvChargeingStatus, "链接中...", "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(btnChargeingSubmit, "充电链接中...", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
                 PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
                 PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
             } else if (state == 1) {//进行中,轮询查询充电状态接口
