@@ -205,7 +205,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         if (timeOut > 0) {
             if (timeOutDialog == null) {
                 timeOutBuilder = new LoadingProgressDailog.Builder(mActivity)
-                        .setMessage("充电链接中..." + timeOut + "S\n 请及时查看状态哦")
+                        .setMessage("充电链接中..." + timeOut + "S\n请及时查看状态哦")
                         .setCancelable(false)
                         .setCancelOutside(false);
                 timeOutDialog = timeOutBuilder.create();
@@ -220,7 +220,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     Log.e("TAG", "millisUntilFinished = " + (millisUntilFinished / 1000));
                     if (timeOutBuilder != null) {
                         Log.e("TAG", "充电链接中... = " + (millisUntilFinished / 1000));
-                        timeOutBuilder.setMessage("充电链接中..." + (millisUntilFinished / 1000) + "S\n 请及时查看状态哦");
+                        timeOutBuilder.setMessage("充电链接中..." + (millisUntilFinished / 1000) + "S\n请及时查看状态哦");
                     }
                 }
 
