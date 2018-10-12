@@ -116,6 +116,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     RelativeLayout rl_chargeing_coupon;
     @BindView(R.id.tv_chargeing_djs)
     TextView tv_chargeing_djs;
+    @BindView(R.id.tv_chargeing_tishi)
+    TextView tv_chargeing_tishi;
     @BindView(R.id.rl_chargeing_djs)
     RelativeLayout rl_chargeing_djs;
     private String phone;
@@ -255,6 +257,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Subscribe
     public void getChargeData(StartCodeChargeing data) {//扫码返回
         if (data != null) {
+            tv_chargeing_tishi.setVisibility(View.VISIBLE);
             //启动倒计时
             showTimeOutDialog(data.getTimeOut());
             orderId = data.getOrderId();
@@ -313,12 +316,14 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
                     if (state == 0) {//连接中,插枪未充电
+                        tv_chargeing_tishi.setVisibility(View.VISIBLE);
                         ll_chargeing_jsm.setVisibility(View.GONE);
                         StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
                         StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
                         PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
                         PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
                     } else if (state == 1) {//进行中,轮询查询充电状态接口
+                        tv_chargeing_tishi.setVisibility(View.GONE);
                         closeTimeOutDialog();
                         if (StringUtil.isNotEmpty(endCode)) {
                             ll_chargeing_jsm.setVisibility(View.VISIBLE);
@@ -332,6 +337,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
                         PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
                     } else if (state == 2) {//结算中,轮询获取账单接口
+                        tv_chargeing_tishi.setVisibility(View.GONE);
                         closeTimeOutDialog();
                         ll_chargeing_jsm.setVisibility(View.GONE);
                         StringUtil.setText(tvChargeingStatus, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
@@ -340,6 +346,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
                         PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
                     } else if (state == 3) {//待支付,轮询获取账单接口
+                        tv_chargeing_tishi.setVisibility(View.GONE);
                         closeTimeOutDialog();
                         ll_chargeing_jsm.setVisibility(View.GONE);
                         StringUtil.setText(tvChargeingStatus, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
@@ -376,6 +383,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             if (event.getCode() == 0) {
                 ChargeingBill.DataBean data = event.getData();
                 if (data != null) {
+                    tv_chargeing_tishi.setVisibility(View.GONE);
                     state = 4;
                     rl_chargeing_coupon.setVisibility(View.VISIBLE);
                     totalPrice = data.getTotalPrice();
