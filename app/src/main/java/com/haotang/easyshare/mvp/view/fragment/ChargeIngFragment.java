@@ -264,6 +264,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
             rlChargeingChargeAfter.setVisibility(View.VISIBLE);
             rlChargeingChargeBefore.setVisibility(View.GONE);
+            rl_chargeing_coupon.setVisibility(View.GONE);
             tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
             tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
             Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
@@ -289,6 +290,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             if (event.getCode() == 0) {
                 ChargeingState.DataBean data = event.getData();
                 if (data != null) {
+                    rl_chargeing_coupon.setVisibility(View.GONE);
                     rlChargeingChargeAfter.setVisibility(View.VISIBLE);
                     rlChargeingChargeBefore.setVisibility(View.GONE);
                     tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
@@ -306,7 +308,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     } else {
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                     }
-                    StringUtil.setText(tvChargeingCdf, data.getTotalPower() + "元", "", View.VISIBLE, View.VISIBLE);
+                    StringUtil.setText(tvChargeingCdf, data.getTotalPowerPrice() + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
                     if (state == 0) {//链接中,插枪未充电
@@ -387,7 +389,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                     }
                     StringUtil.setText(tvChargeingStatus, "充电结束", "", View.VISIBLE, View.VISIBLE);
-                    StringUtil.setText(tvChargeingCdf, data.getTotalPower() + "元", "", View.VISIBLE, View.VISIBLE);
+                    StringUtil.setText(tvChargeingCdf, data.getTotalPowerPrice() + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
                 }
