@@ -23,8 +23,8 @@ public class ChargeIngFragmentModel implements IChargeIngFragmentModel {
      * 获取进行中的订单
      */
     @Override
-    public Observable ing(Map<String, String> headers) {
-        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).ing(headers);
+    public Observable ing(Map<String, String> headers, RequestBody build) {
+        return DevRing.httpManager().getService(ChargeingFragmentApiService.class).ing(headers,build);
     }
 
     /**

@@ -28,7 +28,7 @@ public interface ChargeingFragmentApiService {
      * 获取进行中的订单
      */
     @POST(UrlConstants.CHARGEING_ORDER)
-    Observable<StartChargeing> ing(@HeaderMap Map<String, String> headers);
+    Observable<StartChargeing> ing(@HeaderMap Map<String, String> headers,@Body RequestBody build);
 
     /**
      * 查询充电状态

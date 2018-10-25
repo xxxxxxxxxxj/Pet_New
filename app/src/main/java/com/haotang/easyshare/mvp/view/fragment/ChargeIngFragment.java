@@ -43,6 +43,7 @@ import com.haotang.easyshare.mvp.view.widget.LoadingProgressDailog;
 import com.haotang.easyshare.util.ComputeUtil;
 import com.haotang.easyshare.util.CountdownUtil;
 import com.haotang.easyshare.util.PollingUtils;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
@@ -137,6 +138,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private int state;
     private LoadingProgressDailog timeOutDialog;
     private LoadingProgressDailog.Builder timeOutBuilder;
+    private int num;
 
     @Override
     protected boolean isLazyLoad() {
@@ -229,19 +231,24 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 @Override
                 public void onFinish() {
                     closeTimeOutDialog();
-                    RingToast.show("连接超时,未能成功启动");
-                    rlChargeingChargeAfter.setVisibility(View.GONE);
-                    rlChargeingChargeBefore.setVisibility(View.VISIBLE);
-                    tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-                    tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
-                    Glide.with(mActivity).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
-                    ll_chargeing_start.bringToFront();
-                    //调取取消订单接口
-                    showDialog();
-                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                    builder.addFormDataPart("orderId", orderId + "");
-                    RequestBody build = builder.build();
-                    mPresenter.cancelOrder(UrlConstants.getMapHeader(mActivity), build);
+                    num--;
+                    if (num > 0) {
+                        showTimeOutDialog(90);
+                    } else {
+                        RingToast.show("连接超时,未能成功启动");
+                        rlChargeingChargeAfter.setVisibility(View.GONE);
+                        rlChargeingChargeBefore.setVisibility(View.VISIBLE);
+                        tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+                        tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
+                        Glide.with(mActivity).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
+                        ll_chargeing_start.bringToFront();
+                        //调取取消订单接口
+                        showDialog();
+                        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                        builder.addFormDataPart("orderId", orderId + "");
+                        RequestBody build = builder.build();
+                        mPresenter.cancelOrder(UrlConstants.getMapHeader(mActivity), build);
+                    }
                 }
             }, "CHARGEING_OUTTIME_TIMER");
         }
@@ -259,7 +266,15 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         if (data != null) {
             tv_chargeing_tishi.setVisibility(View.VISIBLE);
             //启动倒计时
-            showTimeOutDialog(data.getTimeOut());
+            num = data.getTimeOut() % 90 > 0 ? data.getTimeOut() / 90 + 1 : data.getTimeOut() / 90;
+            RingLog.e("num = " + num);
+            if (data.getTimeOut() > 0 && num > 0) {
+                if (num > 1) {
+                    showTimeOutDialog(data.getTimeOut() - (90 * (num - 1)));
+                } else {
+                    showTimeOutDialog(data.getTimeOut());
+                }
+            }
             orderId = data.getOrderId();
             StringUtil.setText(tvChargeingCdf, "0元", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargeingFwf, "0元", "", View.VISIBLE, View.VISIBLE);
@@ -412,8 +427,16 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private void refresh() {
         if (SystemUtil.checkLogin(mActivity)) {
             showDialog();
-            mPresenter.ing(UrlConstants.getMapHeader(mActivity));
+            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+            if (SharedPreferenceUtil.getInstance(getActivity()).getBoolean("is_open", false)) {
+                builder.addFormDataPart("reset", "1");
+            } else {
+                builder.addFormDataPart("reset", "0");
+            }
+            RequestBody build = builder.build();
+            mPresenter.ing(UrlConstants.getMapHeader(mActivity), build);
             mPresenter.home(UrlConstants.getMapHeader(mActivity));
+            SharedPreferenceUtil.getInstance(getActivity()).saveBoolean("is_open", false);
         }
     }
 
@@ -549,7 +572,15 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             StringUtil.setText(tvChargeingName, data.getProviderName(), "", View.VISIBLE, View.GONE);
             if (state == 0) {//连接中,插枪未充电
                 //启动倒计时
-                showTimeOutDialog(data.getTimeout());
+                num = data.getTimeout() % 90 > 0 ? data.getTimeout() / 90 + 1 : data.getTimeout() / 90;
+                RingLog.e("num = " + num);
+                if (data.getTimeout() > 0 && num > 0) {
+                    if (num > 1) {
+                        showTimeOutDialog(data.getTimeout() - (90 * (num - 1)));
+                    } else {
+                        showTimeOutDialog(data.getTimeout());
+                    }
+                }
                 StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                 rlChargeingChargeAfter.setVisibility(View.VISIBLE);
                 rlChargeingChargeBefore.setVisibility(View.GONE);

@@ -19,7 +19,7 @@ public interface IChargeIngFragmentModel extends IBaseModel {
     /**
      * 获取进行中的订单
      */
-    Observable ing(Map<String, String> headers);
+    Observable ing(Map<String, String> headers, RequestBody build);
 
     /**
      * 结束充电

@@ -67,8 +67,8 @@ public class ChargeIngFragmentPresenter extends BasePresenter<IChargeIngFragment
     /**
      * 获取进行中的订单
      */
-    public void ing(Map<String, String> headers) {
-        DevRing.httpManager().commonRequest(mIModel.ing(headers), new CommonObserver<StartChargeing>() {
+    public void ing(Map<String, String> headers, RequestBody build) {
+        DevRing.httpManager().commonRequest(mIModel.ing(headers,build), new CommonObserver<StartChargeing>() {
             @Override
             public void onResult(StartChargeing result) {
                 if (mIView != null) {

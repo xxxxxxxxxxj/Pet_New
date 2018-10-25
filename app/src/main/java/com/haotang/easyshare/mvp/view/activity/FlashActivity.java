@@ -85,6 +85,7 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
     @Override
     protected void setView(Bundle savedInstanceState) {
         SystemUtil.hideBottomUIMenu(this);
+        SharedPreferenceUtil.getInstance(this).saveBoolean("is_open", true);
     }
 
     @Override

@@ -7,9 +7,13 @@ import android.os.IBinder;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.model.http.ChargeingFragmentApiService;
+import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.other.RingLog;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -42,7 +46,14 @@ public class ChargeingService extends Service {
     class PollingThread extends Thread {
         @Override
         public void run() {
-            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ChargeingFragmentApiService.class).ing(UrlConstants.getMapHeader(getApplicationContext()))
+            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+            if (SharedPreferenceUtil.getInstance(getApplicationContext()).getBoolean("is_open", false)) {
+                builder.addFormDataPart("reset", "1");
+            } else {
+                builder.addFormDataPart("reset", "0");
+            }
+            RequestBody build = builder.build();
+            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ChargeingFragmentApiService.class).ing(UrlConstants.getMapHeader(getApplicationContext()), build)
                     , new CommonObserver<StartChargeing>() {
                         @Override
                         public void onResult(StartChargeing result) {
