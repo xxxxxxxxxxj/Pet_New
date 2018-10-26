@@ -139,6 +139,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private LoadingProgressDailog timeOutDialog;
     private LoadingProgressDailog.Builder timeOutBuilder;
     private int num;
+    private int unit;
 
     @Override
     protected boolean isLazyLoad() {
@@ -233,7 +234,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     closeTimeOutDialog();
                     num--;
                     if (num > 0) {
-                        showTimeOutDialog(90);
+                        showTimeOutDialog(unit);
                     } else {
                         RingToast.show("连接超时,未能成功启动");
                         rlChargeingChargeAfter.setVisibility(View.GONE);
@@ -265,12 +266,13 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     public void getChargeData(StartCodeChargeing data) {//扫码返回
         if (data != null) {
             tv_chargeing_tishi.setVisibility(View.VISIBLE);
+            unit = data.getUnit();
             //启动倒计时
-            num = data.getTimeOut() % 90 > 0 ? data.getTimeOut() / 90 + 1 : data.getTimeOut() / 90;
+            num = data.getTimeOut() % unit > 0 ? data.getTimeOut() / unit + 1 : data.getTimeOut() / unit;
             RingLog.e("num = " + num);
             if (data.getTimeOut() > 0 && num > 0) {
                 if (num > 1) {
-                    showTimeOutDialog(data.getTimeOut() - (90 * (num - 1)));
+                    showTimeOutDialog(data.getTimeOut() - (unit * (num - 1)));
                 } else {
                     showTimeOutDialog(data.getTimeOut());
                 }
@@ -571,12 +573,13 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             state = data.getState();
             StringUtil.setText(tvChargeingName, data.getProviderName(), "", View.VISIBLE, View.GONE);
             if (state == 0) {//连接中,插枪未充电
+                unit = Integer.parseInt(data.getUnit());
                 //启动倒计时
-                num = data.getTimeout() % 90 > 0 ? data.getTimeout() / 90 + 1 : data.getTimeout() / 90;
+                num = data.getTimeout() % unit > 0 ? data.getTimeout() / unit + 1 : data.getTimeout() / unit;
                 RingLog.e("num = " + num);
                 if (data.getTimeout() > 0 && num > 0) {
                     if (num > 1) {
-                        showTimeOutDialog(data.getTimeout() - (90 * (num - 1)));
+                        showTimeOutDialog(data.getTimeout() - (unit * (num - 1)));
                     } else {
                         showTimeOutDialog(data.getTimeout());
                     }

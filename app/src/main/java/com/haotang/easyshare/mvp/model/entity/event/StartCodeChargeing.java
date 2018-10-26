@@ -11,13 +11,23 @@ package com.haotang.easyshare.mvp.model.entity.event;
 public class StartCodeChargeing {
     private int orderId;
     private int timeOut;
+    private int unit;
 
     public StartCodeChargeing() {
     }
 
-    public StartCodeChargeing(int orderId, int timeOut) {
+    public StartCodeChargeing(int orderId, int timeOut, int unit) {
         this.orderId = orderId;
         this.timeOut = timeOut;
+        this.unit = unit;
+    }
+
+    public int getUnit() {
+        return unit;
+    }
+
+    public void setUnit(int unit) {
+        this.unit = unit;
     }
 
     public int getTimeOut() {

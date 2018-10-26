@@ -52,7 +52,16 @@ public class StartChargeing {
         private int orderId;
         private int timeout;
         private int state = -1;
+        private String unit;
         private String providerName;
+
+        public String getUnit() {
+            return unit;
+        }
+
+        public void setUnit(String unit) {
+            this.unit = unit;
+        }
 
         public int getTimeout() {
             return timeout;
