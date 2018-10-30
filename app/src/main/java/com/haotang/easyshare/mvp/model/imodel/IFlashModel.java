@@ -7,6 +7,7 @@ import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -18,4 +19,6 @@ import io.reactivex.Observable;
  */
 public interface IFlashModel extends IBaseModel {
     Observable startPageConfig(Map<String, String> headers, Activity activity);
+
+    Observable openAppCallback(Map<String, String> headers, RequestBody body);
 }

@@ -183,7 +183,8 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
                     ShareBottomDialog dialog = new ShareBottomDialog();
                     dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
                             shareMap.getUrl(), shareMap.getImg());
-                    dialog.completeUrl(CarDetailActivity.this);
+                    dialog.setType(3);
+                    dialog.setUuid(String.valueOf(id));
                     dialog.show(getSupportFragmentManager());
                 }
                 break;

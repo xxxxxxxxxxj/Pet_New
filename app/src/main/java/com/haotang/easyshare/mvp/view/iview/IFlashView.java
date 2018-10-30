@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.FlashBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
@@ -15,4 +16,8 @@ public interface IFlashView extends IBaseView {
     void getFlashSuccess(FlashBean flashBean);
 
     void getFlashFail(int status, String desc);
+
+    void openAppCallbackSuccess(AddChargeBean data);
+
+    void openAppCallbackFail(int errType, String errMessage);
 }

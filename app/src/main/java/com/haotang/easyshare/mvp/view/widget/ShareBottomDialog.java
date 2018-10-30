@@ -36,6 +36,11 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
     private String mTargetUrl;
     private String mThumbUrlOrPath;
     private String uuid;
+    private int type;
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
@@ -101,47 +106,107 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
             @Override
             public void shareSuccess() {
                 Toast.makeText(v.getContext(), "分享成功", Toast.LENGTH_SHORT).show();
-                if (StringUtil.isNotEmpty(uuid)) {
-                    MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
-                            .addFormDataPart("uuid", uuid)
-                            .build();
-                    DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callback(UrlConstants.getMapHeader(getActivity()),body)
-                            , new CommonObserver<HttpResult<AddChargeBean>>() {
-                                @Override
-                                public void onResult(HttpResult<AddChargeBean> result) {
-                                    if (result != null) {
-                                        if (result.getCode() == 0) {
-                                            RingLog.e("分享回调成功");
-                                        } else {
-                                            SystemUtil.Exit(v.getContext(), result.getCode());
-                                            if (StringUtil.isNotEmpty(result.getMsg())) {
-                                                RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
-                                            } else {
-                                                RingLog.e("onError() status = " + AppConfig.SERVER_ERROR + "---desc = " + AppConfig.SERVER_ERROR_MSG);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onError(int errType, String errMessage) {
-                                    RingLog.e("onError() status = " + errType + "---desc = " + errMessage);
-                                }
-                            }, null);
-                }
+                shareCallback(v);
             }
 
             @Override
             public void shareFailure(Exception e) {
                 RingLog.d(TAG, "分享失败 e = " + e.toString());
                 Toast.makeText(v.getContext(), "分享失败", Toast.LENGTH_SHORT).show();
+                shareCallback(v);
             }
 
             @Override
             public void shareCancel() {
                 Toast.makeText(v.getContext(), "取消分享", Toast.LENGTH_SHORT).show();
+                shareCallback(v);
             }
         };
+    }
+
+    private void shareCallback(final View v) {
+        if (type == 1) {//分享帖子成功回调
+            MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                    .addFormDataPart("uuid", uuid)
+                    .build();
+            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callback(UrlConstants.getMapHeader(getActivity()), body)
+                    , new CommonObserver<HttpResult<AddChargeBean>>() {
+                        @Override
+                        public void onResult(HttpResult<AddChargeBean> result) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    RingLog.e("分享回调成功");
+                                } else {
+                                    SystemUtil.Exit(v.getContext(), result.getCode());
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
+                                    } else {
+                                        RingLog.e("onError() status = " + AppConfig.SERVER_ERROR + "---desc = " + AppConfig.SERVER_ERROR_MSG);
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(int errType, String errMessage) {
+                            RingLog.e("onError() status = " + errType + "---desc = " + errMessage);
+                        }
+                    }, null);
+        } else if (type == 2) {//分享站点详情成功回调
+            MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                    .addFormDataPart("uuid", uuid)
+                    .build();
+            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callbackChargeing(UrlConstants.getMapHeader(getActivity()), body)
+                    , new CommonObserver<HttpResult<AddChargeBean>>() {
+                        @Override
+                        public void onResult(HttpResult<AddChargeBean> result) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    RingLog.e("分享回调成功");
+                                } else {
+                                    SystemUtil.Exit(v.getContext(), result.getCode());
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
+                                    } else {
+                                        RingLog.e("onError() status = " + AppConfig.SERVER_ERROR + "---desc = " + AppConfig.SERVER_ERROR_MSG);
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(int errType, String errMessage) {
+                            RingLog.e("onError() status = " + errType + "---desc = " + errMessage);
+                        }
+                    }, null);
+        } else if (type == 3) {//分享车辆详情成功回调
+            MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                    .addFormDataPart("id", uuid)
+                    .build();
+            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callbackCar(UrlConstants.getMapHeader(getActivity()), body)
+                    , new CommonObserver<HttpResult<AddChargeBean>>() {
+                        @Override
+                        public void onResult(HttpResult<AddChargeBean> result) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    RingLog.e("分享回调成功");
+                                } else {
+                                    SystemUtil.Exit(v.getContext(), result.getCode());
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        RingLog.e("onError() status = " + result.getCode() + "---desc = " + result.getMsg());
+                                    } else {
+                                        RingLog.e("onError() status = " + AppConfig.SERVER_ERROR + "---desc = " + AppConfig.SERVER_ERROR_MSG);
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(int errType, String errMessage) {
+                            RingLog.e("onError() status = " + errType + "---desc = " + errMessage);
+                        }
+                    }, null);
+        }
     }
 
     @Override

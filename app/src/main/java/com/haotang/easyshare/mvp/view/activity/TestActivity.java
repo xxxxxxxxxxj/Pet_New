@@ -162,6 +162,7 @@ public class TestActivity extends BaseActivity {
                         ShareBottomDialog dialog = new ShareBottomDialog();
                         dialog.setShareInfo("测试", "测试",
                                 "https://www.duba.com", UrlConstants.getServiceBaseUrl() + "/static/icon/shouye.png?3");
+                        dialog.completeUrl(TestActivity.this);
                         dialog.show(getSupportFragmentManager());
                         break;
                     case 2://微信登录

@@ -275,6 +275,18 @@ public class UrlConstants {
      * 63.故障保修
      */
     public static final String CHARGE_REPORT = "charging/report/save";
+    /**
+     * 64.分享站点详情成功回调
+     */
+    public static final String SHARE_CHARGEING = "charging/info/share/callback";
+    /**
+     * 65.分享车辆详情成功回调
+     */
+    public static final String SHARE_CAR = "brand/car/share/callback";
+    /**
+     * 66.打开app回调
+     */
+    public static final String OPENAPP_CALLBACK = "user/info/open/callback";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

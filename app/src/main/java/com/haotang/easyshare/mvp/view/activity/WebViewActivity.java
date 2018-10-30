@@ -297,6 +297,8 @@ public class WebViewActivity extends BaseActivity {
                 ShareBottomDialog dialog = new ShareBottomDialog();
                 dialog.setUuid(localUuid);
                 dialog.setShareInfo(localTitle, localContent, localUrl, localImg);
+                dialog.setType(1);
+                dialog.completeUrl(WebViewActivity.this);
                 dialog.show(getSupportFragmentManager());
                 break;
         }

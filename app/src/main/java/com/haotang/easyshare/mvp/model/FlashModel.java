@@ -3,12 +3,14 @@ package com.haotang.easyshare.mvp.model;
 import android.app.Activity;
 
 import com.haotang.easyshare.mvp.model.http.FlashApiService;
+import com.haotang.easyshare.mvp.model.http.ShareApiService;
 import com.haotang.easyshare.mvp.model.imodel.IFlashModel;
 import com.ljy.devring.DevRing;
 
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -25,5 +27,13 @@ public class FlashModel implements IFlashModel {
     @Override
     public Observable startPageConfig(Map<String, String> headers, Activity activity) {
         return DevRing.httpManager().getService(FlashApiService.class).startPageConfig(headers,"");
+    }
+
+    /**
+     * 打开app回调
+     */
+    @Override
+    public Observable openAppCallback(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(ShareApiService.class).callbackOpenApp(headers,body);
     }
 }

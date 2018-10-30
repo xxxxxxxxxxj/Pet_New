@@ -334,6 +334,8 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                     ShareBottomDialog dialog = new ShareBottomDialog();
                     dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
                             shareMap.getUrl(), shareMap.getImg());
+                    dialog.setType(2);
+                    dialog.setUuid(uuid);
                     dialog.show(getSupportFragmentManager());
                 }
                 break;

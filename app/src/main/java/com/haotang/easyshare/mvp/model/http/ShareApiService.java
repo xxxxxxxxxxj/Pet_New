@@ -28,4 +28,28 @@ public interface ShareApiService {
      */
     @POST(UrlConstants.SHARE_POST)
     Observable<HttpResult<AddChargeBean>> callback(@HeaderMap Map<String, String> headers, @Body() RequestBody body);
+
+    /**
+     * 分享站点详情成功回调
+     *
+     * @return
+     */
+    @POST(UrlConstants.SHARE_CHARGEING)
+    Observable<HttpResult<AddChargeBean>> callbackChargeing(@HeaderMap Map<String, String> headers, @Body() RequestBody body);
+
+    /**
+     * 分享车辆详情成功回调
+     *
+     * @return
+     */
+    @POST(UrlConstants.SHARE_CAR)
+    Observable<HttpResult<AddChargeBean>> callbackCar(@HeaderMap Map<String, String> headers, @Body() RequestBody body);
+
+    /**
+     * 打开app回调
+     *
+     * @return
+     */
+    @POST(UrlConstants.OPENAPP_CALLBACK)
+    Observable<HttpResult<AddChargeBean>> callbackOpenApp(@HeaderMap Map<String, String> headers, @Body() RequestBody body);
 }
