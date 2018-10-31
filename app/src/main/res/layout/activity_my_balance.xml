@@ -54,6 +54,42 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dip"
+        android:background="@color/white"
+        android:focusableInTouchMode="true"
+        android:padding="15dip">
+
+        <Button
+            android:id="@+id/btn_my_balance_dh"
+            android:layout_width="90dip"
+            android:layout_height="30dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/bg_round_jianbian"
+            android:gravity="center"
+            android:text="兑换"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_my_balance_dhm"
+            android:layout_width="match_parent"
+            android:layout_height="30dip"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="40dip"
+            android:layout_toLeftOf="@id/btn_my_balance_dh"
+            android:background="@drawable/bg_round_f2"
+            android:hint="输入兑换码"
+            android:paddingLeft="15dip"
+            android:textColor="@color/a666666"
+            android:textColorHint="@color/a999999"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
     <com.flyco.tablayout.SlidingTabLayout
         android:id="@+id/stl_my_balance"
         android:layout_width="match_parent"

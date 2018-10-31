@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,6 +45,10 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     ViewPager vpMyBalance;
     @BindView(R.id.tv_my_balance_balance)
     TextView tv_my_balance_balance;
+    @BindView(R.id.btn_my_balance_dh)
+    Button btn_my_balance_dh;
+    @BindView(R.id.et_my_balance_dhm)
+    EditText et_my_balance_dhm;
     private String[] mTitles = {"全部记录", "消费明细", "充值记录"};
     private ArrayList<BaseFragment> mFragments = new ArrayList<>();
     private int currentTabIndex;
@@ -103,7 +109,7 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     protected void initEvent() {
     }
 
-    @OnClick({R.id.iv_titlebar_back, R.id.ll_titlebar_other, R.id.btn_my_balance_ljcz})
+    @OnClick({R.id.iv_titlebar_back, R.id.ll_titlebar_other, R.id.btn_my_balance_ljcz, R.id.et_my_balance_dhm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_titlebar_back:
@@ -114,6 +120,8 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
                 break;
             case R.id.btn_my_balance_ljcz:
                 startActivity(new Intent(this, RechargeActivity.class));
+                break;
+            case R.id.et_my_balance_dhm:
                 break;
         }
     }
