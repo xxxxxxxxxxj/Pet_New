@@ -287,6 +287,10 @@ public class UrlConstants {
      * 66.打开app回调
      */
     public static final String OPENAPP_CALLBACK = "user/info/open/callback";
+    /**
+     * 66.兑换码
+     */
+    public static final String REDEEMCODE = "coupon/code/use";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

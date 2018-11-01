@@ -4,6 +4,7 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.RedeemCodeBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
 import java.util.Map;
@@ -41,4 +42,10 @@ public interface MyFragmentApiService {
      */
     @POST(UrlConstants.SAVE_ORUPDATE_USERCAR)
     Observable<HttpResult<AddChargeBean>> save(@HeaderMap Map<String, String> headers,@Body RequestBody body);
+
+    /**
+     * 兑换码
+     */
+    @POST(UrlConstants.REDEEMCODE)
+    Observable<RedeemCodeBean> use(@HeaderMap Map<String, String> headers,@Body RequestBody body);
 }

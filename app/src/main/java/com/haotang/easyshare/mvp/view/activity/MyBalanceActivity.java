@@ -16,6 +16,7 @@ import com.haotang.easyshare.di.component.activity.DaggerMyBalanceActivityCommpo
 import com.haotang.easyshare.di.module.activity.MyBalanceActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
+import com.haotang.easyshare.mvp.model.entity.res.RedeemCodeBean;
 import com.haotang.easyshare.mvp.presenter.MyBalancePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
@@ -23,8 +24,10 @@ import com.haotang.easyshare.mvp.view.fragment.RechargeFragment;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMyBalanceView;
 import com.haotang.easyshare.mvp.view.widget.RefundPopupWindow;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -33,6 +36,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implements IMyBalanceView {
     @BindView(R.id.tv_titlebar_title)
@@ -109,7 +114,7 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     protected void initEvent() {
     }
 
-    @OnClick({R.id.iv_titlebar_back, R.id.ll_titlebar_other, R.id.btn_my_balance_ljcz, R.id.et_my_balance_dhm})
+    @OnClick({R.id.iv_titlebar_back, R.id.ll_titlebar_other, R.id.btn_my_balance_ljcz, R.id.btn_my_balance_dh})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_titlebar_back:
@@ -121,7 +126,17 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
             case R.id.btn_my_balance_ljcz:
                 startActivity(new Intent(this, RechargeActivity.class));
                 break;
-            case R.id.et_my_balance_dhm:
+            case R.id.btn_my_balance_dh:
+                if (StringUtil.isEmpty(StringUtil.checkEditText(et_my_balance_dhm))) {
+                    RingToast.show("请输入兑换码");
+                    SystemUtil.goneJP(this);
+                    return;
+                }
+                showDialog();
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                builder.addFormDataPart("code", et_my_balance_dhm.getText().toString().trim());
+                RequestBody build = builder.build();
+                mPresenter.use(UrlConstants.getMapHeader(this), build);
                 break;
         }
     }
@@ -183,5 +198,18 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
         disMissDialog();
         RingLog.e(TAG, "homeFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(this, code);
+    }
+
+    @Override
+    public void useSuccess(RedeemCodeBean.RedeemCode data) {
+        disMissDialog();
+    }
+
+    @Override
+    public void useFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "homeFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this, code);
+        RingToast.show(msg);
     }
 }

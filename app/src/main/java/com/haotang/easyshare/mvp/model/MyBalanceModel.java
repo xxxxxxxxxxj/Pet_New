@@ -7,6 +7,7 @@ import com.ljy.devring.DevRing;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -23,5 +24,13 @@ public class MyBalanceModel implements IMyBalanceModel {
     @Override
     public Observable home(Map<String, String> headers) {
         return DevRing.httpManager().getService(MyFragmentApiService.class).home(headers);
+    }
+
+    /**
+     * 兑换码
+     */
+    @Override
+    public Observable use(Map<String, String> headers, RequestBody build) {
+        return DevRing.httpManager().getService(MyFragmentApiService.class).use(headers,build);
     }
 }

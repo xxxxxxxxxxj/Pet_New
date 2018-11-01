@@ -5,6 +5,7 @@ import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -19,4 +20,9 @@ public interface IMyBalanceModel extends IBaseModel {
      * 用户主页信息
      */
     Observable home(Map<String, String> headers);
+
+    /**
+     * 兑换码
+     */
+    Observable use(Map<String, String> headers, RequestBody build);
 }
