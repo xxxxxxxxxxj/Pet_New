@@ -14,6 +14,7 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerRechargeFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.RechargeFragmentModule;
+import com.haotang.easyshare.mvp.model.entity.event.RefreshBalanceEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HistoryList;
 import com.haotang.easyshare.mvp.presenter.RechargeFragmentPresenter;
 import com.haotang.easyshare.mvp.view.adapter.RechargeFragAdapter;
@@ -23,6 +24,8 @@ import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +62,18 @@ public class RechargeFragment extends BaseFragment<RechargeFragmentPresenter> im
     @Override
     protected int getContentLayout() {
         return R.layout.rechargefragment;
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    @Subscribe
+    public void RefreshBalance(RefreshBalanceEvent event) {//充值返回
+        if (event != null) {
+            refresh();
+        }
     }
 
     @Override
