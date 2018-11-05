@@ -72,7 +72,7 @@ public class MyBalancePresenter extends BasePresenter<IMyBalanceView, IMyBalance
                     public void onResult(RedeemCodeBean result) {
                         if (mIView != null) {
                             if (result != null) {
-                                if (result.getCode() == 0) {
+                                if (result.getCode() == 500013) {
                                     mIView.useSuccess(result.getData());
                                 } else {
                                     if (StringUtil.isNotEmpty(result.getMsg())) {

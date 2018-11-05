@@ -26,6 +26,7 @@ import com.haotang.easyshare.mvp.view.iview.IMyBalanceView;
 import com.haotang.easyshare.mvp.view.widget.RefundPopupWindow;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
@@ -203,6 +204,9 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     @Override
     public void useSuccess(RedeemCodeBean.RedeemCode data) {
         disMissDialog();
+        RingToast.show("兑换成功");
+        et_my_balance_dhm.setText("");
+        DevRing.busManager().postEvent(new RefreshBalanceEvent());
     }
 
     @Override
