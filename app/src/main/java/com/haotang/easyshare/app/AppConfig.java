@@ -29,7 +29,7 @@ public class AppConfig {
     public static final String QQ_ID = "";
     public static final String WX_ID = "wx1d11258ed75c8bd4";
     public static final boolean isShowLog = true;
-    public static final int environmental = 2;//1.test环境---2.demo环境---3.线上环境
+    public static final int environmental = 3;//1.test环境---2.demo环境---3.线上环境
     public static final int ALI_SDK_PAY_FLAG = 1000;
     public static final int REQUEST_CODE_CHOOSE = 23;
     public static String PICTURE_DIR = "sdcard/JChatDemo/pictures/";

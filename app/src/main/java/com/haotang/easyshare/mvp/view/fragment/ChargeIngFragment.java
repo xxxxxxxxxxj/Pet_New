@@ -304,19 +304,13 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 @Override
                 public void onFinish() {
                     closeRechargeTimeOutDialog();
-                    RingToast.show("充电已自动中断");
-                    rlChargeingChargeAfter.setVisibility(View.GONE);
-                    rlChargeingChargeBefore.setVisibility(View.VISIBLE);
-                    tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-                    tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
-                    Glide.with(mActivity).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
-                    ll_chargeing_start.bringToFront();
-                    //调取取消订单接口
-                    showDialog();
-                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                    builder.addFormDataPart("orderId", orderId + "");
-                    RequestBody build = builder.build();
-                    mPresenter.cancelOrder(UrlConstants.getMapHeader(mActivity), build);
+                    if (!StringUtil.isNotEmpty(endCode)) {
+                        showDialog();
+                        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                        builder.addFormDataPart("orderId", orderId + "");
+                        RequestBody build = builder.build();
+                        mPresenter.stop(UrlConstants.getMapHeader(mActivity), build);
+                    }
                 }
             }, "RECHARGE_OUTTIME_TIMER");
         }
@@ -546,11 +540,11 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 break;
             case R.id.rl_chargeing_start:
                 if (SystemUtil.checkLogin(mActivity)) {
-                    if (balance >= 10) {
+                    if (balance >= 5) {
                         startActivity(new Intent(mActivity, ScanCodeActivity.class));
                     } else {
                         new AlertDialogNavAndPost(mActivity).builder().setTitle("")
-                                .setMsg("您的余额不足，请及时充值\n国家电网50元以上\n其他运营商5元以上")
+                                .setMsg("您的余额不足，请及时充值\n国家电网50元以上\n其他运营商30元以上")
                                 .setPositiveButton("确定", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -569,7 +563,23 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 break;
             case R.id.tv_chargeing_ljcz:
                 if (SystemUtil.checkLogin(mActivity)) {
-                    startActivity(new Intent(mActivity, RechargeActivity.class));
+                    if (balance >= 5) {
+                        startActivity(new Intent(mActivity, RechargeActivity.class));
+                    } else {
+                        new AlertDialogNavAndPost(mActivity).builder().setTitle("")
+                                .setMsg("您的余额不足，请及时充值\n国家电网50元以上\n其他运营商30元以上")
+                                .setPositiveButton("确定", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        startActivity(new Intent(mActivity, RechargeActivity.class));
+                                    }
+                                }).setNegativeButton("取消", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        }).show();
+                    }
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
