@@ -140,6 +140,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private LoadingProgressDailog.Builder timeOutBuilder;
     private int num;
     private int unit;
+    private AlertDialogNavAndPost alertDialogTimeRecharge;
+    private int timeOutRecharge = 60;
+    private double chargeToRechargeBalance = 5;
 
     @Override
     protected boolean isLazyLoad() {
@@ -192,6 +195,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Subscribe
     public void RefreshBalance(RefreshBalanceEvent event) {//充值返回
         if (event != null) {
+            closeRechargeTimeOutDialog();
             showDialog();
             mPresenter.home(UrlConstants.getMapHeader(mActivity));
         }
@@ -262,6 +266,69 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         CountdownUtil.getInstance().cancel("CHARGEING_OUTTIME_TIMER");
     }
 
+    private void showRechargeTimeOutDialog() {
+        if (ComputeUtil.div(balance, Double.parseDouble(totalPrice)) <= chargeToRechargeBalance
+                && (alertDialogTimeRecharge == null || (alertDialogTimeRecharge != null && !alertDialogTimeRecharge.isShowing()))) {
+            if (alertDialogTimeRecharge == null) {
+                alertDialogTimeRecharge = new AlertDialogNavAndPost(mActivity).builder().setTitle("")
+                        .setMsg("您的余额低于" + chargeToRechargeBalance + "元\n" + timeOutRecharge + "S后会自动中断电源\n请您及时充值")
+                        .setCancelable(false)
+                        .setCancelOutside(false)
+                        .setPositiveButtonVisible(true)
+                        .setPositiveButton("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        });
+            }
+            if (alertDialogTimeRecharge.isShowing()) {
+                alertDialogTimeRecharge.dismiss();
+            }
+            alertDialogTimeRecharge.show();
+            CountdownUtil.getInstance().newTimer(timeOutRecharge * 1000, 1000, new CountdownUtil.ICountDown() {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    Log.e("TAG", "millisUntilFinished = " + (millisUntilFinished / 1000));
+                    if (alertDialogTimeRecharge != null) {
+                        Log.e("TAG", "充值倒计时中... = " + (millisUntilFinished / 1000));
+                        alertDialogTimeRecharge.setMsg("您的余额低于" + chargeToRechargeBalance + "元\n" + (millisUntilFinished / 1000) + "S后会自动中断电源\n请您及时充值");
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    closeRechargeTimeOutDialog();
+                    RingToast.show("充电已自动中断");
+                    rlChargeingChargeAfter.setVisibility(View.GONE);
+                    rlChargeingChargeBefore.setVisibility(View.VISIBLE);
+                    tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+                    tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
+                    Glide.with(mActivity).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
+                    ll_chargeing_start.bringToFront();
+                    //调取取消订单接口
+                    showDialog();
+                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                    builder.addFormDataPart("orderId", orderId + "");
+                    RequestBody build = builder.build();
+                    mPresenter.cancelOrder(UrlConstants.getMapHeader(mActivity), build);
+                }
+            }, "RECHARGE_OUTTIME_TIMER");
+        }
+    }
+
+    private void closeRechargeTimeOutDialog() {
+        if (alertDialogTimeRecharge != null) {
+            alertDialogTimeRecharge.dismiss();
+        }
+        CountdownUtil.getInstance().cancel("RECHARGE_OUTTIME_TIMER");
+    }
+
     @Subscribe
     public void getChargeData(StartCodeChargeing data) {//扫码返回
         if (data != null) {
@@ -302,6 +369,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
         PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
         CountdownUtil.getInstance().cancel("CHARGEING_OUTTIME_TIMER");
+        CountdownUtil.getInstance().cancel("RECHARGE_OUTTIME_TIMER");
     }
 
     @Subscribe
@@ -324,7 +392,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     totalServiceFee = data.getTotalServiceFee();
                     endCode = data.getEndCode();
                     if (StringUtil.isNotEmpty(data.getTotalPower())) {
-                        //StringUtil.setText(tvChargeingKwh, ComputeUtil.formatDouble(ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)), 2) + "KWH", "", View.VISIBLE, View.VISIBLE);
                         StringUtil.setText(tvChargeingKwh, data.getTotalPower() + "KWH", "", View.VISIBLE, View.VISIBLE);
                     } else {
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
@@ -353,6 +420,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
                         PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
                         PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
+                        showRechargeTimeOutDialog();
                     } else if (state == 2) {//结算中,轮询获取账单接口
                         tv_chargeing_tishi.setVisibility(View.GONE);
                         closeTimeOutDialog();
@@ -410,7 +478,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     }
                     StringUtil.setText(btnChargeingSubmit, "支付", "", View.VISIBLE, View.VISIBLE);
                     if (StringUtil.isNotEmpty(data.getTotalPower())) {
-                        //StringUtil.setText(tvChargeingKwh, ComputeUtil.formatDouble(ComputeUtil.mul(ComputeUtil.div(Double.parseDouble(data.getPower()), 1000), ComputeUtil.div(Double.parseDouble(data.getTotalTime()), 60)), 2) + "KWH", "", View.VISIBLE, View.VISIBLE);
                         StringUtil.setText(tvChargeingKwh, data.getTotalPower() + "KWH", "", View.VISIBLE, View.VISIBLE);
                     } else {
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);

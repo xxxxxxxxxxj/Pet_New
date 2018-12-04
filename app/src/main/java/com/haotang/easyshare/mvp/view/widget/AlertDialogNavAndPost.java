@@ -17,118 +17,141 @@ import android.widget.TextView;
 import com.haotang.easyshare.R;
 
 public class AlertDialogNavAndPost {
-	private Context context;
-	private Dialog dialog;
-	private LinearLayout lLayout_bg;
-	private TextView txt_title;
-	private TextView txt_msg;
-	private Button btn_neg;
-	private Button btn_pos;
-	private ImageView img_line;
-	private Display display;
+    private Context context;
+    private Dialog dialog;
+    private LinearLayout lLayout_bg;
+    private TextView txt_title;
+    private TextView txt_msg;
+    private Button btn_neg;
+    private Button btn_pos;
+    private ImageView img_line;
+    private Display display;
+    private boolean cancelOutside;
+    private boolean showing;
+    private boolean positiveButtonVisible;
 
-	public AlertDialogNavAndPost(Context context) {
-		this.context = context;
-		WindowManager windowManager = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
-		display = windowManager.getDefaultDisplay();
-	}
+    public AlertDialogNavAndPost(Context context) {
+        this.context = context;
+        WindowManager windowManager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        display = windowManager.getDefaultDisplay();
+    }
 
-	public AlertDialogNavAndPost builder() {
-		// 获取Dialog布局
-		View view = LayoutInflater.from(context).inflate(
-				R.layout.view_alertdialognavandpost, null);
-		// 获取自定义Dialog布局中的控件
-		lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
-		txt_title = (TextView) view.findViewById(R.id.txt_title);
-		txt_msg = (TextView) view.findViewById(R.id.txt_msg);
-		btn_neg = (Button) view.findViewById(R.id.btn_neg);
-		btn_pos = (Button) view.findViewById(R.id.btn_pos);
-		img_line = (ImageView) view.findViewById(R.id.img_line);
-		// 定义Dialog布局和参数
-		dialog = new Dialog(context, R.style.AlertDialogStyle);
-		dialog.setContentView(view);
-		// 调整dialog背景大小
-		lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display
-				.getWidth() * 0.85), LayoutParams.WRAP_CONTENT));
-		return this;
-	}
+    public AlertDialogNavAndPost builder() {
+        // 获取Dialog布局
+        View view = LayoutInflater.from(context).inflate(
+                R.layout.view_alertdialognavandpost, null);
+        // 获取自定义Dialog布局中的控件
+        lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
+        txt_title = (TextView) view.findViewById(R.id.txt_title);
+        txt_msg = (TextView) view.findViewById(R.id.txt_msg);
+        btn_neg = (Button) view.findViewById(R.id.btn_neg);
+        btn_pos = (Button) view.findViewById(R.id.btn_pos);
+        img_line = (ImageView) view.findViewById(R.id.img_line);
+        // 定义Dialog布局和参数
+        dialog = new Dialog(context, R.style.AlertDialogStyle);
+        dialog.setContentView(view);
+        // 调整dialog背景大小
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display
+                .getWidth() * 0.85), LayoutParams.WRAP_CONTENT));
+        return this;
+    }
 
-	public AlertDialogNavAndPost setTitle(String title) {
-		if ("".equals(title)) {
-			txt_title.setVisibility(View.GONE);
-		} else {
-			txt_title.setVisibility(View.VISIBLE);
-			txt_title.setText(title);
-		}
-		return this;
-	}
+    public AlertDialogNavAndPost setTitle(String title) {
+        if ("".equals(title)) {
+            txt_title.setVisibility(View.GONE);
+        } else {
+            txt_title.setVisibility(View.VISIBLE);
+            txt_title.setText(title);
+        }
+        return this;
+    }
 
-	public AlertDialogNavAndPost setMsg(String msg) {
-		if ("".equals(msg)) {
-			txt_msg.setVisibility(View.GONE);
-		} else {
-			txt_msg.setText(msg);
-			txt_msg.setVisibility(View.VISIBLE);
-		}
-		return this;
-	}
+    public AlertDialogNavAndPost setMsg(String msg) {
+        if ("".equals(msg)) {
+            txt_msg.setVisibility(View.GONE);
+        } else {
+            txt_msg.setText(msg);
+            txt_msg.setVisibility(View.VISIBLE);
+        }
+        return this;
+    }
 
-	public AlertDialogNavAndPost setNavTextColor(int colorId) {
-		btn_neg.setTextColor(context.getResources().getColor(colorId));
-		return this;
-	}
+    public AlertDialogNavAndPost setNavTextColor(int colorId) {
+        btn_neg.setTextColor(context.getResources().getColor(colorId));
+        return this;
+    }
 
-	public AlertDialogNavAndPost setPostTextColor(int colorId) {
-		btn_pos.setTextColor(context.getResources().getColor(colorId));
-		return this;
-	}
+    public AlertDialogNavAndPost setPostTextColor(int colorId) {
+        btn_pos.setTextColor(context.getResources().getColor(colorId));
+        return this;
+    }
 
-	public AlertDialogNavAndPost setTitleTextColor(int colorId) {
-		txt_title.setTextColor(context.getResources().getColor(colorId));
-		return this;
-	}
+    public AlertDialogNavAndPost setTitleTextColor(int colorId) {
+        txt_title.setTextColor(context.getResources().getColor(colorId));
+        return this;
+    }
 
-	public AlertDialogNavAndPost setCancelable(boolean cancel) {
-		dialog.setCancelable(cancel);
-		return this;
-	}
+    public AlertDialogNavAndPost setCancelable(boolean cancel) {
+        dialog.setCancelable(cancel);
+        return this;
+    }
 
-	public AlertDialogNavAndPost setPositiveButton(String text,
-			final OnClickListener listener) {
-		if ("".equals(text)) {
-			btn_pos.setText("确定");
-		} else {
-			btn_pos.setText(text);
-		}
-		btn_pos.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				listener.onClick(v);
-				dialog.dismiss();
-			}
-		});
-		return this;
-	}
+    public AlertDialogNavAndPost setPositiveButton(String text,
+                                                   final OnClickListener listener) {
+        if ("".equals(text)) {
+            btn_pos.setText("确定");
+        } else {
+            btn_pos.setText(text);
+        }
+        btn_pos.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(v);
+                if(!positiveButtonVisible){
+                    dialog.dismiss();
+                }
+            }
+        });
+        return this;
+    }
 
-	public AlertDialogNavAndPost setNegativeButton(String text,
-			final OnClickListener listener) {
-		if ("".equals(text)) {
-			btn_neg.setText("取消");
-		} else {
-			btn_neg.setText(text);
-		}
-		btn_neg.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				listener.onClick(v);
-				dialog.dismiss();
-			}
-		});
-		return this;
-	}
+    public AlertDialogNavAndPost setNegativeButton(String text,
+                                                   final OnClickListener listener) {
+        if ("".equals(text)) {
+            btn_neg.setText("取消");
+        } else {
+            btn_neg.setText(text);
+        }
+        btn_neg.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(v);
+                dialog.dismiss();
+            }
+        });
+        return this;
+    }
 
-	public void show() {
-		dialog.show();
-	}
+    public void show() {
+        dialog.show();
+    }
+
+    public AlertDialogNavAndPost setCancelOutside(boolean cancelOutside) {
+        dialog.setCanceledOnTouchOutside(cancelOutside);
+        return this;
+    }
+
+    public boolean isShowing() {
+        return dialog.isShowing();
+    }
+
+    public void dismiss() {
+        dialog.dismiss();
+    }
+
+    public AlertDialogNavAndPost setPositiveButtonVisible(boolean positiveButtonVisible) {
+        this.positiveButtonVisible = positiveButtonVisible;
+        return this;
+    }
 }
