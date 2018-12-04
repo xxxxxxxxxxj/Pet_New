@@ -141,7 +141,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private int num;
     private int unit;
     private AlertDialogNavAndPost alertDialogTimeRecharge;
-    private int timeOutRecharge = 60;
+    private int timeOutRecharge = 120;
     private double chargeToRechargeBalance = 5;
 
     @Override
