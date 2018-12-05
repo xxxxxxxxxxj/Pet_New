@@ -1,5 +1,7 @@
 package com.haotang.easyshare.mvp.model.entity.event;
 
+import java.util.List;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -12,14 +14,24 @@ public class StartCodeChargeing {
     private int orderId;
     private int timeOut;
     private int unit;
+    private List<String> dialogTips;
 
     public StartCodeChargeing() {
     }
 
-    public StartCodeChargeing(int orderId, int timeOut, int unit) {
+    public StartCodeChargeing(int orderId, int timeOut, int unit, List<String> dialogTips) {
         this.orderId = orderId;
         this.timeOut = timeOut;
         this.unit = unit;
+        this.dialogTips = dialogTips;
+    }
+
+    public List<String> getDialogTips() {
+        return dialogTips;
+    }
+
+    public void setDialogTips(List<String> dialogTips) {
+        this.dialogTips = dialogTips;
     }
 
     public int getUnit() {

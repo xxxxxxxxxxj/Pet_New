@@ -29,7 +29,6 @@ import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.presenter.ChargeIngFragmentPresenter;
-import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeRecordActivity;
 import com.haotang.easyshare.mvp.view.activity.ScanCodeActivity;
@@ -50,6 +49,8 @@ import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -141,8 +142,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     private int num;
     private int unit;
     private AlertDialogNavAndPost alertDialogTimeRecharge;
-    private int timeOutRecharge = 120;
-    private double chargeToRechargeBalance = 5;
+    private int timeOutRecharge;
+    private String dialogStr = "";
 
     @Override
     protected boolean isLazyLoad() {
@@ -266,12 +267,21 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         CountdownUtil.getInstance().cancel("CHARGEING_OUTTIME_TIMER");
     }
 
-    private void showRechargeTimeOutDialog() {
-        if (ComputeUtil.div(balance, Double.parseDouble(totalPrice)) <= chargeToRechargeBalance
+    private void showRechargeTimeOutDialog(List<String> dialogTips, int stopTimeout) {
+        if (dialogTips != null && dialogTips.size() > 0
                 && (alertDialogTimeRecharge == null || (alertDialogTimeRecharge != null && !alertDialogTimeRecharge.isShowing()))) {
+            timeOutRecharge = stopTimeout;
+            dialogStr = "";
+            for (int i = 0; i < dialogTips.size(); i++) {
+                if (i == dialogTips.size() - 1) {
+                    dialogStr = dialogStr + dialogTips.get(i);
+                } else {
+                    dialogStr = dialogStr + dialogTips.get(i) + "\n";
+                }
+            }
             if (alertDialogTimeRecharge == null) {
                 alertDialogTimeRecharge = new AlertDialogNavAndPost(mActivity).builder().setTitle("")
-                        .setMsg("您的余额低于" + chargeToRechargeBalance + "元\n" + timeOutRecharge + "S后会自动中断电源\n请您及时充值")
+                        .setMsg(dialogStr.replace("%s", timeOutRecharge + ""))
                         .setCancelable(false)
                         .setCancelOutside(false)
                         .setPositiveButtonVisible(true)
@@ -297,7 +307,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     Log.e("TAG", "millisUntilFinished = " + (millisUntilFinished / 1000));
                     if (alertDialogTimeRecharge != null) {
                         Log.e("TAG", "充值倒计时中... = " + (millisUntilFinished / 1000));
-                        alertDialogTimeRecharge.setMsg("您的余额低于" + chargeToRechargeBalance + "元\n" + (millisUntilFinished / 1000) + "S后会自动中断电源\n请您及时充值");
+                        alertDialogTimeRecharge.setMsg(dialogStr.replace("%s", (millisUntilFinished / 1000) + ""));
                     }
                 }
 
@@ -326,34 +336,59 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @Subscribe
     public void getChargeData(StartCodeChargeing data) {//扫码返回
         if (data != null) {
-            tv_chargeing_tishi.setVisibility(View.VISIBLE);
-            unit = data.getUnit();
-            //启动倒计时
-            num = data.getTimeOut() % unit > 0 ? data.getTimeOut() / unit + 1 : data.getTimeOut() / unit;
-            RingLog.e("num = " + num);
-            if (data.getTimeOut() > 0 && num > 0) {
-                if (num > 1) {
-                    showTimeOutDialog(data.getTimeOut() - (unit * (num - 1)));
-                } else {
-                    showTimeOutDialog(data.getTimeOut());
+            List<String> dialogTips = data.getDialogTips();
+            if (dialogTips != null && dialogTips.size() > 0) {
+                String dialogStr = "";
+                for (int i = 0; i < dialogTips.size(); i++) {
+                    if (i == dialogTips.size() - 1) {
+                        dialogStr = dialogStr + dialogTips.get(i);
+                    } else {
+                        dialogStr = dialogStr + dialogTips.get(i) + "\n";
+                    }
                 }
+                new AlertDialogNavAndPost(mActivity).builder().setTitle("")
+                        .setMsg(dialogStr)
+                        .setPositiveButton("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(mActivity, RechargeActivity.class));
+                            }
+                        }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+            } else {
+                tv_chargeing_tishi.setVisibility(View.VISIBLE);
+                unit = data.getUnit();
+                //启动倒计时
+                num = data.getTimeOut() % unit > 0 ? data.getTimeOut() / unit + 1 : data.getTimeOut() / unit;
+                RingLog.e("num = " + num);
+                if (data.getTimeOut() > 0 && num > 0) {
+                    if (num > 1) {
+                        showTimeOutDialog(data.getTimeOut() - (unit * (num - 1)));
+                    } else {
+                        showTimeOutDialog(data.getTimeOut());
+                    }
+                }
+                orderId = data.getOrderId();
+                StringUtil.setText(tvChargeingCdf, "0元", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvChargeingFwf, "0元", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvChargeingZfy, "0元", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
+                rlChargeingChargeAfter.setVisibility(View.VISIBLE);
+                rlChargeingChargeBefore.setVisibility(View.GONE);
+                rl_chargeing_coupon.setVisibility(View.GONE);
+                tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+                tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
+                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
+                ll_chargeing_ing.bringToFront();
+                StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
+                PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
+                PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
             }
-            orderId = data.getOrderId();
-            StringUtil.setText(tvChargeingCdf, "0元", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargeingFwf, "0元", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargeingZfy, "0元", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
-            rlChargeingChargeAfter.setVisibility(View.VISIBLE);
-            rlChargeingChargeBefore.setVisibility(View.GONE);
-            rl_chargeing_coupon.setVisibility(View.GONE);
-            tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-            tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
-            Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
-            ll_chargeing_ing.bringToFront();
-            StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
-            PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
-            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
         }
     }
 
@@ -414,7 +449,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
                         PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
                         PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
-                        showRechargeTimeOutDialog();
+                        showRechargeTimeOutDialog(data.getDialogTips(), data.getStopTimeout());
                     } else if (state == 2) {//结算中,轮询获取账单接口
                         tv_chargeing_tishi.setVisibility(View.GONE);
                         closeTimeOutDialog();
@@ -539,50 +574,10 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 SystemUtil.cellPhone(mActivity, phone);
                 break;
             case R.id.rl_chargeing_start:
-                if (SystemUtil.checkLogin(mActivity)) {
-                    if (balance >= 5) {
-                        startActivity(new Intent(mActivity, ScanCodeActivity.class));
-                    } else {
-                        new AlertDialogNavAndPost(mActivity).builder().setTitle("")
-                                .setMsg("您的余额不足，请及时充值\n国家电网50元以上\n其他运营商30元以上")
-                                .setPositiveButton("确定", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        startActivity(new Intent(mActivity, RechargeActivity.class));
-                                    }
-                                }).setNegativeButton("取消", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        }).show();
-                    }
-                } else {
-                    startActivity(new Intent(mActivity, LoginActivity.class));
-                }
+                startActivity(new Intent(mActivity, ScanCodeActivity.class));
                 break;
             case R.id.tv_chargeing_ljcz:
-                if (SystemUtil.checkLogin(mActivity)) {
-                    if (balance >= 5) {
-                        startActivity(new Intent(mActivity, RechargeActivity.class));
-                    } else {
-                        new AlertDialogNavAndPost(mActivity).builder().setTitle("")
-                                .setMsg("您的余额不足，请及时充值\n国家电网50元以上\n其他运营商30元以上")
-                                .setPositiveButton("确定", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        startActivity(new Intent(mActivity, RechargeActivity.class));
-                                    }
-                                }).setNegativeButton("取消", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        }).show();
-                    }
-                } else {
-                    startActivity(new Intent(mActivity, LoginActivity.class));
-                }
+                startActivity(new Intent(mActivity, RechargeActivity.class));
                 break;
             case R.id.btn_chargeing_submit:
                 if (state == 0) {//连接中,插枪未充电

@@ -23,7 +23,6 @@ import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
 import com.haotang.easyshare.mvp.view.fragment.RechargeFragment;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMyBalanceView;
-import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.mvp.view.widget.RefundPopupWindow;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -126,23 +125,7 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
                 showPop();
                 break;
             case R.id.btn_my_balance_ljcz:
-                if (balance >= 5) {
-                    startActivity(new Intent(this, RechargeActivity.class));
-                } else {
-                    new AlertDialogNavAndPost(this).builder().setTitle("")
-                            .setMsg("您的余额不足，请及时充值\n国家电网50元以上\n其他运营商30元以上")
-                            .setPositiveButton("确定", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    startActivity(new Intent(MyBalanceActivity.this, RechargeActivity.class));
-                                }
-                            }).setNegativeButton("取消", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    }).show();
-                }
+                startActivity(new Intent(this, RechargeActivity.class));
                 break;
             case R.id.btn_my_balance_dh:
                 if (StringUtil.isEmpty(StringUtil.checkEditText(et_my_balance_dhm))) {

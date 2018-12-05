@@ -198,7 +198,7 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
     public void startSuccess(StartChargeing.DataBean data) {
         disMissDialog();
         if (data != null) {
-            DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId(),data.getTimeout(),Integer.parseInt(data.getUnit())));
+            DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId(),data.getTimeout(),Integer.parseInt(data.getUnit()),data.getDialogTips()));
             finish();
         }
     }

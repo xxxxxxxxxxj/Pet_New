@@ -1,5 +1,7 @@
 package com.haotang.easyshare.mvp.model.entity.res;
 
+import java.util.List;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -70,6 +72,24 @@ public class ChargeingState {
         private String provider;
         private int state = -1;
         private String providerName;
+        private List<String> dialogTips;
+        private int stopTimeout;
+
+        public int getStopTimeout() {
+            return stopTimeout;
+        }
+
+        public void setStopTimeout(int stopTimeout) {
+            this.stopTimeout = stopTimeout;
+        }
+
+        public List<String> getDialogTips() {
+            return dialogTips;
+        }
+
+        public void setDialogTips(List<String> dialogTips) {
+            this.dialogTips = dialogTips;
+        }
 
         public int getState() {
             return state;

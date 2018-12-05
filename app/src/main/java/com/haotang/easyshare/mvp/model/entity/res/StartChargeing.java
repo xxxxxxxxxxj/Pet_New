@@ -1,5 +1,7 @@
 package com.haotang.easyshare.mvp.model.entity.res;
 
+import java.util.List;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -54,6 +56,15 @@ public class StartChargeing {
         private int state = -1;
         private String unit;
         private String providerName;
+        private List<String> dialogTips;
+
+        public List<String> getDialogTips() {
+            return dialogTips;
+        }
+
+        public void setDialogTips(List<String> dialogTips) {
+            this.dialogTips = dialogTips;
+        }
 
         public String getUnit() {
             return unit;
