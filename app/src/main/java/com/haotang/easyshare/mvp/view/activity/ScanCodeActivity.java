@@ -20,6 +20,7 @@ import com.haotang.easyshare.mvp.presenter.ScanCodePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IScanCodeView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemTypeUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UmenUtil;
@@ -198,6 +199,9 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
     public void startSuccess(StartChargeing.DataBean data) {
         disMissDialog();
         if (data != null) {
+            if(StringUtil.isEmpty(data.getUnit())){
+                data.setUnit("0");
+            }
             DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId(),data.getTimeout(),Integer.parseInt(data.getUnit()),data.getDialogTips()));
             finish();
         }
