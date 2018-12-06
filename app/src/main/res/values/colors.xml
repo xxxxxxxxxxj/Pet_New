@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="aff6525">#FF6525</color>
     <color name="a4A90E2">#4A90E2</color>
     <color name="aeef6fe">#EEF6FE</color>
     <color name="jmui_jpush_blue">#2DD0CF</color>
