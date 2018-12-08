@@ -1,63 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:rv="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/f8f8ff8"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/title_bar" />
-
-    <com.flyco.roundview.RoundLinearLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="108dip"
-        android:layout_marginBottom="40dip"
-        android:layout_marginLeft="15dip"
-        android:layout_marginRight="15dip"
-        android:layout_marginTop="30dip"
-        android:orientation="vertical"
-        android:paddingLeft="15dip"
-        android:paddingRight="15dip"
-        rv:rv_backgroundColor="@color/white"
-        rv:rv_cornerRadius="10dip">
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dip"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="44dip"
+            android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="10dip"
-                android:layout_height="16dip"
-                android:scaleType="fitXY"
-                android:src="@mipmap/icon_phone" />
-
-            <EditText
-                android:id="@+id/et_login_phone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:hint="请输入手机号"
-                android:maxLength="13"
-                android:ems="10"
-                android:inputType="phone"
-                android:paddingLeft="15dip"
-                android:textColor="@color/a666666"
-                android:textColorHint="@color/aBBBBBB"
-                android:textSize="14sp" />
+                android:id="@+id/iv_titlebar_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:src="@mipmap/more" />
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="144dip"
+            android:layout_height="60dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginBottom="40dip"
+            android:layout_marginTop="20dip" />
+
+        <EditText
+            android:id="@+id/et_login_phone"
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:hint="请输入手机号"
+            android:inputType="phone"
+            android:maxLength="13"
+            android:paddingLeft="15dip"
+            android:textColor="@color/white"
+            android:textColorHint="@color/af2f2f2"
+            android:textSize="18sp" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dip"
-            android:background="@color/aEEEEEE" />
+            android:layout_height="1dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:background="@color/acccccc" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1">
+            android:layout_height="50dip"
+            android:layout_marginTop="10dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip">
 
             <TextView
                 android:id="@+id/tv_login_hqyzm"
@@ -71,89 +77,37 @@
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/et_login_yzm"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/tv_login_hqyzm"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="12dip"
-                    android:layout_height="10dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/icon_sms" />
-
-                <EditText
-                    android:id="@+id/et_login_yzm"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:hint="请输入验证码"
-                    android:inputType="number"
-                    android:paddingLeft="15dip"
-                    android:textColor="@color/a666666"
-                    android:textColorHint="@color/aBBBBBB"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </RelativeLayout>
-    </com.flyco.roundview.RoundLinearLayout>
-
-    <ImageView
-        android:id="@+id/iv_login_login"
-        android:layout_width="match_parent"
-        android:layout_height="49dip"
-        android:layout_marginBottom="85dip"
-        android:layout_marginLeft="15dip"
-        android:layout_marginRight="15dip"
-        android:scaleType="fitXY"
-        android:src="@mipmap/bg_login_no" />
-
-    <LinearLayout
-        android:id="@+id/ll_login_qita"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip">
-
-            <TextView
-                android:id="@+id/tv_login_qita"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="10dip"
+                android:layout_height="50dip"
                 android:layout_marginRight="10dip"
-                android:text="其他方式登录"
-                android:textColor="@color/a666666"
-                android:textSize="14sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dip"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/tv_login_qita"
-                android:background="@color/dddddd" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dip"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/tv_login_qita"
-                android:background="@color/dddddd" />
+                android:layout_toLeftOf="@id/tv_login_hqyzm"
+                android:background="@android:color/transparent"
+                android:hint="请输入验证码"
+                android:inputType="number"
+                android:paddingLeft="15dip"
+                android:textColor="@color/white"
+                android:textColorHint="@color/af2f2f2"
+                android:textSize="18sp" />
         </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:background="@color/acccccc" />
 
         <ImageView
-            android:id="@+id/iv_login_wxlogin"
-            android:layout_width="30dip"
-            android:layout_height="48.5dip"
-            android:layout_gravity="center_horizontal"
+            android:id="@+id/iv_login_login"
+            android:layout_width="match_parent"
+            android:layout_height="44dip"
+            android:layout_marginLeft="30dip"
+            android:layout_marginRight="30dip"
+            android:layout_marginTop="45dip"
             android:scaleType="fitXY"
-            android:src="@mipmap/icon_wx_login" />
+            android:src="@mipmap/bg_login_no" />
+
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

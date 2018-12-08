@@ -31,6 +31,7 @@ import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
+import com.youth.banner.Banner;
 
 import javax.inject.Inject;
 
@@ -57,10 +58,17 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
     FrameLayout flMyContainer;
     @BindView(R.id.rl_scan_code_play)
     RelativeLayout rl_scan_code_play;
+    @BindView(R.id.banner_scan_code)
+    Banner banner_scan_code;
+    @BindView(R.id.tv_titlebar_other)
+    TextView tvTitlebarOther;
+    @BindView(R.id.tv_titlebar_title)
+    TextView tvTitlebarTitle;
     private CaptureFragment captureFragment;
     @Inject
     PermissionDialog permissionDialog;
     public boolean isOpen = false;
+    private String phone;
 
     @Override
     protected int getContentLayout() {
@@ -69,6 +77,7 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        phone = getIntent().getStringExtra("phone");
         activityListManager.addActivity(this);
         DaggerScanCodeActivityCommponent.builder().
                 scanCodeActivityModule(new ScanCodeActivityModule(this, this)).build().inject(this);
@@ -77,13 +86,15 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        tvTitlebarOther.setText("客服电话");
+        tvTitlebarTitle.setText("充电");
         rl_scan_code_play.bringToFront();
         captureFragment = new CaptureFragment();
         // 为二维码扫描界面设置定制化界面
         CodeUtils.setFragmentArgs(captureFragment, R.layout.my_camera);
         captureFragment.setAnalyzeCallback(analyzeCallback);
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
-        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx12);
+        UmenUtil.UmengEventStatistics(this, UmenUtil.yxzx12);
     }
 
     @Override
@@ -109,7 +120,7 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
             MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
             builder.addFormDataPart("code", result);
             RequestBody body = builder.build();
-            mPresenter.start(UrlConstants.getMapHeader(ScanCodeActivity.this),body);
+            mPresenter.start(UrlConstants.getMapHeader(ScanCodeActivity.this), body);
         }
 
         @Override
@@ -158,9 +169,12 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
         });
     }
 
-    @OnClick({R.id.iv_titlebar_back, R.id.tv_scan_code_btn1, R.id.tv_scan_code_btn2})
+    @OnClick({R.id.iv_titlebar_back, R.id.tv_scan_code_btn1, R.id.tv_scan_code_btn2, R.id.tv_titlebar_other})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.tv_titlebar_other:
+                SystemUtil.cellPhone(ScanCodeActivity.this, phone);
+                break;
             case R.id.iv_titlebar_back:
                 finish();
                 break;
@@ -199,10 +213,10 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
     public void startSuccess(StartChargeing.DataBean data) {
         disMissDialog();
         if (data != null) {
-            if(StringUtil.isEmpty(data.getUnit())){
+            if (StringUtil.isEmpty(data.getUnit())) {
                 data.setUnit("0");
             }
-            DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId(),data.getTimeout(),Integer.parseInt(data.getUnit()),data.getDialogTips()));
+            DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId(), data.getTimeout(), Integer.parseInt(data.getUnit()), data.getDialogTips()));
             finish();
         }
     }

@@ -139,4 +139,5 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
     annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile 'com.github.zackratos.ultimatebar:ultimatebar2:2.0.0'
 }

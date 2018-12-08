@@ -577,7 +577,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 SystemUtil.cellPhone(mActivity, phone);
                 break;
             case R.id.rl_chargeing_start:
-                startActivity(new Intent(mActivity, ScanCodeActivity.class));
+                startActivity(new Intent(mActivity, ScanCodeActivity.class).putExtra("phone",phone));
                 break;
             case R.id.tv_chargeing_ljcz:
                 startActivity(new Intent(mActivity, RechargeActivity.class));
