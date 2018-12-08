@@ -42,6 +42,15 @@ public class MainFragChargeBean {
     private String parkingPrice;
     private String payWay;
     private String provider;
+    private String headImg;
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
 
     public String getParkingPrice() {
         return parkingPrice;

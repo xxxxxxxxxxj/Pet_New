@@ -5,166 +5,130 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dip"
     android:layout_marginRight="5dip"
+    android:background="@drawable/main_local_bg_shade"
     android:orientation="vertical"
-    android:padding="20dip"
-    android:background="@drawable/main_local_bg_shade">
+    android:padding="20dip">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dip">
+        android:layout_height="60dip"
+        android:layout_marginBottom="15dip">
 
         <ImageView
-            android:id="@+id/iv_item_mainlocal_ggorgr"
-            android:layout_width="30dip"
-            android:layout_height="15dip"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/tv_item_mainlocal_juli"
-            android:layout_centerVertical="true"
+            android:id="@+id/iv_item_mainlocal_img"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
             android:scaleType="fitXY"
-            android:src="@mipmap/icon_gg" />
+            android:src="@mipmap/ic_image_load" />
 
-        <TextView
-            android:id="@+id/tv_item_mainlocal_juli"
+        <LinearLayout
+            android:id="@+id/ll_item_mainlocal_daohang"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="TextView"
-            android:textColor="@color/a666666"
-            android:textSize="12sp" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_item_mainlocal_name"
+            <ImageView
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:scaleType="fitXY"
+                android:src="@mipmap/about_logo" />
+
+            <TextView
+                android:id="@+id/tv_item_mainlocal_juli"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0m"
+                android:textColor="@color/a999999"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dip"
-            android:layout_marginRight="5dip"
-            android:layout_toLeftOf="@id/tv_item_mainlocal_juli"
-            android:layout_toRightOf="@id/iv_item_mainlocal_ggorgr"
-            android:text="TextView"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_toLeftOf="@id/ll_item_mainlocal_daohang"
+            android:layout_toRightOf="@id/iv_item_mainlocal_img"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_item_mainlocal_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_item_mainlocal_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:text="TextView"
+                android:textColor="@color/a999999"
+                android:textSize="12sp" />
+        </LinearLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dip"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/ll_item_mainlocal_kuaichong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dip"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="16dip"
-                android:layout_height="16dip"
-                android:layout_marginRight="5dip"
-                android:scaleType="fitXY"
-                android:src="@mipmap/icon_kuaichong" />
-
-            <TextView
-                android:id="@+id/tv_item_mainlocal_kuaichong_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/a666666"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_item_mainlocal_manchong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dip"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="16dip"
-                android:layout_height="16dip"
-                android:layout_marginRight="5dip"
-                android:scaleType="fitXY"
-                android:src="@mipmap/icon_manchong" />
-
-            <TextView
-                android:id="@+id/tv_item_mainlocal_manchong_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/a666666"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_item_mainlocal_kongxian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dip"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="16dip"
-                android:layout_height="16dip"
-                android:layout_marginRight="5dip"
-                android:scaleType="fitXY"
-                android:src="@mipmap/icon_kongxian" />
-
-            <TextView
-                android:id="@+id/tv_item_mainlocal_kongxian_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/a666666"
-                android:textSize="12sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dip"
-        android:layout_marginBottom="5dip"
-        android:background="@color/aDDDDDD" />
-
-    <TextView
-        android:id="@+id/tv_item_mainlocal_kfsj"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dip"
-        android:text="开放时间："
-        android:textColor="@color/a666666"
-        android:textSize="12sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_item_mainlocal_daohang"
-            android:layout_width="47dip"
-            android:layout_height="22.5dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:scaleType="fitXY"
-            android:src="@mipmap/icon_daohang" />
+        <LinearLayout
+            android:id="@+id/ll_item_mainlocal_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
 
-        <TextView
-            android:id="@+id/tv_item_mainlocal_address"
+            <TextView
+                android:id="@+id/tv_item_mainlocal_ggorgr"
+                android:layout_width="36dip"
+                android:layout_height="18dip"
+                android:layout_marginRight="10dip"
+                android:background="@drawable/bg_round_red5"
+                android:gravity="center"
+                android:text="个人"
+                android:textColor="@color/white"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/tv_item_mainlocal_kfsj"
+                android:layout_width="75dip"
+                android:layout_height="18dip"
+                android:background="@drawable/bg_round_9495"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="00:30-24:00"
+                android:textColor="@color/white"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginRight="10dip"
-            android:layout_toLeftOf="@id/iv_item_mainlocal_daohang"
-            android:text="TextView"
-            android:textColor="@color/a666666"
-            android:textSize="12sp" />
+            android:layout_toLeftOf="@id/ll_item_mainlocal_info">
+
+            <TextView
+                android:id="@+id/tv_item_mainlocal_cdf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:text="TextView"
+                android:textColor="@color/afF4A2D"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="元/度"
+                android:textColor="@color/afF4A2D"
+                android:textSize="14sp" />
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="联系客服"
-                android:textColor="@color/a4A90E2"
+                android:textColor="@color/aff6525"
                 android:textSize="14sp" />
 
         </LinearLayout>

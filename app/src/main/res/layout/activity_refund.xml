@@ -74,7 +74,7 @@
                 android:layout_marginLeft="15dip"
                 android:layout_marginRight="15dip"
                 android:layout_marginTop="130dip"
-                android:background="@mipmap/bg_btn"
+                android:background="@drawable/bg_round_black5"
                 android:text="确认退款"
                 android:textColor="@color/white"
                 android:textSize="18sp" />

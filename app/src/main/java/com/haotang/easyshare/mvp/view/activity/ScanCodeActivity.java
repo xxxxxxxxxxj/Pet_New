@@ -15,7 +15,9 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerScanCodeActivityCommponent;
 import com.haotang.easyshare.di.module.activity.ScanCodeActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.StartCodeChargeing;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
+import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.ScanCodePresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.IScanCodeView;
@@ -32,6 +34,10 @@ import com.umeng.analytics.MobclickAgent;
 import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -43,7 +49,7 @@ import okhttp3.RequestBody;
 /**
  * 扫码界面
  */
-public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements IScanCodeView {
+public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements IScanCodeView, OnBannerListener {
     @BindView(R.id.tv_scan_code_btn1)
     TextView tvScanCodeBtn1;
     @BindView(R.id.tv_scan_code_btn2)
@@ -69,6 +75,7 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
     PermissionDialog permissionDialog;
     public boolean isOpen = false;
     private String phone;
+    private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
 
     @Override
     protected int getContentLayout() {
@@ -95,6 +102,28 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
         captureFragment.setAnalyzeCallback(analyzeCallback);
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
         UmenUtil.UmengEventStatistics(this, UmenUtil.yxzx12);
+
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        if (bannerList != null && bannerList.size() > 0) {
+            banner_scan_code.setVisibility(View.VISIBLE);
+            setBanner();
+        } else {
+            banner_scan_code.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setBanner() {
+        List<String> list = new ArrayList<String>();
+        for (int i = 0; i < bannerList.size(); i++) {
+            list.add(bannerList.get(i).getImg());
+        }
+        banner_scan_code.setImages(list)
+                .setImageLoader(new GlideImageLoader())
+                .setOnBannerListener(this)
+                .start();
     }
 
     @Override
@@ -218,6 +247,21 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
             }
             DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId(), data.getTimeout(), Integer.parseInt(data.getUnit()), data.getDialogTips()));
             finish();
+        }
+    }
+
+    @Override
+    public void OnBannerClick(int position) {
+        RingLog.e(TAG, "position:" + position);
+        if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
+            AdvertisementBean.DataBean dataBean = bannerList.get(position);
+            if (dataBean != null) {
+                if (dataBean.getDisplay() == 1) {//原生
+
+                } else if (dataBean.getDisplay() == 2) {//H5
+                    startActivity(new Intent(this, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, dataBean.getDestination()));
+                }
+            }
         }
     }
 }

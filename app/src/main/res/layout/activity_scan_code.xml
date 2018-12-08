@@ -16,6 +16,8 @@
         <LinearLayout
             android:id="@+id/ll_scan_code_btn"
             android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_marginBottom="30dip"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:orientation="vertical">
@@ -53,8 +55,9 @@
                 android:id="@+id/banner_scan_code"
                 android:layout_width="259dip"
                 android:layout_height="58dip"
+                android:visibility="invisible"
+                android:layout_marginTop="30dip"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dip"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 app:indicator_drawable_selected="@drawable/selected_radius" />

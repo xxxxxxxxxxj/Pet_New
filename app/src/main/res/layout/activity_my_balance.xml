@@ -54,41 +54,56 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dip"
         android:background="@color/white"
         android:focusableInTouchMode="true"
+        android:orientation="vertical"
         android:padding="15dip">
 
-        <Button
-            android:id="@+id/btn_my_balance_dh"
-            android:layout_width="90dip"
-            android:layout_height="30dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@mipmap/bg_round_jianbian"
-            android:gravity="center"
-            android:text="兑换"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/et_my_balance_dhm"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="30dip"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="40dip"
-            android:layout_toLeftOf="@id/btn_my_balance_dh"
-            android:background="@drawable/bg_round_f2"
-            android:hint="输入兑换码"
-            android:paddingLeft="15dip"
-            android:textColor="@color/a666666"
-            android:textColorHint="@color/a999999"
-            android:textSize="14sp" />
+            android:layout_height="wrap_content">
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/btn_my_balance_dh"
+                android:layout_width="90dip"
+                android:layout_height="34dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_round_black5"
+                android:gravity="center"
+                android:text="兑换"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/et_my_balance_dhm"
+                android:layout_width="match_parent"
+                android:layout_height="30dip"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="40dip"
+                android:layout_toLeftOf="@id/btn_my_balance_dh"
+                android:background="@drawable/bg_round_f2"
+                android:hint="请输入兑换码"
+                android:paddingLeft="15dip"
+                android:textColor="@color/a666666"
+                android:textColorHint="@color/a999999"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:layout_marginLeft="15dip"
+            android:textColor="@color/aff6525"
+            android:layout_marginTop="10dip"
+            android:text="*兑换金额不支持退款" />
+    </LinearLayout>
 
     <com.flyco.tablayout.SlidingTabLayout
         android:id="@+id/stl_my_balance"
@@ -98,13 +113,13 @@
         tl:tl_divider_color="@color/aEEEEEE"
         tl:tl_divider_padding="13dp"
         tl:tl_divider_width="1dp"
-        tl:tl_indicator_color="@color/a4A90E2"
+        tl:tl_indicator_color="@color/aff6525"
         tl:tl_indicator_height="1.5dp"
         tl:tl_indicator_width_equal_title="true"
         tl:tl_tab_padding="22dp"
         tl:tl_tab_space_equal="true"
-        tl:tl_textSelectColor="@color/a4A90E2"
-        tl:tl_textUnselectColor="@color/a333333"
+        tl:tl_textSelectColor="@color/aff6525"
+        tl:tl_textUnselectColor="@color/a666666"
         tl:tl_underline_color="@color/aEEEEEE"
         tl:tl_underline_height="1dp" />
 
