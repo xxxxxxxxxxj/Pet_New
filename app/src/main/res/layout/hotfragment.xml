@@ -2,9 +2,106 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/af8f8f8"
+    android:layout_marginTop="40dip"
+    android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginBottom="10dip"
+        android:layout_marginRight="15dip">
+
+        <TextView
+            android:id="@+id/tv_hotfragment_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="发帖"
+            android:textColor="@color/aff6525"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dip"
+            android:layout_toLeftOf="@id/tv_hotfragment_post"
+            android:gravity="center_vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_hotfragment_zxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dip">
+
+                <TextView
+                    android:id="@+id/tv_hotfragment_zxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="最新帖"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/iv_hotfragment_zxt"
+                    android:layout_width="55dip"
+                    android:layout_height="5dip"
+                    android:layout_marginTop="20dip"
+                    android:scaleType="fitXY"
+                    android:src="@color/aD0021B" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_hotfragment_rmt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dip">
+
+                <TextView
+                    android:id="@+id/tv_hotfragment_rmt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="热门贴"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/iv_hotfragment_rmt"
+                    android:layout_width="55dip"
+                    android:layout_height="5dip"
+                    android:visibility="invisible"
+                    android:layout_marginTop="20dip"
+                    android:scaleType="fitXY"
+                    android:src="@color/aD0021B" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_hotfragment_mtc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dip">
+
+                <TextView
+                    android:id="@+id/tv_hotfragment_mtc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="问题车"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/iv_hotfragment_mtc"
+                    android:layout_width="55dip"
+                    android:layout_height="5dip"
+                    android:layout_marginTop="20dip"
+                    android:visibility="invisible"
+                    android:scaleType="fitXY"
+                    android:src="@color/aD0021B" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl_hotfragment"

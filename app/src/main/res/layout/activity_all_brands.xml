@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="展开"
-                    android:textColor="@color/a4A90E2"
+                    android:textColor="@color/aff6525"
                     android:textSize="14sp"
                     android:visibility="gone" />
 
