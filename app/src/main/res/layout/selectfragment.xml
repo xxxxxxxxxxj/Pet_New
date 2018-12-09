@@ -1,152 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:scaleType="fitXY"
+        android:src="@color/black" />
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dip"
+        android:orientation="vertical">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip">
 
-            <RelativeLayout
-                android:id="@+id/rl_selectcar_top"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="239dip">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/bg_select_car_top" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_selectcar_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="140dip"
-                    android:layout_alignParentBottom="true"
-                    android:paddingLeft="10dip"
-                    android:paddingRight="10dip" />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="154dip"
-                android:layout_marginBottom="15dip"
-                android:background="@color/white"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:id="@+id/rl_selectcar_rmpp"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dip"
-                    android:paddingLeft="15dip"
-                    android:paddingRight="15dip">
-
-                    <LinearLayout
-                        android:id="@+id/rl_selectcar_rmpp_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="5dip"
-                            android:text="更多"
-                            android:textColor="@color/a999999"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:layout_width="7dip"
-                            android:layout_height="11dip"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/right_more" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toLeftOf="@id/rl_selectcar_rmpp_more"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="20dip"
-                            android:layout_height="20dip"
-                            android:layout_marginRight="5dip"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/remenpingpai" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="热门品牌"
-                            android:textColor="@color/a333333"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_selectcar_rmpp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="15dip"
-                    android:paddingRight="15dip" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:background="@color/af8f8f8"
-                android:layout_height="15dip"/>
+            <TextView
+                android:id="@+id/tv_selectcar_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="更多"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:padding="15dip">
+                android:layout_marginRight="10dip"
+                android:layout_toLeftOf="@id/tv_selectcar_more"
+                android:gravity="center_vertical">
 
-                <ImageView
-                    android:layout_width="20dip"
-                    android:layout_height="20dip"
-                    android:layout_marginRight="5dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/jingxuantuijian" />
-
-                <TextView
+                <RelativeLayout
+                    android:id="@+id/rl_selectcar_xinche"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="精选推荐"
-                    android:textColor="@color/a333333"
-                    android:textSize="16sp" />
+                    android:layout_marginRight="20dip">
+
+                    <TextView
+                        android:id="@+id/tv_selectcar_xinche"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="新车"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_selectcar_xinche"
+                        android:layout_width="42dip"
+                        android:layout_height="5dip"
+                        android:layout_marginTop="20dip"
+                        android:scaleType="fitXY"
+                        android:src="@color/aD0021B" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_selectcar_esc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_selectcar_esc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="二手车"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_selectcar_esc"
+                        android:layout_width="63dip"
+                        android:layout_height="5dip"
+                        android:visibility="invisible"
+                        android:layout_marginTop="20dip"
+                        android:scaleType="fitXY"
+                        android:src="@color/aD0021B" />
+                </RelativeLayout>
             </LinearLayout>
+        </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="15dip"
-                android:background="@color/f8f8ff8" />
+        <com.youth.banner.Banner
+            android:id="@+id/banner_selectcar"
+            android:layout_width="match_parent"
+            android:layout_height="75dip"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="30dip"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:indicator_drawable_selected="@drawable/selected_radius" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_selectcar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dip"
+            android:clipToPadding="false"
+            android:paddingLeft="45dip"
+            android:paddingRight="45dip">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_selectcar_jxtj"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/f8f8ff8" />
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+</RelativeLayout>

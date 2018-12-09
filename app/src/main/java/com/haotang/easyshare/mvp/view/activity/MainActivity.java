@@ -1,17 +1,23 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.flyco.tablayout.utils.UnreadMsgUtils;
 import com.flyco.tablayout.widget.MsgView;
+import com.github.zackratos.ultimatebar.UltimateBar;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.di.component.activity.DaggerMainActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MainActivityModule;
@@ -107,6 +113,31 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         //使用Dagger2对本类中相关变量进行初始化
         DaggerMainActivityCommponent.builder().mainActivityModule(new MainActivityModule(this, this)).build().inject(this);
         permissionDialog.setMessage(R.string.permission_request_WRITE_EXTERNAL_STORAGE);
+        initWindows();
+    }
+
+    private void initWindows() {
+        Window window = getWindow();
+        int color = getResources().getColor(android.R.color.transparent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Log.e("TAG", "1");
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //设置状态栏颜色
+            window.setStatusBarColor(color);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Log.e("TAG", "2");
+            //透明状态栏
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+        UltimateBar.newImmersionBuilder()
+                .applyNav(false)         // 是否应用到导航栏
+                .build(this)
+                .apply();
     }
 
     @Subscribe
@@ -210,78 +241,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
             }
         });
-        /*ivMainfragGj.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // event.getRawX(); //获取手指第一次接触屏幕在x方向的坐标
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:// 获取手指第一次接触屏幕
-                        sx = (int) event.getRawX();
-                        sy = (int) event.getRawY();
-                        break;
-                    case MotionEvent.ACTION_MOVE:// 手指在屏幕上移动对应的事件
-                        int x = (int) event.getRawX();
-                        int y = (int) event.getRawY();
-                        // 获取手指移动的距离
-                        int dx = x - sx;
-                        int dy = y - sy;
-                        int top = v.getTop() + dy;
-                        int left = v.getLeft() + dx;
-                        if (top <= 0) {
-                            top = 0;
-                        }
-
-                        float bottom_desc = BASE_BOTTOM_DESC * getResources().getDisplayMetrics().density / 3;
-                        if (top >= screenHeight - (ivMainfragGj.getHeight() + bottom_desc)) {
-                            top = (int) (screenHeight - (ivMainfragGj.getHeight() + bottom_desc));
-                        }
-                        if (left >= screenWidth - ivMainfragGj.getWidth()) {
-                            left = screenWidth - ivMainfragGj.getWidth();
-                        }
-                        if (left <= 0) {
-                            left = 0;
-                        }
-                        // 更改imageView在窗体的位置
-                        ivMainfragGj.layout(left, top, left + ivMainfragGj.getWidth(), top + ivMainfragGj.getHeight());
-                        // 获取移动后的位置
-                        sx = (int) event.getRawX();
-                        sy = (int) event.getRawY();
-                        break;
-                    case MotionEvent.ACTION_UP:// 手指离开屏幕对应事件
-                        // 记录最后图片在窗体的位置
-                        int lastTop = ivMainfragGj.getTop();
-                        int lastLeft = ivMainfragGj.getLeft();
-                        int lastRight = ivMainfragGj.getRight();
-                        int lastBottom = ivMainfragGj.getBottom();
-                        SharedPreferenceUtil.getInstance(MainActivity.this).saveInt("lastTop", lastTop);
-                        SharedPreferenceUtil.getInstance(MainActivity.this).saveInt("lastLeft", lastLeft);
-                        SharedPreferenceUtil.getInstance(MainActivity.this).saveInt("lastRight", lastRight);
-                        SharedPreferenceUtil.getInstance(MainActivity.this).saveInt("lastBottom", lastBottom);
-                        break;
-                }
-                return true;// 不会中断触摸事件的返回
-            }
-        });*/
-    }
-
-    private void initWindows() {
-        /*Window window = getWindow();
-        int color = getResources().getColor(android.R.color.transparent);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Log.e("TAG", "1");
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            //设置状态栏颜色
-            window.setStatusBarColor(color);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Log.e("TAG", "2");
-            //透明状态栏
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }*/
     }
 
     @Override
