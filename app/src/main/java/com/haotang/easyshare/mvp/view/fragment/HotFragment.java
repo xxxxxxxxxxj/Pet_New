@@ -7,8 +7,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextPaint;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.haotang.easyshare.R;
@@ -26,6 +29,7 @@ import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
 import com.haotang.easyshare.mvp.view.activity.BrandAreaActivity;
 import com.haotang.easyshare.mvp.view.activity.PostListActivity;
+import com.haotang.easyshare.mvp.view.activity.SendPostActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotPointAdapter;
 import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
@@ -49,6 +53,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import okhttp3.MultipartBody;
 
 /**
@@ -68,6 +73,22 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     SwipeRefreshLayout srl_hotfragment;
     @BindView(R.id.rv_hotfragment)
     RecyclerView rvHotfragment;
+    @BindView(R.id.tv_hotfragment_post)
+    TextView tvHotfragmentPost;
+    @BindView(R.id.tv_hotfragment_zxt)
+    TextView tvHotfragmentZxt;
+    @BindView(R.id.iv_hotfragment_zxt)
+    ImageView ivHotfragmentZxt;
+    @BindView(R.id.tv_hotfragment_rmt)
+    TextView tvHotfragmentRmt;
+    @BindView(R.id.iv_hotfragment_rmt)
+    ImageView ivHotfragmentRmt;
+    @BindView(R.id.tv_hotfragment_wtc)
+    TextView tvHotfragmentWtc;
+    @BindView(R.id.iv_hotfragment_wtc)
+    ImageView ivHotfragmentWtc;
+    @BindView(R.id.tv_hotfragment_serch)
+    TextView tvHotfragmentSerch;
     private List<HotPoint.DataBean> list = new ArrayList<HotPoint.DataBean>();
     private List<HotCarBean.DataBean> carList = new ArrayList<HotCarBean.DataBean>();
     private HotPointAdapter hotPointAdapter;
@@ -76,6 +97,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     private int mNextRequestPage = 1;
     private int pageSize;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
+    private int postFlag;
 
     @Override
     protected boolean isLazyLoad() {
@@ -159,7 +181,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     public void refresh(RefreshEvent data) {
         if (data != null && data.getRefreshIndex() == RefreshEvent.SEND_POST) {
             refresh();
-            UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx4);
+            UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx4);
         }
     }
 
@@ -212,7 +234,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 break;
             case R.id.rl_top_hotfrag_rmpp:
                 startActivity(new Intent(mActivity, AllBrandsActivity.class));
-                UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx6);
+                UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx6);
                 break;
         }
     }
@@ -231,7 +253,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                     if (dataBean != null) {
                         PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
                         if (shareMap != null) {
-                            UmenUtil.UmengEventStatistics(getActivity(),UmenUtil.yxzx5);
+                            UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx5);
                             Intent intent = new Intent(mActivity, WebViewActivity.class);
                             intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
                             intent.putExtra("uuid", dataBean.getUuid());
@@ -297,18 +319,18 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         mNextRequestPage = 1;
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "2").build();
-        mPresenter.list(UrlConstants.getMapHeader(mActivity),body);
+        mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
         mPresenter.hot(UrlConstants.getMapHeader(mActivity));
 
         MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .build();
-        mPresenter.newest(UrlConstants.getMapHeader(mActivity),body1);
+        mPresenter.newest(UrlConstants.getMapHeader(mActivity), body1);
     }
 
     private void loadMore() {
         MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .build();
-        mPresenter.newest(UrlConstants.getMapHeader(mActivity),body1);
+        mPresenter.newest(UrlConstants.getMapHeader(mActivity), body1);
     }
 
     @Override
@@ -316,7 +338,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         disMissDialog();
         hotFragmenHeader.getRl_banner_top_hotfrag().setVisibility(View.GONE);
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(mActivity,code);
+        SystemUtil.Exit(mActivity, code);
     }
 
     @Override
@@ -346,7 +368,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     public void hotFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "hotFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(mActivity,code);
+        SystemUtil.Exit(mActivity, code);
     }
 
     @Override
@@ -388,6 +410,63 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
             hotPointAdapter.loadMoreFail();
         }
         RingLog.e(TAG, "newestFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(mActivity,code);
+        SystemUtil.Exit(mActivity, code);
+    }
+
+    @OnClick({R.id.tv_hotfragment_post, R.id.rl_hotfragment_zxt, R.id.rl_hotfragment_rmt, R.id.rl_hotfragment_wtc, R.id.tv_hotfragment_serch})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_hotfragment_post:
+                startActivity(new Intent(mActivity, SendPostActivity.class));
+                break;
+            case R.id.rl_hotfragment_zxt:
+                postFlag = 0;
+                setPost();
+                break;
+            case R.id.rl_hotfragment_rmt:
+                postFlag = 1;
+                setPost();
+                break;
+            case R.id.rl_hotfragment_wtc:
+                postFlag = 2;
+                setPost();
+                break;
+            case R.id.tv_hotfragment_serch:
+                break;
+        }
+    }
+
+    private void setPost() {
+        if (postFlag == 0) {
+            TextPaint paint = tvHotfragmentZxt.getPaint();
+            paint.setFakeBoldText(true);
+            TextPaint paint1 = tvHotfragmentRmt.getPaint();
+            paint1.setFakeBoldText(false);
+            TextPaint paint2 = tvHotfragmentWtc.getPaint();
+            paint2.setFakeBoldText(false);
+            ivHotfragmentZxt.setVisibility(View.VISIBLE);
+            ivHotfragmentRmt.setVisibility(View.GONE);
+            ivHotfragmentWtc.setVisibility(View.GONE);
+        } else if (postFlag == 1) {
+            TextPaint paint = tvHotfragmentZxt.getPaint();
+            paint.setFakeBoldText(false);
+            TextPaint paint1 = tvHotfragmentRmt.getPaint();
+            paint1.setFakeBoldText(true);
+            TextPaint paint2 = tvHotfragmentWtc.getPaint();
+            paint2.setFakeBoldText(false);
+            ivHotfragmentZxt.setVisibility(View.GONE);
+            ivHotfragmentRmt.setVisibility(View.VISIBLE);
+            ivHotfragmentWtc.setVisibility(View.GONE);
+        } else if (postFlag == 2) {
+            TextPaint paint = tvHotfragmentZxt.getPaint();
+            paint.setFakeBoldText(false);
+            TextPaint paint1 = tvHotfragmentRmt.getPaint();
+            paint1.setFakeBoldText(false);
+            TextPaint paint2 = tvHotfragmentWtc.getPaint();
+            paint2.setFakeBoldText(true);
+            ivHotfragmentZxt.setVisibility(View.GONE);
+            ivHotfragmentRmt.setVisibility(View.GONE);
+            ivHotfragmentWtc.setVisibility(View.VISIBLE);
+        }
     }
 }

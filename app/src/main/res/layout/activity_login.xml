@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@color/black" />
+        android:src="@mipmap/bg_login" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,16 +22,17 @@
 
             <ImageView
                 android:id="@+id/iv_titlebar_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
                 android:layout_marginLeft="15dip"
-                android:src="@mipmap/more" />
+                android:src="@mipmap/icon_back_white" />
         </LinearLayout>
 
         <ImageView
             android:layout_width="144dip"
             android:layout_height="60dip"
             android:layout_marginLeft="30dip"
+            android:src="@mipmap/icon_login_easyshare"
             android:layout_marginBottom="40dip"
             android:layout_marginTop="20dip" />
 
@@ -53,7 +54,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dip"
+            android:layout_height="0.5dip"
             android:layout_marginLeft="30dip"
             android:layout_marginRight="30dip"
             android:background="@color/acccccc" />
@@ -94,7 +95,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dip"
+            android:layout_height="0.5dip"
             android:layout_marginLeft="30dip"
             android:layout_marginRight="30dip"
             android:background="@color/acccccc" />

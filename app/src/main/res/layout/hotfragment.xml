@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="40dip"
     android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical">
@@ -10,8 +9,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dip"
         android:layout_marginBottom="10dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginTop="40dip"
         android:layout_marginRight="15dip">
 
         <TextView
@@ -72,19 +72,20 @@
                     android:id="@+id/iv_hotfragment_rmt"
                     android:layout_width="55dip"
                     android:layout_height="5dip"
-                    android:visibility="invisible"
                     android:layout_marginTop="20dip"
                     android:scaleType="fitXY"
-                    android:src="@color/aD0021B" />
+                    android:src="@color/aD0021B"
+                    android:visibility="invisible" />
             </RelativeLayout>
+
             <RelativeLayout
-                android:id="@+id/rl_hotfragment_mtc"
+                android:id="@+id/rl_hotfragment_wtc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dip">
 
                 <TextView
-                    android:id="@+id/tv_hotfragment_mtc"
+                    android:id="@+id/tv_hotfragment_wtc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="问题车"
@@ -92,16 +93,29 @@
                     android:textSize="18sp" />
 
                 <ImageView
-                    android:id="@+id/iv_hotfragment_mtc"
+                    android:id="@+id/iv_hotfragment_wtc"
                     android:layout_width="55dip"
                     android:layout_height="5dip"
                     android:layout_marginTop="20dip"
-                    android:visibility="invisible"
                     android:scaleType="fitXY"
-                    android:src="@color/aD0021B" />
+                    android:src="@color/aD0021B"
+                    android:visibility="invisible" />
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_hotfragment_serch"
+        android:layout_width="match_parent"
+        android:layout_height="24dip"
+        android:layout_marginBottom="15dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="5dip"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/a999999"
+        android:textSize="12sp" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl_hotfragment"

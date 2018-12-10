@@ -33,7 +33,7 @@
                 android:layout_width="30dip"
                 android:layout_height="30dip"
                 android:scaleType="fitXY"
-                android:src="@mipmap/about_logo" />
+                android:src="@mipmap/icon_daohang_new" />
 
             <TextView
                 android:id="@+id/tv_item_mainlocal_juli"
