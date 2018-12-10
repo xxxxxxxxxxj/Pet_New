@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextPaint;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -438,34 +438,25 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     private void setPost() {
         if (postFlag == 0) {
-            TextPaint paint = tvHotfragmentZxt.getPaint();
-            paint.setFakeBoldText(true);
-            TextPaint paint1 = tvHotfragmentRmt.getPaint();
-            paint1.setFakeBoldText(false);
-            TextPaint paint2 = tvHotfragmentWtc.getPaint();
-            paint2.setFakeBoldText(false);
+            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
             ivHotfragmentZxt.setVisibility(View.VISIBLE);
-            ivHotfragmentRmt.setVisibility(View.GONE);
-            ivHotfragmentWtc.setVisibility(View.GONE);
+            ivHotfragmentRmt.setVisibility(View.INVISIBLE);
+            ivHotfragmentWtc.setVisibility(View.INVISIBLE);
         } else if (postFlag == 1) {
-            TextPaint paint = tvHotfragmentZxt.getPaint();
-            paint.setFakeBoldText(false);
-            TextPaint paint1 = tvHotfragmentRmt.getPaint();
-            paint1.setFakeBoldText(true);
-            TextPaint paint2 = tvHotfragmentWtc.getPaint();
-            paint2.setFakeBoldText(false);
-            ivHotfragmentZxt.setVisibility(View.GONE);
+            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+            ivHotfragmentZxt.setVisibility(View.INVISIBLE);
             ivHotfragmentRmt.setVisibility(View.VISIBLE);
-            ivHotfragmentWtc.setVisibility(View.GONE);
+            ivHotfragmentWtc.setVisibility(View.INVISIBLE);
         } else if (postFlag == 2) {
-            TextPaint paint = tvHotfragmentZxt.getPaint();
-            paint.setFakeBoldText(false);
-            TextPaint paint1 = tvHotfragmentRmt.getPaint();
-            paint1.setFakeBoldText(false);
-            TextPaint paint2 = tvHotfragmentWtc.getPaint();
-            paint2.setFakeBoldText(true);
-            ivHotfragmentZxt.setVisibility(View.GONE);
-            ivHotfragmentRmt.setVisibility(View.GONE);
+            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+            ivHotfragmentZxt.setVisibility(View.INVISIBLE);
+            ivHotfragmentRmt.setVisibility(View.INVISIBLE);
             ivHotfragmentWtc.setVisibility(View.VISIBLE);
         }
     }

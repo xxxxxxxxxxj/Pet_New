@@ -206,11 +206,11 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
             tvSelectcarXinche.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
             tvSelectcarEsc.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
             ivSelectcarXinche.setVisibility(View.VISIBLE);
-            ivSelectcarEsc.setVisibility(View.GONE);
+            ivSelectcarEsc.setVisibility(View.INVISIBLE);
         } else if (carFlag == 1) {
             tvSelectcarXinche.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
             tvSelectcarEsc.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
-            ivSelectcarXinche.setVisibility(View.GONE);
+            ivSelectcarXinche.setVisibility(View.INVISIBLE);
             ivSelectcarEsc.setVisibility(View.VISIBLE);
         }
     }
