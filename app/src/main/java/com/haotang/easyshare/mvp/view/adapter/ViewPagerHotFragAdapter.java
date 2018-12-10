@@ -19,17 +19,15 @@ import java.util.List;
  * <p>Company:北京昊唐科技有限公司</p>
  *
  * @author 徐俊
- * @date zhoujunxia on 2018/12/9 11:02
+ * @date zhoujunxia on 2018/12/10 16:02
  */
-public class ViewPagerSelectCarAdapter extends PagerAdapter {
+public class ViewPagerHotFragAdapter extends PagerAdapter {
     public Context mContext;
     public List<AdvertisementBean.DataBean> bannerList;
-
-    public ViewPagerSelectCarAdapter(Context mContext, List<AdvertisementBean.DataBean> bannerList) {
+    public ViewPagerHotFragAdapter(Context mContext, List<AdvertisementBean.DataBean> bannerList){
         this.mContext = mContext;
         this.bannerList = bannerList;
     }
-
     @Override
     public int getCount() {
         return bannerList.size();
@@ -46,7 +44,7 @@ public class ViewPagerSelectCarAdapter extends PagerAdapter {
         ImageView iv_item_viewpager_selectcar = (ImageView) view.findViewById(R.id.iv_item_viewpager_selectcar);
         AdvertisementBean.DataBean dataBean = bannerList.get(position);
         if (dataBean != null) {
-            GlideUtil.loadNetImg(mContext, dataBean.getImg(), iv_item_viewpager_selectcar, R.mipmap.ic_image_load);
+            GlideUtil.loadNetRoundImg(mContext, dataBean.getImg(), iv_item_viewpager_selectcar, R.mipmap.ic_image_load, 5);
         }
         container.addView(view);
         return view;

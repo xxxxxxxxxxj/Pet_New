@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/iv_item_viewpager_selectcar"
-        android:layout_width="271dp"
-        android:layout_height="380dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@mipmap/ic_image_load" />

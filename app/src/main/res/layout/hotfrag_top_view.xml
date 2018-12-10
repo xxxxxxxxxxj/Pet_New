@@ -1,160 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/af8f8f8"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rl_banner_top_hotfrag"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_hotfrag_top"
         android:layout_width="match_parent"
-        android:layout_height="180dip">
-
-        <TextView
-            android:id="@+id/tv_banner_top_hotfrag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dip"
-            android:layout_marginLeft="15dip"
-            android:layout_marginRight="15dip"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-        <com.youth.banner.Banner
-            android:id="@+id/banner_top_hotfrag"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            app:indicator_drawable_selected="@drawable/selected_radius" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="154dip"
-        android:layout_marginBottom="15dip"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/rl_top_hotfrag_rmpp"
-            android:layout_width="match_parent"
-            android:layout_height="54dip"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip">
-
-            <LinearLayout
-                android:id="@+id/rl_top_hotfrag_rmpp_more"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="更多"
-                    android:layout_marginRight="5dip"
-                    android:textColor="@color/a999999"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="7dip"
-                    android:layout_height="11dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/right_more" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/rl_top_hotfrag_rmpp_more"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="20dip"
-                    android:layout_height="20dip"
-                    android:layout_marginRight="5dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/remenpingpai" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="热门品牌"
-                    android:textColor="@color/a333333"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_top_hotfrag"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingRight="15dip"
-            android:paddingLeft="15dip" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_top_hotfrag_htpd"
-        android:layout_width="match_parent"
-        android:layout_height="54dip"
-        android:background="@color/white"
+        android:layout_height="190dip"
+        android:clipToPadding="false"
         android:paddingLeft="15dip"
         android:paddingRight="15dip">
 
-        <LinearLayout
-            android:id="@+id/rl_top_hotfrag_htpd_more"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="更多"
-                android:layout_marginRight="5dip"
-                android:textColor="@color/a999999"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:layout_width="7dip"
-                android:layout_height="11dip"
-                android:scaleType="fitXY"
-                android:src="@mipmap/right_more" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/rl_top_hotfrag_htpd_more"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dip"
-                android:layout_height="20dip"
-                android:layout_marginRight="5dip"
-                android:scaleType="fitXY"
-                android:src="@mipmap/remenhuati" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="话题频道"
-                android:textColor="@color/a333333"
-                android:textSize="16sp" />
-        </LinearLayout>
-    </RelativeLayout>
+    </android.support.v4.view.ViewPager>
 </LinearLayout>

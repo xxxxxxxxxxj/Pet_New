@@ -22,24 +22,19 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.HotFragPoint;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
-import com.haotang.easyshare.mvp.model.entity.res.PostBean;
-import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
-import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
-import com.haotang.easyshare.mvp.view.activity.BrandAreaActivity;
-import com.haotang.easyshare.mvp.view.activity.PostListActivity;
 import com.haotang.easyshare.mvp.view.activity.SendPostActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
-import com.haotang.easyshare.mvp.view.adapter.HotPointAdapter;
-import com.haotang.easyshare.mvp.view.adapter.HotPointCarAdapter;
+import com.haotang.easyshare.mvp.view.adapter.HotFragPointAdapter;
+import com.haotang.easyshare.mvp.view.adapter.ViewPagerSelectCarAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IHotFragmentView;
-import com.haotang.easyshare.mvp.view.viewholder.HotFragmenHeader;
+import com.haotang.easyshare.mvp.view.widget.CardTransformer;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
-import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
@@ -64,7 +59,7 @@ import okhttp3.MultipartBody;
  * @author 徐俊
  * @date zhoujunxia on 2018/4/14 20:59
  */
-public class HotFragment extends BaseFragment<HotFragmentPresenter> implements OnBannerListener, View.OnClickListener,
+public class HotFragment extends BaseFragment<HotFragmentPresenter> implements OnBannerListener,
         IHotFragmentView {
     protected final static String TAG = HotFragment.class.getSimpleName();
     @Inject
@@ -89,15 +84,14 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     ImageView ivHotfragmentWtc;
     @BindView(R.id.tv_hotfragment_serch)
     TextView tvHotfragmentSerch;
-    private List<HotPoint.DataBean> list = new ArrayList<HotPoint.DataBean>();
-    private List<HotCarBean.DataBean> carList = new ArrayList<HotCarBean.DataBean>();
-    private HotPointAdapter hotPointAdapter;
-    private HotFragmenHeader hotFragmenHeader;
-    private HotPointCarAdapter hotPointCarAdapter;
+    private List<HotFragPoint> list = new ArrayList<HotFragPoint>();
     private int mNextRequestPage = 1;
     private int pageSize;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
+    private List<String> imgList = new ArrayList<String>();
     private int postFlag;
+    private ViewPager vp_hotfrag_top;
+    private HotFragPointAdapter hotFragPointAdapter;
 
     @Override
     protected boolean isLazyLoad() {
@@ -119,42 +113,47 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         srl_hotfragment.setColorSchemeColors(Color.rgb(47, 223, 189));
         rvHotfragment.setHasFixedSize(true);
         rvHotfragment.setLayoutManager(new LinearLayoutManager(mActivity));
-        hotPointAdapter = new HotPointAdapter(R.layout.item_hot_point, list);
+        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
+        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
+        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
+        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
+        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
+        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
+        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
+        hotFragPointAdapter = new HotFragPointAdapter(R.layout.item_hotfrag_point, list);
         View top = getLayoutInflater().inflate(R.layout.hotfrag_top_view, (ViewGroup) rvHotfragment.getParent(), false);
-        hotFragmenHeader = new HotFragmenHeader(top);
-        hotPointAdapter.addHeaderView(top);
-        rvHotfragment.setAdapter(hotPointAdapter);
+        vp_hotfrag_top = (ViewPager) top.findViewById(R.id.vp_hotfrag_top);
+
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        vp_hotfrag_top.setAdapter(new ViewPagerSelectCarAdapter(mActivity, bannerList));
+        vp_hotfrag_top.setOffscreenPageLimit(2);//预加载2个
+        vp_hotfrag_top.setPageMargin(-70);//设置viewpage之间的间距
+        vp_hotfrag_top.setPageTransformer(true, new CardTransformer());
+
+        hotFragPointAdapter.addHeaderView(top);
+        rvHotfragment.setAdapter(hotFragPointAdapter);
         //添加自定义分割线
         rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity, 15),
                 ContextCompat.getColor(mActivity, R.color.af8f8f8)));
-
-        hotFragmenHeader.getRvTopHotfrag().setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        hotFragmenHeader.getRvTopHotfrag().setLayoutManager(linearLayoutManager);
-        hotPointCarAdapter = new HotPointCarAdapter(R.layout.item_hotfrag_top_car, carList);
-        hotFragmenHeader.getRvTopHotfrag().setAdapter(hotPointCarAdapter);
-        //添加自定义分割线
-        hotFragmenHeader.getRvTopHotfrag().addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL, DensityUtil.dp2px(mActivity, 15),
-                ContextCompat.getColor(mActivity, R.color.af8f8f8)));
-        hotFragmenHeader.getTv_banner_top_hotfrag().bringToFront();
-    }
-
-    private void setBanner(List<AdvertisementBean.DataBean> data) {
-        List<String> list = new ArrayList<String>();
-        for (int i = 0; i < data.size(); i++) {
-            list.add(data.get(i).getImg());
-        }
-        hotFragmenHeader.getBannerTopHotfrag().setImages(list)
-                .setImageLoader(new GlideImageLoader())
-                .setOnBannerListener(this)
-                .start();
-        if (bannerList != null && bannerList.size() > 0) {
-            AdvertisementBean.DataBean dataBean = bannerList.get(0);
-            if (dataBean != null) {
-                StringUtil.setText(hotFragmenHeader.getTv_banner_top_hotfrag(), dataBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
-            }
-        }
     }
 
     @Override
@@ -188,19 +187,11 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     @Override
     public void onStart() {
         super.onStart();
-        //开始轮播
-        if (hotFragmenHeader != null) {
-            hotFragmenHeader.getBannerTopHotfrag().startAutoPlay();
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        //结束轮播
-        if (hotFragmenHeader != null) {
-            hotFragmenHeader.getBannerTopHotfrag().stopAutoPlay();
-        }
     }
 
     @Override
@@ -227,57 +218,18 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.rl_top_hotfrag_htpd:
-                startActivity(new Intent(mActivity, PostListActivity.class));
-                break;
-            case R.id.rl_top_hotfrag_rmpp:
-                startActivity(new Intent(mActivity, AllBrandsActivity.class));
-                UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx6);
-                break;
-        }
-    }
-
-    @Override
     protected void initEvent() {
-        if (hotFragmenHeader != null) {
-            hotFragmenHeader.getRlTopHotfragHtpd().setOnClickListener(this);
-            hotFragmenHeader.getRlTopHotfragRmpp().setOnClickListener(this);
-        }
-        hotPointAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        hotFragPointAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (list.size() > 0 && list.size() > position) {
-                    HotPoint.DataBean dataBean = list.get(position);
-                    if (dataBean != null) {
-                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
-                        if (shareMap != null) {
-                            UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx5);
-                            Intent intent = new Intent(mActivity, WebViewActivity.class);
-                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
-                            intent.putExtra("uuid", dataBean.getUuid());
-                            startActivity(intent);
-                        }
+                    HotFragPoint hotFragPoint = list.get(position);
+                    if (hotFragPoint != null) {
                     }
                 }
             }
         });
-        hotPointCarAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (carList != null && carList.size() > 0 && carList.size() > position) {
-                    HotCarBean.DataBean dataBean = carList.get(position);
-                    if (dataBean != null) {
-                        Intent intent = new Intent(mActivity, BrandAreaActivity.class);
-                        intent.putExtra("brandId", dataBean.getId());
-                        intent.putExtra("brand", dataBean.getBrand());
-                        startActivity(intent);
-                    }
-                }
-            }
-        });
-        hotPointAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        hotFragPointAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 loadMore();
@@ -289,32 +241,10 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 refresh();
             }
         });
-        hotFragmenHeader.getBannerTopHotfrag().setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
-                    AdvertisementBean.DataBean dataBean = bannerList.get(position);
-                    if (dataBean != null) {
-                        StringUtil.setText(hotFragmenHeader.getTv_banner_top_hotfrag(), dataBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
-                    }
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     private void refresh() {
         showDialog();
-        hotPointCarAdapter.setEnableLoadMore(false);
         srl_hotfragment.setRefreshing(true);
         mNextRequestPage = 1;
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
@@ -336,7 +266,6 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     @Override
     public void listFail(int code, String msg) {
         disMissDialog();
-        hotFragmenHeader.getRl_banner_top_hotfrag().setVisibility(View.GONE);
         RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
     }
@@ -344,24 +273,11 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     @Override
     public void listSuccess(List<AdvertisementBean.DataBean> data) {
         disMissDialog();
-        if (data != null && data.size() > 0) {
-            bannerList.clear();
-            bannerList.addAll(data);
-            hotFragmenHeader.getRl_banner_top_hotfrag().setVisibility(View.VISIBLE);
-            setBanner(data);
-        } else {
-            hotFragmenHeader.getRl_banner_top_hotfrag().setVisibility(View.GONE);
-        }
     }
 
     @Override
     public void hotSuccess(List<HotCarBean.DataBean> data) {
         disMissDialog();
-        if (data != null && data.size() > 0) {
-            carList.clear();
-            carList.addAll(data);
-            hotPointCarAdapter.notifyDataSetChanged();
-        }
     }
 
     @Override
@@ -374,41 +290,11 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     @Override
     public void newestSuccess(List<HotPoint.DataBean> data) {
         disMissDialog();
-        if (mNextRequestPage == 1) {
-            srl_hotfragment.setRefreshing(false);
-            hotPointAdapter.setEnableLoadMore(true);
-            list.clear();
-        }
-        hotPointAdapter.loadMoreComplete();
-        if (data != null && data.size() > 0) {
-            if (mNextRequestPage == 1) {
-                pageSize = data.size();
-            } else {
-                if (data.size() < pageSize) {
-                    hotPointAdapter.loadMoreEnd(false);
-                }
-            }
-            list.addAll(data);
-            mNextRequestPage++;
-        } else {
-            if (mNextRequestPage == 1) {
-                hotPointAdapter.loadMoreEnd(true);
-            } else {
-                hotPointAdapter.loadMoreEnd(false);
-            }
-        }
-        hotPointAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void newestFail(int code, String msg) {
         disMissDialog();
-        if (mNextRequestPage == 1) {
-            hotPointAdapter.setEnableLoadMore(true);
-            srl_hotfragment.setRefreshing(false);
-        } else {
-            hotPointAdapter.loadMoreFail();
-        }
         RingLog.e(TAG, "newestFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
     }
@@ -438,23 +324,23 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     private void setPost() {
         if (postFlag == 0) {
-            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
-            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
-            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             ivHotfragmentZxt.setVisibility(View.VISIBLE);
             ivHotfragmentRmt.setVisibility(View.INVISIBLE);
             ivHotfragmentWtc.setVisibility(View.INVISIBLE);
         } else if (postFlag == 1) {
-            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
-            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
-            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             ivHotfragmentZxt.setVisibility(View.INVISIBLE);
             ivHotfragmentRmt.setVisibility(View.VISIBLE);
             ivHotfragmentWtc.setVisibility(View.INVISIBLE);
         } else if (postFlag == 2) {
-            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
-            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
-            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             ivHotfragmentZxt.setVisibility(View.INVISIBLE);
             ivHotfragmentRmt.setVisibility(View.INVISIBLE);
             ivHotfragmentWtc.setVisibility(View.VISIBLE);

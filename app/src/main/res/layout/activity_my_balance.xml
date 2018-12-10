@@ -34,7 +34,7 @@
                 android:layout_height="30dip"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@mipmap/bg_round_jianbian"
+                android:background="@mipmap/bg_sms_yes"
                 android:gravity="center"
                 android:text="立即充值"
                 android:textColor="@color/white"
@@ -98,11 +98,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
             android:layout_marginLeft="15dip"
-            android:textColor="@color/aff6525"
             android:layout_marginTop="10dip"
-            android:text="*兑换金额不支持退款" />
+            android:text="*兑换金额不支持退款"
+            android:textColor="@color/aff6525"
+            android:textSize="10sp" />
     </LinearLayout>
 
     <com.flyco.tablayout.SlidingTabLayout

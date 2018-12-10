@@ -31,7 +31,7 @@ public class RefundResonAdapter extends BaseQuickAdapter<ReFundTag.DataBean, Bas
             StringUtil.setText(tv_item_refund_reson, item.getContent(), "", View.VISIBLE, View.VISIBLE);
             if (item.isSelect()) {
                 tv_item_refund_reson.setTextColor(mContext.getResources().getColor(R.color.white));
-                tv_item_refund_reson.setBackgroundResource(R.mipmap.bg_btn);
+                tv_item_refund_reson.setBackgroundResource(R.mipmap.bg_sms_yes);
             } else {
                 tv_item_refund_reson.setTextColor(mContext.getResources().getColor(R.color.a666666));
                 tv_item_refund_reson.setBackgroundResource(R.drawable.bg_round_ddd);
