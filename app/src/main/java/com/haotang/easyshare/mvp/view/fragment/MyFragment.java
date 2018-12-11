@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.flyco.roundview.RoundLinearLayout;
-import com.flyco.roundview.RoundRelativeLayout;
-import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.app.constant.UrlConstants;
@@ -32,7 +30,6 @@ import com.haotang.easyshare.mvp.view.activity.EditUserInfoActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.MyBalanceActivity;
 import com.haotang.easyshare.mvp.view.activity.MyCouponActivity;
-import com.haotang.easyshare.mvp.view.activity.MyFollowActivity;
 import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeRecordActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
@@ -75,54 +72,30 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     ImageView ivMyfragmentUserimg;
     @BindView(R.id.tv_myfragment_yue)
     TextView tvMyfragmentYue;
+    @BindView(R.id.tv_myfragment_yhq)
+    TextView tv_myfragment_yhq;
     @BindView(R.id.tv_myfragment_vipjf)
     TextView tvMyfragmentVipjf;
-    @BindView(R.id.ll_myfragment_yuejf)
-    LinearLayout llMyfragmentYuejf;
     @BindView(R.id.tv_myfragment_username)
     TextView tvMyfragmentUsername;
     @BindView(R.id.ll_myfragment_mycdz)
     LinearLayout llMyfragmentMycdz;
-    @BindView(R.id.ll_myfragment_jqqd)
-    RoundLinearLayout llMyfragmentJqqd;
-    @BindView(R.id.rl_myfragment_clxx)
-    RelativeLayout rlMyfragmentClxx;
-    @BindView(R.id.rl_myfragment_sycs)
-    RelativeLayout rlMyfragmentSycs;
-    @BindView(R.id.rl_myfragment_hytq)
-    RelativeLayout rlMyfragmentHytq;
-    @BindView(R.id.rl_myfragment_wdtz)
-    RelativeLayout rlMyfragmentWdtz;
-    @BindView(R.id.rl_myfragment_scdzd)
-    RelativeLayout rlMyfragmentScdzd;
-    @BindView(R.id.rl_myfragment_gzdr)
-    RelativeLayout rlMyfragmentGzdr;
-    @BindView(R.id.rl_myfragment_jjdh)
-    RelativeLayout rlMyfragmentJjdh;
-    @BindView(R.id.rl_myfragment_srgj)
-    RelativeLayout rlMyfragmentSrgj;
-    @BindView(R.id.rl_myfragment_gy)
-    RelativeLayout rlMyfragmentGy;
-    @BindView(R.id.rtv_myfragment_tuichu)
-    RoundTextView rtvMyfragmentTuichu;
-    @BindView(R.id.rll_myfragment_userinfo)
-    RoundRelativeLayout rllMyfragmentUserinfo;
+    @BindView(R.id.btn_myfragment_tuichu)
+    Button rtvMyfragmentTuichu;
     @BindView(R.id.tv_myfragment_clxx)
     TextView tvMyfragmentClxx;
-    @BindView(R.id.tv_myfragment_sycs)
-    TextView tvMyfragmentSycs;
     @BindView(R.id.tv_myfragment_jjdh)
     TextView tvMyfragmentJjdh;
     @BindView(R.id.vp_myfragment_mycdz)
     ViewPager vpMyfragmentMycdz;
-    @BindView(R.id.tv_myfragment_mycharge_num)
-    TextView tv_myfragment_mycharge_num;
-    @BindView(R.id.iv_myfragment_add)
-    ImageView iv_myfragment_add;
+    @BindView(R.id.tv_myfragment_mycharge_title)
+    TextView tv_myfragment_mycharge_title;
     @BindView(R.id.iv_myfragment_bjusername)
     ImageView iv_myfragment_bjusername;
     @BindView(R.id.rl_myfragment_mycharge_right)
     RelativeLayout rl_myfragment_mycharge_right;
+    @BindView(R.id.ll_myfragment_addstation)
+    RelativeLayout ll_myfragment_addstation;
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
     private String kf_phone = "";
     private String uuid;
@@ -166,7 +139,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @Subscribe
     public void getLoginInfo(LoginBean data) {
-        if(data != null){
+        if (data != null) {
             rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
             showDialog();
@@ -196,8 +169,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 .myFragmentModule(new MyFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
-        rllMyfragmentUserinfo.bringToFront();
-        ivMyfragmentUserimg.bringToFront();
         if (SystemUtil.checkLogin(mActivity)) {
             rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
@@ -244,14 +215,14 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         });
     }
 
-    @OnClick({R.id.iv_myfragment_add, R.id.rl_myfragment_clxx, R.id.rl_myfragment_sycs,
-            R.id.rl_myfragment_hytq, R.id.rl_myfragment_wdtz, R.id.rl_myfragment_scdzd, R.id.rl_myfragment_gzdr,
-            R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
+    @OnClick({R.id.iv_myfragment_addstation, R.id.ll_myfragment_clxx,
+            R.id.rl_myfragment_hytq, R.id.ll_myfragment_wdtz, R.id.ll_myfragment_sczd,
+            R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.btn_myfragment_tuichu,
             R.id.tv_myfragment_username, R.id.iv_myfragment_userimg, R.id.rl_myfragment_mycharge_right,
-            R.id.iv_myfragment_bjusername, R.id.rl_myfragment_cdjl, R.id.ll_myfragment_yue, R.id.rl_myfragment_coupon})
+            R.id.iv_myfragment_bjusername, R.id.ll_myfragment_cdjl, R.id.ll_myfragment_yue, R.id.ll_myfragment_coupon})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.rl_myfragment_coupon:
+            case R.id.ll_myfragment_coupon:
                 if (SystemUtil.checkLogin(mActivity)) {
                     startActivity(new Intent(mActivity, MyCouponActivity.class));
                 } else {
@@ -265,7 +236,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case R.id.rl_myfragment_cdjl:
+            case R.id.ll_myfragment_cdjl:
                 if (SystemUtil.checkLogin(mActivity)) {
                     startActivity(new Intent(mActivity, RechargeRecordActivity.class));
                 } else {
@@ -302,14 +273,14 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case R.id.iv_myfragment_add:
+            case R.id.iv_myfragment_addstation:
                 if (SystemUtil.checkLogin(mActivity)) {
                     startActivity(new Intent(mActivity, AddChargeActivity.class));
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case R.id.rl_myfragment_clxx:
+            case R.id.ll_myfragment_clxx:
                 if (SystemUtil.checkLogin(mActivity)) {
                     startActivity(new Intent(mActivity, CarInfoActivity.class));
                 } else {
@@ -325,7 +296,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case R.id.rl_myfragment_wdtz:
+            case R.id.ll_myfragment_wdtz:
                 if (SystemUtil.checkLogin(mActivity)) {
                     if (StringUtil.isNotEmpty(uuid)) {
                         startActivity(new Intent(mActivity, MyPostActivity.class).putExtra("uuid", uuid));
@@ -334,16 +305,9 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case R.id.rl_myfragment_scdzd:
+            case R.id.ll_myfragment_sczd:
                 if (SystemUtil.checkLogin(mActivity)) {
                     startActivity(new Intent(mActivity, CollectChargeActivity.class));
-                } else {
-                    startActivity(new Intent(mActivity, LoginActivity.class));
-                }
-                break;
-            case R.id.rl_myfragment_gzdr:
-                if (SystemUtil.checkLogin(mActivity)) {
-                    startActivity(new Intent(mActivity, MyFollowActivity.class));
                 } else {
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
@@ -362,7 +326,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 //startActivity(new Intent(mActivity, TestActivity.class));
                 startActivity(new Intent(mActivity, AboutActivity.class));
                 break;
-            case R.id.rtv_myfragment_tuichu:
+            case R.id.btn_myfragment_tuichu:
                 new AlertDialogNavAndPost(getActivity()).builder().setTitle("")
                         .setMsg("确定退出登录吗")
                         .setPositiveButton("确定", new View.OnClickListener() {
@@ -392,8 +356,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             balance = data.getBalance();
             StringUtil.setText(tvMyfragmentUsername, data.getUserName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentYue, String.valueOf(data.getBalance()), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_myfragment_yhq, String.valueOf(data.getBalance()), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentVipjf, String.valueOf(data.getCoins()), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvMyfragmentSycs, data.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentJjdh, data.getKf_phone(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetCircleImg(mActivity, data.getHeadImg(), ivMyfragmentUserimg, R.mipmap.ic_image_load_circle);
             if (data.getStations() != null && data.getStations().size() > 0) {
@@ -404,8 +368,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 }
                 stations.clear();
                 stations.addAll(data.getStations());
-                iv_myfragment_add.setVisibility(View.GONE);
-                StringUtil.setText(tv_myfragment_mycharge_num, "(" + stations.size() + ")", "", View.VISIBLE, View.VISIBLE);
+                ll_myfragment_addstation.setVisibility(View.GONE);
+                StringUtil.setText(tv_myfragment_mycharge_title, "我的充电桩 (" + stations.size() + ")", "", View.VISIBLE, View.VISIBLE);
                 mFragments.clear();
                 llMyfragmentMycdz.setVisibility(View.VISIBLE);
                 for (HomeBean.StationsBean stationsBean : stations) {
@@ -423,7 +387,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                     }
                 }
             } else {
-                iv_myfragment_add.setVisibility(View.VISIBLE);
+                ll_myfragment_addstation.setVisibility(View.VISIBLE);
                 llMyfragmentMycdz.setVisibility(View.GONE);
             }
         }
@@ -444,7 +408,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         if (data != null && data.size() > 0) {
             MyCarBean.DataBean dataBean = data.get(0);
             if (dataBean != null) {
-                StringUtil.setText(tvMyfragmentClxx, dataBean.getBrand() + dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvMyfragmentClxx, dataBean.getBrand() + dataBean.getCar(), "车辆信息", View.VISIBLE, View.VISIBLE);
             }
         }
     }
@@ -469,12 +433,12 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         tvMyfragmentUsername.setText("立即登录");
         llMyfragmentMycdz.setVisibility(View.GONE);
         tvMyfragmentYue.setText("0");
+        tv_myfragment_yhq.setText("0");
         tvMyfragmentVipjf.setText("0");
         iv_myfragment_bjusername.setVisibility(View.GONE);
         ivMyfragmentUserimg.setImageResource(R.mipmap.ic_image_load_circle);
-        iv_myfragment_add.setVisibility(View.GONE);
-        tvMyfragmentClxx.setText("");
-        tvMyfragmentSycs.setText("");
+        ll_myfragment_addstation.setVisibility(View.GONE);
+        tvMyfragmentClxx.setText("车辆信息");
         rtvMyfragmentTuichu.setVisibility(View.GONE);
     }
 }
