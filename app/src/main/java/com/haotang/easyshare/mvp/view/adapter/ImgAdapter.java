@@ -6,8 +6,11 @@ import android.widget.ImageView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
+import com.haotang.easyshare.util.ScreenUtil;
 import com.haotang.easyshare.util.SystemUtil;
+import com.ljy.devring.other.RingLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +50,11 @@ public class ImgAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     protected void convert(final BaseViewHolder helper, String item) {
         ImageView iv_item_img = helper.getView(R.id.iv_item_img);
         if (imgWidth > 0 && imgHeight > 0) {
-            GlideUtil.loadNetImg(mContext, item, iv_item_img, R.mipmap.ic_image_load, imgWidth, imgHeight);
+            int windowWidth = ScreenUtil.getScreenWidth(mContext);
+            int localImgWidth = (windowWidth - DensityUtil.dp2px(mContext, 70)) / 3;
+            int localImgHeight = localImgWidth * imgHeight / imgWidth;
+            RingLog.e("windowWidth = " + windowWidth + "---localImgWidth = " + localImgWidth + "---localImgHeight = " + localImgHeight);
+            GlideUtil.loadNetImg(mContext, item, iv_item_img, R.mipmap.ic_image_load, localImgWidth, localImgHeight);
         } else {
             GlideUtil.loadNetImg(mContext, item, iv_item_img, R.mipmap.ic_image_load);
         }

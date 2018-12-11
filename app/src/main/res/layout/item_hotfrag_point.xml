@@ -2,17 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="15dip"
+    android:layout_marginRight="15dip"
     android:background="@color/white"
     android:orientation="vertical"
-    android:layout_marginRight="15dip"
-    android:layout_marginLeft="15dip"
-    android:padding="10dip">
+    android:paddingBottom="10dip"
+    android:paddingLeft="10dip"
+    android:paddingTop="10dip">
 
     <TextView
         android:id="@+id/tv_item_hotfrag_point_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
+        android:layout_marginRight="10dip"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="TextView"
@@ -21,13 +24,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv_item_hotfrag_point_img"
             android:layout_width="match_parent"
             android:layout_height="171dip"
+            android:layout_marginBottom="10dip"
+            android:layout_marginRight="10dip"
             android:scaleType="fitXY"
             android:src="@mipmap/ic_image_load" />
 
@@ -39,7 +43,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dip">
 
         <LinearLayout
             android:id="@+id/ll_item_hotfrag_point_time"

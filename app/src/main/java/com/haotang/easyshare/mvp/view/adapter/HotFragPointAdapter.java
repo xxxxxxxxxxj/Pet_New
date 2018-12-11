@@ -10,7 +10,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.HotFragPoint;
-import com.haotang.easyshare.mvp.view.widget.GridSpacingItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
@@ -54,12 +53,6 @@ public class HotFragPointAdapter extends BaseQuickAdapter<HotFragPoint, BaseView
                     NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rv_item_hotfrag_point_img, mContext, 3, GridLayoutManager.VERTICAL, false);
                     noScollFullGridLayoutManager.setScrollEnabled(false);
                     rv_item_hotfrag_point_img.setLayoutManager(noScollFullGridLayoutManager);
-                    if (rv_item_hotfrag_point_img.getItemDecorationCount() <= 0) {
-                        rv_item_hotfrag_point_img.addItemDecoration(new GridSpacingItemDecoration(3,
-                                mContext.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
-                                mContext.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
-                                false));
-                    }
                     ImgAdapter imgAdapter = new ImgAdapter(R.layout.item_img, item.getImgList(), 197, 137);
                     rv_item_hotfrag_point_img.setAdapter(imgAdapter);
                 } else {
