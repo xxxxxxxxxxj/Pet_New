@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:text="编辑"
-        android:textColor="@color/a0063da"
+        android:textColor="@color/aff6525"
         android:textSize="14sp" />
 
     <LinearLayout
@@ -60,6 +60,7 @@
                 android:id="@+id/iv_myfragment_ggorgr"
                 android:layout_width="30dip"
                 android:layout_height="15dip"
+                android:visibility="gone"
                 android:layout_marginRight="5dip"
                 android:scaleType="fitXY"
                 android:src="@mipmap/icon_gg" />

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:rv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
@@ -42,20 +43,21 @@
                     android:layout_marginTop="48dip"
                     android:background="@color/transparent">
 
-                    <RelativeLayout
+                    <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.8"
-                        android:background="@color/white">
+                        android:src="@color/white">
 
-                    </RelativeLayout>
+                    </ImageView>
 
-                    <LinearLayout
+                    <com.flyco.roundview.RoundLinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/transparent"
                         android:gravity="center_horizontal"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        rv:rv_backgroundColor="@color/af8f8f8"
+                        rv:rv_cornerRadius="5dip">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -225,10 +227,12 @@
                                     android:src="@mipmap/icon_myfrag_clxx" />
 
                                 <TextView
+                                    android:id="@+id/tv_myfragment_clxx"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="车辆信息"
-                                    android:id="@+id/tv_myfragment_clxx"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
                                     android:textColor="@color/a666666"
                                     android:textSize="12sp" />
                             </LinearLayout>
@@ -382,6 +386,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="30dip"
                             android:background="@color/white"
                             android:orientation="vertical"
                             android:paddingLeft="15dip"
@@ -496,21 +501,22 @@
                             </RelativeLayout>
                         </LinearLayout>
 
-                        <Button
-                            android:id="@+id/btn_myfragment_tuichu"
+                        <com.flyco.roundview.RoundTextView
+                            android:id="@+id/rtv_myfragment_tuichu"
                             android:layout_width="match_parent"
                             android:layout_height="44dip"
                             android:layout_marginBottom="50dip"
                             android:layout_marginLeft="20dip"
                             android:layout_marginRight="20dip"
-                            android:layout_marginTop="30dip"
-                            android:background="@mipmap/bg_sms_no"
                             android:gravity="center"
                             android:text="退出"
                             android:textColor="@color/white"
                             android:textSize="18sp"
-                            android:visibility="gone" />
-                    </LinearLayout>
+                            android:visibility="gone"
+                            rv:rv_backgroundColor="@color/aDDDDDD"
+                            rv:rv_backgroundPressColor="#383838"
+                            rv:rv_cornerRadius="5dip" />
+                    </com.flyco.roundview.RoundLinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>

@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.flyco.roundview.RoundTextView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.app.constant.UrlConstants;
@@ -80,8 +80,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     TextView tvMyfragmentUsername;
     @BindView(R.id.ll_myfragment_mycdz)
     LinearLayout llMyfragmentMycdz;
-    @BindView(R.id.btn_myfragment_tuichu)
-    Button rtvMyfragmentTuichu;
+    @BindView(R.id.rtv_myfragment_tuichu)
+    RoundTextView rtvMyfragmentTuichu;
     @BindView(R.id.tv_myfragment_clxx)
     TextView tvMyfragmentClxx;
     @BindView(R.id.tv_myfragment_jjdh)
@@ -169,6 +169,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 .myFragmentModule(new MyFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
+        ivMyfragmentUserimg.bringToFront();
         if (SystemUtil.checkLogin(mActivity)) {
             rtvMyfragmentTuichu.setVisibility(View.VISIBLE);
             llMyfragmentMycdz.setVisibility(View.VISIBLE);
@@ -217,7 +218,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
 
     @OnClick({R.id.iv_myfragment_addstation, R.id.ll_myfragment_clxx,
             R.id.rl_myfragment_hytq, R.id.ll_myfragment_wdtz, R.id.ll_myfragment_sczd,
-            R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.btn_myfragment_tuichu,
+            R.id.rl_myfragment_jjdh, R.id.rl_myfragment_srgj, R.id.rl_myfragment_gy, R.id.rtv_myfragment_tuichu,
             R.id.tv_myfragment_username, R.id.iv_myfragment_userimg, R.id.rl_myfragment_mycharge_right,
             R.id.iv_myfragment_bjusername, R.id.ll_myfragment_cdjl, R.id.ll_myfragment_yue, R.id.ll_myfragment_coupon})
     public void onViewClicked(View view) {
@@ -326,7 +327,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 //startActivity(new Intent(mActivity, TestActivity.class));
                 startActivity(new Intent(mActivity, AboutActivity.class));
                 break;
-            case R.id.btn_myfragment_tuichu:
+            case R.id.rtv_myfragment_tuichu:
                 new AlertDialogNavAndPost(getActivity()).builder().setTitle("")
                         .setMsg("确定退出登录吗")
                         .setPositiveButton("确定", new View.OnClickListener() {
@@ -437,7 +438,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         tvMyfragmentVipjf.setText("0");
         iv_myfragment_bjusername.setVisibility(View.GONE);
         ivMyfragmentUserimg.setImageResource(R.mipmap.ic_image_load_circle);
-        ll_myfragment_addstation.setVisibility(View.GONE);
+        ll_myfragment_addstation.setVisibility(View.VISIBLE);
         tvMyfragmentClxx.setText("车辆信息");
         rtvMyfragmentTuichu.setVisibility(View.GONE);
     }
