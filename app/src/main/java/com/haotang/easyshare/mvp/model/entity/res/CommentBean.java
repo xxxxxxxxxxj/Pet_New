@@ -68,6 +68,15 @@ public class CommentBean {
         private List<CommentTag> tagList;
         private List<CommentImg> mediaList;
 
+        public Comment(String headImg, String createTime, String userName, String content, List<CommentTag> tagList, List<CommentImg> mediaList) {
+            this.headImg = headImg;
+            this.createTime = createTime;
+            this.userName = userName;
+            this.content = content;
+            this.tagList = tagList;
+            this.mediaList = mediaList;
+        }
+
         public Comment(List<String> tags, List<String> media, String headImg, String createTime, String userName, String content) {
             this.tags = tags;
             this.media = media;

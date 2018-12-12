@@ -3,6 +3,9 @@ package com.haotang.easyshare.mvp.view.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,13 +28,18 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
+import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
+import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
+import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.ChargingPileDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
+import com.haotang.easyshare.mvp.view.adapter.CommentDetailAdapter;
 import com.haotang.easyshare.mvp.view.adapter.UseNoticesAdapter;
 import com.haotang.easyshare.mvp.view.iview.IChargingPileDetailView;
 import com.haotang.easyshare.mvp.view.widget.DragView;
+import com.haotang.easyshare.mvp.view.widget.NoScollFullLinearLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.ShareBottomDialog;
 import com.haotang.easyshare.util.DensityUtil;
@@ -47,6 +55,7 @@ import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -112,6 +121,12 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     DragView iv_chargedetail_wegit;
     @BindView(R.id.banner_chargingdetail)
     Banner banner_chargingdetail;
+    @BindView(R.id.ll_chargingdetail_pl)
+    LinearLayout ll_chargingdetail_pl;
+    @BindView(R.id.tv_chargingdetail_qbpl)
+    TextView tv_chargingdetail_qbpl;
+    @BindView(R.id.rv_chargingdetail_pl)
+    RecyclerView rv_chargingdetail_pl;
     private String uuid;
     private String city;
     private double lat;
@@ -130,6 +145,10 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     private double serchLng;
     private AdvertisementBean.DataBean dataBean;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
+    private List<CommentBean.Comment> list = new ArrayList<CommentBean.Comment>();
+    private List<CommentTag> tags = new ArrayList<CommentTag>();
+    private List<CommentImg> medias = new ArrayList<CommentImg>();
+    private CommentDetailAdapter commentDetailAdapter;
 
     @Override
     protected int getContentLayout() {
@@ -165,6 +184,45 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
         } else {
             banner_chargingdetail.setVisibility(View.INVISIBLE);
         }
+        banner_chargingdetail.setIndicatorGravity(BannerConfig.RIGHT);
+
+        tags.add(new CommentTag("测试测试测试", false));
+        tags.add(new CommentTag("测试测试测试", false));
+        tags.add(new CommentTag("测试测试测试", false));
+        tags.add(new CommentTag("测试测试测试", false));
+        tags.add(new CommentTag("测试测试测试", false));
+        tags.add(new CommentTag("测试测试测试", false));
+        tags.add(new CommentTag("测试测试测试", false));
+        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
+        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
+        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
+        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
+        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
+        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
+        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
+        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
+        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
+        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
+        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
+        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
+        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
+        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
+        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
+        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
+        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
+        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
+        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
+        rv_chargingdetail_pl.setHasFixedSize(true);
+        rv_chargingdetail_pl.setNestedScrollingEnabled(false);
+        NoScollFullLinearLayoutManager noScollFullLinearLayoutManager = new NoScollFullLinearLayoutManager(this);
+        noScollFullLinearLayoutManager.setScrollEnabled(false);
+        rv_chargingdetail_pl.setLayoutManager(noScollFullLinearLayoutManager);
+        commentDetailAdapter = new CommentDetailAdapter(R.layout.item_comment, list);
+        rv_chargingdetail_pl.setAdapter(commentDetailAdapter);
+        //添加自定义分割线
+        DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_f8_15));
+        rv_chargingdetail_pl.addItemDecoration(divider);
     }
 
     private void setBanner() {
@@ -267,9 +325,12 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @OnClick({R.id.iv_titlebar_back, R.id.ll_chargingdetail_sc, R.id.ll_chargingdetail_share,
             R.id.rl_chargingdetail_pl, R.id.ll_chargingdetail_call,
-            R.id.ll_chargingdetail_daohang, R.id.iv_chargedetail_wegit})
+            R.id.ll_chargingdetail_daohang, R.id.iv_chargedetail_wegit, R.id.rl_chargingdetail_pl_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rl_chargingdetail_pl_more:
+                startActivity(new Intent(ChargingPileDetailActivity.this, CommentDetailActivity.class).putExtra("uuid", uuid));
+                break;
             case R.id.iv_chargedetail_wegit:
                 if (dataBean != null) {
                     if (dataBean.getDisplay() == 1) {//原生
@@ -386,10 +447,13 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             StringUtil.setText(tvChargingdetailTcf, data.getParkingPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailZdbz, data.getRemark(), "", View.VISIBLE, View.VISIBLE);
             if (data.getCommentTotal() > 0) {
+                ll_chargingdetail_pl.setVisibility(View.VISIBLE);
                 tvChargingdetailPl.setVisibility(View.VISIBLE);
                 StringUtil.setText(tvChargingdetailPl, data.getCommentTotal() + "", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tv_chargingdetail_qbpl, "全部评论（" + data.getCommentTotal() + "）", "", View.VISIBLE, View.VISIBLE);
             } else {
                 tvChargingdetailPl.setVisibility(View.GONE);
+                ll_chargingdetail_pl.setVisibility(View.GONE);
             }
             if (is_collect == 0) {//是否已收藏(0:否、1:是)
                 ivChargingdetailSc.setImageResource(R.mipmap.sc_not);
@@ -410,6 +474,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             if (useNotices != null && useNotices.size() > 0) {
                 vbvChargingdetail
                         .setVisibility(View.VISIBLE);
+                vbvChargingdetail.bringToFront();
                 try {
                     vbvChargingdetail.setAdapter(new UseNoticesAdapter(useNotices));
                     vbvChargingdetail.start();

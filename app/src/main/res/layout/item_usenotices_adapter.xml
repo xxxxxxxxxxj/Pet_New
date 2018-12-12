@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_toLeftOf="@id/tv_item_usenotices_time"
         android:ellipsize="end"

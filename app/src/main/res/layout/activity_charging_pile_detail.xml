@@ -94,10 +94,10 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
                 android:scaleType="fitXY"
-                android:src="@mipmap/more" />
+                android:src="@mipmap/icon_share_new" />
 
         </LinearLayout>
     </LinearLayout>
@@ -423,6 +423,68 @@
                         android:textColor="@color/a999999"
                         android:textSize="14sp" />
                 </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_chargingdetail_pl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rl_chargingdetail_pl_more"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginRight="15dip"
+                    android:layout_marginTop="15dip"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dip"
+                            android:text="更多"
+                            android:textColor="@color/a666666"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="7dip"
+                            android:layout_height="11dip"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/right_more" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_chargingdetail_qbpl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="全部评论"
+                        android:textColor="@color/a333333"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_chargingdetail_pl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white" />
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
