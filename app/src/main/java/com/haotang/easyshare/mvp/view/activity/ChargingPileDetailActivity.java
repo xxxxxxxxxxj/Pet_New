@@ -29,8 +29,6 @@ import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
-import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
-import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.ChargingPileDetailPresenter;
@@ -55,7 +53,6 @@ import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -144,10 +141,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     private double serchLat;
     private double serchLng;
     private AdvertisementBean.DataBean dataBean;
-    private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
     private List<CommentBean.Comment> list = new ArrayList<CommentBean.Comment>();
-    private List<CommentTag> tags = new ArrayList<CommentTag>();
-    private List<CommentImg> medias = new ArrayList<CommentImg>();
     private CommentDetailAdapter commentDetailAdapter;
 
     @Override
@@ -174,44 +168,6 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             setLocation();
         }
         UmenUtil.UmengEventStatistics(this, UmenUtil.yxzx3);
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        if (bannerList != null && bannerList.size() > 0) {
-            banner_chargingdetail.setVisibility(View.VISIBLE);
-            setBanner();
-        } else {
-            banner_chargingdetail.setVisibility(View.INVISIBLE);
-        }
-        banner_chargingdetail.setIndicatorGravity(BannerConfig.RIGHT);
-
-        tags.add(new CommentTag("测试测试测试", false));
-        tags.add(new CommentTag("测试测试测试", false));
-        tags.add(new CommentTag("测试测试测试", false));
-        tags.add(new CommentTag("测试测试测试", false));
-        tags.add(new CommentTag("测试测试测试", false));
-        tags.add(new CommentTag("测试测试测试", false));
-        tags.add(new CommentTag("测试测试测试", false));
-        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
-        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
-        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
-        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
-        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
-        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
-        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
-        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
-        medias.add(new CommentImg("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", false));
-        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
-        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
-        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
-        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
-        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
-        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
-        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
-        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
-        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
-        list.add(new CommentBean.Comment("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "2018-07-01", "张艺兴", "慢充挺稳定，快充太差了，就一个可以用，启动超级慢充挺稳定", tags, medias));
         rv_chargingdetail_pl.setHasFixedSize(true);
         rv_chargingdetail_pl.setNestedScrollingEnabled(false);
         NoScollFullLinearLayoutManager noScollFullLinearLayoutManager = new NoScollFullLinearLayoutManager(this);
@@ -223,17 +179,6 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
         DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_f8_15));
         rv_chargingdetail_pl.addItemDecoration(divider);
-    }
-
-    private void setBanner() {
-        List<String> list = new ArrayList<String>();
-        for (int i = 0; i < bannerList.size(); i++) {
-            list.add(bannerList.get(i).getImg());
-        }
-        banner_chargingdetail.setImages(list)
-                .setImageLoader(new GlideImageLoader())
-                .setOnBannerListener(this)
-                .start();
     }
 
     private void setLocation() {
@@ -485,6 +430,12 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 vbvChargingdetail
                         .setVisibility(View.GONE);
             }
+            if (data.getDetailImgs() != null && data.getDetailImgs().size() > 0) {
+                banner_chargingdetail.setImages(data.getDetailImgs())
+                        .setImageLoader(new GlideImageLoader())
+                        .setOnBannerListener(this)
+                        .start();
+            }
         }
     }
 
@@ -593,15 +544,5 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     @Override
     public void OnBannerClick(int position) {
         RingLog.e(TAG, "position:" + position);
-        if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
-            AdvertisementBean.DataBean dataBean = bannerList.get(position);
-            if (dataBean != null) {
-                if (dataBean.getDisplay() == 1) {//原生
-
-                } else if (dataBean.getDisplay() == 2) {//H5
-                    startActivity(new Intent(this, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, dataBean.getDestination()));
-                }
-            }
-        }
     }
 }

@@ -38,10 +38,10 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
                 android:scaleType="fitXY"
-                android:src="@mipmap/more" />
+                android:src="@mipmap/icon_phone_new" />
 
         </LinearLayout>
 
@@ -52,18 +52,18 @@
             android:layout_weight="1">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
                 android:layout_centerInParent="true"
                 android:scaleType="fitXY"
-                android:src="@mipmap/more" />
+                android:src="@mipmap/icon_pl" />
 
             <TextView
                 android:id="@+id/tv_chargingdetail_pl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="0"
+                android:layout_marginLeft="55dip"
+                android:layout_marginTop="10dip"
                 android:textColor="@color/a333333"
                 android:textSize="9sp" />
         </RelativeLayout>
@@ -78,10 +78,10 @@
 
             <ImageView
                 android:id="@+id/iv_chargingdetail_sc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
                 android:scaleType="fitXY"
-                android:src="@mipmap/more" />
+                android:src="@mipmap/sc_not" />
 
         </LinearLayout>
 
