@@ -679,6 +679,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                     android.view.ViewGroup.LayoutParams.MATCH_PARENT, true);
             pWin.setFocusable(true);
+            pWin.setClippingEnabled(false);
             pWin.setWidth(SystemUtil.getDisplayMetrics(mActivity)[0]);
             pWin.showAtLocation(view, Gravity.CENTER, 0, 0);
             List<String> list = new ArrayList<String>();
@@ -730,6 +731,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             //点击外部消失
             pWinBottomDialog.setOutsideTouchable(true);
             //设置可以点击
+            pWin.setClippingEnabled(false);
             pWinBottomDialog.setTouchable(true);
             //进入退出的动画
             pWinBottomDialog.setAnimationStyle(R.style.mypopwindow_anim_style);

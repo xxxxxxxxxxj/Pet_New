@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -27,6 +26,7 @@ import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
+import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.ChargingPileDetailPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.UseNoticesAdapter;
@@ -46,9 +46,12 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,43 +62,22 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.MultipartBody;
 
-import static com.haotang.easyshare.R.id.iv_chargingdetail_sc;
 
 /**
  * 充电桩详情
  */
-public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailPresenter> implements IChargingPileDetailView, AMapLocationListener {
+public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailPresenter> implements IChargingPileDetailView, AMapLocationListener, OnBannerListener {
     private final static String TAG = ChargingPileDetailActivity.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
-    @BindView(R.id.iv_chargingdetail_back)
-    ImageView ivChargingdetailBack;
-    @BindView(iv_chargingdetail_sc)
+    @BindView(R.id.iv_chargingdetail_sc)
     ImageView ivChargingdetailSc;
-    @BindView(R.id.iv_chargingdetail_share)
-    ImageView ivChargingdetailShare;
-    @BindView(R.id.ll_chargingdetail_barright)
-    LinearLayout llChargingdetailBarright;
-    @BindView(R.id.rl_chargingdetail_title)
-    LinearLayout rlChargingdetailTitle;
     @BindView(R.id.tv_chargingdetail_pl)
     TextView tvChargingdetailPl;
-    @BindView(R.id.ll_chargingdetail_pl)
-    LinearLayout llChargingdetailPl;
-    @BindView(R.id.tv_chargingdetail_cdcs)
-    TextView tvChargingdetailCdcs;
-    @BindView(R.id.iv_chargingdetail_img)
-    ImageView ivChargingdetailImg;
-    @BindView(R.id.rl_chargingdetail_img)
-    RelativeLayout rlChargingdetailImg;
-    @BindView(R.id.iv_chargingdetail_lt)
-    ImageView ivChargingdetailLt;
-    @BindView(R.id.iv_chargingdetail_phone)
-    ImageView ivChargingdetailPhone;
-    @BindView(R.id.ll_chargingdetail_ltdh)
-    LinearLayout llChargingdetailLtdh;
-    @BindView(R.id.iv_chargingdetail_ggorgr)
-    ImageView ivChargingdetailGgorgr;
+    @BindView(R.id.tv_titlebar_title)
+    TextView tv_titlebar_title;
+    @BindView(R.id.tv_chargingdetail_ggorgr)
+    TextView tvChargingdetailGgorgr;
     @BindView(R.id.tv_chargingdetail_name)
     TextView tvChargingdetailName;
     @BindView(R.id.tv_chargingdetail_cdf)
@@ -104,16 +86,10 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     TextView tvChargingdetailFwf;
     @BindView(R.id.tv_chargingdetail_kuaichong_num)
     TextView tvChargingdetailKuaichongNum;
-    @BindView(R.id.ll_chargingdetail_kuaichong)
-    LinearLayout llChargingdetailKuaichong;
     @BindView(R.id.tv_chargingdetail_manchong_num)
     TextView tvChargingdetailManchongNum;
-    @BindView(R.id.ll_chargingdetail_manchong)
-    LinearLayout llChargingdetailManchong;
     @BindView(R.id.tv_chargingdetail_kongxian_num)
     TextView tvChargingdetailKongxianNum;
-    @BindView(R.id.ll_chargingdetail_kongxian)
-    LinearLayout llChargingdetailKongxian;
     @BindView(R.id.vbv_chargingdetail)
     VerticalBannerView vbvChargingdetail;
     @BindView(R.id.tv_chargingdetail_juli)
@@ -132,10 +108,10 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     TextView tvChargingdetailTcf;
     @BindView(R.id.tv_chargingdetail_zdbz)
     TextView tvChargingdetailZdbz;
-    @BindView(R.id.ll_chargingdetail_vbv)
-    LinearLayout ll_chargingdetail_vbv;
     @BindView(R.id.iv_chargedetail_wegit)
     DragView iv_chargedetail_wegit;
+    @BindView(R.id.banner_chargingdetail)
+    Banner banner_chargingdetail;
     private String uuid;
     private String city;
     private double lat;
@@ -153,6 +129,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     private double serchLat;
     private double serchLng;
     private AdvertisementBean.DataBean dataBean;
+    private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
 
     @Override
     protected int getContentLayout() {
@@ -171,12 +148,34 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        tv_titlebar_title.setText("站点详情");
         if (serchLat > 0 && serchLng > 0) {
             refresh();
         } else {
             setLocation();
         }
         UmenUtil.UmengEventStatistics(this, UmenUtil.yxzx3);
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        if (bannerList != null && bannerList.size() > 0) {
+            banner_chargingdetail.setVisibility(View.VISIBLE);
+            setBanner();
+        } else {
+            banner_chargingdetail.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setBanner() {
+        List<String> list = new ArrayList<String>();
+        for (int i = 0; i < bannerList.size(); i++) {
+            list.add(bannerList.get(i).getImg());
+        }
+        banner_chargingdetail.setImages(list)
+                .setImageLoader(new GlideImageLoader())
+                .setOnBannerListener(this)
+                .start();
     }
 
     private void setLocation() {
@@ -235,7 +234,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
             String md5 = SignUtil.sign(mapHeader, "MD5");
             RingLog.d(TAG, "md5 =  " + md5);
-            mPresenter.detail(UrlConstants.getMapHeader(this),serchLng, serchLat, uuid, md5);
+            mPresenter.detail(UrlConstants.getMapHeader(this), serchLng, serchLat, uuid, md5);
         } else if (lat > 0 && lng > 0) {
             mapHeader.put("lng", String.valueOf(lng));
             mapHeader.put("lat", String.valueOf(lat));
@@ -244,7 +243,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
             String md5 = SignUtil.sign(mapHeader, "MD5");
             RingLog.d(TAG, "md5 =  " + md5);
-            mPresenter.detail(UrlConstants.getMapHeader(this),lng, lat, uuid, md5);
+            mPresenter.detail(UrlConstants.getMapHeader(this), lng, lat, uuid, md5);
         }
     }
 
@@ -252,7 +251,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     protected void initData(Bundle savedInstanceState) {
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "6").build();
-        mPresenter.list(UrlConstants.getMapHeader(this),body);
+        mPresenter.list(UrlConstants.getMapHeader(this), body);
     }
 
     @Override
@@ -266,8 +265,8 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
         activityListManager.removeActivity(this); //退出activity
     }
 
-    @OnClick({R.id.iv_chargingdetail_back, iv_chargingdetail_sc, R.id.iv_chargingdetail_share,
-            R.id.ll_chargingdetail_pl, R.id.iv_chargingdetail_lt, R.id.iv_chargingdetail_phone,
+    @OnClick({R.id.iv_titlebar_back, R.id.ll_chargingdetail_sc, R.id.ll_chargingdetail_share,
+            R.id.rl_chargingdetail_pl, R.id.ll_chargingdetail_call,
             R.id.ll_chargingdetail_daohang, R.id.iv_chargedetail_wegit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -280,24 +279,24 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                     }
                 }
                 break;
-            case R.id.iv_chargingdetail_back:
+            case R.id.iv_titlebar_back:
                 finish();
                 break;
-            case iv_chargingdetail_sc:
+            case R.id.ll_chargingdetail_sc:
                 if (SystemUtil.checkLogin(this)) {
                     showDialog();
                     parmMap.clear();
                     parmMap.put("uuid", uuid);
                     if (is_collect == 0) {//是否已收藏(0:否、1:是)
-                        mPresenter.follow(UrlConstants.getMapHeader(this),parmMap);
+                        mPresenter.follow(UrlConstants.getMapHeader(this), parmMap);
                     } else if (is_collect == 1) {
-                        mPresenter.cancel(UrlConstants.getMapHeader(this),parmMap);
+                        mPresenter.cancel(UrlConstants.getMapHeader(this), parmMap);
                     }
                 } else {
                     startActivity(new Intent(this, LoginActivity.class));
                 }
                 break;
-            case R.id.iv_chargingdetail_share:
+            case R.id.ll_chargingdetail_share:
                 if (shareMap != null) {
                     if (shareMap.getUrl() != null && !TextUtils.isEmpty(shareMap.getUrl())) {
                         if (!shareMap.getUrl().startsWith("http:")
@@ -339,12 +338,10 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                     dialog.show(getSupportFragmentManager());
                 }
                 break;
-            case R.id.ll_chargingdetail_pl:
+            case R.id.rl_chargingdetail_pl:
                 startActivity(new Intent(ChargingPileDetailActivity.this, CommentDetailActivity.class).putExtra("uuid", uuid));
                 break;
-            case R.id.iv_chargingdetail_lt:
-                break;
-            case R.id.iv_chargingdetail_phone:
+            case R.id.ll_chargingdetail_call:
                 SystemUtil.cellPhone(ChargingPileDetailActivity.this, "");
                 break;
             case R.id.ll_chargingdetail_daohang:
@@ -381,49 +378,37 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                     kfsj = data.getOpenTime();
                 }
             }
-            String cdf = "";
-            if (data.getElectricityPrice() != null && StringUtil.isNotEmpty(data.getElectricityPrice())) {
-                if (data.getElectricityPrice().contains("/度")) {
-                    cdf = "充电费：" + data.getElectricityPrice();
-                } else {
-                    cdf = "充电费：" + data.getElectricityPrice() + "元/度";
-                }
-            }
             StringUtil.setText(tvChargingdetailKfsj, kfsj, "", View.VISIBLE, View.VISIBLE);
-            tvChargingdetailCdcs.bringToFront();
-            StringUtil.setText(tvChargingdetailCdcs, "充电" + data.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargingdetailCdf, cdf, "", View.VISIBLE, View.VISIBLE);
-            if (StringUtil.isNotEmpty(data.getServiceFee())) {
-                if (data.getServiceFee().endsWith("度")) {
-                    StringUtil.setText(tvChargingdetailFwf, "服务费：" + data.getServiceFee(), "", View.VISIBLE, View.VISIBLE);
-                } else {
-                    StringUtil.setText(tvChargingdetailFwf, "服务费：" + data.getServiceFee() + "元/度", "", View.VISIBLE, View.VISIBLE);
-                }
-            }
+            StringUtil.setText(tvChargingdetailCdf, data.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargingdetailFwf, data.getServiceFee(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailYys, data.getProvider(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailZffs, data.getPayWay(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailTcf, data.getParkingPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailZdbz, data.getRemark(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargingdetailPl, "评论(" + data.getCommentTotal() + ")", "", View.VISIBLE, View.VISIBLE);
-            GlideUtil.loadNetImg(this, data.getHeadImg(), ivChargingdetailImg, R.mipmap.ic_image_load);
+            if (data.getCommentTotal() > 0) {
+                tvChargingdetailPl.setVisibility(View.VISIBLE);
+                StringUtil.setText(tvChargingdetailPl, data.getCommentTotal() + "", "", View.VISIBLE, View.VISIBLE);
+            } else {
+                tvChargingdetailPl.setVisibility(View.GONE);
+            }
             if (is_collect == 0) {//是否已收藏(0:否、1:是)
                 ivChargingdetailSc.setImageResource(R.mipmap.sc_not);
             } else if (is_collect == 1) {
                 ivChargingdetailSc.setImageResource(R.mipmap.sc);
             }
             if (data.getIsPrivate() == 0) {//公共
-                ivChargingdetailLt.setVisibility(View.GONE);
-                ivChargingdetailGgorgr.setImageResource(R.mipmap.icon_gg);
+                tvChargingdetailGgorgr.setText("公共");
+                tvChargingdetailGgorgr.setBackgroundResource(R.drawable.bg_round_yew5);
             } else if (data.getIsPrivate() == 1) {//个人
-                ivChargingdetailLt.setVisibility(View.GONE);
-                ivChargingdetailGgorgr.setImageResource(R.mipmap.icon_gr);
+                tvChargingdetailGgorgr.setText("个人");
+                tvChargingdetailGgorgr.setBackgroundResource(R.drawable.bg_round_red5);
             }
             StringUtil.setText(tvChargingdetailKuaichongNum, "快充" + data.getFastNum() + "个", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailManchongNum, "慢充" + data.getSlowNum() + "个", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailKongxianNum, "空闲" + data.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
             List<ChargeDetailBean.UseNotices> useNotices = data.getUseNotices();
             if (useNotices != null && useNotices.size() > 0) {
-                ll_chargingdetail_vbv
+                vbvChargingdetail
                         .setVisibility(View.VISIBLE);
                 try {
                     vbvChargingdetail.setAdapter(new UseNoticesAdapter(useNotices));
@@ -432,7 +417,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                     e.printStackTrace();
                 }
             } else {
-                ll_chargingdetail_vbv
+                vbvChargingdetail
                         .setVisibility(View.GONE);
             }
         }
@@ -536,6 +521,21 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 refresh();
             } else {
                 mlocationClient.startLocation();
+            }
+        }
+    }
+
+    @Override
+    public void OnBannerClick(int position) {
+        RingLog.e(TAG, "position:" + position);
+        if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
+            AdvertisementBean.DataBean dataBean = bannerList.get(position);
+            if (dataBean != null) {
+                if (dataBean.getDisplay() == 1) {//原生
+
+                } else if (dataBean.getDisplay() == 2) {//H5
+                    startActivity(new Intent(this, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, dataBean.getDestination()));
+                }
             }
         }
     }
