@@ -19,37 +19,13 @@
     <RelativeLayout
         android:id="@+id/rll_mainfrag_serch"
         android:layout_width="match_parent"
-        android:layout_height="60dip"
-        android:layout_marginLeft="5dip"
-        android:layout_marginRight="5dip"
-        android:layout_marginTop="5dip"
-        android:background="@drawable/main_local_bg_shade"
+        android:layout_height="44dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="40dip"
+        android:background="@drawable/bg_round_white"
         android:paddingLeft="15dip"
         android:paddingRight="15dip">
-
-        <LinearLayout
-            android:id="@+id/ll_mainfrag_city"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="15dip"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/tv_mainfrag_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dip"
-                android:text="全国"
-                android:textColor="@color/a0D0D0D"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:id="@+id/iv_mainfrag_city"
-                android:layout_width="8.5dip"
-                android:layout_height="5dip"
-                android:scaleType="fitXY"
-                android:src="@mipmap/jiantou_below" />
-        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rl_mainfrag_top_right"
@@ -58,7 +34,7 @@
             android:layout_alignParentRight="true">
 
             <TextView
-                android:id="@+id/rl_mainfrag_top_cancel"
+                android:id="@+id/tv_mainfrag_top_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -67,53 +43,45 @@
                 android:textSize="14sp"
                 android:visibility="gone" />
 
-            <RelativeLayout
-                android:id="@+id/rl_mainfrag_send"
-                android:layout_width="25dip"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/iv_mainfrag_send_redpoint"
-                    android:layout_width="5dip"
-                    android:layout_height="5dip"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="2dip"
-                    android:layout_marginTop="10dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/redpoint" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="20dip"
-                        android:layout_height="15dip"
-                        android:layout_marginBottom="5dip"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/shangchuanchongdianzhuang" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="上传"
-                        android:textColor="@color/a999999"
-                        android:textSize="8sp" />
-                </LinearLayout>
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv_mainfrag_top_right"
+                android:layout_width="25.5dip"
+                android:layout_height="19.5dip"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_mainfrag_add" />
         </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_mainfrag_top_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="74.5dip"
+                android:layout_height="12dip"
+                android:layout_marginRight="15dip"
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_easyshare" />
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="15dip"
+                android:background="@color/aEEEEEE" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/et_mainfrag_serch"
             android:layout_width="match_parent"
-            android:layout_height="35dip"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/rl_mainfrag_top_right"
-            android:layout_toRightOf="@id/ll_mainfrag_city"
+            android:layout_toLeftOf="@id/iv_mainfrag_top_right"
+            android:layout_toRightOf="@id/ll_mainfrag_top_left"
             android:background="@null"
             android:cursorVisible="true"
+            android:gravity="center_vertical"
             android:hint="搜索附近充电桩"
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
@@ -132,9 +100,9 @@
         android:layout_marginRight="15dip"
         android:layout_marginTop="5dip"
         android:orientation="vertical"
+        android:paddingBottom="15dip"
         android:paddingLeft="15dip"
         android:paddingRight="15dip"
-        android:paddingBottom="15dip"
         android:visibility="gone"
         rv:rv_backgroundColor="@color/white"
         rv:rv_cornerRadius="10dip">
@@ -194,97 +162,20 @@
                     android:layout_height="match_parent" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_mainfrag_rmht"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:layout_marginBottom="10dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:layout_marginTop="40dip">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="54dip"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="15dip"
-                    android:paddingRight="15dip">
-
-                    <ImageView
-                        android:layout_width="22dip"
-                        android:layout_height="22dip"
-                        android:layout_marginRight="5dip"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/remenhuati" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="热门话题"
-                        android:textColor="@color/a3a3636"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="105dip"
-                    android:orientation="horizontal"
-                    android:paddingLeft="15dip"
-                    android:paddingRight="15dip">
-
-                    <ImageView
-                        android:id="@+id/iv_mainfrag_rmht1"
-                        android:layout_width="0dip"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="5dip"
-                        android:layout_weight="1"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/ic_image_load" />
-
-                    <LinearLayout
-                        android:layout_width="0dip"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/iv_mainfrag_rmht2"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dip"
-                            android:layout_marginBottom="5dip"
-                            android:layout_weight="1"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/ic_image_load" />
-
-                        <ImageView
-                            android:id="@+id/iv_mainfrag_rmht3"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dip"
-                            android:layout_weight="1"
-                            android:scaleType="fitXY"
-                            android:src="@mipmap/ic_image_load" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="15dip"
-                    android:background="@color/af8f8f8" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_mainfrag_localev"
-                android:layout_width="match_parent"
-                android:layout_height="54dip"
-                android:background="@color/white"
-                android:paddingLeft="15dip"
-                android:paddingRight="15dip">
-
-                <LinearLayout
-                    android:id="@+id/rl_mainfrag_localev_more"
+                    android:id="@+id/ll_mainfrag_localev_more"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -305,104 +196,346 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_toLeftOf="@id/rl_mainfrag_localev_more"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dip"
+                    android:layout_toLeftOf="@id/ll_mainfrag_localev_more"
+                    android:gravity="center_vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_mainfrag_localev_gg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dip">
+
+                        <TextView
+                            android:id="@+id/tv_mainfrag_localev_gg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="公共"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_mainfrag_localev_gg"
+                            android:layout_width="42dip"
+                            android:layout_height="5dip"
+                            android:layout_marginTop="20dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/tab_line" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_mainfrag_localev_gr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dip">
+
+                        <TextView
+                            android:id="@+id/tv_mainfrag_localev_gr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="个人"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_mainfrag_localev_gr"
+                            android:layout_width="42dip"
+                            android:layout_height="5dip"
+                            android:layout_marginTop="20dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/tab_line"
+                            android:visibility="invisible" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="133dip"
+                android:layout_marginBottom="15dip">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_mainfrag_localev"
+                    android:layout_width="match_parent"
+                    android:layout_height="133dip"
+                    android:background="@color/af8f8f8" />
+            </RelativeLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_mainfrag"
+                android:layout_width="match_parent"
+                android:layout_height="190dip"
+                android:layout_marginBottom="15dip"
+                android:clipToPadding="false"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip">
+
+                <LinearLayout
+                    android:id="@+id/ll_mainfrag_rmzx_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="25dip"
-                        android:layout_height="25dip"
-                        android:layout_marginRight="5dip"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/tuijianchongdianzhuang" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="推荐附近充电桩"
-                        android:textColor="@color/a333333"
-                        android:textSize="16sp" />
+                        android:layout_marginRight="5dip"
+                        android:text="更多"
+                        android:textColor="@color/a999999"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="7dip"
+                        android:layout_height="11dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/right_more" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dip"
+                    android:layout_toLeftOf="@id/ll_mainfrag_rmzx_more"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="33dip"
+                        android:layout_height="32dip"
+                        android:layout_marginRight="5dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/icon_rmpp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="热门资讯"
+                        android:textColor="@color/a333333"
+                        android:textSize="20sp" />
+                </LinearLayout>
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dip"
-                android:background="@color/af8f8f8" />
-
             <LinearLayout
+                android:id="@+id/ll_mainfrag_rmzx"
                 android:layout_width="match_parent"
-                android:layout_height="40dip"
-                android:background="@mipmap/bg_shade_down"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingBottom="10dip"
+                android:paddingLeft="10dip"
+                android:paddingTop="10dip">
+
+                <TextView
+                    android:id="@+id/tv_mainfrag_rmzx_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginRight="10dip"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="TextView"
+                    android:textColor="@color/a333333"
+                    android:textSize="16sp" />
 
                 <RelativeLayout
-                    android:id="@+id/rl_mainfrag_localev_gg"
-                    android:layout_width="0dip"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/tv_mainfrag_localev_gg"
+                    <ImageView
+                        android:id="@+id/iv_mainfrag_rmzx_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="171dip"
+                        android:layout_marginBottom="10dip"
+                        android:layout_marginRight="10dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_image_load" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_mainfrag_rmzx_img"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="公共"
-                        android:textColor="@color/a0271F0"
-                        android:textSize="15sp" />
-
-                    <View
-                        android:id="@+id/vw_mainfrag_localev_gg"
-                        android:layout_width="20dip"
-                        android:layout_height="2dip"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/a0271F0" />
+                        android:layout_height="wrap_content" />
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="2dip"
-                    android:layout_height="18dip"
-                    android:layout_gravity="center"
-                    android:background="@color/aEEEEEE" />
-
                 <RelativeLayout
-                    android:id="@+id/rl_mainfrag_localev_gr"
-                    android:layout_width="0dip"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dip">
 
-                    <TextView
-                        android:id="@+id/tv_mainfrag_localev_gr"
+                    <LinearLayout
+                        android:id="@+id/ll_mainfrag_rmzx_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="个人"
-                        android:textColor="@color/a333333"
-                        android:textSize="15sp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical">
 
-                    <View
-                        android:id="@+id/vw_mainfrag_localev_gr"
-                        android:layout_width="20dip"
-                        android:layout_height="2dip"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/a0271F0"
-                        android:visibility="gone" />
+                        <TextView
+                            android:id="@+id/tv_mainfrag_rmzx_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dip"
+                            android:text="TextView"
+                            android:textColor="@color/a999999"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_mainfrag_rmzx_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="TextView"
+                            android:textColor="@color/a999999"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dip"
+                        android:layout_toLeftOf="@id/ll_mainfrag_rmzx_time"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_mainfrag_rmzx_userimg"
+                            android:layout_width="20dip"
+                            android:layout_height="20dip"
+                            android:layout_marginRight="5dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/ic_image_load_circle" />
+
+                        <TextView
+                            android:id="@+id/tv_mainfrag_rmzx_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="TextView"
+                            android:textColor="@color/a666666"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_mainfrag_localev"
+                <LinearLayout
+                    android:id="@+id/ll_mainfrag_rmxc_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dip"
+                        android:text="更多"
+                        android:textColor="@color/a999999"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="7dip"
+                        android:layout_height="11dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/right_more" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/af8f8f8" />
+                    android:layout_marginRight="10dip"
+                    android:layout_toLeftOf="@id/ll_mainfrag_rmxc_more"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="33dip"
+                        android:layout_height="32dip"
+                        android:layout_marginRight="5dip"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/icon_rmpp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="热门选车"
+                        android:textColor="@color/a333333"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="225dip"
+                android:layout_marginBottom="15dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip">
+
+                <ImageView
+                    android:id="@+id/iv_mainfrag_rmxc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/ic_image_load" />
+
+                <TextView
+                    android:id="@+id/tv_mainfrag_rmxc_ck"
+                    android:layout_width="match_parent"
+                    android:layout_height="39dip"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="15dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginRight="15dip"
+                    android:background="@drawable/bg_round_black5"
+                    android:gravity="center"
+                    android:text="查看详情"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/tv_mainfrag_rmxc_ck"
+                    android:layout_margin="15dip"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_mainfrag_rmxc_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dip"
+                        android:text="TextView"
+                        android:textColor="@color/a333333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_mainfrag_rmxc_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textColor="@color/a666666"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
