@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,7 +51,6 @@ import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MainFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
-import com.haotang.easyshare.mvp.model.entity.res.BrandAreaBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.model.entity.res.SerchResult;
@@ -66,13 +63,13 @@ import com.haotang.easyshare.mvp.view.activity.CommentDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
-import com.haotang.easyshare.mvp.view.adapter.MainLocalAdapter;
+import com.haotang.easyshare.mvp.view.adapter.MainLocalHorAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainSerchResultAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ViewPagerMainAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
-import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
+import com.haotang.easyshare.mvp.view.widget.CardTransformer;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
 import com.haotang.easyshare.util.DensityUtil;
@@ -144,8 +141,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     ImageView iv_mainfrag_localev_gg;
     @BindView(R.id.iv_mainfrag_localev_gr)
     ImageView iv_mainfrag_localev_gr;
-    @BindView(R.id.vp_mainfrag)
-    ViewPager vpMainfrag;
+    @BindView(R.id.banner_mainfrag)
+    Banner banner_mainfrag;
     @BindView(R.id.ll_mainfrag_rmzx_more)
     LinearLayout llMainfragRmzxMore;
     @BindView(R.id.tv_mainfrag_rmzx_title)
@@ -180,7 +177,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private int index;
     private List<MainFragChargeBean> list = new ArrayList<MainFragChargeBean>();
     private List<MainFragmentData.PersonalBean> personalList = new ArrayList<MainFragmentData.PersonalBean>();
-    private MainLocalAdapter mainLocalAdapter;
+    private MainLocalHorAdapter mainLocalAdapter;
     private PopupWindow pWinBottomDialog;
     private MainFragmenBoDa mainFragmenBoDa;
     private PoiSearch.Query query;
@@ -195,10 +192,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private AMapLocationClientOption mLocationOption;
     private String cityCode;
     private List<MainFragmentData.PublishBean> publishList = new ArrayList<MainFragmentData.PublishBean>();
-    private List<BrandAreaBean.AdBean> adList = new ArrayList<BrandAreaBean.AdBean>();
-    private BrandAreaBean.AdBean adBean1;
-    private BrandAreaBean.AdBean adBean2;
-    private BrandAreaBean.AdBean adBean3;
     private PopupWindow pWin;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
     private MainSerchResultAdapter mainSerchResultAdapter;
@@ -236,6 +229,30 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         rtvMainfragLocal.bringToFront();
         rllMainfragSerch.bringToFront();
         setLocation();
+
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
+        if (bannerList != null && bannerList.size() > 0) {
+            banner_mainfrag.setOffscreenPageLimit(2);//预加载2个
+            //banner_mainfrag.setPageMargin(-70);//设置viewpage之间的间距
+            banner_mainfrag.setPageTransformer(true, new CardTransformer());
+            banner_mainfrag.setVisibility(View.VISIBLE);
+            List<String> list = new ArrayList<String>();
+            for (int i = 0; i < bannerList.size(); i++) {
+                list.add(bannerList.get(i).getImg());
+            }
+            banner_mainfrag.setImages(list)
+                    .setImageLoader(new GlideImageLoader())
+                    .setOnBannerListener(this)
+                    .start();
+        } else {
+            banner_mainfrag.setVisibility(View.INVISIBLE);
+        }
 
         /*bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
         bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
@@ -291,11 +308,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvMainfragLocalev.setLayoutManager(linearLayoutManager);
-        mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list, true, city);
+        mainLocalAdapter = new MainLocalHorAdapter(R.layout.item_mainlocal_hor, list);
         rvMainfragLocalev.setAdapter(mainLocalAdapter);
-        //添加自定义分割线
-        rvMainfragLocalev.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL, DensityUtil.dp2px(mActivity, 15),
-                ContextCompat.getColor(mActivity, R.color.af8f8f8)));
 
         serchList.clear();
         serchList.add(new SerchResult("目的地", "", 0, 0, true));
@@ -426,9 +440,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     }
 
     private void refresh(double localLat, double localLng) {
-        adBean1 = null;
-        adBean2 = null;
-        adBean3 = null;
         showDialog();
         mPresenter.homeIndex(UrlConstants.getMapHeader(mActivity), localLng, localLat);
     }
@@ -494,8 +505,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         } else if (index == 1) {
             tvMainfragLocalevGg.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             tvMainfragLocalevGr.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            iv_mainfrag_localev_gg.setVisibility(View.VISIBLE);
-            iv_mainfrag_localev_gr.setVisibility(View.INVISIBLE);
+            iv_mainfrag_localev_gg.setVisibility(View.INVISIBLE);
+            iv_mainfrag_localev_gr.setVisibility(View.VISIBLE);
             if (personalList.size() > 0) {
                 for (int i = 0; i < personalList.size(); i++) {
                     MainFragmentData.PersonalBean publishBean = personalList.get(i);
