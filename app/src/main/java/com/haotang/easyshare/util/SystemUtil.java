@@ -424,6 +424,8 @@ public class SystemUtil {
         //点击外部消失
         pWinBottomDialog.setOutsideTouchable(true);
         //设置可以点击
+        pWinBottomDialog.setClippingEnabled(false);
+        //设置可以点击
         pWinBottomDialog.setTouchable(true);
         //进入退出的动画
         pWinBottomDialog.setAnimationStyle(R.style.mypopwindow_anim_style);

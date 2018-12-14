@@ -72,16 +72,10 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     TextView tvChargeingTitlebarOther;
     @BindView(R.id.tv_chargeing_num)
     TextView tvChargeingNum;
-    @BindView(R.id.iv_chargeing)
-    ImageView ivChargeing;
     @BindView(R.id.tv_chargeing_money)
     TextView tvChargeingMoney;
     @BindView(R.id.tv_chargeing_ljcz)
     TextView tvChargeingLjcz;
-    @BindView(R.id.ll_chargeing_start)
-    LinearLayout ll_chargeing_start;
-    @BindView(R.id.rl_chargeing_start)
-    RelativeLayout rlChargeingStart;
     @BindView(R.id.ll_chargeing_charge_before)
     LinearLayout rlChargeingChargeBefore;
     @BindView(R.id.tv_chargeing_name)
@@ -116,12 +110,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     TextView tv_chargeing_coupon;
     @BindView(R.id.rl_chargeing_coupon)
     RelativeLayout rl_chargeing_coupon;
-    @BindView(R.id.tv_chargeing_djs)
-    TextView tv_chargeing_djs;
     @BindView(R.id.tv_chargeing_tishi)
     TextView tv_chargeing_tishi;
-    @BindView(R.id.rl_chargeing_djs)
-    RelativeLayout rl_chargeing_djs;
     private String phone;
     private int orderId;
     private String endCode;
@@ -166,8 +156,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         rlChargeingChargeBefore.setVisibility(View.VISIBLE);
         tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
-        Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
-        ll_chargeing_start.bringToFront();
     }
 
     @Override
@@ -246,8 +234,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         rlChargeingChargeBefore.setVisibility(View.VISIBLE);
                         tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                         tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
-                        Glide.with(mActivity).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
-                        ll_chargeing_start.bringToFront();
                         //调取取消订单接口
                         showDialog();
                         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -480,8 +466,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 rlChargeingChargeBefore.setVisibility(View.VISIBLE);
                 tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                 tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
-                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
-                ll_chargeing_start.bringToFront();
                 //调取取消订单接口
                 showDialog();
                 MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -639,8 +623,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         rlChargeingChargeBefore.setVisibility(View.VISIBLE);
         tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
-        Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
-        ll_chargeing_start.bringToFront();
         disMissDialog();
         if (data != null) {
             ll_chargeing_ing.bringToFront();
@@ -719,8 +701,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         rlChargeingChargeBefore.setVisibility(View.VISIBLE);
         tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
-        Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
-        ll_chargeing_start.bringToFront();
     }
 
     @Override
@@ -748,8 +728,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         rlChargeingChargeBefore.setVisibility(View.VISIBLE);
         tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
-        Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
-        ll_chargeing_start.bringToFront();
         PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
         PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
         disMissDialog();
@@ -783,7 +761,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         if (data != null) {
             phone = data.getKf_phone();
             balance = data.getBalance();
-            tvChargeingMoney.setText("当前可用：" + balance + "元");
+            tvChargeingMoney.setText(balance+"");
         }
     }
 
@@ -801,8 +779,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         rlChargeingChargeBefore.setVisibility(View.VISIBLE);
         tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
-        Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeing);
-        ll_chargeing_start.bringToFront();
         PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
         PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
     }

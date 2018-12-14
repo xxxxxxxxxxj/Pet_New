@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="ringColor" format="color"></attr>
+    <attr name="ringWidth" format="dimension"></attr>
+    <attr name="globuleColor" format="color"></attr>
+    <attr name="globuleRadius" format="dimension"></attr>
+    <attr name="cycleTime" format="float"></attr>
+
+    <declare-styleable name="AccelerateCircularView">
+        <attr name="ringColor" />
+        <attr name="ringWidth" />
+        <attr name="globuleColor" />
+        <attr name="globuleRadius" />
+        <attr name="cycleTime" />
+    </declare-styleable>
+
     <declare-styleable name="EmoticonsIndicatorView">
 
         <attr name="bmpNomal" format="reference" />
