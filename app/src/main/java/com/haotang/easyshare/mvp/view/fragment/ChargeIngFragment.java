@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,7 +13,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.bumptech.glide.Glide;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerChargeIngFragmentCommponent;
@@ -39,6 +37,7 @@ import com.haotang.easyshare.mvp.view.services.ChargeBillService;
 import com.haotang.easyshare.mvp.view.services.ChargeStateService;
 import com.haotang.easyshare.mvp.view.widget.AlertDialogNavAndPost;
 import com.haotang.easyshare.mvp.view.widget.LoadingProgressDailog;
+import com.haotang.easyshare.mvp.view.widget.WaveProgressView;
 import com.haotang.easyshare.util.ComputeUtil;
 import com.haotang.easyshare.util.CountdownUtil;
 import com.haotang.easyshare.util.PollingUtils;
@@ -86,8 +85,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     TextView tvChargeingKwh;
     @BindView(R.id.tv_chargeing_status)
     TextView tvChargeingStatus;
-    @BindView(R.id.iv_chargeing_ing)
-    ImageView ivChargeingIng;
     @BindView(R.id.tv_chargeing_cdf)
     TextView tvChargeingCdf;
     @BindView(R.id.tv_chargeing_fwf)
@@ -112,6 +109,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     RelativeLayout rl_chargeing_coupon;
     @BindView(R.id.tv_chargeing_tishi)
     TextView tv_chargeing_tishi;
+    @BindView(R.id.wpv_chargeing)
+    WaveProgressView wpv_chargeing;
     private String phone;
     private int orderId;
     private String endCode;
@@ -368,7 +367,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 rl_chargeing_coupon.setVisibility(View.GONE);
                 tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                 tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
-                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
@@ -398,7 +396,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     rlChargeingChargeBefore.setVisibility(View.GONE);
                     tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                     tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
-                    Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                     ll_chargeing_ing.bringToFront();
                     if (data.getDialogTips() != null && data.getDialogTips().size() > 0) {
                         showRechargeTimeOutDialog(data.getDialogTips(), data.getStopTimeout());
@@ -561,7 +558,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 SystemUtil.cellPhone(mActivity, phone);
                 break;
             case R.id.rl_chargeing_start:
-                startActivity(new Intent(mActivity, ScanCodeActivity.class).putExtra("phone",phone));
+                startActivity(new Intent(mActivity, ScanCodeActivity.class).putExtra("phone", phone));
                 break;
             case R.id.tv_chargeing_ljcz:
                 startActivity(new Intent(mActivity, RechargeActivity.class));
@@ -617,6 +614,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
     }
 
+    int progress = 0;
+
     @Override
     public void ingSuccess(StartChargeing.DataBean data) {//查询是否有进行中订单
         rlChargeingChargeAfter.setVisibility(View.GONE);
@@ -646,7 +645,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 rlChargeingChargeBefore.setVisibility(View.GONE);
                 tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                 tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
-                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
@@ -657,7 +655,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 rlChargeingChargeBefore.setVisibility(View.GONE);
                 tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                 tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
-                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(tvChargeingStatus, "充电中...", "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
@@ -668,7 +665,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 rlChargeingChargeBefore.setVisibility(View.GONE);
                 tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                 tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
-                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(tvChargeingStatus, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(btnChargeingSubmit, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
@@ -680,7 +676,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 rlChargeingChargeBefore.setVisibility(View.GONE);
                 tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                 tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
-                Glide.with(this).load(R.mipmap.icon_chargeing_gif).asGif().into(ivChargeingIng);
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(tvChargeingStatus, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(btnChargeingSubmit, "获取账单中...", "", View.VISIBLE, View.VISIBLE);
@@ -761,7 +756,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         if (data != null) {
             phone = data.getKf_phone();
             balance = data.getBalance();
-            tvChargeingMoney.setText(balance+"");
+            tvChargeingMoney.setText(balance + "");
         }
     }
 

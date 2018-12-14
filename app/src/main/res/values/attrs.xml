@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="WaveProgressView">
+
+        <attr name="waveRadius" format="dimension"/>
+        <attr name="waveProgress" format="integer"/>
+        <attr name="waveTextColor" format="color"/>
+        <attr name="waveWaveColor" format="color"/>
+        <attr name="waveBorderColor" format="color"/>
+        <attr name="waveHideText" format="boolean"/>
+        <attr name="waveBorderWidth" format="dimension"/>
+        <attr name="waveTextSize" format="dimension"/>
+        <attr name="waveWaveHeight" format="dimension"/>
+
+    </declare-styleable>
     <attr name="ringColor" format="color"></attr>
     <attr name="ringWidth" format="dimension"></attr>
     <attr name="globuleColor" format="color"></attr>

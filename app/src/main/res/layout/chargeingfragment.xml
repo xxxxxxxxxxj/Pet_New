@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:acv="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -129,8 +130,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_chargeing_name"
@@ -191,12 +192,29 @@
 
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/iv_chargeing_ing"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/icon_chargeing_gif" />
+                    <com.haotang.easyshare.mvp.view.widget.AccelerateCircularView
+                        android:layout_width="150dip"
+                        android:layout_height="150dip"
+                        acv:cycleTime="1500"
+                        acv:globuleColor="@color/aff6525"
+                        acv:globuleRadius="5dp"
+                        acv:ringColor="#FE9B41"
+                        acv:ringWidth="3dip" />
+
+                    <com.haotang.easyshare.mvp.view.widget.WaveProgressView
+                        android:id="@+id/wpv_chargeing"
+                        android:layout_width="115dip"
+                        android:layout_height="115dip"
+                        android:layout_centerInParent="true"
+                        app:waveBorderColor="@color/transparent"
+                        app:waveBorderWidth="-2dp"
+                        app:waveHideText="true"
+                        app:waveProgress="0"
+                        app:waveRadius="50dp"
+                        app:waveTextColor="@color/white"
+                        app:waveTextSize="18sp"
+                        app:waveWaveColor="@color/afe9b41"
+                        app:waveWaveHeight="10dp" />
                 </RelativeLayout>
 
                 <LinearLayout
