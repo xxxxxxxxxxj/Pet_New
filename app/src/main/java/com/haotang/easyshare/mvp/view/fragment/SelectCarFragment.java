@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.view.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.View;
@@ -13,12 +14,14 @@ import com.haotang.easyshare.di.component.fragment.DaggerSelectCarFragmentCommpo
 import com.haotang.easyshare.di.module.fragment.SelectCarFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
+import com.haotang.easyshare.mvp.model.entity.res.CarType;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.SelectCarFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
+import com.haotang.easyshare.mvp.view.adapter.MyFragChargePagerAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.ISelectCarFragmentView;
 import com.haotang.easyshare.util.SystemUtil;
@@ -35,6 +38,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -60,6 +64,9 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     ViewPager vpSelectcar;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
     private int carFlag;
+    private ArrayList<BaseFragment> mFragments = new ArrayList<>();
+    private MyFragChargePagerAdapter myFragChargePagerAdapter;
+    private List<CarType.DataBean> list = new ArrayList<CarType.DataBean>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -77,9 +84,21 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
                 .selectCarFragmentModule(new SelectCarFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
-        /*vpSelectcar.setAdapter(new ViewPagerSelectCarAdapter(mActivity, bannerList));
-        vpSelectcar.setOffscreenPageLimit(2);//预加载2个
-        vpSelectcar.setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));//设置viewpage之间的间距*/
+
+        myFragChargePagerAdapter = new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments);
+        vpSelectcar.setAdapter(myFragChargePagerAdapter);
+    }
+
+    private void setRequest() {
+        showDialog();
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        if (carFlag == 0) {//新车
+            builder.addFormDataPart("source", "1");
+        } else if (carFlag == 1) {//二手车
+            builder.addFormDataPart("source", "2");
+        }
+        RequestBody body = builder.build();
+        mPresenter.carType(UrlConstants.getMapHeader(mActivity), body);
     }
 
     private void setBanner() {
@@ -115,11 +134,10 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
 
     private void refresh() {
         showDialog();
-        mPresenter.hot(UrlConstants.getMapHeader(mActivity));
-        mPresenter.special(UrlConstants.getMapHeader(mActivity));
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "3").build();
         mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
+        setCar(0);
     }
 
     @Override
@@ -142,9 +160,37 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
             bannerList.addAll(data);
             bannerSelectcar.setVisibility(View.VISIBLE);
             setBanner();
-        }else{
+        } else {
             bannerSelectcar.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void carTypeSuccess(List<CarType.DataBean> data) {
+        disMissDialog();
+        if (data != null && data.size() > 0) {
+            list.clear();
+            mFragments.clear();
+            list.addAll(data);
+            vpSelectcar.setOffscreenPageLimit(data.size());//预加载
+            vpSelectcar.setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));//设置viewpage之间的间距
+            for (int i = 0; i < data.size(); i++) {
+                CarType.DataBean dataBean = data.get(i);
+                HotCarFragment hotCarFragment = new HotCarFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("selectFragCarBean", dataBean);
+                hotCarFragment.setArguments(bundle);
+                mFragments.add(hotCarFragment);
+            }
+            myFragChargePagerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void carTypeFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "hotFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity, code);
     }
 
     @Override
@@ -179,31 +225,32 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_selectcar_more:
-                startActivity(new Intent(mActivity, AllBrandsActivity.class).putExtra("flag",1));
+                startActivity(new Intent(mActivity, AllBrandsActivity.class).putExtra("flag", 1));
                 break;
             case R.id.rl_selectcar_xinche:
-                carFlag = 0;
-                setCar();
+                setCar(0);
                 break;
             case R.id.rl_selectcar_esc:
-                carFlag = 1;
-                setCar();
+                setCar(1);
                 break;
         }
     }
 
-    private void setCar() {
-        if (carFlag == 0) {
-            tvSelectcarXinche.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
-            tvSelectcarEsc.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+    private void setCar(int flag) {
+        if (flag == 0) {
+            carFlag = 0;
+            tvSelectcarXinche.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            tvSelectcarEsc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             ivSelectcarXinche.setVisibility(View.VISIBLE);
             ivSelectcarEsc.setVisibility(View.INVISIBLE);
-        } else if (carFlag == 1) {
-            tvSelectcarXinche.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
-            tvSelectcarEsc.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+        } else if (flag == 1) {
+            carFlag = 1;
+            tvSelectcarXinche.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            tvSelectcarEsc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             ivSelectcarXinche.setVisibility(View.INVISIBLE);
             ivSelectcarEsc.setVisibility(View.VISIBLE);
         }
+        setRequest();
     }
 
     @Override

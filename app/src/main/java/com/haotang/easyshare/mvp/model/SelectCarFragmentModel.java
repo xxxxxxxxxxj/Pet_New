@@ -45,4 +45,14 @@ public class SelectCarFragmentModel implements ISelectCarFragmentModel {
     public Observable list(Map<String, String> headers,RequestBody body) {
         return DevRing.httpManager().getService(HotFragmentApiService.class).list(headers,body);
     }
+
+    /**
+     * 选车首页
+     * @param headers
+     * @param body
+     */
+    @Override
+    public Observable carType(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).carType(headers,body);
+    }
 }

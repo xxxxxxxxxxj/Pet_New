@@ -33,4 +33,11 @@ public interface ISelectCarFragmentModel extends IBaseModel {
      * @param body
      */
     Observable list(Map<String, String> headers,RequestBody body);
+
+    /**
+     * 选车首页
+     * @param headers
+     * @param body
+     */
+    Observable carType(Map<String, String> headers, RequestBody body);
 }

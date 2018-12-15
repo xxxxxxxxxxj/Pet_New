@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.model.http;
 
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
+import com.haotang.easyshare.mvp.model.entity.res.CarType;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 
@@ -42,4 +43,10 @@ public interface HotFragmentApiService {
      */
     @POST(UrlConstants.NEWEST_POINT)
     Observable<HotPoint> newest(@HeaderMap Map<String, String> headers,@Body() RequestBody body);
+
+    /**
+     * 选车首页
+     */
+    @POST(UrlConstants.CARTYPE)
+    Observable<CarType> carType(@HeaderMap Map<String, String> headers,@Body() RequestBody body);
 }

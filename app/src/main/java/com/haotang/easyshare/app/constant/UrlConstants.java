@@ -295,6 +295,10 @@ public class UrlConstants {
      * 67.检查升级
      */
     public static final String CHECK_VERSION = "util/version/check";
+    /**
+     * 68.选车首页
+     */
+    public static final String CARTYPE = "brand/car/special";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境
