@@ -55,7 +55,7 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     Button btn_my_balance_dh;
     @BindView(R.id.et_my_balance_dhm)
     EditText et_my_balance_dhm;
-    private String[] mTitles = {"全部记录", "消费明细", "充值记录"};
+    private String[] mTitles = {"全部记录", "充值记录", "消费明细", "兑换记录"};
     private ArrayList<BaseFragment> mFragments = new ArrayList<>();
     private int currentTabIndex;
     private RefundPopupWindow refundPopupWindow;
@@ -95,7 +95,13 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
         for (int i = 0; i < mTitles.length; i++) {
             RechargeFragment rechargeFragment = new RechargeFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("type", i);
+            if (i == 1) {
+                bundle.putInt("type", 2);
+            } else if (i == 2) {
+                bundle.putInt("type", 1);
+            } else {
+                bundle.putInt("type", i);
+            }
             rechargeFragment.setArguments(bundle);
             mFragments.add(rechargeFragment);
         }

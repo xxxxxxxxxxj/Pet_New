@@ -19,6 +19,7 @@ import com.flyco.tablayout.utils.UnreadMsgUtils;
 import com.flyco.tablayout.widget.MsgView;
 import com.github.zackratos.ultimatebar.UltimateBar;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerMainActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MainActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.MainTabEvent;
@@ -58,6 +59,8 @@ import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.BindView;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * 首页
@@ -191,6 +194,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        showDialog();
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        RequestBody build = builder.build();
+        mPresenter.getLatestVersion(UrlConstants.getMapHeader(this), build);
     }
 
     @Override
@@ -262,12 +269,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     public void getLatestVersionSuccess(LastVersionBean lastVersionBean) {
+        disMissDialog();
         RingLog.d(TAG, "lastVersionBean = " + lastVersionBean);
         if (lastVersionBean != null) {
             String downloadPath = lastVersionBean.getDownload();
-            int isUpgrade = lastVersionBean.getMandate();
-            String latestVersion = lastVersionBean.getNversion();
-            String versionHint = lastVersionBean.getText();
+            int isUpgrade = lastVersionBean.getCompulsory();
+            String latestVersion = lastVersionBean.getVersion();
+            String versionHint = lastVersionBean.getContent();
             if (latestVersion != null
                     && !TextUtils.isEmpty(latestVersion)) {
                 boolean isLatest = UpdateUtil
@@ -297,6 +305,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     public void getLatestVersionFail(int status, String desc) {
+        disMissDialog();
         RingLog.e(TAG, "MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
         RingToast.show("MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
         SystemUtil.Exit(this, status);

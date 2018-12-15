@@ -93,7 +93,6 @@
                             android:textSize="12sp" />
 
                         <LinearLayout
-                            android:id="@+id/ll_myfragment_yue"
                             android:layout_width="match_parent"
                             android:layout_height="84dip"
                             android:layout_marginBottom="15dip"
@@ -102,6 +101,7 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
+                                android:id="@+id/ll_myfragment_yue"
                                 android:layout_width="0dip"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"

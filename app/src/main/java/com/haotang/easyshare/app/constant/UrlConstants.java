@@ -291,6 +291,10 @@ public class UrlConstants {
      * 66.兑换码
      */
     public static final String REDEEMCODE = "coupon/code/use";
+    /**
+     * 67.检查升级
+     */
+    public static final String CHECK_VERSION = "util/version/check";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

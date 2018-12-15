@@ -9,6 +9,7 @@ import com.ljy.devring.DevRing;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -21,8 +22,8 @@ import io.reactivex.Observable;
 public class MainModel implements IMainModel {
 
     @Override
-    public Observable getLatestVersion(Map<String, String> headers, Activity activity, int systemType, String version, String time) {
-        return DevRing.httpManager().getService(MainActivityApiService.class).getLatestVersion(headers,"", systemType, version, time);
+    public Observable getLatestVersion(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(MainActivityApiService.class).getLatestVersion(headers,body);
     }
 
     @Override

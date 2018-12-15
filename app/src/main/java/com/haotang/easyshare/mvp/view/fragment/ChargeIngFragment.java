@@ -614,8 +614,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
     }
 
-    int progress = 0;
-
     @Override
     public void ingSuccess(StartChargeing.DataBean data) {//查询是否有进行中订单
         rlChargeingChargeAfter.setVisibility(View.GONE);

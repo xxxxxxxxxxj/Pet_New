@@ -9,40 +9,49 @@ package com.haotang.easyshare.mvp.model.entity.res;
  * @date XJ on 2018/4/13 14:52
  */
 public class LastVersionBean {
+    private int compulsory;
+    private String content;
+    private String title;
+    private String version;
     private String download;
-    private int mandate;
-    private String text;
-    private String nversion;
-
-    public String getDownload() {
-        return download;
-    }
 
     public void setDownload(String download) {
         this.download = download;
     }
 
-    public int getMandate() {
-        return mandate;
+    public int getCompulsory() {
+        return compulsory;
     }
 
-    public void setMandate(int mandate) {
-        this.mandate = mandate;
+    public void setCompulsory(int compulsory) {
+        this.compulsory = compulsory;
     }
 
-    public String getText() {
-        return text;
+    public String getContent() {
+        return content;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getNversion() {
-        return nversion;
+    public String getTitle() {
+        return title;
     }
 
-    public void setNversion(String nversion) {
-        this.nversion = nversion;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getDownload() {
+        return download;
     }
 }

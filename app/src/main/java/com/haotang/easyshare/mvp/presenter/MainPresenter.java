@@ -16,6 +16,8 @@ import com.ljy.devring.util.RxLifecycleUtil;
 
 import java.util.Map;
 
+import okhttp3.RequestBody;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -32,8 +34,8 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
     /**
      * 获取最新版本
      */
-    public void getLatestVersion(Map<String, String> headers, Activity activity, int systemType, String version, String time) {
-        DevRing.httpManager().commonRequest(mIModel.getLatestVersion(headers,activity, systemType, version, time),
+    public void getLatestVersion(Map<String, String> headers, RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.getLatestVersion(headers,body),
                 new CommonObserver<HttpResult<LastVersionBean>>() {
             @Override
             public void onResult(HttpResult<LastVersionBean> result) {

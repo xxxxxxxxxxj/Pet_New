@@ -135,9 +135,11 @@ public class RechargeFragment extends BaseFragment<RechargeFragmentPresenter> im
         showDialog();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("page", mNextRequestPage + "");
-        builder.addFormDataPart("type", type + "");
+        if (type > 0) {
+            builder.addFormDataPart("type", type + "");
+        }
         RequestBody build = builder.build();
-        mPresenter.list(UrlConstants.getMapHeader(mActivity),build);
+        mPresenter.list(UrlConstants.getMapHeader(mActivity), build);
     }
 
     private void loadMore() {
@@ -168,7 +170,8 @@ public class RechargeFragment extends BaseFragment<RechargeFragmentPresenter> im
             } else {
                 if (mNextRequestPage == 1) {
                     rechargeFragAdapter.loadMoreEnd(true);
-                    rechargeFragAdapter.setEmptyView(setEmptyViewBase(2, "暂无记录", R.mipmap.no_data, DensityUtil.dp2px(mActivity, 200), DensityUtil.dp2px(mActivity, 200), null));
+                    rechargeFragAdapter.setEmptyView(setEmptyViewBase(2, "暂无记录", R.mipmap.no_data,
+                            DensityUtil.dp2px(mActivity, 150), DensityUtil.dp2px(mActivity, 150), null));
                 } else {
                     rechargeFragAdapter.loadMoreEnd(false);
                 }
