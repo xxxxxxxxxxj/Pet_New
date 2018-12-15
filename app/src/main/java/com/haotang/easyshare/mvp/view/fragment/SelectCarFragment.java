@@ -19,7 +19,6 @@ import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.SelectCarFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
-import com.haotang.easyshare.mvp.view.adapter.ViewPagerSelectCarAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.ISelectCarFragmentView;
 import com.haotang.easyshare.util.SystemUtil;
@@ -78,25 +77,9 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
                 .selectCarFragmentModule(new SelectCarFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
-
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        if (bannerList != null && bannerList.size() > 0) {
-            bannerSelectcar.setVisibility(View.VISIBLE);
-            setBanner();
-        } else {
-            bannerSelectcar.setVisibility(View.INVISIBLE);
-        }
-
-        vpSelectcar.setAdapter(new ViewPagerSelectCarAdapter(mActivity, bannerList));
+        /*vpSelectcar.setAdapter(new ViewPagerSelectCarAdapter(mActivity, bannerList));
         vpSelectcar.setOffscreenPageLimit(2);//预加载2个
-        vpSelectcar.setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));//设置viewpage之间的间距
+        vpSelectcar.setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));//设置viewpage之间的间距*/
     }
 
     private void setBanner() {
@@ -152,15 +135,23 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     }
 
     @Override
-    public void listFail(int code, String msg) {
+    public void listSuccess(List<AdvertisementBean.DataBean> data) {
         disMissDialog();
-        RingLog.e(TAG, "specialFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(mActivity, code);
+        if (data != null && data.size() > 0) {
+            bannerList.clear();
+            bannerList.addAll(data);
+            bannerSelectcar.setVisibility(View.VISIBLE);
+            setBanner();
+        }else{
+            bannerSelectcar.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
-    public void listSuccess(List<AdvertisementBean.DataBean> data) {
+    public void listFail(int code, String msg) {
         disMissDialog();
+        RingLog.e(TAG, "listFail() code = " + code + "---msg = " + msg);
+        SystemUtil.Exit(mActivity, code);
     }
 
     @Override
@@ -188,7 +179,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_selectcar_more:
-                startActivity(new Intent(mActivity, AllBrandsActivity.class));
+                startActivity(new Intent(mActivity, AllBrandsActivity.class).putExtra("flag",1));
                 break;
             case R.id.rl_selectcar_xinche:
                 carFlag = 0;

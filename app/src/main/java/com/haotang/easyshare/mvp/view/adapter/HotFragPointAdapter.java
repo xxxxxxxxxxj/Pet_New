@@ -1,6 +1,5 @@
 package com.haotang.easyshare.mvp.view.adapter;
 
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,8 +8,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.haotang.easyshare.R;
-import com.haotang.easyshare.mvp.model.entity.res.HotFragPoint;
-import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
+import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 
@@ -24,13 +22,13 @@ import java.util.List;
  * @author 徐俊
  * @date zhoujunxia on 2018/12/10 17:10
  */
-public class HotFragPointAdapter extends BaseQuickAdapter<HotFragPoint, BaseViewHolder> {
-    public HotFragPointAdapter(int layoutResId, List<HotFragPoint> data) {
+public class HotFragPointAdapter extends BaseQuickAdapter<HotPoint.DataBean, BaseViewHolder> {
+    public HotFragPointAdapter(int layoutResId, List<HotPoint.DataBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, HotFragPoint item) {
+    protected void convert(BaseViewHolder helper, HotPoint.DataBean item) {
         ImageView iv_item_hotfrag_point_img = helper.getView(R.id.iv_item_hotfrag_point_img);
         TextView tv_item_hotfrag_point_title = helper.getView(R.id.tv_item_hotfrag_point_title);
         RecyclerView rv_item_hotfrag_point_img = helper.getView(R.id.rv_item_hotfrag_point_img);
@@ -39,12 +37,12 @@ public class HotFragPointAdapter extends BaseQuickAdapter<HotFragPoint, BaseView
         ImageView iv_item_hotfrag_point_userimg = helper.getView(R.id.iv_item_hotfrag_point_userimg);
         TextView tv_item_hotfrag_point_name = helper.getView(R.id.tv_item_hotfrag_point_name);
         if (item != null) {
-            GlideUtil.loadNetCircleImg(mContext, item.getUserImg(), iv_item_hotfrag_point_userimg, R.mipmap.ic_image_load_circle);
-            if (item.getImgFlag() == 1) {
+            GlideUtil.loadNetCircleImg(mContext, item.getHeadImg(), iv_item_hotfrag_point_userimg, R.mipmap.ic_image_load_circle);
+            //if (item.getImgFlag() == 1) {
                 iv_item_hotfrag_point_img.setVisibility(View.VISIBLE);
                 rv_item_hotfrag_point_img.setVisibility(View.GONE);
-                GlideUtil.loadNetImg(mContext, item.getImg(), iv_item_hotfrag_point_img, R.mipmap.ic_image_load);
-            } else if (item.getImgFlag() == 2) {
+                GlideUtil.loadNetImg(mContext, item.getIcon(), iv_item_hotfrag_point_img, R.mipmap.ic_image_load);
+            /*} else if (item.getImgFlag() == 2) {
                 iv_item_hotfrag_point_img.setVisibility(View.GONE);
                 if (item.getImgList() != null && item.getImgList().size() > 0) {
                     rv_item_hotfrag_point_img.setVisibility(View.VISIBLE);
@@ -58,10 +56,14 @@ public class HotFragPointAdapter extends BaseQuickAdapter<HotFragPoint, BaseView
                 } else {
                     rv_item_hotfrag_point_img.setVisibility(View.GONE);
                 }
+            }*/
+            if (StringUtil.isNotEmpty(item.getTitle())) {
+                StringUtil.setText(tv_item_hotfrag_point_title, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
+            } else if (StringUtil.isNotEmpty(item.getContent())) {
+                StringUtil.setText(tv_item_hotfrag_point_title, item.getContent(), "", View.VISIBLE, View.VISIBLE);
             }
-            StringUtil.setText(tv_item_hotfrag_point_title, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_hotfrag_point_time, item.getTime(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_hotfrag_point_num, item.getNum(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_hotfrag_point_time, item.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_hotfrag_point_num, item.getVisitors() + "评论", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_hotfrag_point_name, item.getUserName(), "", View.VISIBLE, View.VISIBLE);
         }
     }

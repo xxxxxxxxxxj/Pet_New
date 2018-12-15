@@ -33,4 +33,14 @@ public interface IHotFragmentModel extends IBaseModel {
      * 最新帖子列表
      */
     Observable newest(Map<String, String> headers,RequestBody body);
+
+    /**
+     * 热门帖子列表
+     */
+    Observable hot(Map<String, String> headers,RequestBody body);
+
+    /**
+     * 问题车帖子列表
+     */
+    Observable problemCar(Map<String, String> headers,RequestBody body);
 }

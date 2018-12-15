@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.model;
 
+import com.haotang.easyshare.mvp.model.http.HotFragmentApiService;
 import com.haotang.easyshare.mvp.model.http.ScanCodeApiService;
 import com.haotang.easyshare.mvp.model.imodel.IScanCodeModel;
 import com.ljy.devring.DevRing;
@@ -26,5 +27,16 @@ public class ScanCodeModel implements IScanCodeModel {
     @Override
     public Observable start(Map<String, String> headers, RequestBody body) {
         return DevRing.httpManager().getService(ScanCodeApiService.class).start(headers,body);
+    }
+
+    /**
+     * 广告
+     * 广告类别(1:首页活动弹窗、2:热点首页顶部广告、3:车型专区首页顶部广告、4:车型专区首页中间广告)
+     *
+     * @param body
+     */
+    @Override
+    public Observable list(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).list(headers,body);
     }
 }

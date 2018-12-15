@@ -22,13 +22,13 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshEvent;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
-import com.haotang.easyshare.mvp.model.entity.res.HotFragPoint;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.SendPostActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotFragPointAdapter;
-import com.haotang.easyshare.mvp.view.adapter.ViewPagerSelectCarAdapter;
+import com.haotang.easyshare.mvp.view.adapter.ViewPagerHotFragAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IHotFragmentView;
 import com.haotang.easyshare.mvp.view.widget.CardTransformer;
@@ -84,14 +84,14 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     ImageView ivHotfragmentWtc;
     @BindView(R.id.tv_hotfragment_serch)
     TextView tvHotfragmentSerch;
-    private List<HotFragPoint> list = new ArrayList<HotFragPoint>();
+    private List<HotPoint.DataBean> list = new ArrayList<HotPoint.DataBean>();
     private int mNextRequestPage = 1;
     private int pageSize;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
-    private List<String> imgList = new ArrayList<String>();
     private int postFlag;
     private ViewPager vp_hotfrag_top;
     private HotFragPointAdapter hotFragPointAdapter;
+    private ViewPagerHotFragAdapter viewPagerHotFragAdapter;
 
     @Override
     protected boolean isLazyLoad() {
@@ -113,38 +113,11 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         srl_hotfragment.setColorSchemeColors(Color.rgb(47, 223, 189));
         rvHotfragment.setHasFixedSize(true);
         rvHotfragment.setLayoutManager(new LinearLayoutManager(mActivity));
-        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
-        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
-        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
-        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
-        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
-        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
-        imgList.add("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg");
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 2, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
-        list.add(new HotFragPoint("最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc最美大众回归，两个车评美女试驾大众cc", 1, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", imgList, "http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", "剑冲云霄", "59分钟前", "29评论"));
         hotFragPointAdapter = new HotFragPointAdapter(R.layout.item_hotfrag_point, list);
         View top = getLayoutInflater().inflate(R.layout.hotfrag_top_view, (ViewGroup) rvHotfragment.getParent(), false);
         vp_hotfrag_top = (ViewPager) top.findViewById(R.id.vp_hotfrag_top);
-
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        vp_hotfrag_top.setAdapter(new ViewPagerSelectCarAdapter(mActivity, bannerList));
+        viewPagerHotFragAdapter = new ViewPagerHotFragAdapter(mActivity, bannerList);
+        vp_hotfrag_top.setAdapter(viewPagerHotFragAdapter);
         vp_hotfrag_top.setOffscreenPageLimit(2);//预加载2个
         vp_hotfrag_top.setPageMargin(-70);//设置viewpage之间的间距
         vp_hotfrag_top.setPageTransformer(true, new CardTransformer());
@@ -158,7 +131,10 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     protected void initData() {
-        refresh();
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "2").build();
+        mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
+        setPost(0);
     }
 
     @Override
@@ -179,6 +155,9 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     @Subscribe
     public void refresh(RefreshEvent data) {
         if (data != null && data.getRefreshIndex() == RefreshEvent.SEND_POST) {
+            MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                    .addFormDataPart("category", "2").build();
+            mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
             refresh();
             UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx4);
         }
@@ -213,6 +192,9 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() ==
                 RefreshFragmentEvent.REFRESH_HOTFRAGMET && mPresenter != null) {
             RingLog.e("REFRESH_HOTFRAGMET");
+            MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                    .addFormDataPart("category", "2").build();
+            mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
             refresh();
         }
     }
@@ -223,8 +205,15 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (list.size() > 0 && list.size() > position) {
-                    HotFragPoint hotFragPoint = list.get(position);
-                    if (hotFragPoint != null) {
+                    HotPoint.DataBean dataBean = list.get(position);
+                    if (dataBean != null) {
+                        PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                        if (shareMap != null) {
+                            Intent intent = new Intent(mActivity, WebViewActivity.class);
+                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                            intent.putExtra("uuid", dataBean.getUuid());
+                            startActivity(intent);
+                        }
                     }
                 }
             }
@@ -244,35 +233,47 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     }
 
     private void refresh() {
-        showDialog();
+        hotFragPointAdapter.setEnableLoadMore(false);
         srl_hotfragment.setRefreshing(true);
         mNextRequestPage = 1;
-        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
-                .addFormDataPart("category", "2").build();
-        mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
-        mPresenter.hot(UrlConstants.getMapHeader(mActivity));
+        setRequest();
+    }
 
-        MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
+    private void setRequest() {
+        showDialog();
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
                 .build();
-        mPresenter.newest(UrlConstants.getMapHeader(mActivity), body1);
+        if (postFlag == 0) {//最新帖
+            mPresenter.newest(UrlConstants.getMapHeader(mActivity), body);
+        } else if (postFlag == 1) {//热门帖
+            mPresenter.hot(UrlConstants.getMapHeader(mActivity), body);
+        } else if (postFlag == 2) {//问题车
+            mPresenter.problemCar(UrlConstants.getMapHeader(mActivity), body);
+        }
     }
 
     private void loadMore() {
-        MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(mNextRequestPage))
-                .build();
-        mPresenter.newest(UrlConstants.getMapHeader(mActivity), body1);
-    }
-
-    @Override
-    public void listFail(int code, String msg) {
-        disMissDialog();
-        RingLog.e(TAG, "listFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(mActivity, code);
+        setRequest();
     }
 
     @Override
     public void listSuccess(List<AdvertisementBean.DataBean> data) {
         disMissDialog();
+        if (data != null && data.size() > 0) {
+            bannerList.clear();
+            bannerList.addAll(data);
+            vp_hotfrag_top.setVisibility(View.VISIBLE);
+            viewPagerHotFragAdapter.notifyDataSetChanged();
+        } else {
+            vp_hotfrag_top.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "listFail() code = " + code + "---msg = " + msg);
+        SystemUtil.Exit(mActivity, code);
     }
 
     @Override
@@ -290,11 +291,56 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     @Override
     public void newestSuccess(List<HotPoint.DataBean> data) {
         disMissDialog();
+        if (mNextRequestPage == 1) {
+            srl_hotfragment.setRefreshing(false);
+            hotFragPointAdapter.setEnableLoadMore(true);
+            list.clear();
+        }
+        hotFragPointAdapter.loadMoreComplete();
+        if (data != null && data.size() > 0) {
+            if (mNextRequestPage == 1) {
+                pageSize = data.size();
+            } else {
+                if (data.size() < pageSize) {
+                    hotFragPointAdapter.loadMoreEnd(false);
+                }
+            }
+            list.addAll(data);
+            mNextRequestPage++;
+        } else {
+            if (mNextRequestPage == 1) {
+                hotFragPointAdapter.loadMoreEnd(true);
+                String msg = "";
+                if (postFlag == 0) {
+                    msg = "暂无最新帖";
+                } else if (postFlag == 1) {
+                    msg = "暂无热门帖";
+                } else if (postFlag == 2) {
+                    msg = "暂无问题车帖子";
+                }
+                hotFragPointAdapter.setEmptyView(setEmptyViewBase(2, msg, R.mipmap.no_data, null));
+            } else {
+                hotFragPointAdapter.loadMoreEnd(false);
+            }
+        }
+        hotFragPointAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void newestFail(int code, String msg) {
         disMissDialog();
+        if (mNextRequestPage == 1) {
+            hotFragPointAdapter.setEnableLoadMore(true);
+            srl_hotfragment.setRefreshing(false);
+        } else {
+            hotFragPointAdapter.loadMoreFail();
+        }
+        hotFragPointAdapter.setEmptyView(setEmptyViewBase(1, msg, R.mipmap.no_net_orerror, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        }));
         RingLog.e(TAG, "newestFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
     }
@@ -306,38 +352,38 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 startActivity(new Intent(mActivity, SendPostActivity.class));
                 break;
             case R.id.rl_hotfragment_zxt:
-                postFlag = 0;
-                setPost();
+                setPost(0);
                 break;
             case R.id.rl_hotfragment_rmt:
-                postFlag = 1;
-                setPost();
+                setPost(1);
                 break;
             case R.id.rl_hotfragment_wtc:
-                postFlag = 2;
-                setPost();
+                setPost(2);
                 break;
             case R.id.tv_hotfragment_serch:
                 break;
         }
     }
 
-    private void setPost() {
-        if (postFlag == 0) {
+    private void setPost(int flag) {
+        if (flag == 0) {
+            postFlag = 0;
             tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             ivHotfragmentZxt.setVisibility(View.VISIBLE);
             ivHotfragmentRmt.setVisibility(View.INVISIBLE);
             ivHotfragmentWtc.setVisibility(View.INVISIBLE);
-        } else if (postFlag == 1) {
+        } else if (flag == 1) {
+            postFlag = 1;
             tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             ivHotfragmentZxt.setVisibility(View.INVISIBLE);
             ivHotfragmentRmt.setVisibility(View.VISIBLE);
             ivHotfragmentWtc.setVisibility(View.INVISIBLE);
-        } else if (postFlag == 2) {
+        } else if (flag == 2) {
+            postFlag = 2;
             tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -345,5 +391,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
             ivHotfragmentRmt.setVisibility(View.INVISIBLE);
             ivHotfragmentWtc.setVisibility(View.VISIBLE);
         }
+        mNextRequestPage = 1;
+        setRequest();
     }
 }

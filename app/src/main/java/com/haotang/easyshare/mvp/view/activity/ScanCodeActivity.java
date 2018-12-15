@@ -102,17 +102,6 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
         captureFragment.setAnalyzeCallback(analyzeCallback);
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
         UmenUtil.UmengEventStatistics(this, UmenUtil.yxzx12);
-
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        if (bannerList != null && bannerList.size() > 0) {
-            banner_scan_code.setVisibility(View.VISIBLE);
-            setBanner();
-        } else {
-            banner_scan_code.setVisibility(View.INVISIBLE);
-        }
     }
 
     private void setBanner() {
@@ -179,6 +168,10 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
                 permissionDialog.show();
             }
         }, Manifest.permission.CAMERA);
+        showDialog();
+        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "8").build();
+        mPresenter.list(UrlConstants.getMapHeader(this), body);
     }
 
     @Override
@@ -248,6 +241,26 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
             DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId(), data.getTimeout(), Integer.parseInt(data.getUnit()), data.getDialogTips()));
             finish();
         }
+    }
+
+    @Override
+    public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        disMissDialog();
+        if (data != null && data.size() > 0) {
+            bannerList.clear();
+            bannerList.addAll(data);
+            banner_scan_code.setVisibility(View.VISIBLE);
+            setBanner();
+        }else{
+            banner_scan_code.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void listFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "listFail() code = " + code + "---msg = " + msg);
+        SystemUtil.Exit(this, code);
     }
 
     @Override

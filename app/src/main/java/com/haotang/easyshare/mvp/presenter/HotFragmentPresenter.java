@@ -126,4 +126,66 @@ public class HotFragmentPresenter extends BasePresenter<IHotFragmentView, IHotFr
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));
     }
+
+    /**
+     * 热门帖子列表
+     */
+    public void hot(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.hot(headers,body), new CommonObserver<HotPoint>() {
+            @Override
+            public void onResult(HotPoint result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.newestSuccess(result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.newestFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.newestFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.newestFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 问题车帖子列表
+     */
+    public void problemCar(Map<String, String> headers,RequestBody body) {
+        DevRing.httpManager().commonRequest(mIModel.problemCar(headers,body), new CommonObserver<HotPoint>() {
+            @Override
+            public void onResult(HotPoint result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.newestSuccess(result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.newestFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.newestFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.newestFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
 }
