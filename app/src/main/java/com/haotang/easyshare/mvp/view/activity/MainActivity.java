@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.activity;
 
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
@@ -24,6 +25,7 @@ import com.haotang.easyshare.di.component.activity.DaggerMainActivityCommponent;
 import com.haotang.easyshare.di.module.activity.MainActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.MainTabEvent;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
+import com.haotang.easyshare.mvp.model.entity.event.UpdateAppEvent;
 import com.haotang.easyshare.mvp.model.entity.res.BootmBarBean;
 import com.haotang.easyshare.mvp.model.entity.res.ImageTabEntity;
 import com.haotang.easyshare.mvp.model.entity.res.LastVersionBean;
@@ -39,7 +41,11 @@ import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainView;
 import com.haotang.easyshare.mvp.view.services.ChargeBillService;
 import com.haotang.easyshare.mvp.view.services.ChargeStateService;
+import com.haotang.easyshare.mvp.view.widget.DownloadProgressDialog;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.updateapputil.Callback;
+import com.haotang.easyshare.updateapputil.ConfirmDialog;
+import com.haotang.easyshare.updateapputil.DownloadAppUtils;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.PollingUtils;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
@@ -52,6 +58,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +66,6 @@ import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.BindView;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 /**
  * 首页
@@ -103,6 +108,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private int sy;
     int screenWidth, screenHeight;
     private static final float BASE_BOTTOM_DESC = 80;
+    private DownloadProgressDialog progressDialog;
 
     @Override
     protected int getContentLayout() {
@@ -152,6 +158,57 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         }
     }
 
+    @Subscribe
+    public void getUpdateAppState(UpdateAppEvent event) {
+        if (event != null) {
+            if (event.getState() == UpdateAppEvent.DOWNLOADING) {
+                long soFarBytes = event.getSoFarBytes();
+                long totalBytes = event.getTotalBytes();
+                RingLog.e("下载中...soFarBytes = " + soFarBytes + "---totalBytes = " + totalBytes);
+                if (progressDialog != null && progressDialog.isShowing()) {
+
+                } else {
+                    progressDialog = new DownloadProgressDialog(this);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    // 设置ProgressDialog 标题
+                    progressDialog.setTitle("下载提示");
+                    // 设置ProgressDialog 提示信息
+                    progressDialog.setMessage("当前下载进度:");
+                    // 设置ProgressDialog 标题图标
+                    //progressDialog.setIcon(R.drawable.a);
+                    // 设置ProgressDialog 进度条进度
+                    // 设置ProgressDialog 的进度条是否不明确
+                    progressDialog.setIndeterminate(false);
+                    // 设置ProgressDialog 是否可以按退回按键取消
+                    progressDialog.setCancelable(false);
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
+                }
+                progressDialog.setMax((int) totalBytes);
+                progressDialog.setProgress((int) soFarBytes);
+            } else if (event.getState() == UpdateAppEvent.DOWNLOAD_COMPLETE) {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                new ConfirmDialog(this, new Callback() {
+                    @Override
+                    public void callback(int position) {
+                        UpdateUtil.installAPK(MainActivity.this, new File(DownloadAppUtils.downloadUpdateApkFilePath));
+                    }
+                }, false).setContent("下载完成\n确认是否安装？").setDialogCancelable(false)
+                        .setCancleBtnVisible(View.GONE).setDialogCanceledOnTouchOutside(false).show();
+            } else if (event.getState() == UpdateAppEvent.DOWNLOAD_FAIL) {
+                new ConfirmDialog(this, new Callback() {
+                    @Override
+                    public void callback(int position) {
+                        DownloadAppUtils.retry();
+                    }
+                }, true).setContent("下载失败\n确认是否重试？").setDialogCancelable(false)
+                        .setCancleBtnVisible(View.GONE).setDialogCanceledOnTouchOutside(false).show();
+            }
+        }
+    }
+
     @Override
     public boolean isUseEventBus() {
         return true;
@@ -195,9 +252,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     @Override
     protected void initData(Bundle savedInstanceState) {
         showDialog();
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        RequestBody build = builder.build();
-        mPresenter.getLatestVersion(UrlConstants.getMapHeader(this), build);
+        mPresenter.getLatestVersion(UrlConstants.getMapHeader(this));
     }
 
     @Override
@@ -273,8 +328,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         RingLog.d(TAG, "lastVersionBean = " + lastVersionBean);
         if (lastVersionBean != null) {
             String downloadPath = lastVersionBean.getDownload();
+            downloadPath = "http://gy06-17.oss-cn-qingdao.aliyuncs.com/download/pet_18.apk";
             int isUpgrade = lastVersionBean.getCompulsory();
-            String latestVersion = lastVersionBean.getVersion();
+            isUpgrade = 0;
+            String latestVersion = lastVersionBean.getVersion().replace("V", "");
             String versionHint = lastVersionBean.getContent();
             if (latestVersion != null
                     && !TextUtils.isEmpty(latestVersion)) {

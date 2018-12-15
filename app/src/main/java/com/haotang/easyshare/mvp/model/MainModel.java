@@ -22,8 +22,8 @@ import okhttp3.RequestBody;
 public class MainModel implements IMainModel {
 
     @Override
-    public Observable getLatestVersion(Map<String, String> headers, RequestBody body) {
-        return DevRing.httpManager().getService(MainActivityApiService.class).getLatestVersion(headers,body);
+    public Observable getLatestVersion(Map<String, String> headers) {
+        return DevRing.httpManager().getService(MainActivityApiService.class).getLatestVersion(headers);
     }
 
     @Override

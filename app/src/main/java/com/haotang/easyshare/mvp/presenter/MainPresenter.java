@@ -34,8 +34,8 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
     /**
      * 获取最新版本
      */
-    public void getLatestVersion(Map<String, String> headers, RequestBody body) {
-        DevRing.httpManager().commonRequest(mIModel.getLatestVersion(headers,body),
+    public void getLatestVersion(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.getLatestVersion(headers),
                 new CommonObserver<HttpResult<LastVersionBean>>() {
             @Override
             public void onResult(HttpResult<LastVersionBean> result) {

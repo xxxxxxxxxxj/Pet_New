@@ -60,6 +60,7 @@
                 android:textSize="17sp" />
 
             <View
+                android:id="@+id/vw_dialog_confirm"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:background="#DFDFDF" />

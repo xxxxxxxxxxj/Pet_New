@@ -7,7 +7,6 @@ import com.haotang.easyshare.mvp.model.imodel.base.IBaseModel;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -18,7 +17,7 @@ import okhttp3.RequestBody;
  * @date XJ on 2018/4/13 15:02
  */
 public interface IMainModel extends IBaseModel {
-    Observable getLatestVersion(Map<String, String> headers, RequestBody body);
+    Observable getLatestVersion(Map<String, String> headers);
 
     Observable getBottomBar(Map<String, String> headers,Activity activity);
 }

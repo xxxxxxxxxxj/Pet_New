@@ -28,7 +28,7 @@ public class UpdateUtil {
 
                     @Override
                     public void onClick(View v) {
-                        updateApk(context, path, version, UPDATEFORNOTIFICATION);
+                        updateApk(context, path, version, UPDATEFORNOTIFICATION,1);
                     }
                 }).build();
         mDialog.show();
@@ -43,7 +43,7 @@ public class UpdateUtil {
 
                     @Override
                     public void onClick(View v) {
-                        updateApk(context, path, version, UPDATEFORNOTIFICATION);
+                        updateApk(context, path, version, UPDATEFORNOTIFICATION,0);
                     }
                 }).build();
         mDialog.show();
@@ -55,7 +55,7 @@ public class UpdateUtil {
      * @param context
      * @param updateType
      */
-    public static void updateApk(final Context context, final String apkPath, final String serverVersionName, int updateType) {
+    public static void updateApk(final Context context, final String apkPath, final String serverVersionName, int updateType, final int isUpgrade) {
         switch (updateType) {
             case UPDATEFORDIALOG:
                 //BgUpdate.updateForDialog(context, url, filePath);
@@ -63,12 +63,12 @@ public class UpdateUtil {
             case UPDATEFORNOTIFICATION:
                 //BgUpdate.updateForNotification(context, url, filePath);
                 if (SystemUtil.isWifiConnected(context)) {
-                    DownloadAppUtils.download(context, apkPath, serverVersionName);
+                    DownloadAppUtils.download(context, apkPath, serverVersionName,isUpgrade);
                 } else {
                     new ConfirmDialog(context, new Callback() {
                         @Override
                         public void callback(int position) {
-                            DownloadAppUtils.download(context, apkPath, serverVersionName);
+                            DownloadAppUtils.download(context, apkPath, serverVersionName,isUpgrade);
                         }
                     }).setContent("目前手机不是WiFi状态\n确认是否继续下载更新？").show();
                 }
