@@ -7,6 +7,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -120,6 +122,25 @@ public class SerchPostActivity extends BaseActivity<SerchPostPresenter> implemen
 
     @Override
     protected void initEvent() {
+        cetSerchPost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                RingLog.e("s = " + s.toString());
+                if (StringUtil.isEmpty(StringUtil.checkEditText(cetSerchPost))) {
+                    RingLog.e("清空s = " + s.toString());
+                    setLayout(1);
+                }
+            }
+        });
         hotFragPointAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
