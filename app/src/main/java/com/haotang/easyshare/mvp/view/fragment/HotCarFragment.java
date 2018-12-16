@@ -42,7 +42,7 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public boolean isUseEventBus() {
-        return true;
+        return false;
     }
 
     @Override

@@ -39,6 +39,7 @@ import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
+import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 
@@ -325,6 +326,25 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
                 carDetailPicAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activityListManager.removeActivity(this); //退出activity
+        SystemUtil.goneJP(this);
     }
 
     @Override

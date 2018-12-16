@@ -349,6 +349,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
+        <activity
+            android:name=".mvp.view.activity.SerchPostActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.SwipeBack" />
 
         <receiver
             android:name=".updateapputil.UpdateAppReceiver"

@@ -28,6 +28,7 @@ import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -270,6 +271,18 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
         disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(this, code);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

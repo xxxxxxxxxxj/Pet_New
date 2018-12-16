@@ -299,6 +299,14 @@ public class UrlConstants {
      * 68.选车首页
      */
     public static final String CARTYPE = "brand/car/special";
+    /**
+     * 69.文章热门搜索关键字
+     */
+    public static final String SERCH_POST_KEYS = "article/info/keys";
+    /**
+     * 70.文章热门搜索关键字
+     */
+    public static final String SERCH_POST = "article/info/list";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境

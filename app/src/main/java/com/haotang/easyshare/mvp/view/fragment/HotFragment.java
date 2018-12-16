@@ -26,6 +26,7 @@ import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.SendPostActivity;
+import com.haotang.easyshare.mvp.view.activity.SerchPostActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotFragPointAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ViewPagerHotFragAdapter;
@@ -131,6 +132,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     protected void initData() {
+        showDialog();
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "2").build();
         mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
@@ -361,6 +363,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                 setPost(2);
                 break;
             case R.id.tv_hotfragment_serch:
+                startActivity(new Intent(mActivity, SerchPostActivity.class));
                 break;
         }
     }

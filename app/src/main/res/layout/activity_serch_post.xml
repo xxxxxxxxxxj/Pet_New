@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dip"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dip"
+            android:background="@color/white"
+            android:paddingLeft="10dip"
+            android:paddingRight="15dip">
+
+            <ImageView
+                android:id="@+id/iv_titlebar_back"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_back_black" />
+
+            <TextView
+                android:id="@+id/tv_titlebar_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="搜索"
+                android:textColor="@color/a333333"
+                android:textSize="15sp" />
+
+            <com.haotang.easyshare.mvp.view.widget.ClearEditText
+                android:id="@+id/cet_serch_post"
+                android:layout_width="match_parent"
+                android:layout_height="30dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/tv_titlebar_other"
+                android:layout_toRightOf="@id/iv_titlebar_back"
+                android:background="@drawable/edittext_serch_beau_back"
+                android:ems="10"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/a666666"
+                android:textColorHint="@color/a999999"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/aEEEEEE" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_serch_post_rmss"
+            android:layout_width="match_parent"
+            android:padding="15dip"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dip"
+                android:text="热门搜索"
+                android:textColor="@color/a333333"
+                android:textSize="15sp" />
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/tfl_serch_post_rmss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_serch_post"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_serch_post"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="15dip"
+                android:background="@color/af8f8f8" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
+</LinearLayout>
