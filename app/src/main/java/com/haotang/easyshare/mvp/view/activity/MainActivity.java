@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -327,35 +326,22 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         disMissDialog();
         RingLog.d(TAG, "lastVersionBean = " + lastVersionBean);
         if (lastVersionBean != null) {
-            String downloadPath = lastVersionBean.getDownload();
-            downloadPath = "http://gy06-17.oss-cn-qingdao.aliyuncs.com/download/pet_18.apk";
+            String downloadPath = lastVersionBean.getUrl();
+            //downloadPath = "http://gy06-17.oss-cn-qingdao.aliyuncs.com/download/pet_18.apk";
             int isUpgrade = lastVersionBean.getCompulsory();
-            isUpgrade = 0;
-            String latestVersion = lastVersionBean.getVersion().replace("V", "");
+            //isUpgrade = 1;
+            String latestVersion = lastVersionBean.getVersion();
             String versionHint = lastVersionBean.getContent();
-            if (latestVersion != null
-                    && !TextUtils.isEmpty(latestVersion)) {
-                boolean isLatest = UpdateUtil
-                        .compareVersion(
-                                latestVersion,
-                                SystemUtil.getCurrentVersion(MainActivity.this));
-                if (isLatest) {// 需要下载安装最新版
-                    if (downloadPath != null
-                            && !TextUtils
-                            .isEmpty(downloadPath)) {
-                        if (isUpgrade == 1) {
-                            // 强制升级
-                            UpdateUtil.showForceUpgradeDialog(MainActivity.this, versionHint,
-                                    downloadPath,
-                                    latestVersion);
-                        } else if (isUpgrade == 0) {
-                            // 非强制升级
-                            UpdateUtil.showUpgradeDialog(MainActivity.this, versionHint,
-                                    downloadPath,
-                                    latestVersion);
-                        }
-                    }
-                }
+            if (isUpgrade == 1) {
+                // 强制升级
+                UpdateUtil.showForceUpgradeDialog(MainActivity.this, versionHint,
+                        downloadPath,
+                        latestVersion);
+            } else if (isUpgrade == 0) {
+                // 非强制升级
+                UpdateUtil.showUpgradeDialog(MainActivity.this, versionHint,
+                        downloadPath,
+                        latestVersion);
             }
         }
     }

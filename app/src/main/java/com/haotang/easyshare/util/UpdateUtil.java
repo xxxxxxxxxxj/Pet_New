@@ -21,14 +21,14 @@ public class UpdateUtil {
     public static void showForceUpgradeDialog(final Context context, String msg, final String path,
                                               final String version) {
         InstallDialog mDialog = new InstallDialog.Builder(context)
-                .setTitle("升级到版本V." + version)
+                .setTitle(version)
                 .setType(InstallDialog.DIALOGTYPE_ALERT).setMessage(msg)
-                .setCancelable(false).setOKStr("极速升级")
+                .setCancelable(false).setOKStr("立即升级")
                 .positiveListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-                        updateApk(context, path, version, UPDATEFORNOTIFICATION,1);
+                        updateApk(context, path, version, UPDATEFORNOTIFICATION, 1);
                     }
                 }).build();
         mDialog.show();
@@ -36,14 +36,14 @@ public class UpdateUtil {
 
     public static void showUpgradeDialog(final Context context, String msg, final String path, final String version) {
         InstallDialog mDialog = new InstallDialog.Builder(context)
-                .setTitle("升级到版本V." + version)
+                .setTitle(version)
                 .setType(InstallDialog.DIALOGTYPE_CONFIRM).setMessage(msg)
-                .setCancelStr("残忍拒绝").setOKStr("极速升级")
+                .setCancelStr("残忍拒绝").setOKStr("立即升级")
                 .positiveListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-                        updateApk(context, path, version, UPDATEFORNOTIFICATION,0);
+                        updateApk(context, path, version, UPDATEFORNOTIFICATION, 0);
                     }
                 }).build();
         mDialog.show();
@@ -63,12 +63,12 @@ public class UpdateUtil {
             case UPDATEFORNOTIFICATION:
                 //BgUpdate.updateForNotification(context, url, filePath);
                 if (SystemUtil.isWifiConnected(context)) {
-                    DownloadAppUtils.download(context, apkPath, serverVersionName,isUpgrade);
+                    DownloadAppUtils.download(context, apkPath, serverVersionName, isUpgrade);
                 } else {
                     new ConfirmDialog(context, new Callback() {
                         @Override
                         public void callback(int position) {
-                            DownloadAppUtils.download(context, apkPath, serverVersionName,isUpgrade);
+                            DownloadAppUtils.download(context, apkPath, serverVersionName, isUpgrade);
                         }
                     }).setContent("目前手机不是WiFi状态\n确认是否继续下载更新？").show();
                 }

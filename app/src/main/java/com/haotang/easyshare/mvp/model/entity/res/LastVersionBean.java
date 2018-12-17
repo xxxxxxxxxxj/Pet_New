@@ -13,10 +13,14 @@ public class LastVersionBean {
     private String content;
     private String title;
     private String version;
-    private String download;
+    private String url;
 
-    public void setDownload(String download) {
-        this.download = download;
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public int getCompulsory() {
@@ -49,9 +53,5 @@ public class LastVersionBean {
 
     public void setVersion(String version) {
         this.version = version;
-    }
-
-    public String getDownload() {
-        return download;
     }
 }
