@@ -169,16 +169,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 } else {
                     progressDialog = new DownloadProgressDialog(this);
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    // 设置ProgressDialog 标题
                     progressDialog.setTitle("下载提示");
-                    // 设置ProgressDialog 提示信息
                     progressDialog.setMessage("当前下载进度:");
-                    // 设置ProgressDialog 标题图标
-                    //progressDialog.setIcon(R.drawable.a);
-                    // 设置ProgressDialog 进度条进度
-                    // 设置ProgressDialog 的进度条是否不明确
                     progressDialog.setIndeterminate(false);
-                    // 设置ProgressDialog 是否可以按退回按键取消
                     progressDialog.setCancelable(false);
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
@@ -186,6 +179,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 progressDialog.setMax((int) totalBytes);
                 progressDialog.setProgress((int) soFarBytes);
             } else if (event.getState() == UpdateAppEvent.DOWNLOAD_COMPLETE) {
+                UpdateUtil.installAPK(MainActivity.this, new File(DownloadAppUtils.downloadUpdateApkFilePath));
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
@@ -327,9 +321,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         RingLog.d(TAG, "lastVersionBean = " + lastVersionBean);
         if (lastVersionBean != null) {
             String downloadPath = lastVersionBean.getUrl();
-            //downloadPath = "http://gy06-17.oss-cn-qingdao.aliyuncs.com/download/pet_18.apk";
+            downloadPath = "http://gy06-17.oss-cn-qingdao.aliyuncs.com/download/pet_18.apk";
             int isUpgrade = lastVersionBean.getCompulsory();
-            //isUpgrade = 1;
+            isUpgrade = 1;
             String latestVersion = lastVersionBean.getVersion();
             String versionHint = lastVersionBean.getContent();
             if (isUpgrade == 1) {
@@ -350,7 +344,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     public void getLatestVersionFail(int status, String desc) {
         disMissDialog();
         RingLog.e(TAG, "MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
-        RingToast.show("MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
         SystemUtil.Exit(this, status);
     }
 
