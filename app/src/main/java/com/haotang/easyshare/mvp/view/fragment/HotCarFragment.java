@@ -26,6 +26,7 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
     private ImageView iv_hotcarfrag_bg;
     private TextView tv_hotcarfrag_carname;
     private TextView tv_hotcarfrag_cardesc;
+    private int id;
 
     public HotCarFragment() {
     }
@@ -61,6 +62,7 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
         Bundle arguments = getArguments();
         CarType.DataBean dataBean = arguments.getParcelable("selectFragCarBean");
         if (dataBean != null) {
+            id = dataBean.getId();
             StringUtil.setText(tv_hotcarfrag_carname, dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_hotcarfrag_cardesc, dataBean.getDesc(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetImg(mActivity, dataBean.getIcon(), iv_hotcarfrag_bg, R.mipmap.ic_image_load);
@@ -81,7 +83,7 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_hotcarfrag_ck:
-                startActivity(new Intent(mActivity, CarDetailActivity.class));
+                startActivity(new Intent(mActivity, CarDetailActivity.class).putExtra("carId",id));
                 break;
         }
     }

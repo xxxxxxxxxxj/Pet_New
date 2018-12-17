@@ -5,8 +5,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -19,16 +17,19 @@ import com.haotang.easyshare.di.component.activity.DaggerCarPersonInfoActivityCo
 import com.haotang.easyshare.di.module.activity.CarPersonInfoActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
+import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.CarPersonInfoPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.iview.ICarPersonInfoView;
-import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
+import com.youth.banner.Banner;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -44,32 +45,18 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
     TextView tvTitlebarTitle;
     @BindView(R.id.tv_cardetail_person_submit)
     TextView tvCardetailPersonSubmit;
-    @BindView(R.id.tv_cardetail_person_tag)
-    TextView tvCardetailPersonTag;
-    @BindView(R.id.tv_cardetail_person_price)
-    TextView tvCardetailPersonPrice;
-    @BindView(R.id.iv_cardetail_person_img)
-    ImageView ivCardetailPersonImg;
-    @BindView(R.id.tv_cardetail_person_name)
-    TextView tvCardetailPersonName;
-    @BindView(R.id.tv_cardetail_person_xuhang)
-    TextView tvCardetailPersonXuhang;
-    @BindView(R.id.tv_cardetail_person_dq_title)
-    TextView tvCardetailPersonDqTitle;
-    @BindView(R.id.iv_cardetail_person_dq)
-    ImageView ivCardetailPersonDq;
     @BindView(R.id.tv_cardetail_person_dq)
     TextView tv_cardetail_person_dq;
-    @BindView(R.id.rl_cardetail_person_dq)
-    RelativeLayout rlCardetailPersonDq;
-    @BindView(R.id.tv_cardetail_person_xm)
-    TextView tvCardetailPersonXm;
     @BindView(R.id.et_cardetail_person_xm)
     EditText etCardetailPersonXm;
-    @BindView(R.id.tv_cardetail_person_phone)
-    TextView tvCardetailPersonPhone;
     @BindView(R.id.et_cardetail_person_phone)
     EditText etCardetailPersonPhone;
+    @BindView(R.id.tv_cardetail_person_car)
+    TextView tvCardetailPersonCar;
+    @BindView(R.id.tv_cardetail_person_model)
+    TextView tvCardetailPersonModel;
+    @BindView(R.id.banner_cardetail_person)
+    Banner bannerCardetailPerson;
     private HotSpecialCarBean.DataBean carDetailData;
     private double lat;
     private double lng;
@@ -80,6 +67,8 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
     private AMapLocationClientOption mLocationOption;
     private String cityCode;
     private int id;
+    private ArrayList<String> imgList;
+    private String carName;
 
     @Override
     protected int getContentLayout() {
@@ -92,6 +81,9 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
         activityListManager.addActivity(this);
         DaggerCarPersonInfoActivityCommponent.builder().
                 carPersonInfoActivityModule(new CarPersonInfoActivityModule(this, this)).build().inject(this);
+        imgList = getIntent().getStringArrayListExtra("imgList");
+        id = getIntent().getIntExtra("carId", 0);
+        carName = getIntent().getStringExtra("carName");
     }
 
     @Override
@@ -99,28 +91,17 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
         setLocation();
         id = carDetailData.getId();
         tvTitlebarTitle.setText("填写个人信息");
-        if (StringUtil.isNotEmpty(carDetailData.getLabel())) {
-            if (carDetailData.getLabel().equals("0")) {
-                tvCardetailPersonTag.setVisibility(View.GONE);
-            } else {
-                tvCardetailPersonTag.setVisibility(View.VISIBLE);
-                tvCardetailPersonTag.bringToFront();
-                if (carDetailData.getLabel().equals("1")) {
-                    tvCardetailPersonTag.setText("最新");
-                } else if (carDetailData.getLabel().equals("2")) {
-                    tvCardetailPersonTag.setText("最热");
-                } else if (carDetailData.getLabel().equals("3")) {
-                    tvCardetailPersonTag.setText("推荐");
-                }
-            }
+        StringUtil.setText(tvCardetailPersonCar, carName, "", View.VISIBLE, View.VISIBLE);
+        StringUtil.setText(tvCardetailPersonModel, carName, "", View.VISIBLE, View.VISIBLE);
+        if (imgList != null && imgList.size() > 0) {
+            bannerCardetailPerson.setVisibility(View.VISIBLE);
+            bannerCardetailPerson.setImages(imgList)
+                    .setImageLoader(new GlideImageLoader())
+                    .start();
         } else {
-            tvCardetailPersonTag.setVisibility(View.GONE);
+            bannerCardetailPerson.setVisibility(View.GONE);
         }
-        GlideUtil.loadNetImg(this, carDetailData.getIcon(), ivCardetailPersonImg, R.mipmap.ic_image_load);
-        StringUtil.setText(tvCardetailPersonName, carDetailData.getCar(), "", View.VISIBLE, View.VISIBLE);
-        StringUtil.setText(tvCardetailPersonXuhang, carDetailData.getBatteryLife(), "", View.VISIBLE, View.VISIBLE);
-        StringUtil.setText(tvCardetailPersonPrice, "¥" + carDetailData.getPrice(), "", View.VISIBLE, View.VISIBLE);
-        UmenUtil.UmengEventStatistics(this,UmenUtil.yxzx11);
+        UmenUtil.UmengEventStatistics(this, UmenUtil.yxzx11);
     }
 
     private void setLocation() {
@@ -235,7 +216,7 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
                 builder.addFormDataPart("lat", lat + "");
                 builder.addFormDataPart("lng", lng + "");
                 RequestBody build = builder.build();
-                mPresenter.save(UrlConstants.getMapHeader(this),build);
+                mPresenter.save(UrlConstants.getMapHeader(this), build);
                 break;
         }
     }

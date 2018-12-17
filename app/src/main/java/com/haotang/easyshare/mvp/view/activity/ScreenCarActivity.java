@@ -245,9 +245,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                 if (selectedCarList.size() > position) {
                     HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
                     Intent intent = new Intent(ScreenCarActivity.this, CarDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("carDetailData", dataBean);
-                    intent.putExtras(bundle);
+                    intent.putExtra("carId",dataBean.getId());
                     startActivity(intent);
                 }
             }

@@ -9,21 +9,58 @@
         android:id="@+id/ll_car_detail_title"
         layout="@layout/title_bar" />
 
-    <TextView
-        android:id="@+id/tv_car_detail_submit"
+    <RelativeLayout
+        android:id="@+id/rl_car_detail_bottom"
         android:layout_width="match_parent"
         android:layout_height="49dip"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bg_blue_jianbian"
-        android:gravity="center"
-        android:text="立即预订"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:background="@color/white"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip">
+
+        <TextView
+            android:id="@+id/tv_car_detail_submit"
+            android:layout_width="115dip"
+            android:layout_height="39dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_round_black5"
+            android:gravity="center"
+            android:text="确认报名"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dip"
+            android:layout_toLeftOf="@id/tv_car_detail_submit"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_car_detail_tgj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:text="TextView"
+                android:textColor="@color/a333333"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_car_detail_4sprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:text="TextView"
+                android:textColor="@color/a999999"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/tv_car_detail_submit"
+        android:layout_above="@id/rl_car_detail_bottom"
         android:layout_below="@id/ll_car_detail_title"
         android:scrollbars="none">
 
@@ -32,278 +69,163 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.youth.banner.Banner
-                android:id="@+id/banner_car_detail"
-                android:layout_width="match_parent"
-                android:layout_height="200dip"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                app:indicator_drawable_selected="@drawable/selected_radius" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dip"
-                android:background="@color/white"
-                android:padding="15dip">
+                android:layout_height="111.5dip"
+                android:background="@color/white">
 
-                <LinearLayout
-                    android:id="@+id/ll_car_detail_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
-                    android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="60dip"
+                    android:background="#EEF3F7">
 
-                    <TextView
-                        android:id="@+id/tv_car_detail_gfj"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="官方价:"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tv_car_detail_tgj"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="团购价:"
-                        android:textColor="@color/aD0021B"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dip"
-                    android:layout_toLeftOf="@id/ll_car_detail_price"
-                    android:gravity="left"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dip"
+                    android:paddingRight="15dip">
 
                     <TextView
-                        android:id="@+id/tv_car_detail_name"
+                        android:id="@+id/tv_car_detail_car"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TextView"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textColor="@color/a333333"
+                        android:textSize="25sp" />
+
+                    <TextView
+                        android:id="@+id/tv_car_detail_model"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textColor="@color/a333333"
+                        android:textSize="25sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <com.youth.banner.Banner
+                android:id="@+id/banner_car_detail"
+                android:layout_width="match_parent"
+                android:layout_height="192dip"
+                app:indicator_drawable_selected="@drawable/selected_radius" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="111.5dip"
+                android:layout_marginBottom="15dip"
+                android:layout_marginLeft="60dip"
+                android:background="#EEF3F7"
+                android:paddingLeft="30dip"
+                android:paddingRight="15dip">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="30dip"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dip"
+                        android:text="最大续航里程(km)"
+                        android:textColor="@color/a999999"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tv_car_detail_xh"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TextView"
-                        android:textColor="@color/a666666"
-                        android:textSize="12sp" />
+                        android:textColor="@color/a333333"
+                        android:textSize="20sp" />
                 </LinearLayout>
-            </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dip"
+                        android:text="车型名称"
+                        android:textColor="@color/a999999"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_car_detail_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView"
+                        android:textColor="@color/a333333"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_car_detail_clxq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dip"
-                android:layout_marginBottom="15dip"
-                android:background="@mipmap/bg_car_detail_vs"
+                android:layout_height="111.5dip"
+                android:background="@color/white"
+                android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="15dip">
+                android:paddingLeft="60dip"
+                android:paddingRight="15dip">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dip"
-                    android:text="进行vs比价"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:layout_marginBottom="10dip"
+                    android:text="车辆标签"
+                    android:textColor="@color/aff6525"
+                    android:textSize="15sp" />
 
-                <LinearLayout
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/tfl_car_detail_clbq"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="0dip"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_round_white"
-                        android:orientation="vertical"
-                        android:padding="15dip">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="4s店价"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tv_car_detail_4sprice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:text="TextView"
-                            android:textColor="@color/black"
-                            android:textSize="25sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="51dip"
-                        android:layout_height="67.5dip"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dip"
-                        android:layout_marginRight="10dip"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/icon_vs" />
-
-                    <LinearLayout
-                        android:layout_width="0dip"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_round_3e91fb"
-                        android:orientation="vertical"
-                        android:padding="15dip">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="团购价"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tv_car_detail_tgprice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:text="TextView"
-                            android:textColor="@color/white"
-                            android:textSize="25sp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_car_detail_cxcs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dip"
+                android:layout_height="111.5dip"
                 android:background="@color/white"
+                android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="15dip">
+                android:paddingLeft="60dip"
+                android:paddingRight="15dip">
 
-                <LinearLayout
-                    android:id="@+id/ll_car_detail_tag"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dip"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="10dip"
+                    android:text="车辆颜色"
+                    android:textColor="@color/aff6525"
+                    android:textSize="15sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dip"
-                        android:text="车辆标签"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_car_detail_tag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_car_detail_color"
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/tfl_car_detail_clys"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dip"
-                        android:text="车身颜色"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/tv_car_detail_color"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="车身颜色"
-                        android:textColor="@color/a666666"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_marginBottom="15dip"
-                android:background="@color/white">
-
-                <RelativeLayout
-                    android:id="@+id/rl_cardetail_clxq"
-                    android:layout_width="0dip"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <View
-                        android:id="@+id/vw_cardetail_clxq"
-                        android:layout_width="20dip"
-                        android:layout_height="2dip"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/a0271F0" />
-
-                    <TextView
-                        android:id="@+id/tv_cardetail_clxq"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="车辆详情"
-                        android:textColor="@color/a0271F0"
-                        android:textSize="15sp" />
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="2dip"
-                    android:layout_height="18dip"
-                    android:layout_gravity="center"
-                    android:background="@color/aEEEEEE" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_cardetail_cxcs"
-                    android:layout_width="0dip"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <View
-                        android:id="@+id/vw_cardetail_cxcs"
-                        android:layout_width="20dip"
-                        android:layout_height="2dip"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/a0271F0"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tv_cardetail_cxcs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="车型参数"
-                        android:textColor="@color/a333333"
-                        android:textSize="15sp" />
-
-                </RelativeLayout>
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_car_detail_pic"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

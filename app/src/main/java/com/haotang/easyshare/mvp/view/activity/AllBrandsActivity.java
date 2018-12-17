@@ -141,9 +141,7 @@ public class AllBrandsActivity extends BaseActivity<AllBrandsPresenter> implemen
                         HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
                         if (dataBean != null) {
                             Intent intent = new Intent(AllBrandsActivity.this, CarDetailActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("carDetailData", dataBean);
-                            intent.putExtras(bundle);
+                            intent.putExtra("carId",dataBean.getId());
                             startActivity(intent);
                         }
                     }
