@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.CarType;
 import com.haotang.easyshare.mvp.view.activity.CarDetailActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
@@ -65,7 +66,12 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
             id = dataBean.getId();
             StringUtil.setText(tv_hotcarfrag_carname, dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_hotcarfrag_cardesc, dataBean.getCategory(), "", View.VISIBLE, View.VISIBLE);
-            GlideUtil.loadNetImg(mActivity, dataBean.getIcon(), iv_hotcarfrag_bg, R.mipmap.ic_image_load);
+            if(dataBean.getBanner() != null && dataBean.getBanner().size() > 0){
+                AdvertisementBean.DataBean dataBean1 = dataBean.getBanner().get(0);
+                if(dataBean1 != null){
+                    GlideUtil.loadNetImg(mActivity, dataBean1.getImg(), iv_hotcarfrag_bg, R.mipmap.ic_image_load);
+                }
+            }
         }
     }
 

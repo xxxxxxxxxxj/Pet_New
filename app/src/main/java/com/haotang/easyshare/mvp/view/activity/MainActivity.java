@@ -148,6 +148,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 .apply();
     }
 
+    public void goToSelectCar() {
+        currentTabIndex = 3;
+        vpMainactivity.setCurrentItem(currentTabIndex);
+    }
+
     @Subscribe
     public void getAddress(MainTabEvent mainTabEvent) {
         if (mainTabEvent != null) {

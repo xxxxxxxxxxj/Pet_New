@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.model;
 
 import com.haotang.easyshare.mvp.model.http.HotFragmentApiService;
 import com.haotang.easyshare.mvp.model.http.MainFragApiService;
+import com.haotang.easyshare.mvp.model.http.PostListApiService;
 import com.haotang.easyshare.mvp.model.imodel.IMainFragmentModel;
 import com.ljy.devring.DevRing;
 
@@ -36,5 +37,23 @@ public class MainFragmentModel implements IMainFragmentModel {
     @Override
     public Observable list(Map<String, String> headers,RequestBody body) {
         return DevRing.httpManager().getService(HotFragmentApiService.class).list(headers,body);
+    }
+
+    /**
+     * 热门帖子列表
+     */
+    @Override
+    public Observable hot(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(PostListApiService.class).hot(headers,body);
+    }
+
+    /**
+     * 选车首页
+     * @param headers
+     * @param body
+     */
+    @Override
+    public Observable carType(Map<String, String> headers, RequestBody body) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).carType(headers,body);
     }
 }

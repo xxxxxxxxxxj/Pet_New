@@ -44,18 +44,25 @@ public class CarType {
 
     public static class DataBean implements Parcelable {
         private String car;
-        private String icon;
         private int id;
         private String category;
+        private String groupPrice;
+        private List<AdvertisementBean.DataBean> banner;
 
-        @Override
-        public String toString() {
-            return "DataBean{" +
-                    "car='" + car + '\'' +
-                    ", icon='" + icon + '\'' +
-                    ", id=" + id +
-                    ", category='" + category + '\'' +
-                    '}';
+        public List<AdvertisementBean.DataBean> getBanner() {
+            return banner;
+        }
+
+        public void setBanner(List<AdvertisementBean.DataBean> banner) {
+            this.banner = banner;
+        }
+
+        public String getGroupPrice() {
+            return groupPrice;
+        }
+
+        public void setGroupPrice(String groupPrice) {
+            this.groupPrice = groupPrice;
         }
 
         public String getCar() {
@@ -74,14 +81,6 @@ public class CarType {
             this.car = car;
         }
 
-        public String getIcon() {
-            return icon;
-        }
-
-        public void setIcon(String icon) {
-            this.icon = icon;
-        }
-
         public int getId() {
             return id;
         }
@@ -98,17 +97,17 @@ public class CarType {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(car);
-            dest.writeString(icon);
             dest.writeInt(id);
             dest.writeString(category);
+            dest.writeString(groupPrice);
         }
 
         public DataBean(Parcel in) {
             //顺序要和writeToParcel写的顺序一样
             car = in.readString();
-            icon = in.readString();
             id = in.readInt();
             category = in.readString();
+            groupPrice = in.readString();
         }
 
         public static final Parcelable.Creator<DataBean> CREATOR = new Parcelable.Creator<DataBean>() {

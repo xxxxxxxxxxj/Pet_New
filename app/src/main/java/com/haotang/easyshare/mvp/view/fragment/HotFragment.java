@@ -267,7 +267,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
             vp_hotfrag_top.setVisibility(View.VISIBLE);
             viewPagerHotFragAdapter.notifyDataSetChanged();
         } else {
-            vp_hotfrag_top.setVisibility(View.INVISIBLE);
+            vp_hotfrag_top.setVisibility(View.GONE);
         }
     }
 

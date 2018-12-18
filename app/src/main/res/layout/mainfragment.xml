@@ -265,15 +265,13 @@
                     android:background="@color/af8f8f8" />
             </RelativeLayout>
 
-            <com.youth.banner.Banner
-                android:id="@+id/banner_mainfrag"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_mainfrag"
                 android:layout_width="match_parent"
                 android:layout_height="190dip"
-                android:layout_marginBottom="15dip"
                 android:clipToPadding="false"
                 android:paddingLeft="15dip"
-                android:paddingRight="15dip"
-                app:indicator_drawable_selected="@drawable/selected_radius" />
+                android:paddingRight="15dip"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -518,6 +516,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:id="@+id/ll_mainfrag_rmxc"
                     android:layout_above="@id/tv_mainfrag_rmxc_ck"
                     android:layout_margin="15dip"
                     android:orientation="vertical">

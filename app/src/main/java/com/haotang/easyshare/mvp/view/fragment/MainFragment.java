@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,17 +52,23 @@ import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
 import com.haotang.easyshare.di.module.fragment.MainFragmentModule;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
+import com.haotang.easyshare.mvp.model.entity.res.CarType;
+import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
+import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.model.entity.res.SerchResult;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.MainFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
+import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
 import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
+import com.haotang.easyshare.mvp.view.activity.CarDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.ChargingPileDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.CommentDetailActivity;
 import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
+import com.haotang.easyshare.mvp.view.activity.MainActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalHorAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainSerchResultAdapter;
@@ -73,6 +80,7 @@ import com.haotang.easyshare.mvp.view.widget.CardTransformer;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
 import com.haotang.easyshare.util.DensityUtil;
+import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.ScreenUtil;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
@@ -92,6 +100,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * <p>Title:${type_name}</p>
@@ -141,8 +150,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     ImageView iv_mainfrag_localev_gg;
     @BindView(R.id.iv_mainfrag_localev_gr)
     ImageView iv_mainfrag_localev_gr;
-    @BindView(R.id.banner_mainfrag)
-    Banner banner_mainfrag;
+    @BindView(R.id.vp_mainfrag)
+    ViewPager vpMainfrag;
     @BindView(R.id.ll_mainfrag_rmzx_more)
     LinearLayout llMainfragRmzxMore;
     @BindView(R.id.tv_mainfrag_rmzx_title)
@@ -171,6 +180,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     TextView tvMainfragRmxcName;
     @BindView(R.id.tv_mainfrag_rmxc_price)
     TextView tvMainfragRmxcPrice;
+    @BindView(R.id.ll_mainfrag_rmxc)
+    LinearLayout ll_mainfrag_rmxc;
     private AMap aMap;
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
@@ -194,10 +205,13 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private List<MainFragmentData.PublishBean> publishList = new ArrayList<MainFragmentData.PublishBean>();
     private PopupWindow pWin;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
+    private List<AdvertisementBean.DataBean> bannerList1 = new ArrayList<AdvertisementBean.DataBean>();
     private MainSerchResultAdapter mainSerchResultAdapter;
     private double serchLng;
     private double serchLat;
     private ViewPagerMainAdapter viewPagerSelectCarAdapter;
+    private HotPoint.DataBean dataBean;
+    private int carId;
 
     @Override
     protected boolean isLazyLoad() {
@@ -230,43 +244,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         rllMainfragSerch.bringToFront();
         setLocation();
 
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        if (bannerList != null && bannerList.size() > 0) {
-            banner_mainfrag.setOffscreenPageLimit(2);//预加载2个
-            //banner_mainfrag.setPageMargin(-70);//设置viewpage之间的间距
-            banner_mainfrag.setPageTransformer(true, new CardTransformer());
-            banner_mainfrag.setVisibility(View.VISIBLE);
-            List<String> list = new ArrayList<String>();
-            for (int i = 0; i < bannerList.size(); i++) {
-                list.add(bannerList.get(i).getImg());
-            }
-            banner_mainfrag.setImages(list)
-                    .setImageLoader(new GlideImageLoader())
-                    .setOnBannerListener(this)
-                    .start();
-        } else {
-            banner_mainfrag.setVisibility(View.INVISIBLE);
-        }
-
-        /*bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        bannerList.add(new AdvertisementBean.DataBean("http://img.sayiyinxiang.com/api/brand/imgs/15246549041398388939.jpg", 1, "测试", "测试"));
-        viewPagerSelectCarAdapter = new ViewPagerMainAdapter(mActivity, bannerList);
+        viewPagerSelectCarAdapter = new ViewPagerMainAdapter(mActivity, bannerList1);
         vpMainfrag.setAdapter(viewPagerSelectCarAdapter);
         vpMainfrag.setOffscreenPageLimit(2);//预加载2个
         vpMainfrag.setPageMargin(-70);//设置viewpage之间的间距
-        vpMainfrag.setPageTransformer(true, new CardTransformer());*/
+        vpMainfrag.setPageTransformer(true, new CardTransformer());
     }
 
     private void setLocation() {
@@ -442,6 +424,22 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private void refresh(double localLat, double localLng) {
         showDialog();
         mPresenter.homeIndex(UrlConstants.getMapHeader(mActivity), localLng, localLat);
+
+        showDialog();
+        MultipartBody body1 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                .addFormDataPart("category", "9").build();
+        mPresenter.list1(UrlConstants.getMapHeader(mActivity), body1);
+
+        showDialog();
+        MultipartBody body2 = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE).addFormDataPart("page", String.valueOf(1))
+                .build();
+        mPresenter.hot(UrlConstants.getMapHeader(mActivity), body2);
+
+        showDialog();
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("source", "1");
+        RequestBody body3 = builder.build();
+        mPresenter.carType(UrlConstants.getMapHeader(mActivity), body3);
     }
 
     /**
@@ -535,8 +533,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @OnClick({R.id.iv_mainfrag_top_right, R.id.rtv_mainfrag_local, R.id.ll_mainfrag_localev_more,
             R.id.rl_mainfrag_localev_gg, R.id.rl_mainfrag_localev_gr, R.id.iv_mainfrag_map_loc,
-            R.id.iv_mainfrag_gj, R.id.tv_mainfrag_top_cancel,R.id.ll_mainfrag_rmzx_more, R.id.ll_mainfrag_rmxc_more,
-            R.id.tv_mainfrag_rmxc_ck,R.id.ll_mainfrag_rmzx})
+            R.id.iv_mainfrag_gj, R.id.tv_mainfrag_top_cancel, R.id.ll_mainfrag_rmzx_more, R.id.ll_mainfrag_rmxc_more,
+            R.id.tv_mainfrag_rmxc_ck, R.id.ll_mainfrag_rmzx})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_mainfrag_top_cancel:
@@ -588,12 +586,25 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 setTab();
                 break;
             case R.id.ll_mainfrag_rmzx_more:
+                MainActivity mActivity = (MainActivity) this.mActivity;
+                mActivity.goToSelectCar();
                 break;
             case R.id.ll_mainfrag_rmxc_more:
+                startActivity(new Intent(this.mActivity, AllBrandsActivity.class).putExtra("flag", 1));
                 break;
             case R.id.tv_mainfrag_rmxc_ck:
+                startActivity(new Intent(this.mActivity, CarDetailActivity.class).putExtra("carId", carId));
                 break;
             case R.id.ll_mainfrag_rmzx:
+                if (dataBean != null) {
+                    PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
+                    if (shareMap != null) {
+                        Intent intent1 = new Intent(this.mActivity, WebViewActivity.class);
+                        intent1.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                        intent1.putExtra("uuid", dataBean.getUuid());
+                        startActivity(intent1);
+                    }
+                }
                 break;
         }
     }
@@ -627,6 +638,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        disMissDialog();
         if (data != null && data.size() > 0) {
             bannerList.clear();
             bannerList.addAll(data);
@@ -671,8 +683,83 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     public void listFail(int status, String desc) {
+        disMissDialog();
         RingLog.e(TAG, "listFail() status = " + status + "---desc = " + desc);
         SystemUtil.Exit(mActivity, status);
+    }
+
+    @Override
+    public void list1Success(List<AdvertisementBean.DataBean> data) {
+        disMissDialog();
+        if (data != null && data.size() > 0) {
+            bannerList1.clear();
+            bannerList1.addAll(data);
+            vpMainfrag.setVisibility(View.VISIBLE);
+            viewPagerSelectCarAdapter.notifyDataSetChanged();
+        } else {
+            vpMainfrag.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void list1Fail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "list1Fail() code = " + code + "---msg = " + msg);
+        SystemUtil.Exit(mActivity, code);
+    }
+
+    @Override
+    public void hotSuccess(List<HotPoint.DataBean> data) {
+        if (data != null && data.size() > 0) {
+            dataBean = data.get(0);
+            if (dataBean != null) {
+                GlideUtil.loadNetCircleImg(mActivity, dataBean.getHeadImg(), ivMainfragRmzxUserimg, R.mipmap.ic_image_load_circle);
+                ivMainfragRmzxImg.setVisibility(View.VISIBLE);
+                rvMainfragRmzxImg.setVisibility(View.GONE);
+                GlideUtil.loadNetImg(mActivity, dataBean.getIcon(), ivMainfragRmzxImg, R.mipmap.ic_image_load);
+                if (StringUtil.isNotEmpty(dataBean.getTitle())) {
+                    StringUtil.setText(tvMainfragRmzxTitle, dataBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
+                } else if (StringUtil.isNotEmpty(dataBean.getContent())) {
+                    StringUtil.setText(tvMainfragRmzxTitle, dataBean.getContent(), "", View.VISIBLE, View.VISIBLE);
+                }
+                StringUtil.setText(tvMainfragRmzxTime, dataBean.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvMainfragRmzxNum, dataBean.getVisitors() + "评论", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvMainfragRmxcName, dataBean.getUserName(), "", View.VISIBLE, View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void hotFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "hotFail() code = " + code + "---msg = " + msg);
+        SystemUtil.Exit(mActivity, code);
+    }
+
+    @Override
+    public void carTypeSuccess(List<CarType.DataBean> data) {
+        if (data != null && data.size() > 0) {
+            CarType.DataBean dataBean = data.get(0);
+            if (dataBean != null) {
+                ll_mainfrag_rmxc.bringToFront();
+                carId = dataBean.getId();
+                if(dataBean.getBanner() != null && dataBean.getBanner().size() > 0){
+                    AdvertisementBean.DataBean dataBean1 = dataBean.getBanner().get(0);
+                    if(dataBean1 != null){
+                        GlideUtil.loadNetImg(mActivity, dataBean1.getImg(), ivMainfragRmxc, R.mipmap.ic_image_load);
+                    }
+                }
+                StringUtil.setText(tvMainfragRmxcName, dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvMainfragRmxcPrice, "$" + dataBean.getGroupPrice(), "", View.VISIBLE, View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void carTypeFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "carTypeFail() code = " + code + "---msg = " + msg);
+        SystemUtil.Exit(mActivity, code);
     }
 
     @Override
