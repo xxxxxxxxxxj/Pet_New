@@ -4,6 +4,7 @@ import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.model.entity.res.SerchKeysBean;
 import com.haotang.easyshare.mvp.model.imodel.IHotFragmentModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
 import com.haotang.easyshare.mvp.view.iview.IHotFragmentView;
@@ -184,6 +185,39 @@ public class HotFragmentPresenter extends BasePresenter<IHotFragmentView, IHotFr
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.newestFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 文章热门搜索关键字
+     *
+     * @param headers
+     */
+    public void keys(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.keys(headers), new CommonObserver<SerchKeysBean>() {
+            @Override
+            public void onResult(SerchKeysBean result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.keysSuccess(result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.keysFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.keysFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.keysFail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));

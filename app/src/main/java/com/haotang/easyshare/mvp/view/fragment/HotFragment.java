@@ -24,6 +24,7 @@ import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
+import com.haotang.easyshare.mvp.model.entity.res.SerchKeysBean;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.SendPostActivity;
 import com.haotang.easyshare.mvp.view.activity.SerchPostActivity;
@@ -36,6 +37,7 @@ import com.haotang.easyshare.mvp.view.widget.CardTransformer;
 import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.util.DensityUtil;
+import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
@@ -132,6 +134,8 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     protected void initData() {
+        showDialog();
+        mPresenter.keys(UrlConstants.getMapHeader(mActivity));
         showDialog();
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "2").build();
@@ -344,6 +348,24 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
             }
         }));
         RingLog.e(TAG, "newestFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity, code);
+    }
+
+    @Override
+    public void keysSuccess(List<SerchKeysBean.DataBean> data) {
+        disMissDialog();
+        if (data != null && data.size() > 0) {
+            SerchKeysBean.DataBean dataBean = data.get(0);
+            if (dataBean != null) {
+                StringUtil.setText(tvHotfragmentSerch, dataBean.getKey(), "", View.VISIBLE, View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void keysFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "keysFail() code = " + code + "---msg = " + msg);
         SystemUtil.Exit(mActivity, code);
     }
 

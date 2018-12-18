@@ -43,4 +43,11 @@ public interface IHotFragmentModel extends IBaseModel {
      * 问题车帖子列表
      */
     Observable problemCar(Map<String, String> headers,RequestBody body);
+
+    /**
+     * 文章热门搜索关键字
+     *
+     * @param headers
+     */
+    Observable keys(Map<String, String> headers);
 }
