@@ -70,8 +70,8 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
     TextView tvCarDetailModel;
     @BindView(R.id.rv_car_detail_clxq)
     RecyclerView rvCarDetailClxq;
-    @BindView(R.id.tfl_car_detail_clbq)
-    TagFlowLayout tflCarDetailClbq;
+    @BindView(R.id.tv_car_detail_clbq)
+    TextView tvCarDetailClbq;
     @BindView(R.id.rv_car_detail_cxcs)
     RecyclerView rvCarDetailCxcs;
     @BindView(R.id.tfl_car_detail_clys)
@@ -168,8 +168,8 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
             case R.id.tv_car_detail_submit:
                 if (SystemUtil.checkLogin(CarDetailActivity.this)) {
                     Intent intent = new Intent(CarDetailActivity.this, CarPersonInfoActivity.class);
-                    intent.putExtra("carId",id);
-                    intent.putExtra("carName",car);
+                    intent.putExtra("carId", id);
+                    intent.putExtra("carName", car);
                     intent.putStringArrayListExtra("imgList", imgList);
                     startActivity(intent);
                 } else {
@@ -185,28 +185,15 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
         if (data != null) {
             car = data.getCar();
             List<AdvertisementBean.DataBean> banner = data.getBanner();
-            List<String> category = data.getCategory();
             List<String> color = data.getColor();
-            detailImgs = data.getDetailImgs();
-            paramImgs = data.getParamImgs();
             shareMap = data.getShareMap();
-            if (detailImgs != null && detailImgs.size() > 0) {
+            if (data.getDetailImgs() != null && data.getDetailImgs().size() > 0) {
+                detailImgs.addAll(data.getDetailImgs());
                 carDetailPicAdapter.notifyDataSetChanged();
             }
-            if (paramImgs != null && paramImgs.size() > 0) {
+            if (data.getParamImgs() != null && data.getParamImgs().size() > 0) {
+                paramImgs.addAll(data.getParamImgs());
                 carDetailParamPicAdapter.notifyDataSetChanged();
-            }
-            if (category != null && category.size() > 0) {
-                tflCarDetailClbq.setAdapter(new TagAdapter<String>(category) {
-                    @Override
-                    public View getView(FlowLayout parent, int position, final String s) {
-                        View view = (View) View.inflate(CarDetailActivity.this, R.layout.item_cardetail_bq,
-                                null);
-                        TextView tv_item_cardetail_bq = (TextView) view.findViewById(R.id.tv_item_cardetail_bq);
-                        tv_item_cardetail_bq.setText(s);
-                        return view;
-                    }
-                });
             }
             if (color != null && color.size() > 0) {
                 tflCarDetailClys.setAdapter(new TagAdapter<String>(color) {
@@ -229,6 +216,7 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
                 bannerCarDetail.setVisibility(View.GONE);
             }
             StringUtil.setText(tvCarDetailName, data.getCar(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvCarDetailClbq, data.getCategory(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailCar, data.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailModel, data.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailXh, data.getBatteryLife(), "", View.VISIBLE, View.VISIBLE);

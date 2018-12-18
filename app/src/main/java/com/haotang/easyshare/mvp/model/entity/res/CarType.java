@@ -46,7 +46,7 @@ public class CarType {
         private String car;
         private String icon;
         private int id;
-        private String desc;
+        private String category;
 
         @Override
         public String toString() {
@@ -54,12 +54,20 @@ public class CarType {
                     "car='" + car + '\'' +
                     ", icon='" + icon + '\'' +
                     ", id=" + id +
-                    ", desc='" + desc + '\'' +
+                    ", category='" + category + '\'' +
                     '}';
         }
 
         public String getCar() {
             return car;
+        }
+
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
         }
 
         public void setCar(String car) {
@@ -82,14 +90,6 @@ public class CarType {
             this.id = id;
         }
 
-        public String getDesc() {
-            return desc;
-        }
-
-        public void setDesc(String desc) {
-            this.desc = desc;
-        }
-
         @Override
         public int describeContents() {
             return 0;
@@ -100,7 +100,7 @@ public class CarType {
             dest.writeString(car);
             dest.writeString(icon);
             dest.writeInt(id);
-            dest.writeString(desc);
+            dest.writeString(category);
         }
 
         public DataBean(Parcel in) {
@@ -108,7 +108,7 @@ public class CarType {
             car = in.readString();
             icon = in.readString();
             id = in.readInt();
-            desc = in.readString();
+            category = in.readString();
         }
 
         public static final Parcelable.Creator<DataBean> CREATOR = new Parcelable.Creator<DataBean>() {

@@ -16,7 +16,6 @@ import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerCarPersonInfoActivityCommponent;
 import com.haotang.easyshare.di.module.activity.CarPersonInfoActivityModule;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
-import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.CarPersonInfoPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
@@ -57,7 +56,6 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
     TextView tvCardetailPersonModel;
     @BindView(R.id.banner_cardetail_person)
     Banner bannerCardetailPerson;
-    private HotSpecialCarBean.DataBean carDetailData;
     private double lat;
     private double lng;
     private String city = "";
@@ -77,7 +75,6 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        carDetailData = (HotSpecialCarBean.DataBean) getIntent().getSerializableExtra("carDetailData");
         activityListManager.addActivity(this);
         DaggerCarPersonInfoActivityCommponent.builder().
                 carPersonInfoActivityModule(new CarPersonInfoActivityModule(this, this)).build().inject(this);
@@ -89,7 +86,6 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
     @Override
     protected void setView(Bundle savedInstanceState) {
         setLocation();
-        id = carDetailData.getId();
         tvTitlebarTitle.setText("填写个人信息");
         StringUtil.setText(tvCardetailPersonCar, carName, "", View.VISIBLE, View.VISIBLE);
         StringUtil.setText(tvCardetailPersonModel, carName, "", View.VISIBLE, View.VISIBLE);

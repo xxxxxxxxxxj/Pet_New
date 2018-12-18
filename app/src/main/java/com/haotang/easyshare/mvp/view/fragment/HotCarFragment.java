@@ -64,7 +64,7 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
         if (dataBean != null) {
             id = dataBean.getId();
             StringUtil.setText(tv_hotcarfrag_carname, dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_hotcarfrag_cardesc, dataBean.getDesc(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_hotcarfrag_cardesc, dataBean.getCategory(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetImg(mActivity, dataBean.getIcon(), iv_hotcarfrag_bg, R.mipmap.ic_image_load);
         }
     }

@@ -193,10 +193,13 @@
                     android:textColor="@color/aff6525"
                     android:textSize="15sp" />
 
-                <com.zhy.view.flowlayout.TagFlowLayout
-                    android:id="@+id/tfl_car_detail_clbq"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_car_detail_clbq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@color/a999999"
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView

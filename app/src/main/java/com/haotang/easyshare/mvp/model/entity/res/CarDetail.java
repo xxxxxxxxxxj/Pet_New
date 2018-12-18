@@ -51,9 +51,17 @@ public class CarDetail {
         private String groupPrice;
         private String shopPrice;
         private ArrayList<AdvertisementBean.DataBean> detailImgs;
-        private List<String> category;
+        private String category;
         private String batteryLife;
         private PostBean.DataBean.ShareMap shareMap;
+
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
 
         public String getShopPrice() {
             return shopPrice;
@@ -133,14 +141,6 @@ public class CarDetail {
 
         public void setDetailImgs(ArrayList<AdvertisementBean.DataBean> detailImgs) {
             this.detailImgs = detailImgs;
-        }
-
-        public List<String> getCategory() {
-            return category;
-        }
-
-        public void setCategory(List<String> category) {
-            this.category = category;
         }
 
         public String getBatteryLife() {
