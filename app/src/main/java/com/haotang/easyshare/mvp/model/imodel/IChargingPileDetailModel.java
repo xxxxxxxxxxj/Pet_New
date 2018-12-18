@@ -44,4 +44,11 @@ public interface IChargingPileDetailModel extends IBaseModel {
      * 浮窗
      */
     Observable list(Map<String, String> headers,MultipartBody body);
+
+    /**
+     * 充电桩评论列表
+     * @param uuid
+     * @param mNextRequestPage
+     */
+    Observable commentList(Map<String, String> headers, String uuid, int mNextRequestPage);
 }

@@ -397,6 +397,10 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     tvChargeingGzbx.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
                     tvChargeingGzbx.getPaint().setAntiAlias(true);//抗锯齿
                     ll_chargeing_ing.bringToFront();
+                    String soc = data.getSoc();
+                    if (StringUtil.isNotEmpty(soc)) {
+                        wpv_chargeing.setProgress(Integer.parseInt(soc.replace("%", "")));
+                    }
                     if (data.getDialogTips() != null && data.getDialogTips().size() > 0) {
                         showRechargeTimeOutDialog(data.getDialogTips(), data.getStopTimeout());
                     } else {

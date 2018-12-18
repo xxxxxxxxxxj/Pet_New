@@ -79,11 +79,11 @@ public class CommentDetailAdapter extends BaseQuickAdapter<CommentBean.Comment, 
                 rv_item_comment_img.setVisibility(View.VISIBLE);
                 rv_item_comment_img.setHasFixedSize(true);
                 rv_item_comment_img.setNestedScrollingEnabled(false);
-                NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rv_item_comment_img, mContext, 3, GridLayoutManager.VERTICAL, false);
+                NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rv_item_comment_img, mContext, 4, GridLayoutManager.VERTICAL, false);
                 noScollFullGridLayoutManager.setScrollEnabled(false);
                 rv_item_comment_img.setLayoutManager(noScollFullGridLayoutManager);
                 if (rv_item_comment_img.getItemDecorationCount() <= 0) {
-                    rv_item_comment_img.addItemDecoration(new GridSpacingItemDecoration(3,
+                    rv_item_comment_img.addItemDecoration(new GridSpacingItemDecoration(4,
                             mContext.getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
                             mContext.getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
                             false));

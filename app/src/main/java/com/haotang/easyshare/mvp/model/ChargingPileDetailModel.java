@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.model;
 
 import com.haotang.easyshare.mvp.model.http.ChargingPileDetailApiService;
+import com.haotang.easyshare.mvp.model.http.CommentDetailApiService;
 import com.haotang.easyshare.mvp.model.http.HotFragmentApiService;
 import com.haotang.easyshare.mvp.model.imodel.IChargingPileDetailModel;
 import com.ljy.devring.DevRing;
@@ -58,5 +59,15 @@ public class ChargingPileDetailModel implements IChargingPileDetailModel {
     @Override
     public Observable list(Map<String, String> headers,MultipartBody body) {
         return DevRing.httpManager().getService(HotFragmentApiService.class).list(headers,body);
+    }
+
+    /**
+     * 充电桩评论列表
+     * @param uuid
+     * @param mNextRequestPage
+     */
+    @Override
+    public Observable commentList(Map<String, String> headers, String uuid, int mNextRequestPage) {
+        return DevRing.httpManager().getService(CommentDetailApiService.class).list(headers,uuid,mNextRequestPage);
     }
 }

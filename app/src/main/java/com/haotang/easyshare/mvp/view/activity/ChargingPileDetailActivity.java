@@ -29,6 +29,8 @@ import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
 import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
+import com.haotang.easyshare.mvp.model.entity.res.CommentImg;
+import com.haotang.easyshare.mvp.model.entity.res.CommentTag;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.ChargingPileDetailPresenter;
@@ -248,6 +250,8 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             RingLog.d(TAG, "md5 =  " + md5);
             mPresenter.detail(UrlConstants.getMapHeader(this), lng, lat, uuid, md5);
         }
+        showDialog();
+        mPresenter.commentList(UrlConstants.getMapHeader(this), uuid, 1);
     }
 
     @Override
@@ -508,6 +512,52 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
 
     @Override
     public void listFail(int code, String msg) {
+        disMissDialog();
+        RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(this, code);
+    }
+
+    @Override
+    public void commentListSuccess(CommentBean data) {
+        list.clear();
+        if (data != null) {
+            List<CommentBean.Comment> comments = data.getComments();
+            if (comments != null && comments.size() > 0) {
+                for (int i = 0; i < comments.size(); i++) {
+                    CommentBean.Comment comment = comments.get(i);
+                    if (comment != null) {
+                        List<String> media = comment.getMedia();
+                        List<String> tags = comment.getTags();
+                        if (media != null && media.size() > 0) {
+                            List<CommentImg> mediaList = new ArrayList<CommentImg>();
+                            mediaList.clear();
+                            for (int k = 0; k < media.size(); k++) {
+                                mediaList.add(new CommentImg(media.get(k), false));
+                            }
+                            comment.setMediaList(mediaList);
+                        }
+                        if (tags != null && tags.size() > 0) {
+                            List<CommentTag> tagList = new ArrayList<CommentTag>();
+                            for (int k = 0; k < tags.size(); k++) {
+                                tagList.add(new CommentTag(tags.get(k), false));
+                            }
+                            comment.setTagList(tagList);
+                        }
+                    }
+                }
+                list.addAll(comments);
+            }
+        }
+        if (list.size() > 0) {
+            ll_chargingdetail_pl.setVisibility(View.VISIBLE);
+            commentDetailAdapter.notifyDataSetChanged();
+        } else {
+            ll_chargingdetail_pl.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void commentListFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "detailFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(this, code);

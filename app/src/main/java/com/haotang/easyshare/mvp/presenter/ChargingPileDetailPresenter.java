@@ -4,6 +4,7 @@ import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
+import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.IChargingPileDetailModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
@@ -160,6 +161,39 @@ public class ChargingPileDetailPresenter extends BasePresenter<IChargingPileDeta
             public void onError(int errType, String errMessage) {
                 if (mIView != null) {
                     mIView.listFail(errType, errMessage);
+                }
+            }
+        }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 充电桩评论列表
+     * @param uuid
+     * @param mNextRequestPage
+     */
+    public void commentList(Map<String, String> headers, String uuid, int mNextRequestPage) {
+        DevRing.httpManager().commonRequest(mIModel.commentList(headers,uuid, mNextRequestPage), new CommonObserver<HttpResult<CommentBean>>() {
+            @Override
+            public void onResult(HttpResult<CommentBean> result) {
+                if (mIView != null) {
+                    if (result != null) {
+                        if (result.getCode() == 0) {
+                            mIView.commentListSuccess(result.getData());
+                        } else {
+                            if (StringUtil.isNotEmpty(result.getMsg())) {
+                                mIView.commentListFail(result.getCode(), result.getMsg());
+                            } else {
+                                mIView.commentListFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG + "-code=" + result.getCode());
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errType, String errMessage) {
+                if (mIView != null) {
+                    mIView.commentListFail(errType, errMessage);
                 }
             }
         }, RxLifecycleUtil.bindUntilDestroy(mIView));

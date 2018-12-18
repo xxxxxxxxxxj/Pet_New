@@ -3,6 +3,7 @@ package com.haotang.easyshare.mvp.view.iview;
 import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeDetailBean;
+import com.haotang.easyshare.mvp.model.entity.res.CommentBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
 import java.util.List;
@@ -32,4 +33,8 @@ public interface IChargingPileDetailView extends IBaseView{
     void listSuccess(List<AdvertisementBean.DataBean> data);
 
     void listFail(int code, String msg);
+
+    void commentListSuccess(CommentBean data);
+
+    void commentListFail(int code, String msg);
 }
