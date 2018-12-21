@@ -43,6 +43,15 @@ public class HomeBean {
     private int isEval;
     private List<StationsBean> stations;
     private String vipPrivilege;
+    private int couponAmount;
+
+    public int getCouponAmount() {
+        return couponAmount;
+    }
+
+    public void setCouponAmount(int couponAmount) {
+        this.couponAmount = couponAmount;
+    }
 
     public String getVipPrivilege() {
         return vipPrivilege;

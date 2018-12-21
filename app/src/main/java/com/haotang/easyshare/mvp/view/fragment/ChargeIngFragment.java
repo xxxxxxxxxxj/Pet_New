@@ -170,12 +170,12 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             if (reduceType == 1) {//减免券
                 tv_chargeing_coupon.setText("优惠券减免" + event.getAmount() + "元");
                 totalPrice = String.valueOf(ComputeUtil.sub(Double.valueOf(totalPrice), event.getAmount()));
-                StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvChargeingZfy, totalPrice + "", "", View.VISIBLE, View.VISIBLE);
             } else if (reduceType == 2) {//折扣券
                 tv_chargeing_coupon.setText("服务费" + event.getAmount() + "折,优惠" + ComputeUtil.sub(Double.valueOf(totalServiceFee), ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount())) + "元");
                 totalPrice = String.valueOf(ComputeUtil.sub(Double.valueOf(totalPrice), ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount())));
-                StringUtil.setText(tvChargeingFwf, ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount()) + "元", "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvChargeingFwf, ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount()) + "", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvChargeingZfy, totalPrice + "", "", View.VISIBLE, View.VISIBLE);
             }
         }
     }
@@ -415,9 +415,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         } else {
                             StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                         }
-                        StringUtil.setText(tvChargeingCdf, data.getTotalPowerPrice() + "元", "", View.VISIBLE, View.VISIBLE);
-                        StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
-                        StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(tvChargeingCdf, data.getTotalPowerPrice() + "", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(tvChargeingFwf, totalServiceFee + "", "", View.VISIBLE, View.VISIBLE);
+                        StringUtil.setText(tvChargeingZfy, totalPrice + "", "", View.VISIBLE, View.VISIBLE);
                         if (state == 0) {//连接中,插枪未充电
                             tv_chargeing_tishi.setVisibility(View.VISIBLE);
                             ll_chargeing_jsm.setVisibility(View.GONE);
@@ -500,9 +500,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         StringUtil.setText(tvChargeingKwh, "0.00KWH", "", View.VISIBLE, View.VISIBLE);
                     }
                     StringUtil.setText(tvChargeingStatus, "充电结束", "", View.VISIBLE, View.VISIBLE);
-                    StringUtil.setText(tvChargeingCdf, data.getTotalPowerPrice() + "元", "", View.VISIBLE, View.VISIBLE);
-                    StringUtil.setText(tvChargeingFwf, totalServiceFee + "元", "", View.VISIBLE, View.VISIBLE);
-                    StringUtil.setText(tvChargeingZfy, totalPrice + "元", "", View.VISIBLE, View.VISIBLE);
+                    StringUtil.setText(tvChargeingCdf, data.getTotalPowerPrice() + "", "", View.VISIBLE, View.VISIBLE);
+                    StringUtil.setText(tvChargeingFwf, totalServiceFee + "", "", View.VISIBLE, View.VISIBLE);
+                    StringUtil.setText(tvChargeingZfy, totalPrice + "", "", View.VISIBLE, View.VISIBLE);
                 }
             } else {
                 RingToast.show("账单在飞来的路上，请耐心等候哦");

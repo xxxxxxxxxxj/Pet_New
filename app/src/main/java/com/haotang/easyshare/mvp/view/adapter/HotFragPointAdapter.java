@@ -1,5 +1,6 @@
 package com.haotang.easyshare.mvp.view.adapter;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.StringUtil;
 
@@ -38,25 +40,27 @@ public class HotFragPointAdapter extends BaseQuickAdapter<HotPoint.DataBean, Bas
         TextView tv_item_hotfrag_point_name = helper.getView(R.id.tv_item_hotfrag_point_name);
         if (item != null) {
             GlideUtil.loadNetCircleImg(mContext, item.getHeadImg(), iv_item_hotfrag_point_userimg, R.mipmap.ic_image_load_circle);
-            //if (item.getImgFlag() == 1) {
-                iv_item_hotfrag_point_img.setVisibility(View.VISIBLE);
-                rv_item_hotfrag_point_img.setVisibility(View.GONE);
-                GlideUtil.loadNetImg(mContext, item.getIcon(), iv_item_hotfrag_point_img, R.mipmap.ic_image_load);
-            /*} else if (item.getImgFlag() == 2) {
-                iv_item_hotfrag_point_img.setVisibility(View.GONE);
-                if (item.getImgList() != null && item.getImgList().size() > 0) {
+            if (item.getMedia() != null && item.getMedia().size() > 0) {
+                if (item.getMedia().size() > 1) {
+                    iv_item_hotfrag_point_img.setVisibility(View.GONE);
                     rv_item_hotfrag_point_img.setVisibility(View.VISIBLE);
                     rv_item_hotfrag_point_img.setHasFixedSize(true);
                     rv_item_hotfrag_point_img.setNestedScrollingEnabled(false);
                     NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rv_item_hotfrag_point_img, mContext, 3, GridLayoutManager.VERTICAL, false);
                     noScollFullGridLayoutManager.setScrollEnabled(false);
                     rv_item_hotfrag_point_img.setLayoutManager(noScollFullGridLayoutManager);
-                    ImgAdapter imgAdapter = new ImgAdapter(R.layout.item_img, item.getImgList(), 197, 137);
+                    ImgAdapter imgAdapter = new ImgAdapter(R.layout.item_img, item.getMedia(), 197, 137);
                     rv_item_hotfrag_point_img.setAdapter(imgAdapter);
                 } else {
+                    iv_item_hotfrag_point_img.setVisibility(View.VISIBLE);
                     rv_item_hotfrag_point_img.setVisibility(View.GONE);
+                    GlideUtil.loadNetImg(mContext, item.getMedia().get(0), iv_item_hotfrag_point_img, R.mipmap.ic_image_load);
                 }
-            }*/
+            } else {
+                iv_item_hotfrag_point_img.setVisibility(View.VISIBLE);
+                rv_item_hotfrag_point_img.setVisibility(View.GONE);
+                GlideUtil.loadNetImg(mContext, "", iv_item_hotfrag_point_img, R.mipmap.ic_image_load);
+            }
             if (StringUtil.isNotEmpty(item.getTitle())) {
                 StringUtil.setText(tv_item_hotfrag_point_title, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
             } else if (StringUtil.isNotEmpty(item.getContent())) {

@@ -85,6 +85,7 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
     private CarDetailPicAdapter carDetailParamPicAdapter;
     private String car;
     private ArrayList<String> imgList = new ArrayList<String>();
+    private String brand;
 
     @Override
     protected int getContentLayout() {
@@ -170,6 +171,7 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
                     Intent intent = new Intent(CarDetailActivity.this, CarPersonInfoActivity.class);
                     intent.putExtra("carId", id);
                     intent.putExtra("carName", car);
+                    intent.putExtra("carBrand", brand);
                     intent.putStringArrayListExtra("imgList", imgList);
                     startActivity(intent);
                 } else {
@@ -184,6 +186,7 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
         disMissDialog();
         if (data != null) {
             car = data.getCar();
+            brand = data.getBrand();
             List<AdvertisementBean.DataBean> banner = data.getBanner();
             List<String> color = data.getColor();
             shareMap = data.getShareMap();
@@ -217,7 +220,7 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
             }
             StringUtil.setText(tvCarDetailName, data.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailClbq, data.getCategory(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvCarDetailCar, data.getCar(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvCarDetailCar, data.getBrand(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailModel, data.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailXh, data.getBatteryLife(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailTgj, "团购$" + data.getGroupPrice(), "", View.VISIBLE, View.VISIBLE);

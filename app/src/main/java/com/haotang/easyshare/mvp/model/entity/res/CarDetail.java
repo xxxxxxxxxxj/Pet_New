@@ -53,7 +53,16 @@ public class CarDetail {
         private ArrayList<AdvertisementBean.DataBean> detailImgs;
         private String category;
         private String batteryLife;
+        private String brand;
         private PostBean.DataBean.ShareMap shareMap;
+
+        public String getBrand() {
+            return brand;
+        }
+
+        public void setBrand(String brand) {
+            this.brand = brand;
+        }
 
         public String getCategory() {
             return category;

@@ -349,7 +349,6 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void homeSuccess(HomeBean data) {
         iv_myfragment_bjusername.setVisibility(View.VISIBLE);
         disMissDialog();
-        RingLog.e(TAG, "MyFragment homeSuccess()");
         if (data != null) {
             vipPrivilege = data.getVipPrivilege();
             uuid = data.getUuid();
@@ -357,7 +356,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             balance = data.getBalance();
             StringUtil.setText(tvMyfragmentUsername, data.getUserName(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentYue, String.valueOf(data.getBalance()), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_myfragment_yhq, String.valueOf(data.getBalance()), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_myfragment_yhq, String.valueOf(data.getCouponAmount()), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentVipjf, String.valueOf(data.getCoins()), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentJjdh, data.getKf_phone(), "", View.VISIBLE, View.VISIBLE);
             GlideUtil.loadNetCircleImg(mActivity, data.getHeadImg(), ivMyfragmentUserimg, R.mipmap.ic_image_load_circle);

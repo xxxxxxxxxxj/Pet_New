@@ -67,6 +67,7 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
     private int id;
     private ArrayList<String> imgList;
     private String carName;
+    private String carBrand;
 
     @Override
     protected int getContentLayout() {
@@ -80,6 +81,7 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
                 carPersonInfoActivityModule(new CarPersonInfoActivityModule(this, this)).build().inject(this);
         imgList = getIntent().getStringArrayListExtra("imgList");
         id = getIntent().getIntExtra("carId", 0);
+        carBrand = getIntent().getStringExtra("carBrand");
         carName = getIntent().getStringExtra("carName");
     }
 
@@ -87,7 +89,7 @@ public class CarPersonInfoActivity extends BaseActivity<CarPersonInfoPresenter> 
     protected void setView(Bundle savedInstanceState) {
         setLocation();
         tvTitlebarTitle.setText("填写个人信息");
-        StringUtil.setText(tvCardetailPersonCar, carName, "", View.VISIBLE, View.VISIBLE);
+        StringUtil.setText(tvCardetailPersonCar, carBrand, "", View.VISIBLE, View.VISIBLE);
         StringUtil.setText(tvCardetailPersonModel, carName, "", View.VISIBLE, View.VISIBLE);
         if (imgList != null && imgList.size() > 0) {
             bannerCardetailPerson.setVisibility(View.VISIBLE);

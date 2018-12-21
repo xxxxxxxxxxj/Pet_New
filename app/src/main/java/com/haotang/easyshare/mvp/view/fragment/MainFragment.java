@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -70,6 +71,7 @@ import com.haotang.easyshare.mvp.view.activity.LocalChargingActivity;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.MainActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
+import com.haotang.easyshare.mvp.view.adapter.ImgAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainLocalHorAdapter;
 import com.haotang.easyshare.mvp.view.adapter.MainSerchResultAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ViewPagerMainAdapter;
@@ -77,6 +79,7 @@ import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
 import com.haotang.easyshare.mvp.view.widget.CardTransformer;
+import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
 import com.haotang.easyshare.util.DensityUtil;
@@ -101,6 +104,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+
+import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
 
 /**
  * <p>Title:${type_name}</p>
@@ -713,10 +718,28 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         if (data != null && data.size() > 0) {
             dataBean = data.get(0);
             if (dataBean != null) {
+                if (dataBean.getMedia() != null && dataBean.getMedia().size() > 0) {
+                    if (dataBean.getMedia().size() > 1) {
+                        ivMainfragRmzxImg.setVisibility(View.GONE);
+                        rvMainfragRmzxImg.setVisibility(View.VISIBLE);
+                        rvMainfragRmzxImg.setHasFixedSize(true);
+                        rvMainfragRmzxImg.setNestedScrollingEnabled(false);
+                        NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rvMainfragRmzxImg, mContext, 3, GridLayoutManager.VERTICAL, false);
+                        noScollFullGridLayoutManager.setScrollEnabled(false);
+                        rvMainfragRmzxImg.setLayoutManager(noScollFullGridLayoutManager);
+                        ImgAdapter imgAdapter = new ImgAdapter(R.layout.item_img, dataBean.getMedia(), 197, 137);
+                        rvMainfragRmzxImg.setAdapter(imgAdapter);
+                    } else {
+                        ivMainfragRmzxImg.setVisibility(View.VISIBLE);
+                        rvMainfragRmzxImg.setVisibility(View.GONE);
+                        GlideUtil.loadNetImg(mContext, dataBean.getMedia().get(0), ivMainfragRmzxImg, R.mipmap.ic_image_load);
+                    }
+                } else {
+                    ivMainfragRmzxImg.setVisibility(View.VISIBLE);
+                    rvMainfragRmzxImg.setVisibility(View.GONE);
+                    GlideUtil.loadNetImg(mContext, "", ivMainfragRmzxImg, R.mipmap.ic_image_load);
+                }
                 GlideUtil.loadNetCircleImg(mActivity, dataBean.getHeadImg(), ivMainfragRmzxUserimg, R.mipmap.ic_image_load_circle);
-                ivMainfragRmzxImg.setVisibility(View.VISIBLE);
-                rvMainfragRmzxImg.setVisibility(View.GONE);
-                GlideUtil.loadNetImg(mActivity, dataBean.getIcon(), ivMainfragRmzxImg, R.mipmap.ic_image_load);
                 if (StringUtil.isNotEmpty(dataBean.getTitle())) {
                     StringUtil.setText(tvMainfragRmzxTitle, dataBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
                 } else if (StringUtil.isNotEmpty(dataBean.getContent())) {
@@ -743,9 +766,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             if (dataBean != null) {
                 ll_mainfrag_rmxc.bringToFront();
                 carId = dataBean.getId();
-                if(dataBean.getBanner() != null && dataBean.getBanner().size() > 0){
+                if (dataBean.getBanner() != null && dataBean.getBanner().size() > 0) {
                     AdvertisementBean.DataBean dataBean1 = dataBean.getBanner().get(0);
-                    if(dataBean1 != null){
+                    if (dataBean1 != null) {
                         GlideUtil.loadNetImg(mActivity, dataBean1.getImg(), ivMainfragRmxc, R.mipmap.ic_image_load);
                     }
                 }
