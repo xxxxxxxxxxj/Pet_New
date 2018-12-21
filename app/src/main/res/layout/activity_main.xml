@@ -4,38 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/ll_mainactivity"
+    <com.flyco.tablayout.CommonTabLayout
+        android:id="@+id/ctl_mainactivity"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="49dip"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/aEEEEEE" />
-
-        <com.flyco.tablayout.CommonTabLayout
-            android:id="@+id/ctl_mainactivity"
-            android:layout_width="match_parent"
-            android:layout_height="53dp"
-            android:background="@color/white"
-            tl:tl_iconHeight="25dp"
-            tl:tl_iconWidth="25dp"
-            tl:tl_indicator_color="#2C97DE"
-            tl:tl_indicator_height="0dp"
-            tl:tl_textSelectColor="@color/a0063DA"
-            tl:tl_textUnselectColor="@color/a979797"
-            tl:tl_textsize="10sp"
-            tl:tl_underline_color="#DDDDDD"
-            tl:tl_underline_height="1dp" />
-    </LinearLayout>
+        android:background="@color/black"
+        tl:tl_iconHeight="49dp"
+        tl:tl_iconWidth="49dp"
+        tl:tl_indicator_color="#2C97DE"
+        tl:tl_indicator_height="0dp"
+        tl:tl_textSelectColor="@color/a0063DA"
+        tl:tl_textUnselectColor="@color/a979797"
+        tl:tl_textsize="0sp"
+        tl:tl_underline_color="@color/black"
+        tl:tl_underline_height="0dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_mainactivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/ll_mainactivity" />
+        android:layout_above="@id/ctl_mainactivity" />
 
 </RelativeLayout>

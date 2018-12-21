@@ -15,8 +15,6 @@ import android.view.WindowManager;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.flyco.tablayout.utils.UnreadMsgUtils;
-import com.flyco.tablayout.widget.MsgView;
 import com.github.zackratos.ultimatebar.UltimateBar;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
@@ -45,7 +43,6 @@ import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.updateapputil.Callback;
 import com.haotang.easyshare.updateapputil.ConfirmDialog;
 import com.haotang.easyshare.updateapputil.DownloadAppUtils;
-import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.PollingUtils;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.SystemUtil;
@@ -234,16 +231,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         ctlMainactivity.setTabData(mTabEntities);
         ctlMainactivity.setCurrentTab(currentTabIndex);
         vpMainactivity.setCurrentItem(currentTabIndex);
-        if (isRedPoint) {
-            //设置未读消息红点
-            ctlMainactivity.showDot(1);
-            MsgView rtv_2_2 = ctlMainactivity.getMsgView(1);
-            if (rtv_2_2 != null) {
-                UnreadMsgUtils.setSize(rtv_2_2, DensityUtil.dp2px(this, 7.5f));
-            }
-        } else {
-            ctlMainactivity.hideMsg(1);
-        }
         DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
     }
 
@@ -285,7 +272,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 if (position == 0) {
                     DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_MAINFRAGMET));
                 } else if (position == 1) {
-                    ctlMainactivity.hideMsg(1);
                     DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_HOTFRAGMET));
                 } else if (position == 2) {
                     DevRing.busManager().postEvent(new RefreshFragmentEvent(RefreshFragmentEvent.REFRESH_CHARGEINGFRAGMET));
@@ -386,31 +372,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                         ctlMainactivity.setTabData(mTabEntities);
                     }
                 }
-            }
-            if (Integer.parseInt(mallRedPoint) > 0) {
-                //设置未读消息红点
-                ctlMainactivity.showDot(1);
-                MsgView rtv_2_2 = ctlMainactivity.getMsgView(1);
-                if (rtv_2_2 != null) {
-                    UnreadMsgUtils.setSize(rtv_2_2, DensityUtil.dp2px(this, 7.5f));
-                }
-            } else {
-                ctlMainactivity.hideMsg(1);
-            }
-            if (nToBeComment > 0) {
-                //设置未读消息红点
-                ctlMainactivity.showDot(4);
-                MsgView rtv_2_2 = ctlMainactivity.getMsgView(4);
-                if (rtv_2_2 != null) {
-                    UnreadMsgUtils.setSize(rtv_2_2, DensityUtil.dp2px(this, 7.5f));
-                }
-            } else {
-                ctlMainactivity.hideMsg(4);
-            }
-            if (currentTabIndex == 1) {
-                ctlMainactivity.hideMsg(1);
-            } else if (currentTabIndex == 4) {
-                ctlMainactivity.hideMsg(4);
             }
         }
     }
