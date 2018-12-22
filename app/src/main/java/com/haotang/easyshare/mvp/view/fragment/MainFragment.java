@@ -105,8 +105,6 @@ import butterknife.OnClick;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
-
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -117,7 +115,7 @@ import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
  */
 public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         AMapLocationListener, IMainFragmentView, AMap.OnMarkerClickListener,
-        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener, OnBannerListener {
+        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener, OnBannerListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter {
     private final static String TAG = MainFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
@@ -282,6 +280,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             MainFragChargeBean stationsBean = list.get(i);
             if (stationsBean != null) {
                 MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view))
+                        .title("快充" + stationsBean.getFastNum() + " | " + "慢充" + stationsBean.getSlowNum() + " | " + "空闲" + stationsBean.getFreeNum())
                         .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
                         .draggable(true);
                 Marker marker = aMap.addMarker(markerOptions);
@@ -348,9 +347,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     protected void initEvent() {
+        aMap.setInfoWindowAdapter(this);
         aMap.setOnMyLocationChangeListener(this);
         aMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
         aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
+        aMap.setOnInfoWindowClickListener(this);// 设置点击infoWindow事件监听器
         //解决上下滑动冲突问题
         aMap.setOnMapTouchListener(new AMap.OnMapTouchListener() {
             @Override
@@ -724,7 +725,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         rvMainfragRmzxImg.setVisibility(View.VISIBLE);
                         rvMainfragRmzxImg.setHasFixedSize(true);
                         rvMainfragRmzxImg.setNestedScrollingEnabled(false);
-                        NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rvMainfragRmzxImg, mContext, 3, GridLayoutManager.VERTICAL, false);
+                        NoScollFullGridLayoutManager noScollFullGridLayoutManager = new NoScollFullGridLayoutManager(rvMainfragRmzxImg, mActivity, 3, GridLayoutManager.VERTICAL, false);
                         noScollFullGridLayoutManager.setScrollEnabled(false);
                         rvMainfragRmzxImg.setLayoutManager(noScollFullGridLayoutManager);
                         ImgAdapter imgAdapter = new ImgAdapter(R.layout.item_img, dataBean.getMedia(), 197, 137);
@@ -732,12 +733,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     } else {
                         ivMainfragRmzxImg.setVisibility(View.VISIBLE);
                         rvMainfragRmzxImg.setVisibility(View.GONE);
-                        GlideUtil.loadNetImg(mContext, dataBean.getMedia().get(0), ivMainfragRmzxImg, R.mipmap.ic_image_load);
+                        GlideUtil.loadNetImg(mActivity, dataBean.getMedia().get(0), ivMainfragRmzxImg, R.mipmap.ic_image_load);
                     }
                 } else {
                     ivMainfragRmzxImg.setVisibility(View.VISIBLE);
                     rvMainfragRmzxImg.setVisibility(View.GONE);
-                    GlideUtil.loadNetImg(mContext, "", ivMainfragRmzxImg, R.mipmap.ic_image_load);
+                    GlideUtil.loadNetImg(mActivity, "", ivMainfragRmzxImg, R.mipmap.ic_image_load);
                 }
                 GlideUtil.loadNetCircleImg(mActivity, dataBean.getHeadImg(), ivMainfragRmzxUserimg, R.mipmap.ic_image_load_circle);
                 if (StringUtil.isNotEmpty(dataBean.getTitle())) {
@@ -787,11 +788,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 18, 0, 30)),
-                1000, null);
-        int position = (int) marker.getObject();
-        showBottomDialog(position);
-        return true;
+        RingLog.e("onMarkerClick");
+        if (aMap != null) {
+            aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 18, 0, 30)),
+                    1000, null);
+        }
+        return false;
     }
 
     private void showBottomDialog(int position) {
@@ -977,5 +979,28 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 }
             }
         }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        RingLog.e("onInfoWindowClick");
+        int position = (int) marker.getObject();
+        showBottomDialog(position);
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        RingLog.e("getInfoWindow");
+        View infoWindow = getLayoutInflater().inflate(
+                R.layout.main_custom_info_window, null);
+        TextView tv_main_custom_infowindow = ((TextView) infoWindow.findViewById(R.id.tv_main_custom_infowindow));
+        StringUtil.setText(tv_main_custom_infowindow, marker.getTitle(), "", View.VISIBLE, View.VISIBLE);
+        return infoWindow;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        RingLog.e("getInfoContents");
+        return null;
     }
 }
