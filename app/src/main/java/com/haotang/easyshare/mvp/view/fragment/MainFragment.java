@@ -215,6 +215,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private ViewPagerMainAdapter viewPagerSelectCarAdapter;
     private HotPoint.DataBean dataBean;
     private int carId;
+    private ArrayList<Marker> markerlst;
+    private ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
+    private Marker clickMarker;
 
     @Override
     protected boolean isLazyLoad() {
@@ -276,15 +279,24 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     private void addMarkersToMap() {
         aMap.clear();
+        markerOptionlst.clear();
         for (int i = 0; i < list.size(); i++) {
             MainFragChargeBean stationsBean = list.get(i);
             if (stationsBean != null) {
                 MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view))
                         .title("快充" + stationsBean.getFastNum() + " | " + "慢充" + stationsBean.getSlowNum() + " | " + "空闲" + stationsBean.getFreeNum())
                         .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
-                        .draggable(true);
-                Marker marker = aMap.addMarker(markerOptions);
-                marker.setObject(i);
+                        .draggable(true).setInfoWindowOffset(0, 20);
+                markerOptionlst.add(markerOptions);
+            }
+        }
+        markerlst = aMap.addMarkers(markerOptionlst, true);
+        if (markerlst != null && markerlst.size() > 0) {
+            for (int i = 0; i < markerlst.size(); i++) {
+                Marker marker = markerlst.get(i);
+                if (marker != null) {
+                    marker.setObject(i);
+                }
             }
         }
     }
@@ -352,6 +364,14 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         aMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
         aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
         aMap.setOnInfoWindowClickListener(this);// 设置点击infoWindow事件监听器
+        aMap.setOnMapClickListener(new AMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                if (clickMarker != null && latLng.latitude != clickMarker.getPosition().latitude && latLng.longitude != clickMarker.getPosition().longitude) {
+                    //clickMarker.hideInfoWindow();
+                }
+            }
+        });
         //解决上下滑动冲突问题
         aMap.setOnMapTouchListener(new AMap.OnMapTouchListener() {
             @Override
@@ -789,10 +809,16 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public boolean onMarkerClick(Marker marker) {
         RingLog.e("onMarkerClick");
-        if (aMap != null) {
-            aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 18, 0, 30)),
-                    1000, null);
+        clickMarker = marker;
+        if (markerlst != null && markerlst.size() > 0) {
+            for (int i = 0; i < markerlst.size(); i++) {
+                Marker marker1 = markerlst.get(i);
+                if (marker1 != null) {
+                    marker1.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view));
+                }
+            }
         }
+        marker.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view_select));
         return false;
     }
 
@@ -811,14 +837,14 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             //点击外部消失
             pWinBottomDialog.setOutsideTouchable(true);
             //设置可以点击
-            pWin.setClippingEnabled(false);
+            pWinBottomDialog.setClippingEnabled(false);
             pWinBottomDialog.setTouchable(true);
             //进入退出的动画
             pWinBottomDialog.setAnimationStyle(R.style.mypopwindow_anim_style);
             pWinBottomDialog.setWidth(SystemUtil.getDisplayMetrics(mActivity)[0]);
             float screenDensity = ScreenUtil.getScreenDensity(mActivity);
             Log.e("TAG", "screenDensity = " + screenDensity);
-            pWinBottomDialog.setHeight(SystemUtil.getDisplayMetrics(mActivity)[1] - DensityUtil.dp2px(mActivity, 280) - DensityUtil.getStatusBarHeight(mActivity));
+            pWinBottomDialog.setHeight(SystemUtil.getDisplayMetrics(mActivity)[1] - DensityUtil.dp2px(mActivity, 210) - DensityUtil.getStatusBarHeight(mActivity));
             pWinBottomDialog.showAtLocation(customView, Gravity.BOTTOM, 0, 0);
             mainFragmenBoDa.getLl_mainbottom().bringToFront();
             StringUtil.setText(mainFragmenBoDa.getTvMainbottomName(), stationsBean.getTitle(), "", View.VISIBLE, View.VISIBLE);
@@ -983,8 +1009,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        RingLog.e("onInfoWindowClick");
         int position = (int) marker.getObject();
+        RingLog.e("onInfoWindowClick position = " + position);
         showBottomDialog(position);
     }
 
