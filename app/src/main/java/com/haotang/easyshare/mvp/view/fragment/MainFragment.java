@@ -284,7 +284,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             MainFragChargeBean stationsBean = list.get(i);
             if (stationsBean != null) {
                 MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view))
-                        .title("快充" + stationsBean.getFastNum() + " | " + "慢充" + stationsBean.getSlowNum() + " | " + "空闲" + stationsBean.getFreeNum())
+                        .title("快充" + stationsBean.getFastNum() + "  |  " + "慢充" + stationsBean.getSlowNum() + "  |  " + "空闲" + stationsBean.getFreeNum())
                         .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
                         .draggable(true).setInfoWindowOffset(0, 20);
                 markerOptionlst.add(markerOptions);
