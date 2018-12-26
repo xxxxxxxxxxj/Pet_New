@@ -20,6 +20,7 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.UserConfigBean;
 import com.haotang.easyshare.mvp.presenter.MyFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AboutActivity;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
@@ -90,6 +91,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     ViewPager vpMyfragmentMycdz;
     @BindView(R.id.tv_myfragment_mycharge_title)
     TextView tv_myfragment_mycharge_title;
+    @BindView(R.id.tv_myfragment_addstation_desc)
+    TextView tv_myfragment_addstation_desc;
     @BindView(R.id.iv_myfragment_bjusername)
     ImageView iv_myfragment_bjusername;
     @BindView(R.id.rl_myfragment_mycharge_right)
@@ -133,6 +136,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             showDialog();
             mPresenter.home(UrlConstants.getMapHeader(mActivity));
             mPresenter.my(UrlConstants.getMapHeader(mActivity));
+            mPresenter.userConfig(UrlConstants.getMapHeader(mActivity));
             UmenUtil.UmengEventStatistics(getActivity(), UmenUtil.yxzx14);
         }
     }
@@ -186,6 +190,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
             showDialog();
             mPresenter.home(UrlConstants.getMapHeader(mActivity));
             mPresenter.my(UrlConstants.getMapHeader(mActivity));
+            mPresenter.userConfig(UrlConstants.getMapHeader(mActivity));
         }
     }
 
@@ -418,6 +423,20 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     public void myFail(int code, String msg) {
         disMissDialog();
         RingLog.e(TAG, "MyFragment myFail() status = " + code + "---desc = " + msg);
+        SystemUtil.Exit(mActivity, code);
+        exitInfo(code);
+    }
+
+    @Override
+    public void userConfigSuccess(UserConfigBean.UserConfig data) {
+        if (data != null) {
+            StringUtil.setText(tv_myfragment_addstation_desc, data.getRewardTip(), "", View.VISIBLE, View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void userConfigFail(int code, String msg) {
+        disMissDialog();
         SystemUtil.Exit(mActivity, code);
         exitInfo(code);
     }

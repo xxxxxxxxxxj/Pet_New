@@ -230,9 +230,9 @@
                                     android:id="@+id/tv_myfragment_clxx"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="车辆信息"
                                     android:ellipsize="end"
                                     android:singleLine="true"
+                                    android:text="车辆信息"
                                     android:textColor="@color/a666666"
                                     android:textSize="12sp" />
                             </LinearLayout>
@@ -295,6 +295,7 @@
                                 android:layout_height="match_parent">
 
                                 <TextView
+                                    android:id="@+id/tv_myfragment_addstation_desc"
                                     android:layout_width="85dip"
                                     android:layout_height="23dip"
                                     android:layout_alignParentBottom="true"

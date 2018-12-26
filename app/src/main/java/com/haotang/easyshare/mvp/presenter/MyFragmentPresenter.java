@@ -3,6 +3,7 @@ package com.haotang.easyshare.mvp.presenter;
 import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.UserConfigBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.imodel.IMyFragmentModel;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
@@ -89,6 +90,40 @@ public class MyFragmentPresenter extends BasePresenter<IMyFragmentView, IMyFragm
                     public void onError(int errType, String errMessage) {
                         if (mIView != null) {
                             mIView.myFail(errType, errMessage);
+                        }
+                    }
+                }, RxLifecycleUtil.bindUntilDestroy(mIView));
+    }
+
+    /**
+     * 相关文案配置
+     */
+    public void userConfig(Map<String, String> headers) {
+        DevRing.httpManager().commonRequest(mIModel.userConfig(headers),
+                new CommonObserver<UserConfigBean>() {
+                    @Override
+                    public void onResult(UserConfigBean result) {
+                        if (mIView != null) {
+                            if (result != null) {
+                                if (result.getCode() == 0) {
+                                    mIView.userConfigSuccess(result.getData());
+                                } else {
+                                    if (StringUtil.isNotEmpty(result.getMsg())) {
+                                        mIView.userConfigFail
+                                                (result.getCode(), result.getMsg());
+                                    } else {
+                                        mIView.userConfigFail(AppConfig.SERVER_ERROR, AppConfig.SERVER_ERROR_MSG
+                                                + "-code=" + result.getCode());
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int errType, String errMessage) {
+                        if (mIView != null) {
+                            mIView.userConfigFail(errType, errMessage);
                         }
                     }
                 }, RxLifecycleUtil.bindUntilDestroy(mIView));

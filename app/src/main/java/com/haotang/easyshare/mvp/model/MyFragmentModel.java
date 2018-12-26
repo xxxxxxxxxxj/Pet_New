@@ -32,4 +32,12 @@ public class MyFragmentModel implements IMyFragmentModel {
     public Observable my(Map<String, String> headers) {
         return DevRing.httpManager().getService(MyFragmentApiService.class).my(headers);
     }
+
+    /**
+     * 相关文案配置
+     */
+    @Override
+    public Observable userConfig(Map<String, String> headers) {
+        return DevRing.httpManager().getService(MyFragmentApiService.class).userConfig(headers);
+    }
 }

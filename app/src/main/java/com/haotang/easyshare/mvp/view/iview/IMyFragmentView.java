@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.view.iview;
 
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.UserConfigBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
 
 import java.util.List;
@@ -22,4 +23,8 @@ public interface IMyFragmentView extends IBaseView {
     void mySuccess(List<MyCarBean.DataBean> data);
 
     void myFail(int code, String msg);
+
+    void userConfigSuccess(UserConfigBean.UserConfig data);
+
+    void userConfigFail(int code, String msg);
 }

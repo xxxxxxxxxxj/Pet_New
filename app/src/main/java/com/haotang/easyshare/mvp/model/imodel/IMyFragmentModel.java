@@ -24,4 +24,9 @@ public interface IMyFragmentModel extends IBaseModel {
      * 用户车辆信息
      */
     Observable my(Map<String, String> headers);
+
+    /**
+     * 相关文案配置
+     */
+    Observable userConfig(Map<String, String> headers);
 }

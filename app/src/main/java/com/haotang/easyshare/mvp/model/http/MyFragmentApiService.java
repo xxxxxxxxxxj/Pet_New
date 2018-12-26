@@ -5,6 +5,7 @@ import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.RedeemCodeBean;
+import com.haotang.easyshare.mvp.model.entity.res.UserConfigBean;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 
 import java.util.Map;
@@ -48,4 +49,10 @@ public interface MyFragmentApiService {
      */
     @POST(UrlConstants.REDEEMCODE)
     Observable<RedeemCodeBean> use(@HeaderMap Map<String, String> headers,@Body RequestBody body);
+
+    /**
+     * 相关文案配置
+     */
+    @POST(UrlConstants.USER_CONFIG)
+    Observable<UserConfigBean> userConfig(@HeaderMap Map<String, String> headers);
 }

@@ -307,6 +307,10 @@ public class UrlConstants {
      * 70.文章热门搜索关键字
      */
     public static final String SERCH_POST = "article/info/list";
+    /**
+     * 71.相关文案配置
+     */
+    public static final String USER_CONFIG = "user/info/config";
 
     private static int getEnvironmental() {
         return AppConfig.environmental;//1.test环境---2.demo环境---3.线上环境
