@@ -14,7 +14,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class ChannelUtil {
-	
+
 	private static final String CHANNEL_KEY = "cztchannel";
 	private static final String CHANNEL_VERSION_KEY = "cztchannel_version";
 	private static String mChannel;
@@ -24,7 +24,7 @@ public class ChannelUtil {
 	 * @return
 	 */
 	public static String getChannel(Context context){
-		return getChannel(context, "");
+		return getChannel(context, "default");
 	}
 	/**
 	 * 返回市场。  如果获取失败返回defaultChannel
