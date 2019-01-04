@@ -27,6 +27,7 @@ import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.presenter.ChargeIngFragmentPresenter;
+import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeRecordActivity;
 import com.haotang.easyshare.mvp.view.activity.ScanCodeActivity;
@@ -562,10 +563,18 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 SystemUtil.cellPhone(mActivity, phone);
                 break;
             case R.id.rl_chargeing_start:
-                startActivity(new Intent(mActivity, ScanCodeActivity.class).putExtra("phone", phone));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, ScanCodeActivity.class).putExtra("phone", phone));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.tv_chargeing_ljcz:
-                startActivity(new Intent(mActivity, RechargeActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, RechargeActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.btn_chargeing_submit:
                 if (state == 0) {//连接中,插枪未充电

@@ -26,6 +26,7 @@ import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.model.entity.res.SerchKeysBean;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
+import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.SendPostActivity;
 import com.haotang.easyshare.mvp.view.activity.SerchPostActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
@@ -373,7 +374,11 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_hotfragment_post:
-                startActivity(new Intent(mActivity, SendPostActivity.class));
+                if (SystemUtil.checkLogin(mActivity)) {
+                    startActivity(new Intent(mActivity, SendPostActivity.class));
+                } else {
+                    startActivity(new Intent(mActivity, LoginActivity.class));
+                }
                 break;
             case R.id.rl_hotfragment_zxt:
                 setPost(0);

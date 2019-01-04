@@ -316,6 +316,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
 
     @Override
     public void saveSuccess(AddChargeBean data) {
+        SystemUtil.goneJP(this);
         disMissDialog();
         DevRing.busManager().postEvent(new RefreshEvent(RefreshEvent.SEND_POST));
         finish();
@@ -323,6 +324,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
 
     @Override
     public void saveFail(int code, String msg) {
+        SystemUtil.goneJP(this);
         disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(this,code);

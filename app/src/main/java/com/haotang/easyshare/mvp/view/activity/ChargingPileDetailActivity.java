@@ -375,7 +375,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             chargeLat = data.getLat();
             chargeLng = data.getLng();
             StringUtil.setText(tvChargingdetailName, data.getTitle(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargingdetailJuli, data.getDistance(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargingdetailJuli, "距您"+data.getDistance(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailAddress, data.getAddress(), "", View.VISIBLE, View.VISIBLE);
             String kfsj = "";
             if (data.getOpenTime() != null && StringUtil.isNotEmpty(data.getOpenTime())) {

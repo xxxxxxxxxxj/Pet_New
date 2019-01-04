@@ -67,7 +67,7 @@ public class HotFragPointAdapter extends BaseQuickAdapter<HotPoint.DataBean, Bas
                 StringUtil.setText(tv_item_hotfrag_point_title, item.getContent(), "", View.VISIBLE, View.VISIBLE);
             }
             StringUtil.setText(tv_item_hotfrag_point_time, item.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_hotfrag_point_num, item.getVisitors() + "评论", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_hotfrag_point_num, item.getComments() + "评论", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_hotfrag_point_name, item.getUserName(), "", View.VISIBLE, View.VISIBLE);
         }
     }

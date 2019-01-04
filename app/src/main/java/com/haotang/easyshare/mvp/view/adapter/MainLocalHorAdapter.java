@@ -46,8 +46,8 @@ public class MainLocalHorAdapter extends BaseQuickAdapter<MainFragChargeBean, Ba
         if (item != null) {
             GlideUtil.loadNetRoundImg(mContext, item.getHeadImg(), iv_item_mainlocal_img, R.mipmap.ic_image_load, 5);
             StringUtil.setText(tv_item_mainlocal_name, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_mainlocal_cdf, "", "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_mainlocal_juli, item.getDistance(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_mainlocal_cdf, item.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_mainlocal_juli, "距您"+item.getDistance(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_mainlocal_kfsj, item.getOpenTime(), "", View.VISIBLE, View.VISIBLE);
             if (item.getIsPrivate() == 0) {//公共
                 tv_item_mainlocal_ggorgr.setText("公共");

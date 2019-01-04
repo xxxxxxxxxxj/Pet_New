@@ -25,7 +25,7 @@ public class GlideUtil {
                         .placeholder(placeholderResourceId)
                         .error(placeholderResourceId)
                         .dontAnimate() //去掉显示动画
-                        .centerCrop()
+                        .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE) //DiskCacheStrategy.NONE
                         .into(imageView);
             } else {
@@ -34,7 +34,7 @@ public class GlideUtil {
                         .placeholder(placeholderResourceId)
                         .error(placeholderResourceId)
                         .crossFade()
-                        .centerCrop()
+                        .fitCenter()
                         .into(imageView);
             }
         }
@@ -55,7 +55,7 @@ public class GlideUtil {
                         .placeholder(placeholderResourceId)
                         .error(placeholderResourceId)
                         .dontAnimate() //去掉显示动画
-                        .centerCrop()
+                        .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE) //DiskCacheStrategy.NONE
                         .into(imageView);
             } else {
@@ -65,7 +65,7 @@ public class GlideUtil {
                         .placeholder(placeholderResourceId)
                         .error(placeholderResourceId)
                         .crossFade()
-                        .centerCrop()
+                        .fitCenter()
                         .into(imageView);
             }
         }
@@ -85,7 +85,7 @@ public class GlideUtil {
                         .placeholder(placeholderResourceId)
                         .error(placeholderResourceId)
                         .dontAnimate() //去掉显示动画
-                        .centerCrop()
+                        .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE) //DiskCacheStrategy.NONE
                         .into(imageView);
             } else {
@@ -94,7 +94,7 @@ public class GlideUtil {
                         .placeholder(placeholderResourceId)
                         .error(placeholderResourceId)
                         .crossFade()
-                        .centerCrop()
+                        .fitCenter()
                         .into(imageView);
             }
         }
@@ -115,7 +115,7 @@ public class GlideUtil {
                         .placeholder(placeholderResourceId)
                         .error(placeholderResourceId)
                         .dontAnimate() //去掉显示动画
-                        .centerCrop()
+                        .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE) //DiskCacheStrategy.NONE
                         .into(imageView);
             } else {
@@ -125,7 +125,7 @@ public class GlideUtil {
                         .placeholder(placeholderResourceId)
                         .error(placeholderResourceId)
                         .crossFade()
-                        .centerCrop()
+                        .fitCenter()
                         .into(imageView);
             }
         }

@@ -43,6 +43,15 @@ public class MainFragChargeBean {
     private String payWay;
     private String provider;
     private String headImg;
+    private String electricityPrice;
+
+    public String getElectricityPrice() {
+        return electricityPrice;
+    }
+
+    public void setElectricityPrice(String electricityPrice) {
+        this.electricityPrice = electricityPrice;
+    }
 
     public String getHeadImg() {
         return headImg;

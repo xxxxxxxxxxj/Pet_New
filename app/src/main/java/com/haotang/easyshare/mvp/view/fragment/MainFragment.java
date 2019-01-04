@@ -767,7 +767,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     StringUtil.setText(tvMainfragRmzxTitle, dataBean.getContent(), "", View.VISIBLE, View.VISIBLE);
                 }
                 StringUtil.setText(tvMainfragRmzxTime, dataBean.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(tvMainfragRmzxNum, dataBean.getVisitors() + "评论", "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvMainfragRmzxNum, dataBean.getComments() + "评论", "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(tvMainfragRmxcName, dataBean.getUserName(), "", View.VISIBLE, View.VISIBLE);
             }
         }
