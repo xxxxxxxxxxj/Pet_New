@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -32,59 +33,21 @@
                 android:textColor="@color/white"
                 android:textSize="15sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <com.flyco.tablayout.CommonTabLayout
+                android:id="@+id/ctl_selectfrag"
+                android:layout_width="wrap_content"
+                android:layout_height="49dip"
                 android:layout_marginRight="10dip"
-                android:layout_toLeftOf="@id/tv_selectcar_more"
-                android:gravity="center_vertical">
-
-                <RelativeLayout
-                    android:id="@+id/rl_selectcar_xinche"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dip">
-
-                    <TextView
-                        android:id="@+id/tv_selectcar_xinche"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="新车"
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
-
-                    <ImageView
-                        android:id="@+id/iv_selectcar_xinche"
-                        android:layout_width="42dip"
-                        android:layout_height="5dip"
-                        android:layout_marginTop="20dip"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/tab_line" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rl_selectcar_esc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_selectcar_esc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="二手车"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-
-                    <ImageView
-                        android:id="@+id/iv_selectcar_esc"
-                        android:layout_width="63dip"
-                        android:layout_height="5dip"
-                        android:visibility="invisible"
-                        android:layout_marginTop="20dip"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/tab_line" />
-                </RelativeLayout>
-            </LinearLayout>
+                android:background="@color/transparent"
+                tl:tl_iconHeight="49dp"
+                tl:tl_iconWidth="49dp"
+                tl:tl_indicator_color="#2C97DE"
+                tl:tl_indicator_height="0dp"
+                tl:tl_textSelectColor="@color/a0063DA"
+                tl:tl_textUnselectColor="@color/a979797"
+                tl:tl_textsize="0sp"
+                tl:tl_underline_color="@color/black"
+                tl:tl_underline_height="0dp" />
         </RelativeLayout>
 
         <com.youth.banner.Banner

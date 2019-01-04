@@ -7,13 +7,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerHotFragmentCommponent;
@@ -23,6 +24,7 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.model.entity.res.ImageTabEntity;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.model.entity.res.SerchKeysBean;
 import com.haotang.easyshare.mvp.presenter.HotFragmentPresenter;
@@ -74,20 +76,10 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     RecyclerView rvHotfragment;
     @BindView(R.id.tv_hotfragment_post)
     TextView tvHotfragmentPost;
-    @BindView(R.id.tv_hotfragment_zxt)
-    TextView tvHotfragmentZxt;
-    @BindView(R.id.iv_hotfragment_zxt)
-    ImageView ivHotfragmentZxt;
-    @BindView(R.id.tv_hotfragment_rmt)
-    TextView tvHotfragmentRmt;
-    @BindView(R.id.iv_hotfragment_rmt)
-    ImageView ivHotfragmentRmt;
-    @BindView(R.id.tv_hotfragment_wtc)
-    TextView tvHotfragmentWtc;
-    @BindView(R.id.iv_hotfragment_wtc)
-    ImageView ivHotfragmentWtc;
     @BindView(R.id.tv_hotfragment_serch)
     TextView tvHotfragmentSerch;
+    @BindView(R.id.ctl_hotfrag)
+    CommonTabLayout ctl_hotfrag;
     private List<HotPoint.DataBean> list = new ArrayList<HotPoint.DataBean>();
     private int mNextRequestPage = 1;
     private int pageSize;
@@ -96,6 +88,14 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     private ViewPager vp_hotfrag_top;
     private HotFragPointAdapter hotFragPointAdapter;
     private ViewPagerHotFragAdapter viewPagerHotFragAdapter;
+    private String[] mTitles = {"最新帖", "热门贴", "问题车"};
+    private int[] mIconUnselectIds = {
+            R.mipmap.tab_home_normal, R.mipmap.tab_hot_normal,
+            R.mipmap.tab_charge_normal};
+    private int[] mIconSelectIds = {
+            R.mipmap.tab_home_passed, R.mipmap.tab_hot_passed,
+            R.mipmap.tab_charge_passed};
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -126,6 +126,12 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         vp_hotfrag_top.setPageMargin(-70);//设置viewpage之间的间距
         vp_hotfrag_top.setPageTransformer(true, new CardTransformer());
 
+        for (int i = 0; i < mTitles.length; i++) {
+            mTabEntities.add(new ImageTabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+        }
+        ctl_hotfrag.setTabData(mTabEntities);
+        ctl_hotfrag.setCurrentTab(postFlag);
+
         hotFragPointAdapter.addHeaderView(top);
         rvHotfragment.setAdapter(hotFragPointAdapter);
         //添加自定义分割线
@@ -141,7 +147,9 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "2").build();
         mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
-        setPost(0);
+        mNextRequestPage = 1;
+        postFlag = 0;
+        setRequest();
     }
 
     @Override
@@ -208,6 +216,20 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
 
     @Override
     protected void initEvent() {
+        ctl_hotfrag.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                RingLog.e(TAG, "onTabSelect position = " + position);
+                postFlag = position;
+                mNextRequestPage = 1;
+                setRequest();
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+                RingLog.e(TAG, "onTabReselect position = " + position);
+            }
+        });
         hotFragPointAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -243,6 +265,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         hotFragPointAdapter.setEnableLoadMore(false);
         srl_hotfragment.setRefreshing(true);
         mNextRequestPage = 1;
+        postFlag = 0;
         setRequest();
     }
 
@@ -370,7 +393,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
         SystemUtil.Exit(mActivity, code);
     }
 
-    @OnClick({R.id.tv_hotfragment_post, R.id.rl_hotfragment_zxt, R.id.rl_hotfragment_rmt, R.id.rl_hotfragment_wtc, R.id.tv_hotfragment_serch})
+    @OnClick({R.id.tv_hotfragment_post, R.id.tv_hotfragment_serch})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_hotfragment_post:
@@ -380,48 +403,9 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
                     startActivity(new Intent(mActivity, LoginActivity.class));
                 }
                 break;
-            case R.id.rl_hotfragment_zxt:
-                setPost(0);
-                break;
-            case R.id.rl_hotfragment_rmt:
-                setPost(1);
-                break;
-            case R.id.rl_hotfragment_wtc:
-                setPost(2);
-                break;
             case R.id.tv_hotfragment_serch:
                 startActivity(new Intent(mActivity, SerchPostActivity.class));
                 break;
         }
-    }
-
-    private void setPost(int flag) {
-        if (flag == 0) {
-            postFlag = 0;
-            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            ivHotfragmentZxt.setVisibility(View.VISIBLE);
-            ivHotfragmentRmt.setVisibility(View.INVISIBLE);
-            ivHotfragmentWtc.setVisibility(View.INVISIBLE);
-        } else if (flag == 1) {
-            postFlag = 1;
-            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            ivHotfragmentZxt.setVisibility(View.INVISIBLE);
-            ivHotfragmentRmt.setVisibility(View.VISIBLE);
-            ivHotfragmentWtc.setVisibility(View.INVISIBLE);
-        } else if (flag == 2) {
-            postFlag = 2;
-            tvHotfragmentZxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            tvHotfragmentRmt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            tvHotfragmentWtc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            ivHotfragmentZxt.setVisibility(View.INVISIBLE);
-            ivHotfragmentRmt.setVisibility(View.INVISIBLE);
-            ivHotfragmentWtc.setVisibility(View.VISIBLE);
-        }
-        mNextRequestPage = 1;
-        setRequest();
     }
 }

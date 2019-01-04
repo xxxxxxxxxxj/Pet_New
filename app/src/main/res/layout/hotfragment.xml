@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -24,83 +25,21 @@
             android:textColor="@color/aff6525"
             android:textSize="15sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <com.flyco.tablayout.CommonTabLayout
+            android:id="@+id/ctl_hotfrag"
+            android:layout_width="wrap_content"
+            android:layout_height="49dip"
             android:layout_marginRight="10dip"
-            android:layout_toLeftOf="@id/tv_hotfragment_post"
-            android:gravity="center_vertical">
-
-            <RelativeLayout
-                android:id="@+id/rl_hotfragment_zxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dip">
-
-                <TextView
-                    android:id="@+id/tv_hotfragment_zxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="最新帖"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <ImageView
-                    android:id="@+id/iv_hotfragment_zxt"
-                    android:layout_width="60dip"
-                    android:layout_height="5dip"
-                    android:layout_marginTop="20dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/tab_line" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_hotfragment_rmt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dip">
-
-                <TextView
-                    android:id="@+id/tv_hotfragment_rmt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="热门贴"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/iv_hotfragment_rmt"
-                    android:layout_width="60dip"
-                    android:layout_height="5dip"
-                    android:layout_marginTop="20dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/tab_line"
-                    android:visibility="invisible" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_hotfragment_wtc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tv_hotfragment_wtc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="问题车"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/iv_hotfragment_wtc"
-                    android:layout_width="60dip"
-                    android:layout_height="5dip"
-                    android:layout_marginTop="20dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/tab_line"
-                    android:visibility="invisible" />
-            </RelativeLayout>
-        </LinearLayout>
+            android:background="@color/transparent"
+            tl:tl_iconHeight="49dp"
+            tl:tl_iconWidth="49dp"
+            tl:tl_indicator_color="#2C97DE"
+            tl:tl_indicator_height="0dp"
+            tl:tl_textSelectColor="@color/a0063DA"
+            tl:tl_textUnselectColor="@color/a979797"
+            tl:tl_textsize="0sp"
+            tl:tl_underline_color="@color/black"
+            tl:tl_underline_height="0dp" />
     </RelativeLayout>
 
     <TextView

@@ -3,11 +3,11 @@ package com.haotang.easyshare.mvp.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerSelectCarFragmentCommponent;
@@ -17,6 +17,7 @@ import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.CarType;
 import com.haotang.easyshare.mvp.model.entity.res.HotCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.HotSpecialCarBean;
+import com.haotang.easyshare.mvp.model.entity.res.ImageTabEntity;
 import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.SelectCarFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.AllBrandsActivity;
@@ -50,14 +51,8 @@ import okhttp3.RequestBody;
  */
 public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> implements ISelectCarFragmentView, OnBannerListener {
     protected final static String TAG = SelectCarFragment.class.getSimpleName();
-    @BindView(R.id.tv_selectcar_xinche)
-    TextView tvSelectcarXinche;
-    @BindView(R.id.iv_selectcar_xinche)
-    ImageView ivSelectcarXinche;
-    @BindView(R.id.tv_selectcar_esc)
-    TextView tvSelectcarEsc;
-    @BindView(R.id.iv_selectcar_esc)
-    ImageView ivSelectcarEsc;
+    @BindView(R.id.ctl_selectfrag)
+    CommonTabLayout ctl_selectfrag;
     @BindView(R.id.banner_selectcar)
     Banner bannerSelectcar;
     @BindView(R.id.vp_selectcar)
@@ -67,6 +62,12 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     private ArrayList<BaseFragment> mFragments = new ArrayList<>();
     private MyFragChargePagerAdapter myFragChargePagerAdapter;
     private List<CarType.DataBean> list = new ArrayList<CarType.DataBean>();
+    private String[] mTitles = {"新车", "二手车"};
+    private int[] mIconUnselectIds = {
+            R.mipmap.tab_home_normal, R.mipmap.tab_hot_normal};
+    private int[] mIconSelectIds = {
+            R.mipmap.tab_home_passed, R.mipmap.tab_hot_passed};
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -84,7 +85,11 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
                 .selectCarFragmentModule(new SelectCarFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
-
+        for (int i = 0; i < mTitles.length; i++) {
+            mTabEntities.add(new ImageTabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+        }
+        ctl_selectfrag.setTabData(mTabEntities);
+        ctl_selectfrag.setCurrentTab(carFlag);
         myFragChargePagerAdapter = new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments);
         vpSelectcar.setAdapter(myFragChargePagerAdapter);
     }
@@ -137,7 +142,8 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "3").build();
         mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
-        setCar(0);
+        carFlag = 0;
+        setRequest();
     }
 
     @Override
@@ -214,6 +220,19 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
 
     @Override
     protected void initEvent() {
+        ctl_selectfrag.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                RingLog.e(TAG, "onTabSelect position = " + position);
+                carFlag = position;
+                setRequest();
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+                RingLog.e(TAG, "onTabReselect position = " + position);
+            }
+        });
     }
 
     @Override
@@ -221,36 +240,13 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
 
     }
 
-    @OnClick({R.id.tv_selectcar_more, R.id.rl_selectcar_xinche, R.id.rl_selectcar_esc})
+    @OnClick({R.id.tv_selectcar_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_selectcar_more:
                 startActivity(new Intent(mActivity, AllBrandsActivity.class).putExtra("flag", 1));
                 break;
-            case R.id.rl_selectcar_xinche:
-                setCar(0);
-                break;
-            case R.id.rl_selectcar_esc:
-                setCar(1);
-                break;
         }
-    }
-
-    private void setCar(int flag) {
-        if (flag == 0) {
-            carFlag = 0;
-            tvSelectcarXinche.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            tvSelectcarEsc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            ivSelectcarXinche.setVisibility(View.VISIBLE);
-            ivSelectcarEsc.setVisibility(View.INVISIBLE);
-        } else if (flag == 1) {
-            carFlag = 1;
-            tvSelectcarXinche.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            tvSelectcarEsc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            ivSelectcarXinche.setVisibility(View.INVISIBLE);
-            ivSelectcarEsc.setVisibility(View.VISIBLE);
-        }
-        setRequest();
     }
 
     @Override

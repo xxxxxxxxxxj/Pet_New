@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,6 +46,9 @@ import com.amap.api.services.poisearch.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.roundview.RoundLinearLayout;
 import com.flyco.roundview.RoundTextView;
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.fragment.DaggerMainFragmentCommponent;
@@ -55,6 +57,7 @@ import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.CarType;
 import com.haotang.easyshare.mvp.model.entity.res.HotPoint;
+import com.haotang.easyshare.mvp.model.entity.res.ImageTabEntity;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.MainFragmentData;
 import com.haotang.easyshare.mvp.model.entity.res.PostBean;
@@ -135,24 +138,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     RoundTextView rtvMainfragLocal;
     @BindView(R.id.tmv_mainfrag_map)
     MapView tmv_mainfrag_map;
-    @BindView(R.id.tv_mainfrag_localev_gg)
-    TextView tvMainfragLocalevGg;
-    @BindView(R.id.rl_mainfrag_localev_gg)
-    RelativeLayout rlMainfragLocalevGg;
-    @BindView(R.id.tv_mainfrag_localev_gr)
-    TextView tvMainfragLocalevGr;
-    @BindView(R.id.rl_mainfrag_localev_gr)
-    RelativeLayout rlMainfragLocalevGr;
     @BindView(R.id.iv_mainfrag_map_loc)
     ImageView iv_mainfrag_map_loc;
     @BindView(R.id.iv_mainfrag_gj)
     ImageView ivMainfragGj;
     @BindView(R.id.tv_mainfrag_top_cancel)
     TextView tv_mainfrag_top_cancel;
-    @BindView(R.id.iv_mainfrag_localev_gg)
-    ImageView iv_mainfrag_localev_gg;
-    @BindView(R.id.iv_mainfrag_localev_gr)
-    ImageView iv_mainfrag_localev_gr;
     @BindView(R.id.vp_mainfrag)
     ViewPager vpMainfrag;
     @BindView(R.id.ll_mainfrag_rmzx_more)
@@ -185,6 +176,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     TextView tvMainfragRmxcPrice;
     @BindView(R.id.ll_mainfrag_rmxc)
     LinearLayout ll_mainfrag_rmxc;
+    @BindView(R.id.ctl_mainfrag)
+    CommonTabLayout ctl_mainfrag;
     private AMap aMap;
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
@@ -218,6 +211,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private ArrayList<Marker> markerlst;
     private ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
     private Marker clickMarker;
+    private String[] mTitles = {"公共", "个人"};
+    private int[] mIconUnselectIds = {
+            R.mipmap.tab_home_normal, R.mipmap.tab_hot_normal};
+    private int[] mIconSelectIds = {
+            R.mipmap.tab_home_passed, R.mipmap.tab_hot_passed};
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -236,6 +235,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 .mainFragmentModule(new MainFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
+        for (int i = 0; i < mTitles.length; i++) {
+            mTabEntities.add(new ImageTabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
+        }
+        ctl_mainfrag.setTabData(mTabEntities);
+        ctl_mainfrag.setCurrentTab(index);
         setAdapter();
         RingLog.d(TAG, "savedInstanceState = " + savedInstanceState);
         iv_mainfrag_map_loc.bringToFront();
@@ -445,6 +449,19 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 iv_mainfrag_top_right.setVisibility(View.VISIBLE);
             }
         });
+        ctl_mainfrag.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                RingLog.e(TAG, "onTabSelect position = " + position);
+                index = position;
+                setTab();
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+                RingLog.e(TAG, "onTabReselect position = " + position);
+            }
+        });
     }
 
     private void refresh(double localLat, double localLng) {
@@ -509,10 +526,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private void setTab() {
         list.clear();
         if (index == 0) {
-            tvMainfragLocalevGg.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            tvMainfragLocalevGr.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            iv_mainfrag_localev_gg.setVisibility(View.VISIBLE);
-            iv_mainfrag_localev_gr.setVisibility(View.INVISIBLE);
             if (publishList.size() > 0) {
                 for (int i = 0; i < publishList.size(); i++) {
                     MainFragmentData.PublishBean publishBean = publishList.get(i);
@@ -523,15 +536,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                 publishBean.getIsPrivate(),
                                 publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
                                 publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(),
-                                publishBean.getPayWay(), publishBean.getProvider(),publishBean.getHeadImg(), publishBean.getElectricityPrice()));
+                                publishBean.getPayWay(), publishBean.getProvider(), publishBean.getHeadImg(), publishBean.getElectricityPrice()));
                     }
                 }
             }
         } else if (index == 1) {
-            tvMainfragLocalevGg.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            tvMainfragLocalevGr.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            iv_mainfrag_localev_gg.setVisibility(View.INVISIBLE);
-            iv_mainfrag_localev_gr.setVisibility(View.VISIBLE);
             if (personalList.size() > 0) {
                 for (int i = 0; i < personalList.size(); i++) {
                     MainFragmentData.PersonalBean publishBean = personalList.get(i);
@@ -541,7 +550,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                 , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
                                 publishBean.getIsPrivate(),
                                 publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
-                                publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(), publishBean.getPayWay(), publishBean.getProvider(),publishBean.getHeadImg(), publishBean.getElectricityPrice()));
+                                publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(), publishBean.getPayWay(), publishBean.getProvider(), publishBean.getHeadImg(), publishBean.getElectricityPrice()));
                     }
                 }
             }
@@ -558,8 +567,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
     }
 
-    @OnClick({R.id.iv_mainfrag_top_right, R.id.rtv_mainfrag_local, R.id.ll_mainfrag_localev_more,
-            R.id.rl_mainfrag_localev_gg, R.id.rl_mainfrag_localev_gr, R.id.iv_mainfrag_map_loc,
+    @OnClick({R.id.iv_mainfrag_top_right, R.id.rtv_mainfrag_local, R.id.ll_mainfrag_localev_more, R.id.iv_mainfrag_map_loc,
             R.id.iv_mainfrag_gj, R.id.tv_mainfrag_top_cancel, R.id.ll_mainfrag_rmzx_more, R.id.ll_mainfrag_rmxc_more,
             R.id.tv_mainfrag_rmxc_ck, R.id.ll_mainfrag_rmzx})
     public void onViewClicked(View view) {
@@ -603,14 +611,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 intent.putExtra("serchLat", lat);
                 intent.putExtra("serchLng", lng);
                 startActivity(intent);
-                break;
-            case R.id.rl_mainfrag_localev_gg:
-                index = 0;
-                setTab();
-                break;
-            case R.id.rl_mainfrag_localev_gr:
-                index = 1;
-                setTab();
                 break;
             case R.id.ll_mainfrag_rmzx_more:
                 MainActivity mActivity = (MainActivity) this.mActivity;
