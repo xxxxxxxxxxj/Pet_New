@@ -64,9 +64,9 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     private List<CarType.DataBean> list = new ArrayList<CarType.DataBean>();
     private String[] mTitles = {"新车", "二手车"};
     private int[] mIconUnselectIds = {
-            R.mipmap.tab_home_normal, R.mipmap.tab_hot_normal};
+            R.mipmap.tab_xc_normal, R.mipmap.tab_esc_normal};
     private int[] mIconSelectIds = {
-            R.mipmap.tab_home_passed, R.mipmap.tab_hot_passed};
+            R.mipmap.tab_xc_passed, R.mipmap.tab_esc_passed};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     @Override

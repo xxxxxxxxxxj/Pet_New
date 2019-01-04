@@ -213,9 +213,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private Marker clickMarker;
     private String[] mTitles = {"公共", "个人"};
     private int[] mIconUnselectIds = {
-            R.mipmap.tab_home_normal, R.mipmap.tab_hot_normal};
+            R.mipmap.tab_gg_normal, R.mipmap.tab_gr_normal};
     private int[] mIconSelectIds = {
-            R.mipmap.tab_home_passed, R.mipmap.tab_hot_passed};
+            R.mipmap.tab_gg_passed, R.mipmap.tab_gr_passed};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     @Override

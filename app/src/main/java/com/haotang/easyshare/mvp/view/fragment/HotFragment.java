@@ -90,11 +90,11 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements O
     private ViewPagerHotFragAdapter viewPagerHotFragAdapter;
     private String[] mTitles = {"最新帖", "热门贴", "问题车"};
     private int[] mIconUnselectIds = {
-            R.mipmap.tab_home_normal, R.mipmap.tab_hot_normal,
-            R.mipmap.tab_charge_normal};
+            R.mipmap.tab_zxt_normal, R.mipmap.tab_rmt_normal,
+            R.mipmap.tab_wtc_normal};
     private int[] mIconSelectIds = {
-            R.mipmap.tab_home_passed, R.mipmap.tab_hot_passed,
-            R.mipmap.tab_charge_passed};
+            R.mipmap.tab_zxt_passed, R.mipmap.tab_rmt_passed,
+            R.mipmap.tab_wtc_passed};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     @Override
