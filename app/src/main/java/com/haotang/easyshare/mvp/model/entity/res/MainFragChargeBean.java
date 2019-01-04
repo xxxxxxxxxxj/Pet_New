@@ -90,7 +90,7 @@ public class MainFragChargeBean {
 
     public MainFragChargeBean(String img, String address, String distance, double lng, int fastNum, int freeNum,
                               int isPrivate, String title, String openTime, String uuid, int slowNum, double lat
-            , String parkingPrice, String payWay, String provider) {
+            , String parkingPrice, String payWay, String provider, String headImg, String electricityPrice) {
         this.img = img;
         this.address = address;
         this.distance = distance;
@@ -106,6 +106,8 @@ public class MainFragChargeBean {
         this.parkingPrice = parkingPrice;
         this.payWay = payWay;
         this.provider = provider;
+        this.headImg = headImg;
+        this.electricityPrice = electricityPrice;
     }
 
     public Bitmap getBitmap() {

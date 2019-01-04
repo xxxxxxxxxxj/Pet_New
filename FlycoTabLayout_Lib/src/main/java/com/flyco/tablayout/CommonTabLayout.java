@@ -2,6 +2,7 @@ package com.flyco.tablayout;
 
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -10,8 +11,10 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
@@ -116,7 +119,10 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
     private float mIconMargin;
 
     private int mHeight;
-
+    private int[] colors;
+    private boolean gradient;
+    private boolean isIndicatorTextMiddle;
+    private float mTextSelectsize;
     /**
      * anim
      */
@@ -225,7 +231,36 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
         mFragmentChangeManager = new FragmentChangeManager(fa.getSupportFragmentManager(), containerViewId, fragments);
         setTabData(tabEntitys);
     }
+    public void setmTextSelectsize(float mTextSelectsize) {
+        this.mTextSelectsize = mTextSelectsize;
+        updateTabStyles();
+    }
 
+    public float getmTextSelectsize() {
+        return mTextSelectsize;
+    }
+    public boolean isIndicatorTextMiddle() {
+        return isIndicatorTextMiddle;
+    }
+    public void setIndicatorTextMiddle(boolean indicatorTextMiddle) {
+        isIndicatorTextMiddle = indicatorTextMiddle;
+        invalidate();
+    }
+    private int[] getColors() {
+        return colors;
+    }
+
+    public void setColors(int[] colors) {
+        this.colors = colors;
+        updateTabStyles();
+    }
+    public boolean isGradient() {
+        return gradient;
+    }
+    public void setGradient(boolean gradient) {
+        this.gradient = gradient;
+        invalidate();
+    }
     /**
      * 更新数据
      */
@@ -302,10 +337,14 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
     private void updateTabStyles() {
         for (int i = 0; i < mTabCount; i++) {
             View tabView = mTabsContainer.getChildAt(i);
-            tabView.setPadding((int) mTabPadding, 0, (int) mTabPadding, 0);
+//            tabView.setPadding((int) mTabPadding, 0, (int) mTabPadding, 0);
             TextView tv_tab_title = (TextView) tabView.findViewById(R.id.tv_tab_title);
             tv_tab_title.setTextColor(i == mCurrentTab ? mTextSelectColor : mTextUnselectColor);
-            tv_tab_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextsize);
+            if (i == mCurrentTab) {
+                tv_tab_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getmTextSelectsize());
+            } else {
+                tv_tab_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextsize);
+            }
 //            tv_tab_title.setPadding((int) mTabPadding, 0, (int) mTabPadding, 0);
             if (mTextAllCaps) {
                 tv_tab_title.setText(tv_tab_title.getText().toString().toUpperCase());
@@ -476,6 +515,8 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
 
     private boolean mIsFirstDraw = true;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -555,11 +596,38 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
             if (mIndicatorHeight > 0) {
                 mIndicatorDrawable.setColor(mIndicatorColor);
                 if (mIndicatorGravity == Gravity.BOTTOM) {
-                    mIndicatorDrawable.setBounds(paddingLeft + (int) mIndicatorMarginLeft + mIndicatorRect.left,
-                            height - (int) mIndicatorHeight - (int) mIndicatorMarginBottom,
-                            paddingLeft + mIndicatorRect.right - (int) mIndicatorMarginRight,
-                            height - (int) mIndicatorMarginBottom);
+
+                    if (isGradient()) {//渐变
+                        //设置渐变
+                        mIndicatorDrawable.setColors(getColors());
+                        mIndicatorDrawable.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                    } else {
+                        mIndicatorDrawable.setColor(mIndicatorColor);
+                    }
+                    if(isIndicatorTextMiddle()){
+                        mIndicatorDrawable.setBounds(paddingLeft + (int) mIndicatorMarginLeft + mIndicatorRect.left,
+                                height - (int) mIndicatorHeight - (int) mIndicatorMarginBottom - dp2px(12),
+                                paddingLeft + mIndicatorRect.right - (int) mIndicatorMarginRight,
+                                height - (int) mIndicatorMarginBottom - dp2px(12));
+                    }else{
+                        mIndicatorDrawable.setBounds(paddingLeft + (int) mIndicatorMarginLeft + mIndicatorRect.left,
+                                height - (int) mIndicatorHeight - (int) mIndicatorMarginBottom,
+                                paddingLeft + mIndicatorRect.right - (int) mIndicatorMarginRight,
+                                height - (int) mIndicatorMarginBottom);
+                    }
+
+//                    mIndicatorDrawable.setBounds(paddingLeft + (int) mIndicatorMarginLeft + mIndicatorRect.left,
+//                            height - (int) mIndicatorHeight - (int) mIndicatorMarginBottom,
+//                            paddingLeft + mIndicatorRect.right - (int) mIndicatorMarginRight,
+//                            height - (int) mIndicatorMarginBottom);
                 } else {
+                    if (isGradient()) {//渐变
+                        //设置渐变
+                        mIndicatorDrawable.setColors(getColors());
+                        mIndicatorDrawable.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                    } else {
+                        mIndicatorDrawable.setColor(mIndicatorColor);
+                    }
                     mIndicatorDrawable.setBounds(paddingLeft + (int) mIndicatorMarginLeft + mIndicatorRect.left,
                             (int) mIndicatorMarginTop,
                             paddingLeft + mIndicatorRect.right - (int) mIndicatorMarginRight,
@@ -910,7 +978,36 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
             mInitSetMap.put(position, true);
         }
     }
+    /**
+     * 显示未读消息
+     *
+     * @param position 显示tab位置
+     * @param num      num小于等于0显示红点,num大于0显示数字
+     */
+    public void showMsgCircle(int position, int num) {
+        if (position >= mTabCount) {
+            position = mTabCount - 1;
+        }
 
+        View tabView = mTabsContainer.getChildAt(position);
+        MsgView tipView = (MsgView) tabView.findViewById(R.id.rtv_msg_tip);
+        if (tipView != null) {
+            UnreadMsgUtils.showCircle(tipView, num);
+
+            if (mInitSetMap.get(position) != null && mInitSetMap.get(position)) {
+                return;
+            }
+
+            if (!mIconVisible) {
+                setMsgMargin(position, 2, 2);
+            } else {
+                setMsgMargin(position, 0,
+                        mIconGravity == Gravity.LEFT || mIconGravity == Gravity.RIGHT ? 4 : 0);
+            }
+
+            mInitSetMap.put(position, true);
+        }
+    }
     /**
      * 显示未读红点
      *
@@ -1040,7 +1137,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
         return (int) (dp * scale + 0.5f);
     }
 
-    protected int sp2px(float sp) {
+    public int sp2px(float sp) {
         final float scale = this.mContext.getResources().getDisplayMetrics().scaledDensity;
         return (int) (sp * scale + 0.5f);
     }

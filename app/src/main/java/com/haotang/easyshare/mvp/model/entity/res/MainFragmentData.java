@@ -123,6 +123,24 @@ public class MainFragmentData {
         private String parkingPrice;
         private String payWay;
         private String provider;
+        private String headImg;
+        private String electricityPrice;
+
+        public String getElectricityPrice() {
+            return electricityPrice;
+        }
+
+        public void setElectricityPrice(String electricityPrice) {
+            this.electricityPrice = electricityPrice;
+        }
+
+        public String getHeadImg() {
+            return headImg;
+        }
+
+        public void setHeadImg(String headImg) {
+            this.headImg = headImg;
+        }
 
         public String getParkingPrice() {
             return parkingPrice;
@@ -276,6 +294,24 @@ public class MainFragmentData {
         private String parkingPrice;
         private String payWay;
         private String provider;
+        private String headImg;
+        private String electricityPrice;
+
+        public String getElectricityPrice() {
+            return electricityPrice;
+        }
+
+        public void setElectricityPrice(String electricityPrice) {
+            this.electricityPrice = electricityPrice;
+        }
+
+        public String getHeadImg() {
+            return headImg;
+        }
+
+        public void setHeadImg(String headImg) {
+            this.headImg = headImg;
+        }
 
         public String getParkingPrice() {
             return parkingPrice;

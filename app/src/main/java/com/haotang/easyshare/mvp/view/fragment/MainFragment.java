@@ -522,7 +522,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                 , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
                                 publishBean.getIsPrivate(),
                                 publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
-                                publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(), publishBean.getPayWay(), publishBean.getProvider()));
+                                publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(),
+                                publishBean.getPayWay(), publishBean.getProvider(),publishBean.getHeadImg(), publishBean.getElectricityPrice()));
                     }
                 }
             }
@@ -540,7 +541,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                                 , publishBean.getLng(), publishBean.getFastNum(), publishBean.getFreeNum(),
                                 publishBean.getIsPrivate(),
                                 publishBean.getTitle(), publishBean.getOpenTime(), publishBean.getUuid(),
-                                publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(), publishBean.getPayWay(), publishBean.getProvider()));
+                                publishBean.getSlowNum(), publishBean.getLat(), publishBean.getParkingPrice(), publishBean.getPayWay(), publishBean.getProvider(),publishBean.getHeadImg(), publishBean.getElectricityPrice()));
                     }
                 }
             }
@@ -768,7 +769,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 }
                 StringUtil.setText(tvMainfragRmzxTime, dataBean.getCreateTime(), "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(tvMainfragRmzxNum, dataBean.getComments() + "评论", "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(tvMainfragRmxcName, dataBean.getUserName(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvMainfragRmzxName, dataBean.getUserName(), "", View.VISIBLE, View.VISIBLE);
             }
         }
     }
