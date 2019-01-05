@@ -69,6 +69,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     private final static String TAG = MyFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
+    @BindView(R.id.rl_myfragment_userimg)
+    RelativeLayout rl_myfragment_userimg;
     @BindView(R.id.iv_myfragment_userimg)
     ImageView ivMyfragmentUserimg;
     @BindView(R.id.tv_myfragment_yue)
@@ -173,6 +175,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 .myFragmentModule(new MyFragmentModule(this, mActivity))
                 .build()
                 .inject(this);
+        rl_myfragment_userimg.bringToFront();
         ivMyfragmentUserimg.bringToFront();
         if (SystemUtil.checkLogin(mActivity)) {
             rtvMyfragmentTuichu.setVisibility(View.VISIBLE);

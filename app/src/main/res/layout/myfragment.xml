@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:riv="http://schemas.android.com/apk/res-auto"
     xmlns:rv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,13 +30,28 @@
                 android:layout_marginTop="70dip"
                 android:background="@color/transparent">
 
-                <ImageView
-                    android:id="@+id/iv_myfragment_userimg"
-                    android:layout_width="96dip"
-                    android:layout_height="96dip"
-                    android:layout_centerHorizontal="true"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/ic_image_load_circle" />
+                <RelativeLayout
+                    android:id="@+id/rl_myfragment_userimg"
+                    android:layout_width="106dip"
+                    android:layout_height="106dip"
+                    android:layout_centerHorizontal="true">
+
+                    <ImageView
+                        android:id="@+id/iv_myfragment_userimg"
+                        android:layout_width="96dip"
+                        android:layout_height="96dip"
+                        android:layout_centerInParent="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_image_load_circle" />
+
+                    <ImageView
+                        android:id="@+id/iv_myfragment_userimg_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/bg_red_circle"
+                        android:scaleType="fitXY" />
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
