@@ -191,6 +191,7 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
             List<String> color = data.getColor();
             shareMap = data.getShareMap();
             if (data.getDetailImgs() != null && data.getDetailImgs().size() > 0) {
+                RingLog.e("data.getDetailImgs() = " + data.getDetailImgs().toString());
                 detailImgs.addAll(data.getDetailImgs());
                 carDetailPicAdapter.notifyDataSetChanged();
             }

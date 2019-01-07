@@ -178,7 +178,6 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
             list.clear();
             mFragments.clear();
             list.addAll(data);
-            vpSelectcar.setOffscreenPageLimit(data.size());//预加载
             vpSelectcar.setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));//设置viewpage之间的间距
             for (int i = 0; i < data.size(); i++) {
                 CarType.DataBean dataBean = data.get(i);
@@ -189,6 +188,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
                 mFragments.add(hotCarFragment);
             }
             myFragChargePagerAdapter.notifyDataSetChanged();
+            vpSelectcar.setOffscreenPageLimit(data.size());//预加载
         }
     }
 
