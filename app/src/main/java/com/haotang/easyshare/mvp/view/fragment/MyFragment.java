@@ -387,8 +387,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                     chargeFragment.setArguments(bundle);
                     mFragments.add(chargeFragment);
                 }
-                vpMyfragmentMycdz.setOffscreenPageLimit(data.getStations().size());
                 myFragChargePagerAdapter.notifyDataSetChanged();
+                vpMyfragmentMycdz.setOffscreenPageLimit(data.getStations().size());
                 if (stations.size() > pagePosition) {
                     HomeBean.StationsBean stationsBean = stations.get(pagePosition);
                     if (stationsBean != null) {
