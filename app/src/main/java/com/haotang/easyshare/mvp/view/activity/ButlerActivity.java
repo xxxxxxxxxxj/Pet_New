@@ -124,6 +124,7 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SystemUtil.goneJP(this);
         activityListManager.removeActivity(this); //退出activity
     }
 
@@ -131,6 +132,7 @@ public class ButlerActivity extends BaseActivity<ButlerPresenter> implements IBu
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_titlebar_back:
+                SystemUtil.goneJP(this);
                 finish();
                 break;
             case R.id.tv_titlebar_other:

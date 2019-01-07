@@ -217,6 +217,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private int[] mIconSelectIds = {
             R.mipmap.tab_gg_passed, R.mipmap.tab_gr_passed};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
+    private boolean isShowInfoWindow;
 
     @Override
     protected boolean isLazyLoad() {
@@ -302,6 +303,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     marker.setObject(i);
                 }
             }
+            aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(markerlst.get(0).getPosition(), 18, 0, 30)),
+                    1000, null);
+            markerlst.get(0).showInfoWindow();
         }
     }
 
@@ -454,6 +458,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             public void onTabSelect(int position) {
                 RingLog.e(TAG, "onTabSelect position = " + position);
                 index = position;
+                isShowInfoWindow = false;
                 setTab();
             }
 
@@ -652,6 +657,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 personalList.addAll(personal);
             }
             index = 0;
+            isShowInfoWindow = true;
             setTab();
         }
     }

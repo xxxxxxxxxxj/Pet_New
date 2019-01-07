@@ -1,7 +1,5 @@
 package com.haotang.easyshare.mvp.model.entity.res;
 
-import android.os.Parcelable;
-
 import java.util.List;
 
 /**
@@ -101,6 +99,15 @@ public class PostBean {
             private String title;
             private String content;
             private String url;
+            private String desc;
+
+            public String getDesc() {
+                return desc;
+            }
+
+            public void setDesc(String desc) {
+                this.desc = desc;
+            }
 
             public String getImg() {
                 return img;

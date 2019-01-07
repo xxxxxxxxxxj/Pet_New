@@ -273,6 +273,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                 startActivityForResult(new Intent(SendPostActivity.this, BrandCarActivity.class), REQUESTCODE_BRANDCAR);
                 break;
             case R.id.iv_titlebar_back:
+                SystemUtil.goneJP(this);
                 finish();
                 break;
             case R.id.tv_sendpost_wtc:

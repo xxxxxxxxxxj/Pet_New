@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.view.widget;
 
 import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -37,6 +38,15 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
     private String mThumbUrlOrPath;
     private String uuid;
     private int type;
+    private Context context;
+
+    public ShareBottomDialog() {
+        context = getActivity();
+    }
+
+    public ShareBottomDialog(Context context) {
+        this.context = context;
+    }
 
     public void setType(int type) {
         this.type = type;
@@ -129,7 +139,7 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
             MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                     .addFormDataPart("uuid", uuid)
                     .build();
-            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callback(UrlConstants.getMapHeader(getActivity()), body)
+            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callback(UrlConstants.getMapHeader(context), body)
                     , new CommonObserver<HttpResult<AddChargeBean>>() {
                         @Override
                         public void onResult(HttpResult<AddChargeBean> result) {
@@ -156,7 +166,7 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
             MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                     .addFormDataPart("uuid", uuid)
                     .build();
-            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callbackChargeing(UrlConstants.getMapHeader(getActivity()), body)
+            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callbackChargeing(UrlConstants.getMapHeader(context), body)
                     , new CommonObserver<HttpResult<AddChargeBean>>() {
                         @Override
                         public void onResult(HttpResult<AddChargeBean> result) {
@@ -183,7 +193,7 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
             MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                     .addFormDataPart("id", uuid)
                     .build();
-            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callbackCar(UrlConstants.getMapHeader(getActivity()), body)
+            DevRing.httpManager().commonRequest(DevRing.httpManager().getService(ShareApiService.class).callbackCar(UrlConstants.getMapHeader(context), body)
                     , new CommonObserver<HttpResult<AddChargeBean>>() {
                         @Override
                         public void onResult(HttpResult<AddChargeBean> result) {

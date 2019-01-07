@@ -158,8 +158,15 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
                             shareMap.setUrl(shareMap.getUrl() + "?carid" + id);
                         }
                     }
+                    String content = "";
+                    if (StringUtil.isNotEmpty(shareMap.getContent())) {
+                        content = shareMap.getContent();
+                    }
+                    if (StringUtil.isNotEmpty(shareMap.getDesc())) {
+                        content = shareMap.getDesc();
+                    }
                     ShareBottomDialog dialog = new ShareBottomDialog();
-                    dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
+                    dialog.setShareInfo(shareMap.getTitle(), content,
                             shareMap.getUrl(), shareMap.getImg());
                     dialog.setType(3);
                     dialog.setUuid(String.valueOf(id));

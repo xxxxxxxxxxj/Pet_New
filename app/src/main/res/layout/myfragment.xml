@@ -246,8 +246,6 @@
                                     android:id="@+id/tv_myfragment_clxx"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:ellipsize="end"
-                                    android:singleLine="true"
                                     android:text="车辆信息"
                                     android:textColor="@color/a666666"
                                     android:textSize="12sp" />
