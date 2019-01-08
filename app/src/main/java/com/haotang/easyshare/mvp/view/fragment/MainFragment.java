@@ -302,7 +302,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 public void run() {
                     aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 16, 0, 30)),
                             1000, null);
-                    changeCamera(CameraUpdateFactory.scrollBy(0, -SCROLL_BY_PX), null);
+                    //changeCamera(CameraUpdateFactory.scrollBy(0, -SCROLL_BY_PX), null);
                 }
             }, 500);
         }

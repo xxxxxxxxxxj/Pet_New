@@ -504,7 +504,8 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 builder.addFormDataPart("telephone", etAddchargePhone.getText().toString().trim().replace(" ", ""));
                 builder.addFormDataPart("title", etAddchargeZmc.getText().toString().trim());
                 builder.addFormDataPart("electricityPrice", etAddchargeCdf.getText().toString().trim());
-                builder.addFormDataPart("parkingPrice", etAddchargeTcf.getText().toString().trim() + "_" + upOrDown);
+                builder.addFormDataPart("parkingPrice", etAddchargeTcf.getText().toString().trim());
+                builder.addFormDataPart("isUnderground", "" + upOrDown);
                 builder.addFormDataPart("serviceFee", etAddchargeFwf.getText().toString().trim());
                 if (!tvAddchargeZdz.getText().toString().trim().equals("请选择站地址")) {
                     builder.addFormDataPart("address", tvAddchargeZdz.getText().toString().trim());
@@ -750,7 +751,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
             StringUtil.setText(etAddchargePhone, data.getPhone() + "", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargeTcf, data.getParkingPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(etAddchargeBzsm, data.getRemark(), "", View.VISIBLE, View.VISIBLE);
-            setUpOrDown(data.getParkingIsUnderground());
+            setUpOrDown(data.getIsUnderground());
             int fastNum = data.getFastNum();
             int slowNum = data.getSlowNum();
             int isPrivate = data.getIsPrivate();

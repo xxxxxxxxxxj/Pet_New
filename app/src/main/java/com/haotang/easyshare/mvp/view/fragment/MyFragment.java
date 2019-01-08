@@ -417,7 +417,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
         if (data != null && data.size() > 0) {
             MyCarBean.DataBean dataBean = data.get(0);
             if (dataBean != null) {
-                StringUtil.setText(tvMyfragmentClxx, dataBean.getBrand() + dataBean.getCar(), "车辆信息", View.VISIBLE, View.VISIBLE);
+                //StringUtil.setText(tvMyfragmentClxx, dataBean.getBrand() + dataBean.getCar(), "车辆信息", View.VISIBLE, View.VISIBLE);
             }
         }
     }

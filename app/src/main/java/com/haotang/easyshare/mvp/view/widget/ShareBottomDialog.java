@@ -66,6 +66,15 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
         this.mSummary = summary;
         this.mTargetUrl = targetUrl;
         this.mThumbUrlOrPath = thumbUrlOrPath;
+        if(StringUtil.isEmpty(this.mTitle)){
+            this.mTitle = context.getResources().getString(R.string.app_name);
+        }
+        if(StringUtil.isEmpty(this.mSummary)){
+            this.mSummary = context.getResources().getString(R.string.app_name);
+        }
+        if(StringUtil.isEmpty(this.mTargetUrl)){
+            this.mTargetUrl = AppConfig.URL;
+        }
     }
 
     public void completeUrl(Activity activity) {

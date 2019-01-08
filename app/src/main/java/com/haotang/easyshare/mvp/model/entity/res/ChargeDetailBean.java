@@ -56,10 +56,18 @@ public class ChargeDetailBean {
     private int freeNum;
     private String serviceFee;
     private String remark;
-    private int parkingIsUnderground;
+    private int isUnderground;
     private List<String> detailImgs;
     private List<UseNotices> useNotices;
     private PostBean.DataBean.ShareMap shareMap;
+
+    public int getIsUnderground() {
+        return isUnderground;
+    }
+
+    public void setIsUnderground(int isUnderground) {
+        this.isUnderground = isUnderground;
+    }
 
     public PostBean.DataBean.ShareMap getShareMap() {
         return shareMap;
@@ -112,14 +120,6 @@ public class ChargeDetailBean {
 
     public void setIsCollect(int isCollect) {
         this.isCollect = isCollect;
-    }
-
-    public int getParkingIsUnderground() {
-        return parkingIsUnderground;
-    }
-
-    public void setParkingIsUnderground(int parkingIsUnderground) {
-        this.parkingIsUnderground = parkingIsUnderground;
     }
 
     public String getServiceFee() {
