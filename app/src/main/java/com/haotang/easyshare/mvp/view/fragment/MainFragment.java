@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,6 +30,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
@@ -217,7 +219,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private int[] mIconSelectIds = {
             R.mipmap.tab_gg_passed, R.mipmap.tab_gr_passed};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
-    private boolean isShowInfoWindow;
+    private static final int SCROLL_BY_PX = 150;
 
     @Override
     protected boolean isLazyLoad() {
@@ -285,28 +287,32 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private void addMarkersToMap() {
         aMap.clear();
         markerOptionlst.clear();
-        for (int i = 0; i < list.size(); i++) {
-            MainFragChargeBean stationsBean = list.get(i);
-            if (stationsBean != null) {
-                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view))
-                        .title("快充" + stationsBean.getFastNum() + "  |  " + "慢充" + stationsBean.getSlowNum() + "  |  " + "空闲" + stationsBean.getFreeNum())
-                        .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
-                        .draggable(true).setInfoWindowOffset(0, 20);
-                markerOptionlst.add(markerOptions);
-            }
-        }
-        markerlst = aMap.addMarkers(markerOptionlst, true);
-        if (markerlst != null && markerlst.size() > 0) {
-            for (int i = 0; i < markerlst.size(); i++) {
-                Marker marker = markerlst.get(i);
-                if (marker != null) {
-                    marker.setObject(i);
+        MainFragChargeBean stationsBean = list.get(0);
+        if (stationsBean != null) {
+            MarkerOptions markerOption = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view_select))
+                    .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
+                    .title("快充" + stationsBean.getFastNum() + "  |  " + "慢充" + stationsBean.getSlowNum() + "  |  " + "空闲" + stationsBean.getFreeNum())
+                    .setInfoWindowOffset(0, 20)
+                    .draggable(true);
+            final Marker marker = aMap.addMarker(markerOption);
+            marker.setObject(0);
+            marker.showInfoWindow();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 16, 0, 30)),
+                            1000, null);
+                    changeCamera(CameraUpdateFactory.scrollBy(0, -SCROLL_BY_PX), null);
                 }
-            }
-            aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(markerlst.get(0).getPosition(), 18, 0, 30)),
-                    1000, null);
-            markerlst.get(0).showInfoWindow();
+            }, 500);
         }
+    }
+
+    /**
+     * 根据动画按钮状态，调用函数animateCamera或moveCamera来改变可视区域
+     */
+    private void changeCamera(CameraUpdate update, AMap.CancelableCallback callback) {
+        aMap.animateCamera(update, 100, callback);
     }
 
     private void setAdapter() {
@@ -458,7 +464,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             public void onTabSelect(int position) {
                 RingLog.e(TAG, "onTabSelect position = " + position);
                 index = position;
-                isShowInfoWindow = false;
                 setTab();
             }
 
@@ -562,14 +567,14 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         }
         mainLocalAdapter.setLatLng(lat, lng);
         addMarkersToMap();// 往地图上添加marker
-        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
+        /*LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();//存放所有点的经纬度
         for (int i = 0; i < list.size(); i++) {
             MainFragChargeBean stationsBean = list.get(i);
             if (stationsBean != null) {
                 boundsBuilder.include(new LatLng(stationsBean.getLat(), stationsBean.getLng()));//把所有点都include进去（LatLng类型）
             }
         }
-        aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
+        aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度*/
     }
 
     @OnClick({R.id.iv_mainfrag_top_right, R.id.rtv_mainfrag_local, R.id.ll_mainfrag_localev_more, R.id.iv_mainfrag_map_loc,
@@ -657,7 +662,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 personalList.addAll(personal);
             }
             index = 0;
-            isShowInfoWindow = true;
             setTab();
         }
     }
