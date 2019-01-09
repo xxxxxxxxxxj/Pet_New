@@ -46,7 +46,7 @@ public class ViewPagerHotFragAdapter extends PagerAdapter {
         ImageView iv_item_viewpager_selectcar = (ImageView) view.findViewById(R.id.iv_item_viewpager_selectcar);
         final AdvertisementBean.DataBean dataBean = bannerList.get(position);
         if (dataBean != null) {
-            GlideUtil.loadNetRoundImg(mContext, dataBean.getImg(), iv_item_viewpager_selectcar, R.mipmap.ic_image_load, 5);
+            GlideUtil.loadNetRoundImg(mContext, dataBean.getImg(), iv_item_viewpager_selectcar, R.mipmap.ic_image_load, 10);
             iv_item_viewpager_selectcar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

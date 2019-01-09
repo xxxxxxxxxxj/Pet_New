@@ -214,6 +214,7 @@ public class SerchAddressActivity extends BaseActivity<SerchAddressPresenter> im
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_serchaddress_other:
+                SystemUtil.goneJP(this);
                 finish();
                 break;
             case R.id.iv_serchaddress_clear:

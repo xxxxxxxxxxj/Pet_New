@@ -30,8 +30,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="30dip"
-                android:layout_height="30dip"
+                android:layout_width="35dip"
+                android:layout_height="35dip"
                 android:scaleType="fitXY"
                 android:src="@mipmap/icon_daohang_new" />
 

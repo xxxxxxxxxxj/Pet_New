@@ -301,10 +301,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 @Override
                 public void run() {
                     aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 16, 0, 30)),
-                            1000, null);
+                            100, null);
                     //changeCamera(CameraUpdateFactory.scrollBy(0, -SCROLL_BY_PX), null);
                 }
-            }, 500);
+            }, 100);
         }
     }
 
@@ -654,7 +654,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             publishList.clear();
             List<MainFragmentData.PersonalBean> personal = mainFragmentData.getPersonal();
             List<MainFragmentData.PublishBean> publish = mainFragmentData.getPublish();
-            StringUtil.setText(rtvMainfragLocal, mainFragmentData.getDistanceTip(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(rtvMainfragLocal, mainFragmentData.getDistanceTip(), "", View.GONE, View.GONE);
             if (publish != null && publish.size() > 0) {//公共充电桩
                 publishList.addAll(publish);
             }

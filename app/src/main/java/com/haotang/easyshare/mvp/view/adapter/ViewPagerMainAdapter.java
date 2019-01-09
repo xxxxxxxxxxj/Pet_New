@@ -46,7 +46,7 @@ public class ViewPagerMainAdapter extends PagerAdapter {
         ImageView iv_item_viewpager_selectcar = (ImageView) view.findViewById(R.id.iv_item_viewpager_selectcar);
         AdvertisementBean.DataBean dataBean = bannerList.get(position);
         if (dataBean != null) {
-            GlideUtil.loadNetImg(mContext, dataBean.getImg(), iv_item_viewpager_selectcar, R.mipmap.ic_image_load);
+            GlideUtil.loadNetRoundImg(mContext, dataBean.getImg(), iv_item_viewpager_selectcar, R.mipmap.ic_image_load,10);
         }
         container.addView(view);
         return view;

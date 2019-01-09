@@ -18,6 +18,8 @@ import com.ljy.devring.other.RingLog;
 
 import java.util.List;
 
+import static com.haotang.easyshare.R.id.ll_item_mainlocal_daohang;
+
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -41,7 +43,7 @@ public class MainLocalHorAdapter extends BaseQuickAdapter<MainFragChargeBean, Ba
         TextView tv_item_mainlocal_juli = helper.getView(R.id.tv_item_mainlocal_juli);
         TextView tv_item_mainlocal_name = helper.getView(R.id.tv_item_mainlocal_name);
         TextView tv_item_mainlocal_kfsj = helper.getView(R.id.tv_item_mainlocal_kfsj);
-        LinearLayout ll_item_mainlocal_daohang = helper.getView(R.id.ll_item_mainlocal_daohang);
+        ImageView iv_item_mainlocal_daohang = helper.getView(R.id.iv_item_mainlocal_daohang);
         ImageView iv_item_mainlocal_img = helper.getView(R.id.iv_item_mainlocal_img);
         TextView tv_item_mainlocal_cdf = helper.getView(R.id.tv_item_mainlocal_cdf);
         if (item != null) {
@@ -58,7 +60,7 @@ public class MainLocalHorAdapter extends BaseQuickAdapter<MainFragChargeBean, Ba
                 tv_item_mainlocal_ggorgr.setText("个人");
                 tv_item_mainlocal_ggorgr.setBackgroundResource(R.drawable.bg_round_red5);
             }
-            ll_item_mainlocal_daohang.setOnClickListener(new View.OnClickListener() {
+            iv_item_mainlocal_daohang.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     SystemUtil.goNavigation(mContext, item.getLat(), item.getLng(), "", item.getAddress(), lat, lng, item.getUuid());

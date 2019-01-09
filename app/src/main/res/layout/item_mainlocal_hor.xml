@@ -13,88 +13,84 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip">
 
-        <LinearLayout
-            android:id="@+id/ll_item_mainlocal_daohang"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/iv_item_mainlocal_daohang"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
             android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="30dip"
-                android:layout_height="30dip"
-                android:scaleType="fitXY"
-                android:src="@mipmap/icon_daohang_new" />
-
-            <TextView
-                android:id="@+id/tv_item_mainlocal_juli"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0m"
-                android:textColor="@color/a999999"
-                android:textSize="12sp" />
-
-        </LinearLayout>
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_daohang_new" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dip"
-            android:layout_toLeftOf="@id/ll_item_mainlocal_daohang"
-            android:orientation="vertical">
+            android:layout_toLeftOf="@id/iv_item_mainlocal_daohang">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/iv_item_mainlocal_img"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginRight="10dip"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_image_load" />
+
+            <TextView
+                android:id="@+id/tv_item_mainlocal_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dip">
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="TextView"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/iv_item_mainlocal_img"
-                    android:layout_width="40dip"
-                    android:layout_height="40dip"
-                    android:layout_marginRight="10dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/ic_image_load" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip">
 
-                <TextView
-                    android:id="@+id/tv_item_mainlocal_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
-            </LinearLayout>
+        <TextView
+            android:id="@+id/tv_item_mainlocal_juli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="0m"
+            android:textColor="@color/a999999"
+            android:textSize="12sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_item_mainlocal_juli"
+            android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/tv_item_mainlocal_ggorgr"
-                    android:layout_width="36dip"
-                    android:layout_height="18dip"
-                    android:layout_marginRight="10dip"
-                    android:background="@drawable/bg_round_red5"
-                    android:gravity="center"
-                    android:text="个人"
-                    android:textColor="@color/white"
-                    android:textSize="11sp" />
+            <TextView
+                android:id="@+id/tv_item_mainlocal_ggorgr"
+                android:layout_width="36dip"
+                android:layout_height="18dip"
+                android:layout_marginRight="10dip"
+                android:background="@drawable/bg_round_red5"
+                android:gravity="center"
+                android:text="个人"
+                android:textColor="@color/white"
+                android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/tv_item_mainlocal_kfsj"
-                    android:layout_width="75dip"
-                    android:layout_height="18dip"
-                    android:background="@drawable/bg_round_9495"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="00:30-24:00"
-                    android:textColor="@color/white"
-                    android:textSize="11sp" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_item_mainlocal_kfsj"
+                android:layout_width="75dip"
+                android:layout_height="18dip"
+                android:background="@drawable/bg_round_9495"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="00:30-24:00"
+                android:textColor="@color/white"
+                android:textSize="11sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -108,10 +104,11 @@
             android:id="@+id/tv_item_mainlocal_cdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dip"
+            android:layout_marginRight="5dip"
             android:text="TextView"
             android:textColor="@color/afF4A2D"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"

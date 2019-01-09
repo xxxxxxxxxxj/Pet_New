@@ -205,6 +205,7 @@ public class SerchPostActivity extends BaseActivity<SerchPostPresenter> implemen
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_titlebar_back:
+                SystemUtil.goneJP(this);
                 finish();
                 break;
             case R.id.tv_titlebar_other:
