@@ -59,16 +59,9 @@
         android:textColor="@color/a999999"
         android:textSize="12sp" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/srl_hotfragment"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_hotfragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_hotfragment"
-            android:layout_width="match_parent"
-            android:paddingTop="15dip"
-            android:layout_height="match_parent"
-            android:background="@color/af8f8f8" />
-    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
