@@ -23,6 +23,7 @@ public class AppConfig {
     public static final int MAIN_MY = 1113;
     public static final int EXIT_USER_CODE = 200003;
     public static final String URL = "http://www.sayiyinxiang.com";
+    public static final String SHAREIMG_URL = "http://img.sayiyinxiang.com/api/charging/imgs/15382200559974283912.jpg";
     public static List<Message> forwardMsg = new ArrayList<>();
     public static final String SERVER_KEY = "A16EF76FA2D6B5A1A743A489D9332D9A";
     public static final int SERVER_ERROR = 5201314;

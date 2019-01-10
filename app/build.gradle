@@ -141,4 +141,7 @@ dependencies {
     annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.hyman:flowlayout-lib:1.1.2'
+    compile ('com.alibaba.android:vlayout:1.2.8@aar') {
+        transitive = true
+    }
 }

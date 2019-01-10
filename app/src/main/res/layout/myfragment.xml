@@ -125,7 +125,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="84dip"
-                            android:layout_marginBottom="15dip"
                             android:background="@color/white"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
@@ -148,11 +147,11 @@
                                 <TextView
                                     android:id="@+id/tv_myfragment_yue"
                                     android:layout_width="wrap_content"
-                                    android:textStyle="bold"
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textColor="@color/black"
-                                    android:textSize="18sp" />
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
                             </LinearLayout>
 
                             <View
@@ -213,10 +212,15 @@
                             </LinearLayout>
                         </LinearLayout>
 
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="20dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/bg_line_shadow" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="84dip"
-                            android:layout_marginBottom="15dip"
                             android:background="@color/white"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
@@ -311,10 +315,15 @@
                             </LinearLayout>
                         </LinearLayout>
 
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="20dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/bg_line_shadow" />
+
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="130dip"
-                            android:layout_marginBottom="15dip"
                             android:background="@color/white"
                             android:padding="15dip">
 
@@ -401,10 +410,10 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentLeft="true"
                                         android:layout_centerVertical="true"
-                                        android:textStyle="bold"
                                         android:text="我的充电桩"
                                         android:textColor="@color/a333333"
-                                        android:textSize="20sp" />
+                                        android:textSize="20sp"
+                                        android:textStyle="bold" />
                                 </RelativeLayout>
 
                                 <android.support.v4.view.ViewPager
@@ -413,6 +422,12 @@
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
                         </RelativeLayout>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="20dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/bg_line_shadow" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

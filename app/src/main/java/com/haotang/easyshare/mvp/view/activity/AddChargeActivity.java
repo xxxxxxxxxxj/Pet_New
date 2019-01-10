@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -92,6 +94,7 @@ import top.zibin.luban.Luban;
  */
 public class AddChargeActivity extends BaseActivity<AddChargePresenter> implements IAddChargeView, AMapLocationListener {
     protected final static String TAG = AddChargeActivity.class.getSimpleName();
+    private static final int DOWNLOAD_IMG = 1234;
     @Inject
     PermissionDialog permissionDialog;
     @BindView(R.id.iv_titlebar_back)
@@ -177,6 +180,8 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
     private double localLng;
     private File chargeImgFile;
     private int isPrivate = 1;
+    private List<String> detailImgs;
+    private int imgIndex;
 
     @Override
     protected int getContentLayout() {
@@ -539,10 +544,10 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 if (StringUtil.isNotEmpty(uuid)) {
                     builder.addFormDataPart("uuid", uuid);
                     RequestBody build = builder.build();
-                    mPresenter.update(UrlConstants.getMapHeader(this),build);
+                    mPresenter.update(UrlConstants.getMapHeader(this), build);
                 } else {
                     RequestBody build = builder.build();
-                    mPresenter.save(UrlConstants.getMapHeader(this),build);
+                    mPresenter.save(UrlConstants.getMapHeader(this), build);
                 }
                 break;
             case R.id.rl_addcharge_zdz:
@@ -767,10 +772,12 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                 StringUtil.setText(etAddchargeSl, slowNum + "", "", View.VISIBLE, View.VISIBLE);
                 setKuaiOrMan(1);
             }
-            final List<String> detailImgs = data.getDetailImgs();
+            detailImgs = data.getDetailImgs();
             if (detailImgs != null && detailImgs.size() > 0) {
+                imgIndex = 0;
                 localImgPathList.clear();
-                for (int i = 0; i < detailImgs.size(); i++) {
+                mHandler.sendEmptyMessage(DOWNLOAD_IMG);
+                /*for (int i = 0; i < detailImgs.size(); i++) {
                     String imgUrl = detailImgs.get(i);
                     if (StringUtil.isNotEmpty(imgUrl)) {
                         Glide.with(AddChargeActivity.this)
@@ -797,13 +804,55 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                                     }
                                 });
                     }
-                }
+                }*/
             } else {
                 disMissDialog();
             }
         } else {
             disMissDialog();
         }
+    }
+
+    private Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case DOWNLOAD_IMG:
+                    downloadImg(detailImgs.get(imgIndex));
+                    break;
+            }
+        }
+    };
+
+    private void downloadImg(String imgUrl) {
+        Glide.with(AddChargeActivity.this)
+                .load(imgUrl)
+                .asBitmap()
+                .placeholder(R.mipmap.ic_image_load_circle).dontAnimate()
+                .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        try {
+                            String fileName = "charge_img_"
+                                    + String.valueOf(System.currentTimeMillis() + ".jpg");
+                            String imgPath = SystemUtil.saveFile(chargeImgFile, resource, fileName);
+                            RingLog.e(TAG, "imgPath = " + imgPath);
+                            localImgPathList.add(imgPath);
+                            if (localImgPathList.size() == detailImgs.size()) {
+                                showDialog();
+                                compressWithRx(localImgPathList);
+                            }else{
+                                imgIndex++;
+                                mHandler.sendEmptyMessage(DOWNLOAD_IMG);
+                            }
+                        } catch (IOException e) {
+                            RingLog.e(TAG, "e = " + e.toString());
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -853,7 +902,7 @@ public class AddChargeActivity extends BaseActivity<AddChargePresenter> implemen
                         RingLog.d(TAG, "mapHeader =  " + mapHeader.toString());
                         String md5 = SignUtil.sign(mapHeader, "MD5");
                         RingLog.d(TAG, "md5 =  " + md5);
-                        mPresenter.detail(UrlConstants.getMapHeader(this),localLng, localLat, uuid, md5);
+                        mPresenter.detail(UrlConstants.getMapHeader(this), localLng, localLat, uuid, md5);
                     }
                 }
             } else {

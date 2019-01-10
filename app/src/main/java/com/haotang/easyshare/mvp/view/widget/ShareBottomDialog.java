@@ -75,6 +75,9 @@ public class ShareBottomDialog extends BaseBottomDialog implements View.OnClickL
         if(StringUtil.isEmpty(this.mTargetUrl)){
             this.mTargetUrl = AppConfig.URL;
         }
+        if(StringUtil.isEmpty(this.mThumbUrlOrPath)){
+            this.mThumbUrlOrPath = AppConfig.SHAREIMG_URL;
+        }
     }
 
     public void completeUrl(Activity activity) {

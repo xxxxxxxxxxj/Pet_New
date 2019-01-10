@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dip"
+        android:layout_marginTop="30dip"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -53,12 +53,10 @@
 
         <com.youth.banner.Banner
             android:id="@+id/banner_selectcar"
-            android:layout_width="match_parent"
+            android:layout_width="335dip"
             android:layout_height="75dip"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dip"
-            android:layout_marginLeft="15dip"
-            android:layout_marginRight="15dip"
             android:layout_marginTop="30dip"
             android:focusable="true"
             android:focusableInTouchMode="true"
