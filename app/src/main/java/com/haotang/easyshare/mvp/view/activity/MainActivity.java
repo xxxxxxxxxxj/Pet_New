@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         //使用Dagger2对本类中相关变量进行初始化
         DaggerMainActivityCommponent.builder().mainActivityModule(new MainActivityModule(this, this)).build().inject(this);
         permissionDialog.setMessage(R.string.permission_request_WRITE_EXTERNAL_STORAGE);
-        initWindows();
+        //initWindows();
     }
 
     private void initWindows() {

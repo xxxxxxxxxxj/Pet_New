@@ -85,6 +85,7 @@ import com.haotang.easyshare.mvp.view.iview.IMainFragmentView;
 import com.haotang.easyshare.mvp.view.viewholder.MainFragmenBoDa;
 import com.haotang.easyshare.mvp.view.widget.CardTransformer;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
+import com.haotang.easyshare.mvp.view.widget.ObservableScrollView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
 import com.haotang.easyshare.util.DensityUtil;
@@ -120,7 +121,8 @@ import okhttp3.RequestBody;
  */
 public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         AMapLocationListener, IMainFragmentView, AMap.OnMarkerClickListener,
-        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener, OnBannerListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter {
+        AMap.OnMapLoadedListener, PoiSearch.OnPoiSearchListener, AMap.OnMyLocationChangeListener, OnBannerListener,
+        AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, ObservableScrollView.Callbacks {
     private final static String TAG = MainFragment.class.getSimpleName();
     @Inject
     PermissionDialog permissionDialog;
@@ -180,6 +182,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     LinearLayout ll_mainfrag_rmxc;
     @BindView(R.id.ctl_mainfrag)
     CommonTabLayout ctl_mainfrag;
+    @BindView(R.id.osv_mainfrag_local)
+    ObservableScrollView osv_mainfrag_local;
+    @BindView(R.id.rl_mainfrag_localev_more)
+    RelativeLayout rl_mainfrag_localev_more;
     private AMap aMap;
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
@@ -255,6 +261,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         setUpMap();
         rtvMainfragLocal.bringToFront();
         rllMainfragSerch.bringToFront();
+        rl_mainfrag_localev_more.bringToFront();
         setLocation();
 
         viewPagerSelectCarAdapter = new ViewPagerMainAdapter(mActivity, bannerList1);
@@ -262,6 +269,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         vpMainfrag.setOffscreenPageLimit(2);//预加载2个
         vpMainfrag.setPageMargin(-70);//设置viewpage之间的间距
         vpMainfrag.setPageTransformer(true, new CardTransformer());
+
+        osv_mainfrag_local.setCallbacks(this);
+        // 滚动范围
+        osv_mainfrag_local.scrollTo(0, 0);
+        osv_mainfrag_local.smoothScrollTo(0, 0);//设置scrollView默认滚动到顶部
     }
 
     private void setLocation() {
@@ -1039,5 +1051,29 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     public View getInfoContents(Marker marker) {
         RingLog.e("getInfoContents");
         return null;
+    }
+
+    @Override
+    public void onScrollChanged(int scrollY) {
+        RingLog.e("scrollY = " + scrollY);
+        if (scrollY >= 765) {
+            rllMainfragSerch.setVisibility(View.GONE);
+            if (scrollY >= 965) {
+                rl_mainfrag_localev_more.setTranslationY(scrollY - 900 - DensityUtil.getStatusBarHeight(getActivity()));
+            }
+        } else {
+            rllMainfragSerch.setVisibility(View.VISIBLE);
+            rllMainfragSerch.bringToFront();
+        }
+    }
+
+    @Override
+    public void onDownMotionEvent() {
+
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent() {
+
     }
 }

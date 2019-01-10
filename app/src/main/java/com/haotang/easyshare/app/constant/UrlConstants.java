@@ -325,10 +325,10 @@ public class UrlConstants {
         String url = "";
         switch (getEnvironmental()) {
             case 2://demo环境
-                url = "https://demo.sayiyinxiang.com/api/";
+                url = "https://demo.dzztrip.cn/api/";
                 break;
             case 3://线上环境
-                url = "https://api.sayiyinxiang.com/api/";
+                url = "https://service.dzztrip.cn/api/";
                 break;
             default:
                 break;

@@ -48,7 +48,7 @@ public class TestActivity extends BaseActivity {
     @BindView(R.id.rv_test)
     RecyclerView rv_test;
     private String listArr[] = {"webview", "share", "微信登录", "微信支付", "支付宝支付", "高德地图", "扫描二维码", "图片选择",
-            "BaseRecyclerViewAdapterHelper", "banner", "jchat", "动画"};
+            "BaseRecyclerViewAdapterHelper", "banner", "jchat", "动画", "vLayout"};
     private TestAdapter testAdapter;
 
     @Override
@@ -212,6 +212,9 @@ public class TestActivity extends BaseActivity {
                         break;
                     case 11://动画
                         startActivity(new Intent(TestActivity.this, AnimationsActivity.class));
+                        break;
+                    case 12://vLayout
+                        startActivity(new Intent(TestActivity.this, VLayoutActivity.class));
                         break;
                 }
             }

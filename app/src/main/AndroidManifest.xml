@@ -588,6 +588,7 @@
             </intent-filter>
         </service>
         <!-- 高德地图结束 -->
+        <activity android:name=".mvp.view.activity.VLayoutActivity"></activity>
     </application>
 
 </manifest>

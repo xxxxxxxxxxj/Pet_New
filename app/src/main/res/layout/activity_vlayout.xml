@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rll_mainfrag_serch"
+        android:layout_width="match_parent"
+        android:layout_height="44dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="20dip"
+        android:background="@drawable/bg_round_white"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip">
+
+        <RelativeLayout
+            android:id="@+id/rl_mainfrag_top_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:id="@+id/tv_mainfrag_top_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="取消"
+                android:textColor="@color/a333333"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_mainfrag_top_right"
+                android:layout_width="25.5dip"
+                android:layout_height="19.5dip"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_mainfrag_add" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_mainfrag_top_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="74.5dip"
+                android:layout_height="12dip"
+                android:layout_marginRight="15dip"
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_easyshare" />
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="15dip"
+                android:background="@color/aEEEEEE" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_mainfrag_serch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/rl_mainfrag_top_right"
+            android:layout_toRightOf="@id/ll_mainfrag_top_left"
+            android:background="@null"
+            android:cursorVisible="true"
+            android:gravity="center_vertical"
+            android:hint="搜索附近充电桩"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:textColor="@color/a666666"
+            android:textColorHint="@color/a999999"
+            android:textCursorDrawable="@drawable/test_cursor"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_mainfrag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/af8f8f8"
+        android:clipToPadding="true"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:requiresFadingEdge="none"
+        android:scrollbars="vertical" />
+
+</FrameLayout>
