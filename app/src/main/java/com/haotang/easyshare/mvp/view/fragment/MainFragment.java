@@ -186,6 +186,10 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     ObservableScrollView osv_mainfrag_local;
     @BindView(R.id.rl_mainfrag_localev_more)
     RelativeLayout rl_mainfrag_localev_more;
+    @BindView(R.id.rl_mainfrag_serch_bg)
+    RelativeLayout rl_mainfrag_serch_bg;
+    @BindView(R.id.rl_mainfrag_serch)
+    RelativeLayout rl_mainfrag_serch;
     private AMap aMap;
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
@@ -260,6 +264,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         mUiSettings = aMap.getUiSettings();
         setUpMap();
         rtvMainfragLocal.bringToFront();
+        rl_mainfrag_serch.bringToFront();
         rllMainfragSerch.bringToFront();
         rl_mainfrag_localev_more.bringToFront();
         setLocation();
@@ -1056,13 +1061,18 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onScrollChanged(int scrollY) {
         RingLog.e("scrollY = " + scrollY);
-        if (scrollY >= 765) {
-            rllMainfragSerch.setVisibility(View.GONE);
-            if (scrollY >= 965) {
-                rl_mainfrag_localev_more.setTranslationY(scrollY - 900 - DensityUtil.getStatusBarHeight(getActivity()));
-            }
+        if (scrollY >= 710 && scrollY < 965) {
+            rl_mainfrag_serch_bg.setBackgroundResource(R.drawable.bg_jianbian_yellow);
+            rl_mainfrag_serch.setVisibility(View.VISIBLE);
+            rl_mainfrag_serch.bringToFront();
+            rllMainfragSerch.bringToFront();
+        } else if (scrollY >= 965) {
+            rl_mainfrag_serch.setVisibility(View.GONE);
+            rl_mainfrag_localev_more.setTranslationY(scrollY - 900 - DensityUtil.getStatusBarHeight(getActivity()));
         } else {
-            rllMainfragSerch.setVisibility(View.VISIBLE);
+            rl_mainfrag_serch_bg.setBackgroundColor(mActivity.getResources().getColor(R.color.transparent));
+            rl_mainfrag_serch.setVisibility(View.VISIBLE);
+            rl_mainfrag_serch.bringToFront();
             rllMainfragSerch.bringToFront();
         }
     }
