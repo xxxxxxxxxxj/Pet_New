@@ -84,7 +84,7 @@ public class SerchPostActivity extends BaseActivity<SerchPostPresenter> implemen
         hotFragPointAdapter = new HotFragPointAdapter(R.layout.item_hotfrag_point, list);
         rvSerchPost.setAdapter(hotFragPointAdapter);
         //添加自定义分割线
-        rvSerchPost.addItemDecoration(new DividerLinearItemDecoration(this, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(this, 15),
+        rvSerchPost.addItemDecoration(new DividerLinearItemDecoration(this, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(this, 5),
                 ContextCompat.getColor(this, R.color.af8f8f8)));
     }
 

@@ -116,7 +116,7 @@ public class HotPostFragment extends BaseFragment<HotPostFragmentPresenter> impl
             hotFragPointAdapter.addHeaderView(top);
             rvHotfragment.setAdapter(hotFragPointAdapter);
             //添加自定义分割线
-            rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity, 15),
+            rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity, 5),
                     ContextCompat.getColor(mActivity, R.color.af8f8f8)));
         }
     }

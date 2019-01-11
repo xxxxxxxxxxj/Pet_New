@@ -93,7 +93,7 @@
                 android:id="@+id/rv_serch_post"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="15dip"
+                android:paddingTop="10dip"
                 android:background="@color/af8f8f8" />
         </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>

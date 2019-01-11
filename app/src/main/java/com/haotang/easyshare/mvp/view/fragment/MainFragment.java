@@ -818,7 +818,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 if (dataBean.getBanner() != null && dataBean.getBanner().size() > 0) {
                     AdvertisementBean.DataBean dataBean1 = dataBean.getBanner().get(0);
                     if (dataBean1 != null) {
-                        GlideUtil.loadNetImg(mActivity, dataBean1.getImg(), ivMainfragRmxc, R.mipmap.ic_image_load);
+                        GlideUtil.loadNetRoundImg(mActivity, dataBean1.getImg(), ivMainfragRmxc, R.mipmap.ic_image_load, (int) 2.5);
                     }
                 }
                 StringUtil.setText(tvMainfragRmxcName, dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);

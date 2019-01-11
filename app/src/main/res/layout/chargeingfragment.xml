@@ -79,50 +79,60 @@
                         android:src="@mipmap/icon_chargeing_before" />
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="77dip"
+                <com.haotang.easyshare.mvp.view.widget.ShadowContainer
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginBottom="50dip"
-                    android:layout_marginLeft="15dip"
-                    android:layout_marginRight="15dip"
                     android:layout_marginTop="130dip"
-                    android:background="@drawable/bg_round_white"
-                    android:paddingLeft="15dip"
-                    android:paddingRight="15dip">
+                    app:containerCornerRadius="5dp"
+                    app:containerDeltaLength="5dp"
+                    app:containerShadowColor="@color/shade_color_dddddd"
+                    app:containerShadowRadius="5dp">
 
-                    <TextView
-                        android:id="@+id/tv_chargeing_ljcz"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="立即充值>"
-                        android:textColor="@color/aff6525"
-                        android:textSize="15sp" />
-
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="10dip"
-                        android:layout_toLeftOf="@id/tv_chargeing_ljcz"
-                        android:gravity="center_vertical">
+                        android:layout_height="77dip"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginRight="15dip"
+                        android:background="@drawable/bg_round_white"
+                        android:paddingLeft="15dip"
+                        android:paddingRight="15dip">
 
                         <TextView
+                            android:id="@+id/tv_chargeing_ljcz"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="当前可用(元)："
-                            android:textColor="@color/a666666"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:text="立即充值>"
+                            android:textColor="@color/aff6525"
                             android:textSize="15sp" />
 
-                        <TextView
-                            android:id="@+id/tv_chargeing_money"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0.00"
-                            android:textColor="@color/a333333"
-                            android:textSize="25sp" />
-                    </LinearLayout>
-                </RelativeLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="10dip"
+                            android:layout_toLeftOf="@id/tv_chargeing_ljcz"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="当前可用(元)："
+                                android:textColor="@color/a666666"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/tv_chargeing_money"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.00"
+                                android:textColor="@color/a333333"
+                                android:textSize="25sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </com.haotang.easyshare.mvp.view.widget.ShadowContainer>
             </LinearLayout>
 
             <LinearLayout
@@ -130,8 +140,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_chargeing_name"

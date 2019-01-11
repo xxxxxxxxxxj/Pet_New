@@ -1,19 +1,26 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.umeng.analytics.MobclickAgent;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 /**
- * VLayout测试界面
+ * 阴影测试界面
  */
-public class VLayoutActivity extends BaseActivity {
+public class ShadowActivity extends BaseActivity {
+    @BindView(R.id.tv_titlebar_title)
+    TextView tvTitlebarTitle;
 
     @Override
     protected int getContentLayout() {
-        return R.layout.activity_vlayout;
+        return R.layout.activity_shadow;
     }
 
     @Override
@@ -23,7 +30,7 @@ public class VLayoutActivity extends BaseActivity {
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-
+        tvTitlebarTitle.setText("阴影测试界面");
     }
 
     @Override
@@ -34,6 +41,15 @@ public class VLayoutActivity extends BaseActivity {
     @Override
     protected void initEvent() {
 
+    }
+
+    @OnClick({R.id.iv_titlebar_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_titlebar_back:
+                finish();
+                break;
+        }
     }
 
     @Override

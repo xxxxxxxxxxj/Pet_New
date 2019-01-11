@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/f8f8ff8"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_bar" />
+
+    <com.haotang.easyshare.mvp.view.widget.ShadowContainer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        app:containerCornerRadius="5dp"
+        app:containerDeltaLength="5dp"
+        app:containerShadowColor="@color/shade_color_dddddd"
+        app:containerShadowRadius="5dp">
+
+        <View
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_round_white" />
+
+    </com.haotang.easyshare.mvp.view.widget.ShadowContainer>
+</LinearLayout>
