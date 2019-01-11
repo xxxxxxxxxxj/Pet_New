@@ -190,6 +190,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     RelativeLayout rl_mainfrag_serch_bg;
     @BindView(R.id.rl_mainfrag_serch)
     RelativeLayout rl_mainfrag_serch;
+    @BindView(R.id.ll_mainfrag_localev)
+    LinearLayout ll_mainfrag_localev;
     private AMap aMap;
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
@@ -1061,6 +1063,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onScrollChanged(int scrollY) {
         RingLog.e("scrollY = " + scrollY);
+        RingLog.e("ll_mainfrag_localev.getTop() = " + ll_mainfrag_localev.getTop());
+        RingLog.e("rl_mainfrag_localev_more.getHeight() = " + rl_mainfrag_localev_more.getHeight());
+        RingLog.e("DensityUtil.getStatusBarHeight(getActivity()) = " + DensityUtil.getStatusBarHeight(getActivity()));
         if (scrollY >= 710 && scrollY < 965) {
             rl_mainfrag_serch_bg.setBackgroundResource(R.drawable.bg_jianbian_yellow);
             rl_mainfrag_serch.setVisibility(View.VISIBLE);
@@ -1068,7 +1073,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             rllMainfragSerch.bringToFront();
         } else if (scrollY >= 965) {
             rl_mainfrag_serch.setVisibility(View.GONE);
-            rl_mainfrag_localev_more.setTranslationY(scrollY - 900 - DensityUtil.getStatusBarHeight(getActivity()));
+            //if ((ll_mainfrag_localev.getTop() - rl_mainfrag_localev_more.getHeight() - DensityUtil.getStatusBarHeight(getActivity())) > (scrollY - 900 - DensityUtil.getStatusBarHeight(getActivity()))) {
+                rl_mainfrag_localev_more.setTranslationY(scrollY - 900 - DensityUtil.getStatusBarHeight(getActivity()));
+            /*} else {
+                rl_mainfrag_localev_more.setTranslationY(ll_mainfrag_localev.getTop() - rl_mainfrag_localev_more.getHeight() - DensityUtil.getStatusBarHeight(getActivity()));
+            }*/
         } else {
             rl_mainfrag_serch_bg.setBackgroundColor(mActivity.getResources().getColor(R.color.transparent));
             rl_mainfrag_serch.setVisibility(View.VISIBLE);
