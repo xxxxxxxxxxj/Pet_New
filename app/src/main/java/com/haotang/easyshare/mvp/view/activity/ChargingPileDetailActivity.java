@@ -145,6 +145,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     private AdvertisementBean.DataBean dataBean;
     private List<CommentBean.Comment> list = new ArrayList<CommentBean.Comment>();
     private CommentDetailAdapter commentDetailAdapter;
+    private String phone;
 
     @Override
     protected int getContentLayout() {
@@ -352,7 +353,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 startActivity(new Intent(ChargingPileDetailActivity.this, CommentDetailActivity.class).putExtra("uuid", uuid));
                 break;
             case R.id.ll_chargingdetail_call:
-                SystemUtil.cellPhone(ChargingPileDetailActivity.this, "");
+                SystemUtil.cellPhone(ChargingPileDetailActivity.this, phone);
                 break;
             case R.id.ll_chargingdetail_daohang:
                 if (serchLat > 0 && serchLng > 0) {
@@ -374,8 +375,9 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             address = data.getAddress();
             chargeLat = data.getLat();
             chargeLng = data.getLng();
+            phone = data.getPhone();
             StringUtil.setText(tvChargingdetailName, data.getTitle(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvChargingdetailJuli, "距您"+data.getDistance(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvChargingdetailJuli, "距您" + data.getDistance(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvChargingdetailAddress, data.getAddress(), "", View.VISIBLE, View.VISIBLE);
             String kfsj = "";
             if (data.getOpenTime() != null && StringUtil.isNotEmpty(data.getOpenTime())) {
@@ -389,22 +391,22 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 }
             }
             StringUtil.setText(tvChargingdetailKfsj, kfsj, "", View.VISIBLE, View.VISIBLE);
-            if(StringUtil.isNotEmpty(data.getElectricityPrice())){
-                if(data.getElectricityPrice().endsWith("元/度")){
+            if (StringUtil.isNotEmpty(data.getElectricityPrice())) {
+                if (data.getElectricityPrice().endsWith("元/度")) {
                     StringUtil.setText(tvChargingdetailCdf, data.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
-                }else{
+                } else {
                     StringUtil.setText(tvChargingdetailCdf, data.getElectricityPrice() + "元/度", "", View.VISIBLE, View.VISIBLE);
                 }
-            }else{
+            } else {
                 StringUtil.setText(tvChargingdetailCdf, data.getElectricityPrice() + "元/度", "", View.VISIBLE, View.VISIBLE);
             }
-            if(StringUtil.isNotEmpty(data.getServiceFee())){
-                if(data.getServiceFee().endsWith("元/度")){
+            if (StringUtil.isNotEmpty(data.getServiceFee())) {
+                if (data.getServiceFee().endsWith("元/度")) {
                     StringUtil.setText(tvChargingdetailFwf, data.getServiceFee(), "", View.VISIBLE, View.VISIBLE);
-                }else{
+                } else {
                     StringUtil.setText(tvChargingdetailFwf, data.getServiceFee() + "元/度", "", View.VISIBLE, View.VISIBLE);
                 }
-            }else{
+            } else {
                 StringUtil.setText(tvChargingdetailFwf, data.getServiceFee() + "元/度", "", View.VISIBLE, View.VISIBLE);
             }
             StringUtil.setText(tvChargingdetailYys, data.getProvider(), "", View.VISIBLE, View.VISIBLE);

@@ -153,9 +153,9 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
                             shareMap.setUrl(UrlConstants.getServiceBaseUrl() + shareMap.getUrl());
                         }
                         if (shareMap.getUrl().contains("?")) {
-                            shareMap.setUrl(shareMap.getUrl() + "&carid" + id);
+                            shareMap.setUrl(shareMap.getUrl() + "&carid=" + id);
                         } else {
-                            shareMap.setUrl(shareMap.getUrl() + "?carid" + id);
+                            shareMap.setUrl(shareMap.getUrl() + "?carid=" + id);
                         }
                     }
                     String content = "";
