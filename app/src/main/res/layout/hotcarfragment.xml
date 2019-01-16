@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_round_white">
 
     <ImageView
         android:id="@+id/iv_hotcarfrag_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="187dip"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dip"
         android:scaleType="fitXY"
         android:src="@mipmap/ic_image_load" />
 
@@ -38,17 +41,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dip"
-                android:text="TextView"
-                android:textStyle="bold"
+                android:text=""
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_hotcarfrag_cardesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:text="TextView"
+                android:text=""
                 android:textColor="@color/a999999"
                 android:textSize="12sp" />
         </LinearLayout>

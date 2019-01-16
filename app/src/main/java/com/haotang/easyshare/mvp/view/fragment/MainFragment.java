@@ -47,6 +47,7 @@ import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.roundview.RoundLinearLayout;
+import com.flyco.roundview.RoundRelativeLayout;
 import com.flyco.roundview.RoundTextView;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -88,6 +89,7 @@ import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.ObservableScrollView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
 import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
+import com.haotang.easyshare.util.ColorUtil;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.ScreenUtil;
@@ -192,6 +194,12 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     RelativeLayout rl_mainfrag_serch;
     @BindView(R.id.ll_mainfrag_localev)
     LinearLayout ll_mainfrag_localev;
+    @BindView(R.id.rll_mainfrag_stopview)
+    RoundRelativeLayout rll_mainfrag_stopview;
+    @BindView(R.id.rl_mainfrag_localev_more1)
+    RoundRelativeLayout rl_mainfrag_localev_more1;
+    @BindView(R.id.ctl_mainfrag1)
+    CommonTabLayout ctl_mainfrag1;
     private AMap aMap;
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
@@ -255,6 +263,9 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         }
         ctl_mainfrag.setTabData(mTabEntities);
         ctl_mainfrag.setCurrentTab(index);
+
+        ctl_mainfrag1.setTabData(mTabEntities);
+        ctl_mainfrag1.setCurrentTab(index);
         setAdapter();
         RingLog.d(TAG, "savedInstanceState = " + savedInstanceState);
         iv_mainfrag_map_loc.bringToFront();
@@ -491,6 +502,19 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 RingLog.e(TAG, "onTabReselect position = " + position);
             }
         });
+        ctl_mainfrag1.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                RingLog.e(TAG, "onTabSelect position = " + position);
+                index = position;
+                setTab();
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+                RingLog.e(TAG, "onTabReselect position = " + position);
+            }
+        });
     }
 
     private void refresh(double localLat, double localLng) {
@@ -598,9 +622,16 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @OnClick({R.id.iv_mainfrag_top_right, R.id.rtv_mainfrag_local, R.id.ll_mainfrag_localev_more, R.id.iv_mainfrag_map_loc,
             R.id.iv_mainfrag_gj, R.id.tv_mainfrag_top_cancel, R.id.ll_mainfrag_rmzx_more, R.id.ll_mainfrag_rmxc_more,
-            R.id.tv_mainfrag_rmxc_ck, R.id.ll_mainfrag_rmzx})
+            R.id.tv_mainfrag_rmxc_ck, R.id.ll_mainfrag_rmzx, R.id.ll_mainfrag_localev_more1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ll_mainfrag_localev_more1:
+                Intent intent = new Intent(mActivity, LocalChargingActivity.class);
+                intent.putExtra("city", city);
+                intent.putExtra("serchLat", lat);
+                intent.putExtra("serchLng", lng);
+                startActivity(intent);
+                break;
             case R.id.tv_mainfrag_top_cancel:
                 SystemUtil.goneJP(mActivity);
                 break;
@@ -635,11 +666,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 150));//第二个参数为四周留空宽度
                 break;
             case R.id.ll_mainfrag_localev_more:
-                Intent intent = new Intent(mActivity, LocalChargingActivity.class);
-                intent.putExtra("city", city);
-                intent.putExtra("serchLat", lat);
-                intent.putExtra("serchLng", lng);
-                startActivity(intent);
+                Intent intent2 = new Intent(mActivity, LocalChargingActivity.class);
+                intent2.putExtra("city", city);
+                intent2.putExtra("serchLat", lat);
+                intent2.putExtra("serchLng", lng);
+                startActivity(intent2);
                 break;
             case R.id.ll_mainfrag_rmzx_more:
                 MainActivity mActivity = (MainActivity) this.mActivity;
@@ -1063,24 +1094,32 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @Override
     public void onScrollChanged(int scrollY) {
         RingLog.e("scrollY = " + scrollY);
+        RingLog.e("rl_mainfrag_localev_more.getHeight() = " + rl_mainfrag_localev_more.getHeight());
+        RingLog.e("rl_mainfrag_serch.getHeight() = " + rl_mainfrag_serch.getHeight());
+        RingLog.e("(rll_mainfrag_stopview.getTop() - rl_mainfrag_serch.getHeight()) = " + (rll_mainfrag_stopview.getTop() - rl_mainfrag_serch.getHeight()));
         RingLog.e("ll_mainfrag_localev.getTop() = " + ll_mainfrag_localev.getTop());
+        RingLog.e("rll_mainfrag_stopview.getTop() = " + rll_mainfrag_stopview.getTop());
         RingLog.e("rl_mainfrag_localev_more.getHeight() = " + rl_mainfrag_localev_more.getHeight());
         RingLog.e("DensityUtil.getStatusBarHeight(getActivity()) = " + DensityUtil.getStatusBarHeight(getActivity()));
-        if (scrollY >= 710 && scrollY < 965) {
+        RingLog.e("rl_mainfrag_localev_more.getTop() = " + rl_mainfrag_localev_more.getTop());
+        if (scrollY < 5) {
+            rl_mainfrag_serch_bg.setBackgroundColor(mActivity.getResources().getColor(R.color.transparent));
+        } else {
+            rl_mainfrag_serch_bg.setBackgroundColor(ColorUtil.getNewColorByStartEndColor(mActivity, (float) ((scrollY * 1.0 / (710)) > 1 ? 1 : (scrollY * 1.0 / (710))), R.color.transparent, R.color.aff9b0b));
+        }
+        if (scrollY >= (rll_mainfrag_stopview.getTop() - rl_mainfrag_serch.getHeight()) && scrollY < rll_mainfrag_stopview.getTop()) {
+            rl_mainfrag_localev_more1.setVisibility(View.GONE);
             rl_mainfrag_serch_bg.setBackgroundResource(R.drawable.bg_jianbian_yellow);
             rl_mainfrag_serch.setVisibility(View.VISIBLE);
             rl_mainfrag_serch.bringToFront();
             rllMainfragSerch.bringToFront();
-        } else if (scrollY >= 965) {
+        } else if (scrollY >= rll_mainfrag_stopview.getTop()) {
             rl_mainfrag_serch.setVisibility(View.GONE);
-            //if ((ll_mainfrag_localev.getTop() - rl_mainfrag_localev_more.getHeight() - DensityUtil.getStatusBarHeight(getActivity())) > (scrollY - 900 - DensityUtil.getStatusBarHeight(getActivity()))) {
-                rl_mainfrag_localev_more.setTranslationY(scrollY - 900 - DensityUtil.getStatusBarHeight(getActivity()));
-            /*} else {
-                rl_mainfrag_localev_more.setTranslationY(ll_mainfrag_localev.getTop() - rl_mainfrag_localev_more.getHeight() - DensityUtil.getStatusBarHeight(getActivity()));
-            }*/
+            rl_mainfrag_localev_more1.setVisibility(View.VISIBLE);
+            rl_mainfrag_localev_more1.bringToFront();
         } else {
-            rl_mainfrag_serch_bg.setBackgroundColor(mActivity.getResources().getColor(R.color.transparent));
             rl_mainfrag_serch.setVisibility(View.VISIBLE);
+            rl_mainfrag_localev_more1.setVisibility(View.GONE);
             rl_mainfrag_serch.bringToFront();
             rllMainfragSerch.bringToFront();
         }

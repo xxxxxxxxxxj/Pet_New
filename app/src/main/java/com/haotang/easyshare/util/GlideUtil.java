@@ -141,6 +141,8 @@ public class GlideUtil {
             Glide.with(mContext).load(imgUrl)
                     .placeholder(placeholderResourceId) // 占位图
                     .error(placeholderResourceId) // 出错的占位图
+                    .crossFade()
+                    .fitCenter()
                     .bitmapTransform(new GlideCircleTransform(mContext))
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(imageView);
@@ -157,6 +159,8 @@ public class GlideUtil {
             Glide.with(mContext).load(imgUrl).listener(listener)
                     .placeholder(placeholderResourceId) // 占位图
                     .error(placeholderResourceId) // 出错的占位图
+                    .crossFade()
+                    .fitCenter()
                     .bitmapTransform(new GlideCircleTransform(mContext))
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(imageView);
@@ -173,6 +177,8 @@ public class GlideUtil {
             Glide.with(mContext).load(imgUrl)
                     .placeholder(placeholderResourceId) // 占位图
                     .error(placeholderResourceId) // 出错的占位图
+                    .crossFade()
+                    .fitCenter()
                     .bitmapTransform(new GlideRoundTransform(mContext, round))
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imageView);
@@ -189,6 +195,8 @@ public class GlideUtil {
             Glide.with(mContext).load(imgUrl).listener(listener)
                     .placeholder(placeholderResourceId) // 占位图
                     .error(placeholderResourceId) // 出错的占位图
+                    .crossFade()
+                    .fitCenter()
                     .bitmapTransform(new GlideRoundTransform(mContext, round))
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(imageView);

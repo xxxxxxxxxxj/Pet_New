@@ -99,7 +99,16 @@ public class PostBean {
             private String title;
             private String content;
             private String url;
+            private String url1;
             private String desc;
+
+            public String getUrl1() {
+                return url1;
+            }
+
+            public void setUrl1(String url1) {
+                this.url1 = url1;
+            }
 
             public String getDesc() {
                 return desc;

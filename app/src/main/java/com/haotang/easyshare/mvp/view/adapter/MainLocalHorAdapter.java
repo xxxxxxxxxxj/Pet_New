@@ -18,8 +18,6 @@ import com.ljy.devring.other.RingLog;
 
 import java.util.List;
 
-import static com.haotang.easyshare.R.id.ll_item_mainlocal_daohang;
-
 /**
  * <p>Title:${type_name}</p>
  * <p>Description:</p>
@@ -48,7 +46,7 @@ public class MainLocalHorAdapter extends BaseQuickAdapter<MainFragChargeBean, Ba
         TextView tv_item_mainlocal_cdf = helper.getView(R.id.tv_item_mainlocal_cdf);
         if (item != null) {
             RingLog.e("item.getHeadImg() = " + item.getHeadImg());
-            GlideUtil.loadNetRoundImg(mContext, item.getHeadImg(), iv_item_mainlocal_img, R.mipmap.ic_image_load, 5);
+            GlideUtil.loadNetRoundImg(mContext, item.getHeadImg(), iv_item_mainlocal_img, R.mipmap.charge_default_img, 5);
             StringUtil.setText(tv_item_mainlocal_name, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_mainlocal_cdf, item.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_mainlocal_juli, "距您" + item.getDistance(), "", View.VISIBLE, View.VISIBLE);

@@ -62,7 +62,7 @@ public class CollectChargeListAdapter extends BaseQuickAdapter<CollectChargeBean
             }else{
                 StringUtil.setText(tv_item_collectcharge_fwf, "服务费：" + item.getServiceFee() + "元/度", "", View.VISIBLE, View.VISIBLE);
             }
-            GlideUtil.loadNetImg(mContext, item.getHeadImg(), iv_item_collectcharge_img, R.mipmap.ic_image_load);
+            GlideUtil.loadNetImg(mContext, item.getHeadImg(), iv_item_collectcharge_img, R.mipmap.charge_default_img);
         }
     }
 }

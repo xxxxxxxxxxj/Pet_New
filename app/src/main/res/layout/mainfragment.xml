@@ -7,6 +7,65 @@
     android:layout_height="match_parent"
     android:background="@color/af8f8f8">
 
+    <com.flyco.roundview.RoundRelativeLayout
+        android:id="@+id/rl_mainfrag_localev_more1"
+        android:layout_width="match_parent"
+        android:layout_height="53dip"
+        android:paddingLeft="15dip"
+        android:visibility="gone"
+        android:paddingRight="15dip"
+        rv:rv_backgroundColor="@color/af8f8f8"
+        rv:rv_cornerRadius_TL="8dip"
+        rv:rv_cornerRadius_TR="8dip">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dip"
+            android:layout_alignParentBottom="true">
+
+            <LinearLayout
+                android:id="@+id/ll_mainfrag_localev_more1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dip"
+                    android:text="更多"
+                    android:textColor="@color/a999999"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="7dip"
+                    android:layout_height="11dip"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/right_more" />
+            </LinearLayout>
+
+            <com.flyco.tablayout.CommonTabLayout
+                android:id="@+id/ctl_mainfrag1"
+                android:layout_width="wrap_content"
+                android:layout_height="40dip"
+                android:layout_marginRight="10dip"
+                android:background="@color/transparent"
+                tl:tl_iconHeight="40dip"
+                tl:tl_iconWidth="50dip"
+                tl:tl_indicator_color="#2C97DE"
+                tl:tl_indicator_height="0dp"
+                tl:tl_tab_width="50dip"
+                tl:tl_textSelectColor="@color/a0063DA"
+                tl:tl_textUnselectColor="@color/a979797"
+                tl:tl_textsize="0sp"
+                tl:tl_underline_color="@color/black"
+                tl:tl_underline_height="0dp" />
+        </RelativeLayout>
+    </com.flyco.roundview.RoundRelativeLayout>
+
     <ImageView
         android:id="@+id/iv_mainfrag_gj"
         android:layout_width="68dip"
@@ -193,6 +252,7 @@
             </RelativeLayout>
 
             <com.flyco.roundview.RoundRelativeLayout
+                android:id="@+id/rll_mainfrag_stopview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="318.5dip"
@@ -204,7 +264,7 @@
                 <com.flyco.roundview.RoundRelativeLayout
                     android:id="@+id/rl_mainfrag_localev_more"
                     android:layout_width="match_parent"
-                    android:layout_height="43dip"
+                    android:layout_height="53dip"
                     android:paddingLeft="15dip"
                     android:paddingRight="15dip"
                     rv:rv_backgroundColor="@color/af8f8f8"
@@ -213,7 +273,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="30dip"
+                        android:layout_height="40dip"
                         android:layout_alignParentBottom="true">
 
                         <LinearLayout
@@ -243,14 +303,14 @@
                         <com.flyco.tablayout.CommonTabLayout
                             android:id="@+id/ctl_mainfrag"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dip"
+                            android:layout_height="40dip"
                             android:layout_marginRight="10dip"
                             android:background="@color/transparent"
-                            tl:tl_iconHeight="30dip"
-                            tl:tl_iconWidth="35dip"
+                            tl:tl_iconHeight="40dip"
+                            tl:tl_iconWidth="50dip"
                             tl:tl_indicator_color="#2C97DE"
                             tl:tl_indicator_height="0dp"
-                            tl:tl_tab_width="80dip"
+                            tl:tl_tab_width="50dip"
                             tl:tl_textSelectColor="@color/a0063DA"
                             tl:tl_textUnselectColor="@color/a979797"
                             tl:tl_textsize="0sp"

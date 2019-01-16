@@ -19,7 +19,7 @@
             android:layout_width="60dip"
             android:layout_height="60dip"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_image_load" />
+            android:src="@mipmap/charge_default_img" />
 
         <LinearLayout
             android:id="@+id/ll_item_mainlocal_daohang"

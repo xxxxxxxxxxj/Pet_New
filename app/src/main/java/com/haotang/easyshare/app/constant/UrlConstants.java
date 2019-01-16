@@ -340,6 +340,8 @@ public class UrlConstants {
         Map<String, String> map = new HashMap<String, String>();
         map.put("system", "android_" + SystemUtil.getCurrentVersion(context));
         map.put("imei", SystemUtil.getIMEI(context));
+        map.put("platform", android.os.Build.BRAND + " "
+                + android.os.Build.MODEL);
         if (StringUtil.isNotEmpty(SharedPreferenceUtil.getInstance(context).getString("cellphone", ""))) {
             map.put("phone", SharedPreferenceUtil.getInstance(context).getString("cellphone", ""));
         }
