@@ -113,13 +113,13 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                     if (dataBean != null) {
                         PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
                         if (shareMap != null) {
-                            if (shareMap.getUrl1() != null && !TextUtils.isEmpty(shareMap.getUrl1())) {
-                                if (!shareMap.getUrl1().startsWith("http:")
-                                        && !shareMap.getUrl1().startsWith("https:") && !shareMap.getUrl1().startsWith("file:///")) {
-                                    shareMap.setUrl1(UrlConstants.getServiceBaseUrl() + shareMap.getUrl1());
+                            if (shareMap.getUrl() != null && !TextUtils.isEmpty(shareMap.getUrl())) {
+                                if (!shareMap.getUrl().startsWith("http:")
+                                        && !shareMap.getUrl().startsWith("https:") && !shareMap.getUrl().startsWith("file:///")) {
+                                    shareMap.setUrl(UrlConstants.getServiceBaseUrl() + shareMap.getUrl());
                                 }
-                                if (shareMap.getUrl1().contains("?")) {
-                                    shareMap.setUrl1(shareMap.getUrl1() + "&system=android_" + SystemUtil.getCurrentVersion(MyPostActivity.this)
+                                if (shareMap.getUrl().contains("?")) {
+                                    shareMap.setUrl(shareMap.getUrl() + "&system=android_" + SystemUtil.getCurrentVersion(MyPostActivity.this)
                                             + "&imei="
                                             + SystemUtil.getIMEI(MyPostActivity.this)
                                             + "&phone="
@@ -129,7 +129,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                                             + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
                                             + System.currentTimeMillis());
                                 } else {
-                                    shareMap.setUrl1(shareMap.getUrl1() + "?system=android_" + SystemUtil.getCurrentVersion(MyPostActivity.this)
+                                    shareMap.setUrl(shareMap.getUrl() + "?system=android_" + SystemUtil.getCurrentVersion(MyPostActivity.this)
                                             + "&imei="
                                             + SystemUtil.getIMEI(MyPostActivity.this)
                                             + "&phone="
@@ -139,12 +139,12 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                                             + android.os.Build.VERSION.RELEASE + "&petTimeStamp="
                                             + System.currentTimeMillis());
                                 }
-                                shareMap.setUrl1(shareMap.getUrl1() + "&uuid=" + dataBean.getUuid());
+                                shareMap.setUrl(shareMap.getUrl() + "&uuid=" + dataBean.getUuid());
                             }
                             ShareBottomDialog dialog = new ShareBottomDialog();
                             dialog.setUuid(dataBean.getUuid());
                             dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
-                                    shareMap.getUrl1(), shareMap.getImg());
+                                    shareMap.getUrl(), shareMap.getImg());
                             dialog.show(getSupportFragmentManager());
                         }
                     }
@@ -185,7 +185,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                         PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
                         if (shareMap != null) {
                             Intent intent = new Intent(MyPostActivity.this, WebViewActivity.class);
-                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl1());
                             intent.putExtra("uuid", dataBean.getUuid());
                             startActivity(intent);
                         }
