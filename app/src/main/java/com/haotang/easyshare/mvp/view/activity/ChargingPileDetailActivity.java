@@ -391,15 +391,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                 }
             }
             StringUtil.setText(tvChargingdetailKfsj, kfsj, "", View.VISIBLE, View.VISIBLE);
-            if (StringUtil.isNotEmpty(data.getElectricityPrice())) {
-                if (data.getElectricityPrice().endsWith("元/度")) {
-                    StringUtil.setText(tvChargingdetailCdf, data.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
-                } else {
-                    StringUtil.setText(tvChargingdetailCdf, data.getElectricityPrice() + "元/度", "", View.VISIBLE, View.VISIBLE);
-                }
-            } else {
-                StringUtil.setText(tvChargingdetailCdf, data.getElectricityPrice() + "元/度", "", View.VISIBLE, View.VISIBLE);
-            }
+            StringUtil.setText(tvChargingdetailCdf, data.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
             if (StringUtil.isNotEmpty(data.getServiceFee())) {
                 if (data.getServiceFee().endsWith("元/度")) {
                     StringUtil.setText(tvChargingdetailFwf, data.getServiceFee(), "", View.VISIBLE, View.VISIBLE);
