@@ -494,6 +494,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             public void onTabSelect(int position) {
                 RingLog.e(TAG, "onTabSelect position = " + position);
                 index = position;
+                ctl_mainfrag1.setCurrentTab(index);
                 setTab();
             }
 
@@ -507,6 +508,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             public void onTabSelect(int position) {
                 RingLog.e(TAG, "onTabSelect position = " + position);
                 index = position;
+                ctl_mainfrag.setCurrentTab(index);
                 setTab();
             }
 
