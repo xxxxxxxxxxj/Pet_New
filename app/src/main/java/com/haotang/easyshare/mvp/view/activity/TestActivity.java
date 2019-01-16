@@ -159,7 +159,7 @@ public class TestActivity extends BaseActivity {
                         startActivity(new Intent(TestActivity.this, WebViewActivity.class).putExtra("url_key", url));
                         break;
                     case 1://share
-                        ShareBottomDialog dialog = new ShareBottomDialog();
+                        ShareBottomDialog dialog = new ShareBottomDialog(TestActivity.this);
                         dialog.setShareInfo("测试", "测试",
                                 "https://www.duba.com", UrlConstants.getServiceBaseUrl() + "/static/icon/shouye.png?3");
                         dialog.completeUrl(TestActivity.this);

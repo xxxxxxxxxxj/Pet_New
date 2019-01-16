@@ -294,7 +294,7 @@ public class WebViewActivity extends BaseActivity {
                 showPoPup(view);
                 break;
             case R.id.iv_webview_share:
-                ShareBottomDialog dialog = new ShareBottomDialog();
+                ShareBottomDialog dialog = new ShareBottomDialog(WebViewActivity.this);
                 dialog.setUuid(localUuid);
                 dialog.setShareInfo(localTitle, localContent, localUrl, localImg);
                 dialog.setType(1);

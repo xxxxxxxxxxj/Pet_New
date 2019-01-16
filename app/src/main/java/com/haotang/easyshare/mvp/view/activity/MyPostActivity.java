@@ -141,7 +141,7 @@ public class MyPostActivity extends BaseActivity<MyPostPresenter> implements IMy
                                 }
                                 shareMap.setUrl(shareMap.getUrl() + "&uuid=" + dataBean.getUuid());
                             }
-                            ShareBottomDialog dialog = new ShareBottomDialog();
+                            ShareBottomDialog dialog = new ShareBottomDialog(MyPostActivity.this);
                             dialog.setUuid(dataBean.getUuid());
                             dialog.setShareInfo(shareMap.getTitle(), shareMap.getContent(),
                                     shareMap.getUrl(), shareMap.getImg());
