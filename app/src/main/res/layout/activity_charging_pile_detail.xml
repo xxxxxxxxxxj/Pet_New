@@ -119,6 +119,7 @@
                 android:layout_height="200dip">
 
                 <RelativeLayout
+                    android:id="@+id/rl_chargingdetail_vbv"
                     android:layout_width="match_parent"
                     android:layout_height="30dip"
                     android:layout_alignParentBottom="true">

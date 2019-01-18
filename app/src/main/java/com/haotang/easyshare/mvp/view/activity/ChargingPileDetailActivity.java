@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -126,6 +127,8 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
     TextView tv_chargingdetail_qbpl;
     @BindView(R.id.rv_chargingdetail_pl)
     RecyclerView rv_chargingdetail_pl;
+    @BindView(R.id.rl_chargingdetail_vbv)
+    RelativeLayout rl_chargingdetail_vbv;
     private String uuid;
     private String city;
     private double lat;
@@ -431,8 +434,9 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
             StringUtil.setText(tvChargingdetailKongxianNum, "空闲" + data.getFreeNum() + "个", "", View.VISIBLE, View.VISIBLE);
             List<ChargeDetailBean.UseNotices> useNotices = data.getUseNotices();
             if (useNotices != null && useNotices.size() > 0) {
-                vbvChargingdetail
+                rl_chargingdetail_vbv
                         .setVisibility(View.VISIBLE);
+                rl_chargingdetail_vbv.bringToFront();
                 vbvChargingdetail.bringToFront();
                 try {
                     vbvChargingdetail.setAdapter(new UseNoticesAdapter(useNotices));
@@ -441,7 +445,7 @@ public class ChargingPileDetailActivity extends BaseActivity<ChargingPileDetailP
                     e.printStackTrace();
                 }
             } else {
-                vbvChargingdetail
+                rl_chargingdetail_vbv
                         .setVisibility(View.GONE);
             }
             if (data.getDetailImgs() != null && data.getDetailImgs().size() > 0) {

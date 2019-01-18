@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/iv_hotcarfrag_bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="222dip"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="70dip"
         android:scaleType="fitXY"

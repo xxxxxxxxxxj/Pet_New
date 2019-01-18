@@ -151,7 +151,7 @@ public class MyBalanceActivity extends BaseActivity<MyBalancePresenter> implemen
     private void showPop() {
         dismissPop();
         refundPopupWindow = new RefundPopupWindow(this, onClickListener);
-        refundPopupWindow.showAsDropDown(ll_titlebar_other, -110, -30);
+        refundPopupWindow.showAsDropDown(ll_titlebar_other, -10, -30);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
