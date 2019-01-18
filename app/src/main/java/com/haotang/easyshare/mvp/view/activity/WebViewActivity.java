@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -75,6 +76,8 @@ public class WebViewActivity extends BaseActivity {
     View mLineView;
     @BindView(R.id.toolbar_title)
     TextView mTitleTextView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     protected AgentWeb mAgentWeb;
     public static final String URL_KEY = "url_key";
     @BindView(R.id.linearLayout)
@@ -109,6 +112,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        toolbar.setBackgroundColor(getResources().getColor(R.color.white));
         setSwipeBackEnable(false);
         mAgentWeb = AgentWeb.with(this)//
                 .setAgentWebParent(linearLayout, -1, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))//传入AgentWeb的父控件。

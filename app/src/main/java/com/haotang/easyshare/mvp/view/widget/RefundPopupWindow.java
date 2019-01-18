@@ -5,9 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -37,8 +35,8 @@ public class RefundPopupWindow extends PopupWindow {
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         int width = wm.getDefaultDisplay().getWidth();
-        this.setWidth(width * 15 / 75);
-        this.setHeight(width * 10 / 75);
+        this.setWidth(width * 20 / 75);
+        this.setHeight(width * 12 / 75);
         this.setFocusable(true);
         ColorDrawable dw = new ColorDrawable(00000000);
         setBackgroundDrawable(dw);

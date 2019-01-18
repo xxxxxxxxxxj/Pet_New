@@ -48,7 +48,7 @@
                         android:layout_height="40dip"
                         android:layout_marginRight="10dip"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/charge_default_img" />
+                        android:src="@mipmap/charge_default_img_round" />
 
                     <TextView
                         android:id="@+id/tv_item_mainlocal_name"

@@ -2,9 +2,7 @@ package com.haotang.easyshare.mvp.view.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -120,9 +118,9 @@ public class LocalChargingActivity extends BaseActivity<LocalChargingPresenter>
         mainLocalAdapter = new MainLocalAdapter(R.layout.item_mainlocal, list, true, city);
         rvLocalCharging.setAdapter(mainLocalAdapter);
         //添加自定义分割线
-        DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        /*DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_f8_5));
-        rvLocalCharging.addItemDecoration(divider);
+        rvLocalCharging.addItemDecoration(divider);*/
         mainLocalAdapter.setLatLng(serchLat, serchLng);
     }
 

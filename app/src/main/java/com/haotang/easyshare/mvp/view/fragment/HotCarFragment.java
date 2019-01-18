@@ -3,6 +3,7 @@ package com.haotang.easyshare.mvp.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,8 +12,12 @@ import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.CarType;
 import com.haotang.easyshare.mvp.view.activity.CarDetailActivity;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
+import com.haotang.easyshare.util.ComputeUtil;
+import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
+import com.haotang.easyshare.util.ScreenUtil;
 import com.haotang.easyshare.util.StringUtil;
+import com.ljy.devring.other.RingLog;
 
 /**
  * <p>Title:${type_name}</p>
@@ -55,6 +60,18 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
             iv_hotcarfrag_bg = (ImageView) view.findViewById(R.id.iv_hotcarfrag_bg);
             tv_hotcarfrag_carname = (TextView) view.findViewById(R.id.tv_hotcarfrag_carname);
             tv_hotcarfrag_cardesc = (TextView) view.findViewById(R.id.tv_hotcarfrag_cardesc);
+            int windowWidth = ScreenUtil.getWindowWidth(mActivity);
+            int dp2px = DensityUtil.dp2px(mActivity, 40);
+            double sub = ComputeUtil.sub(windowWidth, dp2px);
+            double div = ComputeUtil.div(ComputeUtil.mul(sub, 374), 540);
+            RingLog.e("windowWidth = " + windowWidth);
+            RingLog.e("dp2px = " + dp2px);
+            RingLog.e("sub = " + sub);
+            RingLog.e("div = " + div);
+            ViewGroup.LayoutParams para = iv_hotcarfrag_bg.getLayoutParams();
+            para.height = (int) div;
+            para.width = (int) sub;
+            iv_hotcarfrag_bg.setLayoutParams(para);
         }
     }
 
@@ -69,7 +86,7 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
             if (dataBean.getBanner() != null && dataBean.getBanner().size() > 0) {
                 AdvertisementBean.DataBean dataBean1 = dataBean.getBanner().get(0);
                 if (dataBean1 != null) {
-                    GlideUtil.loadNetImg(mActivity, dataBean1.getImg(), iv_hotcarfrag_bg, R.mipmap.ic_image_load, 540, 374);
+                    GlideUtil.loadNetImg(mActivity, dataBean1.getImg(), iv_hotcarfrag_bg, R.mipmap.ic_image_load);
                 }
             }
         }

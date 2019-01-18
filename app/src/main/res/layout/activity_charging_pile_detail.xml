@@ -118,14 +118,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dip">
 
-                <com.haotang.easyshare.verticalbanner.VerticalBannerView
-                    android:id="@+id/vbv_chargingdetail"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dip"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginRight="100dip"
-                    app:animDuration="900"
-                    app:gap="3000" />
+                    android:layout_alignParentBottom="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha="0.4"
+                        android:background="@color/black">
+
+                    </RelativeLayout>
+
+                    <com.haotang.easyshare.verticalbanner.VerticalBannerView
+                        android:id="@+id/vbv_chargingdetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dip"
+                        android:layout_marginRight="100dip"
+                        app:animDuration="900"
+                        app:gap="3000" />
+                </RelativeLayout>
 
                 <com.youth.banner.Banner
                     android:id="@+id/banner_chargingdetail"
@@ -201,7 +214,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="TextView"
                                 android:textColor="@color/black"
-                                android:textSize="15sp" />
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <TextView
@@ -271,7 +285,8 @@
                         android:layout_marginRight="10dip"
                         android:text="TextView"
                         android:textColor="@color/afF4A2D"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -292,7 +307,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dip"
-                        android:text="服 务 费"
+                        android:text="服  务  费"
                         android:textColor="@color/a333333"
                         android:textSize="14sp" />
 
@@ -316,7 +331,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dip"
-                        android:text="停 车 费"
+                        android:text="停  车  费"
                         android:textColor="@color/a333333"
                         android:textSize="14sp" />
 
@@ -364,7 +379,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dip"
-                        android:text="运 营 商"
+                        android:text="运  营  商"
                         android:textColor="@color/a333333"
                         android:textSize="14sp" />
 
@@ -436,10 +451,10 @@
                 <RelativeLayout
                     android:id="@+id/rl_chargingdetail_pl_more"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="15dip"
                     android:layout_marginRight="15dip"
-                    android:layout_marginTop="15dip"
-                    android:layout_height="wrap_content">
+                    android:layout_marginTop="15dip">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -472,7 +487,8 @@
                         android:layout_height="wrap_content"
                         android:text="全部评论"
                         android:textColor="@color/a333333"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
 
                 <RelativeLayout

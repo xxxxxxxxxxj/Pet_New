@@ -75,7 +75,7 @@ public class ChargeFragment extends BaseFragment implements View.OnClickListener
             StringUtil.setText(tvMyfragmentCdcs, "充电" + stationsBean.getTimes() + "次", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentCdf, "充电费：" + stationsBean.getElectricityPrice() + "元/度", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvMyfragmentFwf, "服务费：" + stationsBean.getServiceFee() + "元/度", "", View.VISIBLE, View.VISIBLE);
-            GlideUtil.loadNetRoundImg(mActivity, stationsBean.getHeadImg(), ivMyfragmentImg, R.mipmap.charge_default_img,5);
+            GlideUtil.loadNetRoundImg(mActivity, stationsBean.getHeadImg(), ivMyfragmentImg, R.mipmap.charge_default_img_round,5);
         }
     }
 

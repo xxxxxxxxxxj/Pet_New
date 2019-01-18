@@ -92,6 +92,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="立即登录"
+                                    android:textStyle="bold"
                                     android:textColor="@color/black"
                                     android:textSize="20sp" />
 
@@ -178,6 +179,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0"
+                                    android:textStyle="bold"
                                     android:textColor="@color/black"
                                     android:textSize="18sp" />
                             </LinearLayout>
@@ -207,6 +209,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="0"
+                                    android:textStyle="bold"
                                     android:textColor="@color/black"
                                     android:textSize="18sp" />
                             </LinearLayout>
@@ -363,6 +366,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginBottom="5dip"
                                         android:text="添加充电桩"
+                                        android:textStyle="bold"
                                         android:textColor="@color/a333333"
                                         android:textSize="20sp" />
 

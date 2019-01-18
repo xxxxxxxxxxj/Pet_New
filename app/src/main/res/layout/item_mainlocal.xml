@@ -19,7 +19,7 @@
             android:layout_width="60dip"
             android:layout_height="60dip"
             android:scaleType="fitXY"
-            android:src="@mipmap/charge_default_img" />
+            android:src="@mipmap/charge_default_img_round" />
 
         <LinearLayout
             android:id="@+id/ll_item_mainlocal_daohang"
@@ -120,6 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dip"
                 android:text="TextView"
+                android:textStyle="bold"
                 android:textColor="@color/afF4A2D"
                 android:textSize="20sp" />
 

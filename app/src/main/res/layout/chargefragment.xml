@@ -26,7 +26,7 @@
             android:layout_width="70dip"
             android:layout_height="70dip"
             android:scaleType="fitXY"
-            android:src="@mipmap/charge_default_img" />
+            android:src="@mipmap/charge_default_img_round" />
 
     </RelativeLayout>
 

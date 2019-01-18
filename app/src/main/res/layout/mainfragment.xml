@@ -624,6 +624,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="5dip"
+                                    android:textStyle="bold"
                                     android:text="TextView"
                                     android:textColor="@color/a333333"
                                     android:textSize="16sp" />

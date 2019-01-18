@@ -46,11 +46,11 @@ public class MainLocalHorAdapter extends BaseQuickAdapter<MainFragChargeBean, Ba
         TextView tv_item_mainlocal_cdf = helper.getView(R.id.tv_item_mainlocal_cdf);
         if (item != null) {
             RingLog.e("item.getHeadImg() = " + item.getHeadImg());
-            GlideUtil.loadNetRoundImg(mContext, item.getHeadImg(), iv_item_mainlocal_img, R.mipmap.charge_default_img, 5);
+            GlideUtil.loadNetRoundImg(mContext, item.getHeadImg(), iv_item_mainlocal_img, R.mipmap.charge_default_img_round, 5);
             StringUtil.setText(tv_item_mainlocal_name, item.getTitle(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_mainlocal_cdf, item.getElectricityPrice(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_mainlocal_juli, "距您" + item.getDistance(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_mainlocal_kfsj, item.getOpenTime(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_mainlocal_kfsj, item.getOpenTime(), "", View.VISIBLE, View.INVISIBLE);
             if (item.getIsPrivate() == 0) {//公共
                 tv_item_mainlocal_ggorgr.setText("公共");
                 tv_item_mainlocal_ggorgr.setBackgroundResource(R.drawable.bg_round_yew5);
