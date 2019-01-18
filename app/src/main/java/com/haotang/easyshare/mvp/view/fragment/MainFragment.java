@@ -1117,7 +1117,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             rllMainfragSerch.bringToFront();
         } else if (scrollY >= rll_mainfrag_stopview.getTop()) {
             rl_mainfrag_serch.setVisibility(View.GONE);
-            rl_mainfrag_localev_more1.setVisibility(View.VISIBLE);
+            rl_mainfrag_localev_more1.setVisibility(View.GONE);
             rl_mainfrag_localev_more1.bringToFront();
         } else {
             rl_mainfrag_serch.setVisibility(View.VISIBLE);
