@@ -9,12 +9,15 @@ import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.zackratos.ultimatebar.UltimateBar;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.presenter.base.BasePresenter;
 import com.haotang.easyshare.mvp.view.widget.LoadingProgressDailog;
@@ -130,6 +133,30 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         mRatio = Math.min((float) mWidth / 720, (float) mHeight / 1280);
         mAvatarSize = (int) (50 * mDensity);
         //setStatusBar(getStatusBarColor());
+    }
+
+    protected void initWindows() {
+        Window window = getWindow();
+        int color = getResources().getColor(android.R.color.transparent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Log.e("TAG", "1");
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //设置状态栏颜色
+            window.setStatusBarColor(color);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Log.e("TAG", "2");
+            //透明状态栏
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+        UltimateBar.newImmersionBuilder()
+                .applyNav(false)         // 是否应用到导航栏
+                .build(this)
+                .apply();
     }
 
     /**

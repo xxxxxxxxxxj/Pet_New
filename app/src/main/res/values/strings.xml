@@ -412,7 +412,7 @@
     <string name="viewpager_indicator">%1$d/%2$d</string>
     <string name="vista_share_title">分享</string>
     <string name="sure">确认</string>
-    <string name="app_name">易享智行</string>
+    <string name="app_name">电蜘蛛</string>
     <string name="loading">正在加载...</string>
     <string name="loadFail">加载不出数据</string>
     <string name="loadFail_reload">点击屏幕重试</string>
