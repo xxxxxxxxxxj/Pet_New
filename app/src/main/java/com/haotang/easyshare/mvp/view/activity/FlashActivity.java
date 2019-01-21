@@ -98,6 +98,7 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        initWindows();
         setSwipeBackEnable(false);
         //使用Dagger2对本类中相关变量进行初始化
         DaggerFlashActivityCommponent.builder().flashActivityModule(new FlashActivityModule(this, this)).build().inject(this);
@@ -107,8 +108,7 @@ public class FlashActivity extends BaseActivity<FlashPresenter> implements IFlas
 
     @Override
     protected void setView(Bundle savedInstanceState) {
-        initWindows();
-        SystemUtil.hideBottomUIMenu(this);
+        //SystemUtil.hideBottomUIMenu(this);
         SharedPreferenceUtil.getInstance(this).saveBoolean("is_open", true);
         setLocation();
     }

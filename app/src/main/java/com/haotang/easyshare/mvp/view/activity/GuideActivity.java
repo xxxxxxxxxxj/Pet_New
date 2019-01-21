@@ -11,7 +11,6 @@ import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.GuideAdapter;
 import com.haotang.easyshare.util.SystemUtil;
-import com.ljy.devring.DevRing;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -38,6 +37,7 @@ public class GuideActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        initWindows();
         setSwipeBackEnable(false);
         activityListManager.addActivity(this);
     }
@@ -45,7 +45,7 @@ public class GuideActivity extends BaseActivity {
     @Override
     protected void setView(Bundle savedInstanceState) {
         activityListManager.addActivity(this);
-        SystemUtil.hideBottomUIMenu(this);
+       // SystemUtil.hideBottomUIMenu(this);
         imagesIds = new int[]{R.mipmap.guide1, R.mipmap.guide2, R.mipmap.guide3, R.mipmap.guide4};
         imageList = new ArrayList<ImageView>();
         for (int i = 0; i < imagesIds.length; i++) {

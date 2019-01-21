@@ -9,7 +9,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.haotang.easyshare.R;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.util.CountdownUtil;
-import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.umeng.analytics.MobclickAgent;
@@ -37,13 +36,14 @@ public class StartPageActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        initWindows();
         setSwipeBackEnable(false);
     }
 
     @Override
     protected void setView(Bundle savedInstanceState) {
         activityListManager.addActivity(this);
-        SystemUtil.hideBottomUIMenu(this);
+        //SystemUtil.hideBottomUIMenu(this);
         img_url = getIntent().getStringExtra("img_url");
         jump_url = getIntent().getStringExtra("jump_url");
         backup = getIntent().getStringExtra("backup");

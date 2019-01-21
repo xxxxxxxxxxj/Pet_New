@@ -47,7 +47,6 @@
             android:hint="请输入手机号"
             android:inputType="phone"
             android:maxLength="13"
-            android:paddingLeft="15dip"
             android:textColor="@color/white"
             android:textColorHint="@color/af2f2f2"
             android:textSize="18sp" />
@@ -87,7 +86,6 @@
                 android:background="@android:color/transparent"
                 android:hint="请输入验证码"
                 android:inputType="number"
-                android:paddingLeft="15dip"
                 android:textColor="@color/white"
                 android:textColorHint="@color/af2f2f2"
                 android:textSize="18sp" />
