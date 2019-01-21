@@ -53,6 +53,7 @@ public class HotPostFragment extends BaseFragment<HotPostFragmentPresenter> impl
         IHotPostFragmentView {
     SwipeRefreshLayout srl_hotfragment;
     RecyclerView rvHotfragment;
+    View vw_hotfragment_shadow;
     private List<HotPoint.DataBean> list = new ArrayList<HotPoint.DataBean>();
     private int mNextRequestPage = 1;
     private int pageSize;
@@ -100,7 +101,8 @@ public class HotPostFragment extends BaseFragment<HotPostFragmentPresenter> impl
         if (view != null) {
             srl_hotfragment = (SwipeRefreshLayout) view.findViewById(R.id.srl_hotfragment);
             rvHotfragment = (RecyclerView) view.findViewById(R.id.rv_hotfragment);
-
+            vw_hotfragment_shadow = (View) view.findViewById(R.id.vw_hotfragment_shadow);
+            vw_hotfragment_shadow.bringToFront();
             srl_hotfragment.setRefreshing(true);
             srl_hotfragment.setColorSchemeColors(Color.rgb(47, 223, 189));
             rvHotfragment.setHasFixedSize(true);

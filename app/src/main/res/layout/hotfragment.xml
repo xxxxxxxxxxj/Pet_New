@@ -7,67 +7,68 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dip"
-        android:layout_marginTop="10dip"
-        android:layout_marginRight="15dip">
+        android:layout_height="89dip"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="10dip">
+
+            <TextView
+                android:id="@+id/tv_hotfragment_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="发帖"
+                android:textColor="@color/aff6525"
+                android:textSize="15sp" />
+
+            <com.flyco.tablayout.CommonTabLayout
+                android:id="@+id/ctl_hotfrag"
+                android:layout_width="wrap_content"
+                android:layout_height="40dip"
+                android:layout_marginRight="10dip"
+                android:background="@color/transparent"
+                tl:tl_iconHeight="40dip"
+                tl:tl_iconWidth="60dip"
+                tl:tl_indicator_color="#2C97DE"
+                tl:tl_indicator_height="0dp"
+                tl:tl_tab_width="80dip"
+                tl:tl_textSelectColor="@color/a0063DA"
+                tl:tl_textUnselectColor="@color/a979797"
+                tl:tl_textsize="0sp"
+                tl:tl_underline_color="@color/black"
+                tl:tl_underline_height="0dp" />
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/tv_hotfragment_post"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="发帖"
-            android:textColor="@color/aff6525"
-            android:textSize="15sp" />
-
-        <com.flyco.tablayout.CommonTabLayout
-            android:id="@+id/ctl_hotfrag"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:layout_marginRight="10dip"
-            android:background="@color/transparent"
-            tl:tl_iconHeight="40dip"
-            tl:tl_tab_width="80dip"
-            tl:tl_iconWidth="60dip"
-            tl:tl_indicator_color="#2C97DE"
-            tl:tl_indicator_height="0dp"
-            tl:tl_textSelectColor="@color/a0063DA"
-            tl:tl_textUnselectColor="@color/a979797"
-            tl:tl_textsize="0sp"
-            tl:tl_underline_color="@color/black"
-            tl:tl_underline_height="0dp" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tv_hotfragment_serch"
-        android:layout_width="match_parent"
-        android:layout_height="24dip"
-        android:layout_marginBottom="15dip"
-        android:layout_marginLeft="15dip"
-        android:layout_marginRight="15dip"
-        android:gravity="center_vertical"
-        android:paddingLeft="35dip"
-        android:layout_marginTop="5dip"
-        android:background="@mipmap/bg_hotfrag_serch"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:text="TextView"
-        android:textColor="@color/a999999"
-        android:textSize="12sp" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="5dip"
-        android:scaleType="fitXY"
-        android:src="@mipmap/bg_line_shadow_hot" />
+            android:id="@+id/tv_hotfragment_serch"
+            android:layout_width="match_parent"
+            android:layout_height="24dip"
+            android:layout_marginBottom="15dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="5dip"
+            android:background="@mipmap/bg_hotfrag_serch"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:paddingLeft="35dip"
+            android:singleLine="true"
+            android:text="TextView"
+            android:textColor="@color/a999999"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_hotfragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
