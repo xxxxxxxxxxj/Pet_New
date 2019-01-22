@@ -146,7 +146,7 @@ public class HotPostFragment extends BaseFragment<HotPostFragmentPresenter> impl
                         PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
                         if (shareMap != null) {
                             Intent intent = new Intent(mActivity, WebViewActivity.class);
-                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                            intent.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl1());
                             intent.putExtra("uuid", dataBean.getUuid());
                             startActivity(intent);
                         }

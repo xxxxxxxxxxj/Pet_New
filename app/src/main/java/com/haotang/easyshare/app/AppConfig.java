@@ -49,4 +49,5 @@ public class AppConfig {
     public final static String ZHOUJUNXIA_PASSWORD = "1234567890zhoujunxia";
     public final static String XUJUN_USERNAME = "1234567890xujun";
     public final static String XUJUN_PASSWORD = "1234567890xujun";
+    public final static String DOWNLOAD_URL_YINGYONGBAO = "https://sj.qq.com/myapp/detail.htm?apkName=com.haotang.easyshare";
 }

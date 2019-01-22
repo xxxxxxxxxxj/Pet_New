@@ -344,6 +344,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="190dip"
                         android:clipToPadding="false"
+                        android:layout_marginBottom="12.5dip"
                         android:paddingLeft="15dip"
                         android:paddingRight="15dip" />
 

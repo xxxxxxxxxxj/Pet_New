@@ -689,7 +689,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                     PostBean.DataBean.ShareMap shareMap = dataBean.getShareMap();
                     if (shareMap != null) {
                         Intent intent1 = new Intent(this.mActivity, WebViewActivity.class);
-                        intent1.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl());
+                        intent1.putExtra(WebViewActivity.URL_KEY, shareMap.getUrl1());
                         intent1.putExtra("uuid", dataBean.getUuid());
                         startActivity(intent1);
                     }
