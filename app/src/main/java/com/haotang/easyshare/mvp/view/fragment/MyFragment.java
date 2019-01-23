@@ -22,6 +22,7 @@ import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.MyCarBean;
 import com.haotang.easyshare.mvp.model.entity.res.UserConfigBean;
 import com.haotang.easyshare.mvp.presenter.MyFragmentPresenter;
+import com.haotang.easyshare.mvp.view.activity.AboutActivity;
 import com.haotang.easyshare.mvp.view.activity.AddChargeActivity;
 import com.haotang.easyshare.mvp.view.activity.ButlerActivity;
 import com.haotang.easyshare.mvp.view.activity.CarInfoActivity;
@@ -32,7 +33,6 @@ import com.haotang.easyshare.mvp.view.activity.MyBalanceActivity;
 import com.haotang.easyshare.mvp.view.activity.MyCouponActivity;
 import com.haotang.easyshare.mvp.view.activity.MyPostActivity;
 import com.haotang.easyshare.mvp.view.activity.RechargeRecordActivity;
-import com.haotang.easyshare.mvp.view.activity.TestActivity;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.MyFragChargePagerAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
@@ -102,7 +102,7 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
     @BindView(R.id.ll_myfragment_addstation)
     RelativeLayout ll_myfragment_addstation;
     private ArrayList<BaseFragment> mFragments = new ArrayList<BaseFragment>();
-    private String kf_phone = "";
+    private String kf_phone = "400888888";
     private String uuid;
     private String vipPrivilege;
     private int pagePosition;
@@ -332,8 +332,8 @@ public class MyFragment extends BaseFragment<MyFragmentPresenter> implements IMy
                 }
                 break;
             case R.id.rl_myfragment_gy:
-                startActivity(new Intent(mActivity, TestActivity.class));
-                //startActivity(new Intent(mActivity, AboutActivity.class));
+                //startActivity(new Intent(mActivity, TestActivity.class));
+                startActivity(new Intent(mActivity, AboutActivity.class));
                 break;
             case R.id.rtv_myfragment_tuichu:
                 new AlertDialogNavAndPost(getActivity()).builder().setTitle("")
