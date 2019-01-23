@@ -24,7 +24,7 @@ public class ChannelUtil {
 	 * @return
 	 */
 	public static String getChannel(Context context){
-		return getChannel(context, "default");
+		return getChannel(context, "app-release");
 	}
 	/**
 	 * 返回市场。  如果获取失败返回defaultChannel

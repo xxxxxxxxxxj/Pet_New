@@ -60,14 +60,13 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
     private int carFlag;
     private ArrayList<BaseFragment> mFragments = new ArrayList<>();
-    private MyFragChargePagerAdapter myFragChargePagerAdapter;
-    private List<CarType.DataBean> list = new ArrayList<CarType.DataBean>();
     private String[] mTitles = {"新车", "二手车"};
     private int[] mIconUnselectIds = {
             R.mipmap.tab_xc_normal, R.mipmap.tab_esc_normal};
     private int[] mIconSelectIds = {
             R.mipmap.tab_xc_passed, R.mipmap.tab_esc_passed};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
+    private List<CarType.DataBean> list = new ArrayList<CarType.DataBean>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -90,8 +89,6 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         }
         ctl_selectfrag.setTabData(mTabEntities);
         ctl_selectfrag.setCurrentTab(carFlag);
-        myFragChargePagerAdapter = new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments);
-        vpSelectcar.setAdapter(myFragChargePagerAdapter);
     }
 
     private void setRequest() {
@@ -175,9 +172,10 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     public void carTypeSuccess(List<CarType.DataBean> data) {
         disMissDialog();
         if (data != null && data.size() > 0) {
+            RingLog.e("data = "+data.toString());
             list.clear();
-            mFragments.clear();
             list.addAll(data);
+            mFragments.clear();
             vpSelectcar.setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));//设置viewpage之间的间距
             for (int i = 0; i < data.size(); i++) {
                 CarType.DataBean dataBean = data.get(i);
@@ -187,8 +185,7 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
                 hotCarFragment.setArguments(bundle);
                 mFragments.add(hotCarFragment);
             }
-            myFragChargePagerAdapter.notifyDataSetChanged();
-            vpSelectcar.setOffscreenPageLimit(data.size());//预加载
+            vpSelectcar.setAdapter(new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments));
         }
     }
 

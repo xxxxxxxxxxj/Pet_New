@@ -39,7 +39,7 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     protected boolean isLazyLoad() {
-        return true;
+        return false;
     }
 
     @Override
@@ -50,6 +50,14 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
     @Override
     public boolean isUseEventBus() {
         return false;
+    }
+
+    public static HotCarFragment newInstance(CarType.DataBean dataBean) {
+        HotCarFragment hotCarFragment = new HotCarFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("selectFragCarBean", dataBean);
+        hotCarFragment.setArguments(bundle);
+        return hotCarFragment;
     }
 
     @Override
@@ -64,10 +72,6 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
             int dp2px = DensityUtil.dp2px(mActivity, 40);
             double sub = ComputeUtil.sub(windowWidth, dp2px);
             double div = ComputeUtil.div(ComputeUtil.mul(sub, 374), 540);
-            RingLog.e("windowWidth = " + windowWidth);
-            RingLog.e("dp2px = " + dp2px);
-            RingLog.e("sub = " + sub);
-            RingLog.e("div = " + div);
             ViewGroup.LayoutParams para = iv_hotcarfrag_bg.getLayoutParams();
             para.height = (int) div;
             para.width = (int) sub;
@@ -80,8 +84,9 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
         Bundle arguments = getArguments();
         CarType.DataBean dataBean = arguments.getParcelable("selectFragCarBean");
         if (dataBean != null) {
+            RingLog.e("dataBean = " + dataBean.toString());
             id = dataBean.getId();
-            StringUtil.setText(tv_hotcarfrag_carname, dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_hotcarfrag_carname, dataBean.getBrand() + dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_hotcarfrag_cardesc, dataBean.getCategory(), "", View.VISIBLE, View.VISIBLE);
             if (dataBean.getBanner() != null && dataBean.getBanner().size() > 0) {
                 AdvertisementBean.DataBean dataBean1 = dataBean.getBanner().get(0);

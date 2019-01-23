@@ -43,11 +43,32 @@ public class CarType {
     }
 
     public static class DataBean implements Parcelable {
+        private String brand;
         private String car;
         private int id;
         private String category;
         private String groupPrice;
         private List<AdvertisementBean.DataBean> banner;
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "brand='" + brand + '\'' +
+                    ", car='" + car + '\'' +
+                    ", id=" + id +
+                    ", category='" + category + '\'' +
+                    ", groupPrice='" + groupPrice + '\'' +
+                    ", banner=" + banner +
+                    '}';
+        }
+
+        public String getBrand() {
+            return brand;
+        }
+
+        public void setBrand(String brand) {
+            this.brand = brand;
+        }
 
         public List<AdvertisementBean.DataBean> getBanner() {
             return banner;
