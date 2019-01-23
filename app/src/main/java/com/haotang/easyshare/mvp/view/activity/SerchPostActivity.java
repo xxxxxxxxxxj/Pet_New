@@ -3,7 +3,6 @@ package com.haotang.easyshare.mvp.view.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,8 +25,6 @@ import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotFragPointAdapter;
 import com.haotang.easyshare.mvp.view.iview.ISerchPostView;
 import com.haotang.easyshare.mvp.view.widget.ClearEditText;
-import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
-import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.other.RingLog;
@@ -83,9 +80,6 @@ public class SerchPostActivity extends BaseActivity<SerchPostPresenter> implemen
         rvSerchPost.setLayoutManager(new LinearLayoutManager(this));
         hotFragPointAdapter = new HotFragPointAdapter(R.layout.item_hotfrag_point, list);
         rvSerchPost.setAdapter(hotFragPointAdapter);
-        //添加自定义分割线
-        rvSerchPost.addItemDecoration(new DividerLinearItemDecoration(this, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(this, 5),
-                ContextCompat.getColor(this, R.color.af8f8f8)));
     }
 
     private void loadMore() {

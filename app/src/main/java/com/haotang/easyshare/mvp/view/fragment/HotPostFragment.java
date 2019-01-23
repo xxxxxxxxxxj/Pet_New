@@ -3,7 +3,6 @@ package com.haotang.easyshare.mvp.view.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,8 +26,6 @@ import com.haotang.easyshare.mvp.view.adapter.ViewPagerHotFragAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IHotPostFragmentView;
 import com.haotang.easyshare.mvp.view.widget.CardTransformer;
-import com.haotang.easyshare.mvp.view.widget.DividerLinearItemDecoration;
-import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.haotang.easyshare.util.UmenUtil;
 import com.ljy.devring.other.RingLog;
@@ -117,9 +114,6 @@ public class HotPostFragment extends BaseFragment<HotPostFragmentPresenter> impl
             vp_hotfrag_top.setPageTransformer(true, new CardTransformer());
             hotFragPointAdapter.addHeaderView(top);
             rvHotfragment.setAdapter(hotFragPointAdapter);
-            //添加自定义分割线
-            rvHotfragment.addItemDecoration(new DividerLinearItemDecoration(mActivity, LinearLayoutManager.VERTICAL, DensityUtil.dp2px(mActivity, 5),
-                    ContextCompat.getColor(mActivity, R.color.af8f8f8)));
         }
     }
 
