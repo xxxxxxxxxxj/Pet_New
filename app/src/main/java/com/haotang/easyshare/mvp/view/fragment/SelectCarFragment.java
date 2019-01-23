@@ -55,18 +55,20 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     CommonTabLayout ctl_selectfrag;
     @BindView(R.id.banner_selectcar)
     Banner bannerSelectcar;
-    @BindView(R.id.vp_selectcar)
-    ViewPager vpSelectcar;
+    @BindView(R.id.vp_selectcar_new)
+    ViewPager vp_selectcar_new;
+    @BindView(R.id.vp_selectcar_old)
+    ViewPager vp_selectcar_old;
     private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
     private int carFlag;
-    private ArrayList<BaseFragment> mFragments = new ArrayList<>();
+    private ArrayList<BaseFragment> mNewFragments = new ArrayList<>();
+    private ArrayList<BaseFragment> mOldFragments = new ArrayList<>();
     private String[] mTitles = {"新车", "二手车"};
     private int[] mIconUnselectIds = {
             R.mipmap.tab_xc_normal, R.mipmap.tab_esc_normal};
     private int[] mIconSelectIds = {
             R.mipmap.tab_xc_passed, R.mipmap.tab_esc_passed};
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
-    private List<CarType.DataBean> list = new ArrayList<CarType.DataBean>();
 
     @Override
     protected boolean isLazyLoad() {
@@ -172,20 +174,38 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
     public void carTypeSuccess(List<CarType.DataBean> data) {
         disMissDialog();
         if (data != null && data.size() > 0) {
-            RingLog.e("data = "+data.toString());
-            list.clear();
-            list.addAll(data);
-            mFragments.clear();
-            vpSelectcar.setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));//设置viewpage之间的间距
-            for (int i = 0; i < data.size(); i++) {
-                CarType.DataBean dataBean = data.get(i);
-                HotCarFragment hotCarFragment = new HotCarFragment();
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("selectFragCarBean", dataBean);
-                hotCarFragment.setArguments(bundle);
-                mFragments.add(hotCarFragment);
+            if (carFlag == 0) {//新车
+                vp_selectcar_new.setVisibility(View.VISIBLE);
+                vp_selectcar_old.setVisibility(View.GONE);
+                vp_selectcar_new.setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));//设置viewpage之间的间距
+                mNewFragments.clear();
+                for (int i = 0; i < data.size(); i++) {
+                    CarType.DataBean dataBean = data.get(i);
+                    HotNewCarFragment hotNewCarFragment = new HotNewCarFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("newCarBean", dataBean);
+                    hotNewCarFragment.setArguments(bundle);
+                    mNewFragments.add(hotNewCarFragment);
+                }
+                vp_selectcar_new.setAdapter(new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mNewFragments));
+            } else if (carFlag == 1) {//二手车
+                vp_selectcar_new.setVisibility(View.GONE);
+                vp_selectcar_old.setVisibility(View.VISIBLE);
+                vp_selectcar_old.setPageMargin(getResources().getDimensionPixelSize(R.dimen.page_margin));//设置viewpage之间的间距
+                mOldFragments.clear();
+                for (int i = 0; i < data.size(); i++) {
+                    CarType.DataBean dataBean = data.get(i);
+                    HotOldCarFragment hotOldCarFragment = new HotOldCarFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("oldCarBean", dataBean);
+                    hotOldCarFragment.setArguments(bundle);
+                    mOldFragments.add(hotOldCarFragment);
+                }
+                vp_selectcar_old.setAdapter(new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mOldFragments));
             }
-            vpSelectcar.setAdapter(new MyFragChargePagerAdapter(mActivity.getSupportFragmentManager(), mFragments));
+        } else {
+            vp_selectcar_new.setVisibility(View.GONE);
+            vp_selectcar_old.setVisibility(View.GONE);
         }
     }
 
@@ -194,6 +214,8 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         disMissDialog();
         RingLog.e(TAG, "hotFail() status = " + code + "---desc = " + msg);
         SystemUtil.Exit(mActivity, code);
+        vp_selectcar_new.setVisibility(View.GONE);
+        vp_selectcar_old.setVisibility(View.GONE);
     }
 
     @Override

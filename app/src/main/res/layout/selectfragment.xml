@@ -41,9 +41,9 @@
                 android:background="@color/transparent"
                 tl:tl_iconHeight="40dip"
                 tl:tl_iconWidth="65dp"
-                tl:tl_tab_width="65dp"
                 tl:tl_indicator_color="#2C97DE"
                 tl:tl_indicator_height="0dp"
+                tl:tl_tab_width="65dp"
                 tl:tl_textSelectColor="@color/a0063DA"
                 tl:tl_textUnselectColor="@color/a979797"
                 tl:tl_textsize="0sp"
@@ -63,14 +63,28 @@
             app:indicator_drawable_selected="@drawable/selected_radius" />
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/vp_selectcar"
+            android:id="@+id/vp_selectcar_new"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginBottom="30dip"
             android:clipToPadding="false"
             android:paddingLeft="45dip"
-            android:paddingRight="45dip">
+            android:paddingRight="45dip"
+            android:visibility="gone">
+
+        </android.support.v4.view.ViewPager>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_selectcar_old"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dip"
+            android:clipToPadding="false"
+            android:paddingLeft="45dip"
+            android:paddingRight="45dip"
+            android:visibility="gone">
 
         </android.support.v4.view.ViewPager>
     </LinearLayout>

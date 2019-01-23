@@ -17,7 +17,6 @@ import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.ScreenUtil;
 import com.haotang.easyshare.util.StringUtil;
-import com.ljy.devring.other.RingLog;
 
 /**
  * <p>Title:${type_name}</p>
@@ -27,15 +26,12 @@ import com.ljy.devring.other.RingLog;
  * @author 徐俊
  * @date zhoujunxia on 2018/12/15 17:09
  */
-public class HotCarFragment extends BaseFragment implements View.OnClickListener {
+public class HotOldCarFragment extends BaseFragment implements View.OnClickListener {
     private TextView tv_hotcarfrag_ck;
     private ImageView iv_hotcarfrag_bg;
     private TextView tv_hotcarfrag_carname;
     private TextView tv_hotcarfrag_cardesc;
     private int id;
-
-    public HotCarFragment() {
-    }
 
     @Override
     protected boolean isLazyLoad() {
@@ -50,14 +46,6 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
     @Override
     public boolean isUseEventBus() {
         return false;
-    }
-
-    public static HotCarFragment newInstance(CarType.DataBean dataBean) {
-        HotCarFragment hotCarFragment = new HotCarFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("selectFragCarBean", dataBean);
-        hotCarFragment.setArguments(bundle);
-        return hotCarFragment;
     }
 
     @Override
@@ -82,9 +70,8 @@ public class HotCarFragment extends BaseFragment implements View.OnClickListener
     @Override
     protected void initData() {
         Bundle arguments = getArguments();
-        CarType.DataBean dataBean = arguments.getParcelable("selectFragCarBean");
+        CarType.DataBean dataBean = arguments.getParcelable("oldCarBean");
         if (dataBean != null) {
-            RingLog.e("dataBean = " + dataBean.toString());
             id = dataBean.getId();
             StringUtil.setText(tv_hotcarfrag_carname, dataBean.getBrand() + dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_hotcarfrag_cardesc, dataBean.getCategory(), "", View.VISIBLE, View.VISIBLE);
