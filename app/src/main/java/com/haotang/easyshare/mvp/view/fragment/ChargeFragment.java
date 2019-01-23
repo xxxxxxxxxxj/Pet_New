@@ -47,7 +47,7 @@ public class ChargeFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     protected boolean isLazyLoad() {
-        return true;
+        return false;
     }
 
     @Override

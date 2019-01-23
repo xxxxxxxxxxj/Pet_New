@@ -584,8 +584,9 @@
                         app:containerShadowRadius="5dp">
 
                         <RelativeLayout
+                            android:id="@+id/rl_mainfrag_rmxc"
                             android:layout_width="match_parent"
-                            android:layout_height="225dip"
+                            android:layout_height="310dip"
                             android:layout_marginBottom="15dip"
                             android:background="@drawable/bg_round_white"
                             android:layout_marginLeft="15dip"
@@ -595,11 +596,13 @@
                                 android:id="@+id/iv_mainfrag_rmxc"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:layout_marginBottom="70dip"
+                                android:layout_marginTop="5dip"
                                 android:scaleType="fitXY"
                                 android:src="@mipmap/ic_image_load" />
 
-                            <TextView
-                                android:id="@+id/tv_mainfrag_rmxc_ck"
+                            <LinearLayout
+                                android:id="@+id/ll_mainfrag_rmxc_ck"
                                 android:layout_width="match_parent"
                                 android:layout_height="39dip"
                                 android:layout_alignParentBottom="true"
@@ -607,16 +610,30 @@
                                 android:layout_marginLeft="15dip"
                                 android:layout_marginRight="15dip"
                                 android:background="@drawable/bg_round_black5"
-                                android:gravity="center"
-                                android:text="查看详情"
-                                android:textColor="@color/white"
-                                android:textSize="15sp" />
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/tv_mainfrag_rmxc_ck"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="查看详情"
+                                    android:layout_marginRight="5dip"
+                                    android:textColor="@color/white"
+                                    android:textSize="15sp" />
+
+                                <ImageView
+                                    android:layout_width="18dip"
+                                    android:layout_height="10dip"
+                                    android:scaleType="fitXY"
+                                    android:src="@mipmap/icon_jiantou" />
+
+                            </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/ll_mainfrag_rmxc"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_above="@id/tv_mainfrag_rmxc_ck"
+                                android:layout_above="@id/ll_mainfrag_rmxc_ck"
                                 android:layout_margin="15dip"
                                 android:orientation="vertical">
 
@@ -628,7 +645,7 @@
                                     android:textStyle="bold"
                                     android:text="TextView"
                                     android:textColor="@color/a333333"
-                                    android:textSize="16sp" />
+                                    android:textSize="20sp" />
 
                                 <TextView
                                     android:id="@+id/tv_mainfrag_rmxc_price"
@@ -636,7 +653,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="TextView"
                                     android:textColor="@color/a666666"
-                                    android:textSize="14sp" />
+                                    android:textSize="12sp" />
                             </LinearLayout>
                         </RelativeLayout>
                     </com.haotang.easyshare.mvp.view.widget.ShadowContainer>

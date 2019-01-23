@@ -48,7 +48,25 @@ public class CarType {
         private int id;
         private String category;
         private String groupPrice;
+        private String icon;
+        private String price;
         private List<AdvertisementBean.DataBean> banner;
+
+        public String getPrice() {
+            return price;
+        }
+
+        public void setPrice(String price) {
+            this.price = price;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public void setIcon(String icon) {
+            this.icon = icon;
+        }
 
         @Override
         public String toString() {

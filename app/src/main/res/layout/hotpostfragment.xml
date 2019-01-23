@@ -6,12 +6,13 @@
     <View
         android:id="@+id/vw_hotfragment_shadow"
         android:layout_width="match_parent"
-        android:layout_height="10dip"
+        android:layout_height="25dip"
         android:background="@drawable/bg_gradient_white_trans" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl_hotfragment"
         android:layout_width="match_parent"
+        android:layout_marginTop="15dip"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView

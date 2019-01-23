@@ -57,7 +57,7 @@ public class HotFragPointAdapter extends BaseQuickAdapter<HotPoint.DataBean, Bas
                     GlideUtil.loadNetImg(mContext, item.getMedia().get(0), iv_item_hotfrag_point_img, R.mipmap.ic_image_load);
                 }
             } else {
-                iv_item_hotfrag_point_img.setVisibility(View.VISIBLE);
+                iv_item_hotfrag_point_img.setVisibility(View.GONE);
                 rv_item_hotfrag_point_img.setVisibility(View.GONE);
                 GlideUtil.loadNetImg(mContext, "", iv_item_hotfrag_point_img, R.mipmap.ic_image_load);
             }

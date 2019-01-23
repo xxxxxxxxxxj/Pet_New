@@ -174,8 +174,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     LinearLayout llMainfragRmxcMore;
     @BindView(R.id.iv_mainfrag_rmxc)
     ImageView ivMainfragRmxc;
-    @BindView(R.id.tv_mainfrag_rmxc_ck)
-    TextView tvMainfragRmxcCk;
     @BindView(R.id.tv_mainfrag_rmxc_name)
     TextView tvMainfragRmxcName;
     @BindView(R.id.tv_mainfrag_rmxc_price)
@@ -624,7 +622,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @OnClick({R.id.iv_mainfrag_top_right, R.id.rtv_mainfrag_local, R.id.ll_mainfrag_localev_more, R.id.iv_mainfrag_map_loc,
             R.id.iv_mainfrag_gj, R.id.tv_mainfrag_top_cancel, R.id.ll_mainfrag_rmzx_more, R.id.ll_mainfrag_rmxc_more,
-            R.id.tv_mainfrag_rmxc_ck, R.id.ll_mainfrag_rmzx, R.id.ll_mainfrag_localev_more1})
+            R.id.ll_mainfrag_rmxc_ck, R.id.ll_mainfrag_rmzx, R.id.ll_mainfrag_localev_more1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_mainfrag_localev_more1:
@@ -681,7 +679,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             case R.id.ll_mainfrag_rmxc_more:
                 startActivity(new Intent(this.mActivity, AllBrandsActivity.class).putExtra("flag", 1));
                 break;
-            case R.id.tv_mainfrag_rmxc_ck:
+            case R.id.ll_mainfrag_rmxc_ck:
                 startActivity(new Intent(this.mActivity, CarDetailActivity.class).putExtra("carId", carId));
                 break;
             case R.id.ll_mainfrag_rmzx:
@@ -819,7 +817,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                         GlideUtil.loadNetImg(mActivity, dataBean.getMedia().get(0), ivMainfragRmzxImg, R.mipmap.ic_image_load);
                     }
                 } else {
-                    ivMainfragRmzxImg.setVisibility(View.VISIBLE);
+                    ivMainfragRmzxImg.setVisibility(View.GONE);
                     rvMainfragRmzxImg.setVisibility(View.GONE);
                     GlideUtil.loadNetImg(mActivity, "", ivMainfragRmzxImg, R.mipmap.ic_image_load);
                 }
@@ -850,14 +848,21 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             if (dataBean != null) {
                 ll_mainfrag_rmxc.bringToFront();
                 carId = dataBean.getId();
-                if (dataBean.getBanner() != null && dataBean.getBanner().size() > 0) {
-                    AdvertisementBean.DataBean dataBean1 = dataBean.getBanner().get(0);
-                    if (dataBean1 != null) {
-                        GlideUtil.loadNetRoundImg(mActivity, dataBean1.getImg(), ivMainfragRmxc, R.mipmap.ic_image_load, (int) 2.5);
-                    }
-                }
+                /*int windowWidth = ScreenUtil.getWindowWidth(mActivity);
+                RingLog.e("windowWidth = " + windowWidth);
+                int dp2px = DensityUtil.dp2px(mActivity, 30);
+                RingLog.e("dp2px = " + dp2px);
+                double sub = ComputeUtil.sub(windowWidth, dp2px);
+                RingLog.e("sub = " + sub);
+                double div = ComputeUtil.div(ComputeUtil.mul(sub, 374), 540);
+                RingLog.e("div = " + div);
+                ViewGroup.LayoutParams para = ivMainfragRmxc.getLayoutParams();
+                para.height = (int) div;
+                para.width = (int) sub;
+                ivMainfragRmxc.setLayoutParams(para);*/
+                GlideUtil.loadNetImg(mActivity, dataBean.getIcon(), ivMainfragRmxc, R.mipmap.ic_image_load);
                 StringUtil.setText(tvMainfragRmxcName, dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
-                StringUtil.setText(tvMainfragRmxcPrice, "$" + dataBean.getGroupPrice(), "", View.VISIBLE, View.VISIBLE);
+                StringUtil.setText(tvMainfragRmxcPrice, "$" + dataBean.getPrice(), "", View.VISIBLE, View.VISIBLE);
             }
         }
     }
