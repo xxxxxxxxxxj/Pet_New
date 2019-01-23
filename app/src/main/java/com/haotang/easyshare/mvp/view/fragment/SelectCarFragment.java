@@ -141,7 +141,6 @@ public class SelectCarFragment extends BaseFragment<SelectCarFragmentPresenter> 
         MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
                 .addFormDataPart("category", "3").build();
         mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
-        carFlag = 0;
         setRequest();
     }
 

@@ -22,7 +22,6 @@ import com.haotang.easyshare.mvp.model.entity.res.ScreenCarItem;
 import com.haotang.easyshare.mvp.presenter.ScreenCarPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.ScreenCarAdapter;
-import com.haotang.easyshare.mvp.view.adapter.ScreenCarCategoryAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ScreenCarModelAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ScreenCarPriceAdapter;
 import com.haotang.easyshare.mvp.view.adapter.ScreenCarRenewalAdapter;
@@ -59,15 +58,13 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
     private int mNextRequestPage = 1;
     private int pageSize;
     private String brand;
-    private String headers[] = {"价格", "车型", "续航", "二手车"};
+    private String headers[] = {"价格", "车型", "续航"};
     private List<View> popupViews = new ArrayList<>();
     private View contentView;
     private List<ScreenCarCondition> priceList = new ArrayList<ScreenCarCondition>();
     private List<ScreenCarCondition> modelList = new ArrayList<ScreenCarCondition>();
     private List<ScreenCarCondition> renewalList = new ArrayList<ScreenCarCondition>();
-    private List<ScreenCarCondition> categoryList = new ArrayList<ScreenCarCondition>();
     private List<ScreenCarCondition> tagList = new ArrayList<ScreenCarCondition>();
-    private ScreenCarCategoryAdapter screenCarCategoryAdapter;
     private ScreenCarPriceAdapter screenCarPriceAdapter;
     private ScreenCarModelAdapter screenCarModelAdapter;
     private ScreenCarRenewalAdapter screenCarRenewalAdapter;
@@ -80,7 +77,6 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
     private String price;
     private String batteryLife;
     private String car;
-    private String source;
 
     @Override
     protected int getContentLayout() {
@@ -169,23 +165,9 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                 , renewalList);
         rvRenewal.setAdapter(screenCarRenewalAdapter);
 
-        RecyclerView rvCategory = new RecyclerView(this);
-        rvCategory.setBackgroundColor(getResources().getColor(R.color.white));
-        rvCategory.setHasFixedSize(true);
-        rvCategory.setLayoutManager(new
-                GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
-        rvCategory.addItemDecoration(new GridSpacingItemDecoration(3,
-                getResources().getDimensionPixelSize(R.dimen.verticalSpacing),
-                getResources().getDimensionPixelSize(R.dimen.horizontalSpacing),
-                true));
-        screenCarCategoryAdapter = new ScreenCarCategoryAdapter(R.layout.item_screensar_condition
-                , categoryList);
-        rvCategory.setAdapter(screenCarCategoryAdapter);
-
         popupViews.add(rvPrice);
         popupViews.add(rvModel);
         popupViews.add(rvRenewal);
-        popupViews.add(rvCategory);
         dropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);
     }
 
@@ -220,12 +202,9 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
         if (StringUtil.isNotEmpty(car)) {
             builder.addFormDataPart("car", car);
         }
-        if (StringUtil.isNotEmpty(source)) {
-            builder.addFormDataPart("source", source);
-        }
         builder.addFormDataPart("brandId", brandId + "");
         RequestBody build = builder.build();
-        mPresenter.query(UrlConstants.getMapHeader(this),build);
+        mPresenter.query(UrlConstants.getMapHeader(this), build);
     }
 
     @OnClick({R.id.iv_titlebar_back})
@@ -245,7 +224,7 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                 if (selectedCarList.size() > position) {
                     HotSpecialCarBean.DataBean dataBean = selectedCarList.get(position);
                     Intent intent = new Intent(ScreenCarActivity.this, CarDetailActivity.class);
-                    intent.putExtra("carId",dataBean.getId());
+                    intent.putExtra("carId", dataBean.getId());
                     startActivity(intent);
                 }
             }
@@ -306,19 +285,6 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                             dropDownMenu.setTabText(headers[2]);
                             screenCarRenewalAdapter.notifyDataSetChanged();
                             batteryLife = null;
-                            refresh();
-                        } else if (screenCarCondition.getClassId() == 4) {
-                            for (int i = 0; i < categoryList.size(); i++) {
-                                ScreenCarCondition screenCarCondition1 = categoryList.get(i);
-                                if (screenCarCondition1 != null && screenCarCondition1.getId() ==
-                                        screenCarCondition.getId()) {
-                                    categoryList.get(i).setSelect(false);
-                                    break;
-                                }
-                            }
-                            dropDownMenu.setTabText(headers[3]);
-                            screenCarCategoryAdapter.notifyDataSetChanged();
-                            source = null;
                             refresh();
                         }
                         tagList.remove(position);
@@ -423,38 +389,6 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                 }
             }
         });
-        screenCarCategoryAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (categoryList.size() > position) {
-                    for (int i = 0; i < categoryList.size(); i++) {
-                        ScreenCarCondition screenCarCondition = categoryList.get(i);
-                        if (screenCarCondition != null && screenCarCondition.isSelect()) {
-                            screenCarCondition.setSelect(false);
-                        }
-                    }
-                    ScreenCarCondition screenCarCondition = categoryList.get(position);
-                    if (screenCarCondition != null) {
-                        screenCarCondition.setSelect(true);
-                    }
-                    screenCarCategoryAdapter.notifyDataSetChanged();
-                    dropDownMenu.closeMenu();
-                    if (tagList.size() > 0) {
-                        for (int i = 0; i < tagList.size(); i++) {
-                            ScreenCarCondition screenCarCondition1 = tagList.get(i);
-                            if (screenCarCondition1 != null && screenCarCondition1.getClassId() == 4) {
-                                tagList.remove(i);
-                                break;
-                            }
-                        }
-                    }
-                    tagList.add(screenCarCondition);
-                    selectedCarTopTagAdapter.notifyDataSetChanged();
-                    source = categoryList.get(position).getValue();
-                    refresh();
-                }
-            }
-        });
     }
 
     @Override
@@ -503,10 +437,6 @@ public class ScreenCarActivity extends BaseActivity<ScreenCarPresenter> implemen
                 }
                 screenCarRenewalAdapter.notifyDataSetChanged();
             }
-            categoryList.clear();
-            categoryList.add(new ScreenCarCondition(1, 4, "新车", "1", false));
-            categoryList.add(new ScreenCarCondition(2, 4, "二手车", "2", false));
-            screenCarCategoryAdapter.notifyDataSetChanged();
         }
     }
 
