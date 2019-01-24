@@ -24,14 +24,13 @@ public class ScaleImageView extends ImageView {
     private boolean scaleToWidth = false;
     private int imageWidth;
     private int imageHeight;
-    private boolean drawTopRid;
 
-    public boolean isDrawTopRid() {
-        return drawTopRid;
+    public float[] getRids() {
+        return rids;
     }
 
-    public void setDrawTopRid(boolean drawTopRid) {
-        this.drawTopRid = drawTopRid;
+    public void setRids(float[] rids) {
+        this.rids = rids;
     }
 
     public ScaleImageView(Context context) {
@@ -109,15 +108,13 @@ public class ScaleImageView extends ImageView {
      * @param canvas
      */
     protected void onDraw(Canvas canvas) {
-        if (isDrawTopRid()) {
-            Path path = new Path();
-            int w = this.getWidth();
-            int h = this.getHeight();
+        Path path = new Path();
+        int w = this.getWidth();
+        int h = this.getHeight();
             /*向路径中添加圆角矩形。radii数组定义圆角矩形的四个圆角的x,y半径。radii长度必须为8*/
-            path.addRoundRect(new RectF(0, 0, w, h), rids, Path.Direction.CW);
-            canvas.clipPath(path);
-            canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
-        }
+        path.addRoundRect(new RectF(0, 0, w, h), rids, Path.Direction.CW);
+        canvas.clipPath(path);
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
         super.onDraw(canvas);
     }
 

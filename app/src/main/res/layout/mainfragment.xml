@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="53dip"
         android:paddingLeft="15dip"
-        android:visibility="gone"
         android:paddingRight="15dip"
+        android:visibility="gone"
         rv:rv_backgroundColor="@color/af8f8f8"
         rv:rv_cornerRadius_TL="8dip"
         rv:rv_cornerRadius_TR="8dip">
@@ -343,8 +343,8 @@
                         android:id="@+id/vp_mainfrag"
                         android:layout_width="match_parent"
                         android:layout_height="190dip"
-                        android:clipToPadding="false"
                         android:layout_marginBottom="12.5dip"
+                        android:clipToPadding="false"
                         android:paddingLeft="15dip"
                         android:paddingRight="15dip" />
 
@@ -521,9 +521,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dip"
-                        android:layout_marginTop="10dip"
                         android:layout_marginLeft="15dip"
-                        android:layout_marginRight="15dip">
+                        android:layout_marginRight="15dip"
+                        android:layout_marginTop="10dip">
 
                         <LinearLayout
                             android:id="@+id/ll_mainfrag_rmxc_more"
@@ -573,31 +573,24 @@
                         </LinearLayout>
                     </RelativeLayout>
 
-                    <com.haotang.easyshare.mvp.view.widget.ShadowContainer
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        app:containerCornerRadius="5dp"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="298dip"
                         android:layout_marginBottom="15dip"
-                        app:containerDeltaLength="5dp"
-                        app:containerShadowColor="@color/shade_color_dddddd"
-                        app:containerShadowRadius="5dp">
+                        android:background="@color/transparent">
 
                         <RelativeLayout
                             android:id="@+id/rl_mainfrag_rmxc"
                             android:layout_width="match_parent"
-                            android:layout_height="310dip"
-                            android:layout_marginBottom="15dip"
-                            android:background="@drawable/bg_round_white"
+                            android:layout_height="298dip"
                             android:layout_marginLeft="15dip"
-                            android:layout_marginRight="15dip">
+                            android:layout_marginRight="15dip"
+                            android:background="@drawable/bg_round_white">
 
-                            <ImageView
+                            <com.haotang.easyshare.mvp.view.widget.ScaleImageView
                                 android:id="@+id/iv_mainfrag_rmxc"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginBottom="70dip"
-                                android:layout_marginTop="5dip"
                                 android:scaleType="fitXY"
                                 android:src="@mipmap/ic_image_load" />
 
@@ -616,8 +609,8 @@
                                     android:id="@+id/tv_mainfrag_rmxc_ck"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="查看详情"
                                     android:layout_marginRight="5dip"
+                                    android:text="查看详情"
                                     android:textColor="@color/white"
                                     android:textSize="15sp" />
 
@@ -642,10 +635,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="5dip"
-                                    android:textStyle="bold"
                                     android:text="TextView"
                                     android:textColor="@color/a333333"
-                                    android:textSize="20sp" />
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/tv_mainfrag_rmxc_price"
@@ -656,7 +649,26 @@
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </RelativeLayout>
-                    </com.haotang.easyshare.mvp.view.widget.ShadowContainer>
+
+                        <com.haotang.easyshare.mvp.view.widget.ShadowContainer
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            app:containerCornerRadius="5dp"
+                            app:containerDeltaLength="5dp"
+                            app:containerShadowColor="@color/shade_color_dddddd"
+                            app:containerShadowRadius="5dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="298dip"
+                                android:layout_marginLeft="15dip"
+                                android:layout_marginRight="15dip"
+                                android:background="@drawable/bg_round_white">
+
+                            </RelativeLayout>
+                        </com.haotang.easyshare.mvp.view.widget.ShadowContainer>
+                    </RelativeLayout>
                 </LinearLayout>
             </com.flyco.roundview.RoundRelativeLayout>
         </RelativeLayout>

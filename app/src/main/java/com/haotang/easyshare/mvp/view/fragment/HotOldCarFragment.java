@@ -57,20 +57,6 @@ public class HotOldCarFragment extends BaseFragment implements View.OnClickListe
             iv_hotcarfrag_bg = (ImageView) view.findViewById(R.id.iv_hotcarfrag_bg);
             tv_hotcarfrag_carname = (TextView) view.findViewById(R.id.tv_hotcarfrag_carname);
             tv_hotcarfrag_cardesc = (TextView) view.findViewById(R.id.tv_hotcarfrag_cardesc);
-            float screenDensity = ScreenUtil.getScreenDensity(mActivity);
-            RingLog.e("screenDensity = " + screenDensity);
-            int windowWidth = ScreenUtil.getWindowWidth(mActivity);
-            RingLog.e("windowWidth = " + windowWidth);
-            int dp2px = DensityUtil.dp2px(mActivity, 130);
-            RingLog.e("dp2px = " + dp2px);
-            double sub = ComputeUtil.sub(windowWidth, dp2px);
-            RingLog.e("sub = " + sub);
-            double div = ComputeUtil.div(ComputeUtil.mul(sub, 374), 540);
-            RingLog.e("div = " + div);
-            ViewGroup.LayoutParams para = iv_hotcarfrag_bg.getLayoutParams();
-            para.height = (int) div;
-            para.width = (int) sub;
-            iv_hotcarfrag_bg.setLayoutParams(para);
         }
     }
 
@@ -82,7 +68,21 @@ public class HotOldCarFragment extends BaseFragment implements View.OnClickListe
             id = dataBean.getId();
             StringUtil.setText(tv_hotcarfrag_carname, dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_hotcarfrag_cardesc, dataBean.getCategory(), "", View.VISIBLE, View.VISIBLE);
-            GlideUtil.loadNetImg(mActivity, dataBean.getIcon(), iv_hotcarfrag_bg, R.mipmap.ic_image_load);
+            float screenDensity = ScreenUtil.getScreenDensity(mActivity);
+            RingLog.e("screenDensity = " + screenDensity);
+            int windowWidth = ScreenUtil.getWindowWidth(mActivity);
+            RingLog.e("windowWidth = " + windowWidth);
+            int dp2px = DensityUtil.dp2px(mActivity, 100);
+            RingLog.e("dp2px = " + dp2px);
+            double sub = ComputeUtil.sub(windowWidth, dp2px);
+            RingLog.e("sub = " + sub);
+            double div = ComputeUtil.div(ComputeUtil.mul(sub, 374), 540);
+            RingLog.e("div = " + div);
+            ViewGroup.LayoutParams para = iv_hotcarfrag_bg.getLayoutParams();
+            para.height = (int) div;
+            para.width = (int) sub;
+            iv_hotcarfrag_bg.setLayoutParams(para);
+            GlideUtil.loadNetImg(mActivity, dataBean.getIcon(), iv_hotcarfrag_bg, R.mipmap.ic_image_load, (int) sub, (int) div);
         }
     }
 

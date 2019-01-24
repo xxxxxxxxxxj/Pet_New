@@ -88,8 +88,10 @@ import com.haotang.easyshare.mvp.view.widget.CardTransformer;
 import com.haotang.easyshare.mvp.view.widget.NoScollFullGridLayoutManager;
 import com.haotang.easyshare.mvp.view.widget.ObservableScrollView;
 import com.haotang.easyshare.mvp.view.widget.PermissionDialog;
+import com.haotang.easyshare.mvp.view.widget.ScaleImageView;
 import com.haotang.easyshare.mvp.view.widget.SoftKeyBoardListener;
 import com.haotang.easyshare.util.ColorUtil;
+import com.haotang.easyshare.util.ComputeUtil;
 import com.haotang.easyshare.util.DensityUtil;
 import com.haotang.easyshare.util.GlideUtil;
 import com.haotang.easyshare.util.ScreenUtil;
@@ -173,7 +175,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     @BindView(R.id.ll_mainfrag_rmxc_more)
     LinearLayout llMainfragRmxcMore;
     @BindView(R.id.iv_mainfrag_rmxc)
-    ImageView ivMainfragRmxc;
+    ScaleImageView ivMainfragRmxc;
     @BindView(R.id.tv_mainfrag_rmxc_name)
     TextView tvMainfragRmxcName;
     @BindView(R.id.tv_mainfrag_rmxc_price)
@@ -198,6 +200,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     RoundRelativeLayout rl_mainfrag_localev_more1;
     @BindView(R.id.ctl_mainfrag1)
     CommonTabLayout ctl_mainfrag1;
+    @BindView(R.id.rl_mainfrag_rmxc)
+    RelativeLayout rl_mainfrag_rmxc;
     private AMap aMap;
     private UiSettings mUiSettings;
     private MyLocationStyle myLocationStyle;
@@ -290,6 +294,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         // 滚动范围
         osv_mainfrag_local.scrollTo(0, 0);
         osv_mainfrag_local.smoothScrollTo(0, 0);//设置scrollView默认滚动到顶部
+        rl_mainfrag_rmxc.bringToFront();
+        ll_mainfrag_rmxc.bringToFront();
     }
 
     private void setLocation() {
@@ -846,9 +852,8 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         if (data != null && data.size() > 0) {
             CarType.DataBean dataBean = data.get(0);
             if (dataBean != null) {
-                ll_mainfrag_rmxc.bringToFront();
                 carId = dataBean.getId();
-                /*int windowWidth = ScreenUtil.getWindowWidth(mActivity);
+                int windowWidth = ScreenUtil.getWindowWidth(mActivity);
                 RingLog.e("windowWidth = " + windowWidth);
                 int dp2px = DensityUtil.dp2px(mActivity, 30);
                 RingLog.e("dp2px = " + dp2px);
@@ -859,8 +864,11 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
                 ViewGroup.LayoutParams para = ivMainfragRmxc.getLayoutParams();
                 para.height = (int) div;
                 para.width = (int) sub;
-                ivMainfragRmxc.setLayoutParams(para);*/
-                GlideUtil.loadNetImg(mActivity, dataBean.getIcon(), ivMainfragRmxc, R.mipmap.ic_image_load);
+                ivMainfragRmxc.setLayoutParams(para);
+                ivMainfragRmxc.setRids(new float[]{20.0f, 20.0f, 20.0f, 20.0f, 0.0f, 0.0f, 0.0f, 0.0f});
+                ivMainfragRmxc.setImageWidth((int) sub);
+                ivMainfragRmxc.setImageHeight((int) div);
+                GlideUtil.loadNetImg(mActivity, dataBean.getIcon(), ivMainfragRmxc, R.mipmap.ic_image_load, (int) sub, (int) div);
                 StringUtil.setText(tvMainfragRmxcName, dataBean.getCar(), "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(tvMainfragRmxcPrice, "$" + dataBean.getPrice(), "", View.VISIBLE, View.VISIBLE);
             }
