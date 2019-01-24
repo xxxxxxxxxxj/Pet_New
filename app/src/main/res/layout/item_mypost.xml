@@ -32,7 +32,7 @@
                 android:layout_marginBottom="5dip"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="TextView"
+                android:text=""
                 android:textColor="@color/a333333"
                 android:textSize="14sp" />
 
