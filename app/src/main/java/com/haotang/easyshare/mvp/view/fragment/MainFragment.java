@@ -321,24 +321,26 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
     private void addMarkersToMap() {
         aMap.clear();
         markerOptionlst.clear();
-        MainFragChargeBean stationsBean = list.get(0);
-        if (stationsBean != null) {
-            MarkerOptions markerOption = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view_select))
-                    .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
-                    .title("快充" + stationsBean.getFastNum() + "  |  " + "慢充" + stationsBean.getSlowNum() + "  |  " + "空闲" + stationsBean.getFreeNum())
-                    .setInfoWindowOffset(0, 20)
-                    .draggable(true);
-            final Marker marker = aMap.addMarker(markerOption);
-            marker.setObject(0);
-            marker.showInfoWindow();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 16, 0, 30)),
-                            100, null);
-                    //changeCamera(CameraUpdateFactory.scrollBy(0, -SCROLL_BY_PX), null);
-                }
-            }, 100);
+        if (list != null && list.size() > 0) {
+            MainFragChargeBean stationsBean = list.get(0);
+            if (stationsBean != null) {
+                MarkerOptions markerOption = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_map_view_select))
+                        .position(new LatLng(stationsBean.getLat(), stationsBean.getLng()))
+                        .title("快充" + stationsBean.getFastNum() + "  |  " + "慢充" + stationsBean.getSlowNum() + "  |  " + "空闲" + stationsBean.getFreeNum())
+                        .setInfoWindowOffset(0, 20)
+                        .draggable(true);
+                final Marker marker = aMap.addMarker(markerOption);
+                marker.setObject(0);
+                marker.showInfoWindow();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        aMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(marker.getPosition(), 16, 0, 30)),
+                                100, null);
+                        //changeCamera(CameraUpdateFactory.scrollBy(0, -SCROLL_BY_PX), null);
+                    }
+                }, 100);
+            }
         }
     }
 

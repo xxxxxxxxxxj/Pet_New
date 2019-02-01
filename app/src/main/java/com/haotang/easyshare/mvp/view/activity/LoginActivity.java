@@ -1,6 +1,7 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.haotang.easyshare.R;
+import com.haotang.easyshare.app.AppConfig;
 import com.haotang.easyshare.app.constant.UrlConstants;
 import com.haotang.easyshare.di.component.activity.DaggerLoginActivityCommponent;
 import com.haotang.easyshare.di.module.activity.LoginActivityModule;
@@ -61,6 +63,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     EditText etLoginYzm;
     @BindView(R.id.iv_login_login)
     ImageView ivLoginLogin;
+    @BindView(R.id.iv_login_agree)
+    ImageView iv_login_agree;
+    @BindView(R.id.tv_login_xieyi)
+    TextView tv_login_xieyi;
     private String userName;
     private String headImg;
     private String wxOpenId;
@@ -71,6 +77,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
     //声明mLocationOption对象
     private AMapLocationClientOption mLocationOption;
     private int previous;
+    private boolean isAgree;
 
     @Override
     protected int getContentLayout() {
@@ -86,6 +93,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
 
     @Override
     protected void setView(Bundle savedInstanceState) {
+        tv_login_xieyi.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        tv_login_xieyi.getPaint().setAntiAlias(true);//抗锯齿
         Intent intent = getIntent();
         previous = intent.getIntExtra("previous", 0);
         setLocation();
@@ -209,9 +218,20 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
         activityListManager.removeActivity(this); //退出activity
     }
 
-    @OnClick({R.id.iv_titlebar_back, R.id.tv_login_hqyzm, R.id.iv_login_login})
+    @OnClick({R.id.iv_titlebar_back, R.id.tv_login_hqyzm, R.id.iv_login_login, R.id.ll_login_agree, R.id.tv_login_xieyi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ll_login_agree:
+                if (isAgree) {
+                    iv_login_agree.setImageResource(R.mipmap.icon_agree_unselect);
+                } else {
+                    iv_login_agree.setImageResource(R.mipmap.icon_agree_select);
+                }
+                isAgree = !isAgree;
+                break;
+            case R.id.tv_login_xieyi:
+                startActivity(new Intent(LoginActivity.this, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, AppConfig.XIEYI_URL));
+                break;
             case R.id.iv_titlebar_back:
                 finish();
                 break;
@@ -244,6 +264,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements ILogi
                 }
                 if (StringUtil.isEmpty(StringUtil.checkEditText(etLoginYzm))) {
                     RingToast.show("请输入验证码");
+                    SystemUtil.goneJP(this);
+                    return;
+                }
+                if (!isAgree) {
+                    RingToast.show("请先同意电蜘蛛用户协议");
                     SystemUtil.goneJP(this);
                     return;
                 }
