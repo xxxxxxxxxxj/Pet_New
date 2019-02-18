@@ -22,7 +22,7 @@ import com.haotang.easyshare.mvp.model.entity.res.PostBean;
 import com.haotang.easyshare.mvp.presenter.HotPostFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.WebViewActivity;
 import com.haotang.easyshare.mvp.view.adapter.HotFragPointAdapter;
-import com.haotang.easyshare.mvp.view.adapter.ViewPagerHotFragAdapter;
+import com.haotang.easyshare.mvp.view.adapter.ViewPagerMainAdapter;
 import com.haotang.easyshare.mvp.view.fragment.base.BaseFragment;
 import com.haotang.easyshare.mvp.view.iview.IHotPostFragmentView;
 import com.haotang.easyshare.mvp.view.widget.CardTransformer;
@@ -58,7 +58,7 @@ public class HotPostFragment extends BaseFragment<HotPostFragmentPresenter> impl
     private int postFlag;
     private ViewPager vp_hotfrag_top;
     private HotFragPointAdapter hotFragPointAdapter;
-    private ViewPagerHotFragAdapter viewPagerHotFragAdapter;
+    private ViewPagerMainAdapter viewPagerHotFragAdapter;
 
     @Override
     protected boolean isLazyLoad() {
@@ -107,7 +107,7 @@ public class HotPostFragment extends BaseFragment<HotPostFragmentPresenter> impl
             hotFragPointAdapter = new HotFragPointAdapter(R.layout.item_hotfrag_point, list);
             View top = getLayoutInflater().inflate(R.layout.hotfrag_top_view, (ViewGroup) rvHotfragment.getParent(), false);
             vp_hotfrag_top = (ViewPager) top.findViewById(R.id.vp_hotfrag_top);
-            viewPagerHotFragAdapter = new ViewPagerHotFragAdapter(mActivity, bannerList);
+            viewPagerHotFragAdapter = new ViewPagerMainAdapter(mActivity, bannerList);
             vp_hotfrag_top.setAdapter(viewPagerHotFragAdapter);
             vp_hotfrag_top.setOffscreenPageLimit(2);//预加载2个
             vp_hotfrag_top.setPageMargin(-70);//设置viewpage之间的间距

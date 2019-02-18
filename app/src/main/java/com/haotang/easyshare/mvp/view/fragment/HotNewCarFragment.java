@@ -72,7 +72,7 @@ public class HotNewCarFragment extends BaseFragment implements View.OnClickListe
             RingLog.e("screenDensity = " + screenDensity);
             int windowWidth = ScreenUtil.getWindowWidth(mActivity);
             RingLog.e("windowWidth = " + windowWidth);
-            int dp2px = DensityUtil.dp2px(mActivity, 100);
+            int dp2px = DensityUtil.dp2px(mActivity, 80);
             RingLog.e("dp2px = " + dp2px);
             double sub = ComputeUtil.sub(windowWidth, dp2px);
             RingLog.e("sub = " + sub);

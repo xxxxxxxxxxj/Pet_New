@@ -258,8 +258,8 @@
                 android:layout_marginTop="318.5dip"
                 android:orientation="vertical"
                 rv:rv_backgroundColor="@color/af8f8f8"
-                rv:rv_cornerRadius_TL="8dip"
-                rv:rv_cornerRadius_TR="8dip">
+                rv:rv_cornerRadius_TL="15dip"
+                rv:rv_cornerRadius_TR="15dip">
 
                 <com.flyco.roundview.RoundRelativeLayout
                     android:id="@+id/rl_mainfrag_localev_more"
@@ -268,8 +268,8 @@
                     android:paddingLeft="15dip"
                     android:paddingRight="15dip"
                     rv:rv_backgroundColor="@color/af8f8f8"
-                    rv:rv_cornerRadius_TL="8dip"
-                    rv:rv_cornerRadius_TR="8dip">
+                    rv:rv_cornerRadius_TL="15dip"
+                    rv:rv_cornerRadius_TR="15dip">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
