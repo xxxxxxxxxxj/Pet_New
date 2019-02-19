@@ -7,184 +7,68 @@
     android:layout_height="match_parent"
     android:background="@color/af8f8f8">
 
-    <com.flyco.roundview.RoundRelativeLayout
-        android:id="@+id/rl_mainfrag_localev_more1"
-        android:layout_width="match_parent"
-        android:layout_height="53dip"
-        android:paddingLeft="15dip"
-        android:paddingRight="15dip"
-        android:visibility="gone"
-        rv:rv_backgroundColor="@color/af8f8f8"
-        rv:rv_cornerRadius_TL="8dip"
-        rv:rv_cornerRadius_TR="8dip">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dip"
-            android:layout_alignParentBottom="true">
-
-            <LinearLayout
-                android:id="@+id/ll_mainfrag_localev_more1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dip"
-                    android:text="更多"
-                    android:textColor="@color/a999999"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="7dip"
-                    android:layout_height="11dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/right_more" />
-            </LinearLayout>
-
-            <com.flyco.tablayout.CommonTabLayout
-                android:id="@+id/ctl_mainfrag1"
-                android:layout_width="wrap_content"
-                android:layout_height="40dip"
-                android:layout_marginRight="10dip"
-                android:background="@color/transparent"
-                tl:tl_iconHeight="40dip"
-                tl:tl_iconWidth="50dip"
-                tl:tl_indicator_color="#2C97DE"
-                tl:tl_indicator_height="0dp"
-                tl:tl_tab_width="50dip"
-                tl:tl_textSelectColor="@color/a0063DA"
-                tl:tl_textUnselectColor="@color/a979797"
-                tl:tl_textsize="0sp"
-                tl:tl_underline_color="@color/black"
-                tl:tl_underline_height="0dp" />
-        </RelativeLayout>
-    </com.flyco.roundview.RoundRelativeLayout>
-
-    <ImageView
-        android:id="@+id/iv_mainfrag_gj"
-        android:layout_width="68dip"
-        android:layout_height="68dip"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="10dip"
-        android:layout_marginRight="10dip"
-        android:scaleType="fitXY"
-        android:src="@mipmap/sirenguanjia"
-        android:visibility="gone" />
-
     <RelativeLayout
-        android:id="@+id/rl_mainfrag_serch"
+        android:id="@+id/rll_mainfrag_serch1"
         android:layout_width="match_parent"
-        android:layout_height="84dip">
+        android:layout_height="44dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="20dip"
+        android:background="@color/transparent"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip">
 
         <RelativeLayout
-            android:id="@+id/rl_mainfrag_serch_bg"
+            android:id="@+id/rl_mainfrag_top_right1"
+            android:layout_width="25.5dip"
+            android:layout_centerVertical="true"
+            android:layout_height="19.5dip"
+            android:layout_alignParentRight="true"></RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_mainfrag_top_left1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="74.5dip"
+                android:layout_height="12dip"
+                android:layout_marginRight="15dip"
+                android:scaleType="fitXY"/>
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="15dip"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_mainfrag_serch1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transparent">
-
-        </RelativeLayout>
-
-        <com.haotang.easyshare.mvp.view.widget.ShadowContainer
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            app:containerCornerRadius="5dp"
-            app:containerDeltaLength="5dp"
-            app:containerShadowColor="@color/shade_color_dddddd"
-            app:containerShadowRadius="5dp">
-
-            <RelativeLayout
-                android:id="@+id/rll_mainfrag_serch"
-                android:layout_width="match_parent"
-                android:layout_height="44dip"
-                android:layout_marginLeft="15dip"
-                android:layout_marginRight="15dip"
-                android:background="@drawable/bg_round_white"
-                android:paddingLeft="15dip"
-                android:paddingRight="15dip">
-
-                <RelativeLayout
-                    android:id="@+id/rl_mainfrag_top_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true">
-
-                    <TextView
-                        android:id="@+id/tv_mainfrag_top_cancel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="取消"
-                        android:textColor="@color/a333333"
-                        android:textSize="14sp"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/iv_mainfrag_top_right"
-                        android:layout_width="25.5dip"
-                        android:layout_height="19.5dip"
-                        android:layout_centerVertical="true"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/icon_mainfrag_add" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_mainfrag_top_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="74.5dip"
-                        android:layout_height="12dip"
-                        android:layout_marginRight="15dip"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/icon_easyshare" />
-
-                    <View
-                        android:layout_width="1dip"
-                        android:layout_height="15dip"
-                        android:background="@color/aEEEEEE" />
-                </LinearLayout>
-
-                <EditText
-                    android:id="@+id/et_mainfrag_serch"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/rl_mainfrag_top_right"
-                    android:layout_toRightOf="@id/ll_mainfrag_top_left"
-                    android:background="@null"
-                    android:cursorVisible="true"
-                    android:gravity="center_vertical"
-                    android:hint="搜索附近充电桩"
-                    android:paddingLeft="15dip"
-                    android:paddingRight="15dip"
-                    android:textColor="@color/a666666"
-                    android:textColorHint="@color/a999999"
-                    android:textCursorDrawable="@drawable/test_cursor"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-        </com.haotang.easyshare.mvp.view.widget.ShadowContainer>
+            android:layout_toLeftOf="@id/rl_mainfrag_top_right1"
+            android:layout_toRightOf="@id/ll_mainfrag_top_left1"
+            android:background="@null"
+            android:cursorVisible="true"
+            android:hint="搜索附近充电桩"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:textColor="@color/a666666"
+            android:textColorHint="@color/a999999"
+            android:textCursorDrawable="@drawable/test_cursor"
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <com.flyco.roundview.RoundLinearLayout
         android:id="@+id/rll_mainfrag_serchresult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rl_mainfrag_serch"
         android:layout_marginLeft="15dip"
         android:layout_marginRight="15dip"
-        android:layout_marginTop="5dip"
+        android:layout_marginTop="84dip"
         android:orientation="vertical"
         android:paddingBottom="15dip"
         android:paddingLeft="15dip"
@@ -200,6 +84,139 @@
             android:background="@color/white" />
     </com.flyco.roundview.RoundLinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_mainfrag_map_loc"
+            android:layout_width="29dip"
+            android:layout_height="29dip"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="306dip"
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_mainfrag_map_loc" />
+
+        <com.amap.api.maps.MapView
+            android:id="@+id/tmv_mainfrag_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="341dip"
+        android:background="@color/transparent">
+
+        <RelativeLayout
+            android:id="@+id/ll_mainfrag_serch_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent">
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_mainfrag_serch"
+            android:layout_width="match_parent"
+            android:layout_height="84dip">
+
+            <RelativeLayout
+                android:id="@+id/rl_mainfrag_serch_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent">
+
+            </RelativeLayout>
+
+            <com.haotang.easyshare.mvp.view.widget.ShadowContainer
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                app:containerCornerRadius="5dp"
+                app:containerDeltaLength="5dp"
+                app:containerShadowColor="@color/shade_color_dddddd"
+                app:containerShadowRadius="5dp">
+
+                <RelativeLayout
+                    android:id="@+id/rll_mainfrag_serch"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_marginRight="15dip"
+                    android:background="@drawable/bg_round_white"
+                    android:paddingLeft="15dip"
+                    android:paddingRight="15dip">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_mainfrag_top_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true">
+
+                        <TextView
+                            android:id="@+id/tv_mainfrag_top_cancel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="取消"
+                            android:textColor="@color/a333333"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/iv_mainfrag_top_right"
+                            android:layout_width="25.5dip"
+                            android:layout_height="19.5dip"
+                            android:layout_centerVertical="true"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/icon_mainfrag_add" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_mainfrag_top_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="74.5dip"
+                            android:layout_height="12dip"
+                            android:layout_marginRight="15dip"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/icon_easyshare" />
+
+                        <View
+                            android:layout_width="1dip"
+                            android:layout_height="15dip"
+                            android:background="@color/aEEEEEE" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_mainfrag_serch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/rl_mainfrag_top_right"
+                        android:layout_toRightOf="@id/ll_mainfrag_top_left"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dip"
+                        android:paddingRight="15dip"
+                        android:textColor="@color/a666666"
+                        android:textColorHint="@color/a999999"
+                        android:textCursorDrawable="@drawable/test_cursor"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+            </com.haotang.easyshare.mvp.view.widget.ShadowContainer>
+        </RelativeLayout>
+    </RelativeLayout>
+
     <com.haotang.easyshare.mvp.view.widget.ObservableScrollView
         android:id="@+id/osv_mainfrag_local"
         android:layout_width="match_parent"
@@ -207,55 +224,23 @@
         android:fadingEdge="none"
         android:scrollbars="none">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="341dip">
+                android:layout_height="341dip"
+                android:background="@color/transparent"
+                android:clickable="false">
 
-                <com.flyco.roundview.RoundTextView
-                    android:id="@+id/rtv_mainfrag_local"
-                    android:layout_width="wrap_content"
-                    android:layout_height="29dip"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="10dip"
-                    android:layout_marginRight="15dip"
-                    android:gravity="center"
-                    android:paddingLeft="15dip"
-                    android:paddingRight="15dip"
-                    android:text="附近8公里充电桩"
-                    android:textColor="@color/a666666"
-                    android:textSize="13sp"
-                    android:visibility="gone"
-                    rv:rv_backgroundColor="@color/white"
-                    rv:rv_backgroundPressColor="#383838"
-                    rv:rv_cornerRadius="50dip" />
-
-                <ImageView
-                    android:id="@+id/iv_mainfrag_map_loc"
-                    android:layout_width="29dip"
-                    android:layout_height="29dip"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="35dip"
-                    android:layout_marginRight="15dip"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/icon_mainfrag_map_loc" />
-
-                <com.amap.api.maps.MapView
-                    android:id="@+id/tmv_mainfrag_map"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
             </RelativeLayout>
 
             <com.flyco.roundview.RoundRelativeLayout
                 android:id="@+id/rll_mainfrag_stopview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="318.5dip"
                 android:orientation="vertical"
                 rv:rv_backgroundColor="@color/af8f8f8"
                 rv:rv_cornerRadius_TL="15dip"
@@ -671,6 +656,6 @@
                     </RelativeLayout>
                 </LinearLayout>
             </com.flyco.roundview.RoundRelativeLayout>
-        </RelativeLayout>
+        </LinearLayout>
     </com.haotang.easyshare.mvp.view.widget.ObservableScrollView>
 </RelativeLayout>
