@@ -231,8 +231,8 @@ public class CarDetailActivity extends BaseActivity<CarDetailPresenter> implemen
             StringUtil.setText(tvCarDetailCar, data.getBrand(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailModel, data.getCar(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tvCarDetailXh, data.getBatteryLife(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvCarDetailTgj, "团购$" + data.getGroupPrice(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tvCarDetail4sprice, "4S店$" + data.getShopPrice(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvCarDetailTgj, "团购¥" + data.getGroupPrice(), "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tvCarDetail4sprice, "4S店¥" + data.getShopPrice(), "", View.VISIBLE, View.VISIBLE);
         }
     }
 
