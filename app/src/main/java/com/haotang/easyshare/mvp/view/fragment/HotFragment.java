@@ -62,7 +62,7 @@ public class HotFragment extends BaseFragment<HotFragmentPresenter> implements I
     @BindView(R.id.vp_hotfragment)
     ViewPager vp_hotfragment;
     
-    private String[] mTitles = {"最新帖", "热门贴", "问题车"};
+    private String[] mTitles = {"新帖", "热门贴", "问题车"};
     private int[] mIconUnselectIds = {
             R.mipmap.tab_zxt_normal, R.mipmap.tab_rmt_normal,
             R.mipmap.tab_wtc_normal};
