@@ -30,7 +30,6 @@ import com.haotang.easyshare.util.StringUtil;
 import com.haotang.easyshare.util.SystemUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
-import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -280,25 +279,20 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
                 setWtc();
                 break;
             case R.id.tv_titlebar_other:
-                if (carId > 0) {
-                    showDialog();
-                    //构建body
-                    MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-                    builder.addFormDataPart("carId", String.valueOf(carId));
-                    builder.addFormDataPart("category", String.valueOf(category));
-                    builder.addFormDataPart("content", etSendPost.getText().toString().trim());
-                    for (int i = 0; i < imgPathList.size(); i++) {
-                        //构建要上传的文件
-                        File file = new File(imgPathList.get(i));
-                        builder.addFormDataPart("files", file.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
-                                , file));
-                    }
-                    RequestBody build = builder.build();
-                    mPresenter.save(UrlConstants.getMapHeader(this),build);
-                } else {
-                    RingToast.show("请先选择车型");
-                    startActivityForResult(new Intent(SendPostActivity.this, BrandCarActivity.class), REQUESTCODE_BRANDCAR);
+                showDialog();
+                //构建body
+                MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+                builder.addFormDataPart("carId", String.valueOf(carId));
+                builder.addFormDataPart("category", String.valueOf(category));
+                builder.addFormDataPart("content", etSendPost.getText().toString().trim());
+                for (int i = 0; i < imgPathList.size(); i++) {
+                    //构建要上传的文件
+                    File file = new File(imgPathList.get(i));
+                    builder.addFormDataPart("files", file.getName(), RequestBody.create(MediaType.parse("application/octet-stream")
+                            , file));
                 }
+                RequestBody build = builder.build();
+                mPresenter.save(UrlConstants.getMapHeader(this), build);
                 break;
         }
     }
@@ -328,7 +322,7 @@ public class SendPostActivity extends BaseActivity<SendPostPresenter> implements
         SystemUtil.goneJP(this);
         disMissDialog();
         RingLog.e(TAG, "saveFail() status = " + code + "---desc = " + msg);
-        SystemUtil.Exit(this,code);
+        SystemUtil.Exit(this, code);
     }
 
     @Override

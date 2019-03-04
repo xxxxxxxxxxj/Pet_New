@@ -2,6 +2,7 @@ package com.haotang.easyshare.mvp.model;
 
 import android.app.Activity;
 
+import com.haotang.easyshare.mvp.model.http.HotFragmentApiService;
 import com.haotang.easyshare.mvp.model.http.MainActivityApiService;
 import com.haotang.easyshare.mvp.model.imodel.IMainModel;
 import com.ljy.devring.DevRing;
@@ -29,5 +30,16 @@ public class MainModel implements IMainModel {
     @Override
     public Observable getBottomBar(Map<String, String> headers,Activity activity) {
         return DevRing.httpManager().getService(MainActivityApiService.class).getBottomBar(headers,"");
+    }
+
+    /**
+     * 广告
+     * 广告类别(1:首页活动弹窗、2:热点首页顶部广告、3:车型专区首页顶部广告、4:车型专区首页中间广告)
+     *
+     * @param body
+     */
+    @Override
+    public Observable list(Map<String, String> headers,RequestBody body) {
+        return DevRing.httpManager().getService(HotFragmentApiService.class).list(headers,body);
     }
 }

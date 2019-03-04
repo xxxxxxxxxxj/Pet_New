@@ -1,12 +1,17 @@
 package com.haotang.easyshare.mvp.view.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Process;
 import android.support.v4.view.ViewPager;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -18,9 +23,11 @@ import com.haotang.easyshare.di.module.activity.MainActivityModule;
 import com.haotang.easyshare.mvp.model.entity.event.MainTabEvent;
 import com.haotang.easyshare.mvp.model.entity.event.RefreshFragmentEvent;
 import com.haotang.easyshare.mvp.model.entity.event.UpdateAppEvent;
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.BootmBarBean;
 import com.haotang.easyshare.mvp.model.entity.res.ImageTabEntity;
 import com.haotang.easyshare.mvp.model.entity.res.LastVersionBean;
+import com.haotang.easyshare.mvp.model.imageload.GlideImageLoader;
 import com.haotang.easyshare.mvp.presenter.MainPresenter;
 import com.haotang.easyshare.mvp.view.activity.base.BaseActivity;
 import com.haotang.easyshare.mvp.view.adapter.MainActivityPagerAdapter;
@@ -46,6 +53,8 @@ import com.ljy.devring.DevRing;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RingToast;
 import com.umeng.analytics.MobclickAgent;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -57,11 +66,12 @@ import javax.inject.Inject;
 
 import butterknife.BindString;
 import butterknife.BindView;
+import okhttp3.MultipartBody;
 
 /**
  * 首页
  */
-public class MainActivity extends BaseActivity<MainPresenter> implements IMainView {
+public class MainActivity extends BaseActivity<MainPresenter> implements IMainView, OnBannerListener {
     private final static String TAG = MainActivity.class.getSimpleName();
     @BindString(R.string.exit_confirm)
     String mStrExitConfirm;
@@ -100,6 +110,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     int screenWidth, screenHeight;
     private static final float BASE_BOTTOM_DESC = 80;
     private DownloadProgressDialog progressDialog;
+    private PopupWindow pWin;
+    private List<AdvertisementBean.DataBean> bannerList = new ArrayList<AdvertisementBean.DataBean>();
 
     @Override
     protected int getContentLayout() {
@@ -296,6 +308,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                         downloadPath,
                         latestVersion);
             }
+        } else {
+            showDialog();
+            MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
+                    .addFormDataPart("category", "1").build();
+            mPresenter.list(UrlConstants.getMapHeader(this), body);
         }
     }
 
@@ -303,6 +320,58 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     public void getLatestVersionFail(int status, String desc) {
         disMissDialog();
         RingLog.e(TAG, "MainActivity getLatestVersionFail() status = " + status + "---desc = " + desc);
+        SystemUtil.Exit(this, status);
+    }
+
+    @Override
+    public void listSuccess(List<AdvertisementBean.DataBean> data) {
+        disMissDialog();
+        if (data != null && data.size() > 0) {
+            bannerList.clear();
+            bannerList.addAll(data);
+            showPopPhoto(data);
+        }
+    }
+
+    private void showPopPhoto(List<AdvertisementBean.DataBean> data) {
+        pWin = null;
+        if (pWin == null) {
+            final View view = View
+                    .inflate(this, R.layout.pw_main_ad, null);
+            ImageButton ib_pw_main_close = (ImageButton) view
+                    .findViewById(R.id.ib_pw_main_close);
+            Banner banner_main_ad = (Banner) view
+                    .findViewById(R.id.banner_main_ad);
+            pWin = new PopupWindow(view,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT, true);
+            pWin.setFocusable(true);
+            pWin.setClippingEnabled(false);
+            pWin.setWidth(SystemUtil.getDisplayMetrics(this)[0]);
+            pWin.showAtLocation(view, Gravity.CENTER, 0, 0);
+            List<String> list = new ArrayList<String>();
+            list.clear();
+            for (int i = 0; i < data.size(); i++) {
+                list.add(data.get(i).getImg());
+            }
+            banner_main_ad.setImages(list)
+                    .setImageLoader(new GlideImageLoader())
+                    .setOnBannerListener(this)
+                    .start();
+            ib_pw_main_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    pWin.dismiss();
+                    pWin = null;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void listFail(int status, String desc) {
+        disMissDialog();
+        RingLog.e(TAG, "listFail() status = " + status + "---desc = " + desc);
         SystemUtil.Exit(this, status);
     }
 
@@ -357,5 +426,20 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     public void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    public void OnBannerClick(int position) {
+        RingLog.e(TAG, "position:" + position);
+        if (bannerList != null && bannerList.size() > 0 && bannerList.size() > position) {
+            AdvertisementBean.DataBean dataBean = bannerList.get(position);
+            if (dataBean != null) {
+                if (dataBean.getDisplay() == 1) {//原生
+
+                } else if (dataBean.getDisplay() == 2) {//H5
+                    startActivity(new Intent(MainActivity.this, WebViewActivity.class).putExtra(WebViewActivity.URL_KEY, dataBean.getDestination()));
+                }
+            }
+        }
     }
 }

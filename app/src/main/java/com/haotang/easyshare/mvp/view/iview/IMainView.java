@@ -1,8 +1,11 @@
 package com.haotang.easyshare.mvp.view.iview;
 
+import com.haotang.easyshare.mvp.model.entity.res.AdvertisementBean;
 import com.haotang.easyshare.mvp.model.entity.res.BootmBarBean;
 import com.haotang.easyshare.mvp.model.entity.res.LastVersionBean;
 import com.haotang.easyshare.mvp.view.iview.base.IBaseView;
+
+import java.util.List;
 
 /**
  * <p>Title:${type_name}</p>
@@ -20,4 +23,8 @@ public interface IMainView extends IBaseView {
     void getBootmBarFail(int status, String desc);
 
     void getBootmBarSuccess(BootmBarBean bootmBarBean);
+
+    void listSuccess(List<AdvertisementBean.DataBean> data);
+
+    void listFail(int code, String msg);
 }

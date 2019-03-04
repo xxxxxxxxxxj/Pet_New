@@ -381,10 +381,6 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
 
     @Override
     protected void initData() {
-        showDialog();
-        MultipartBody body = new MultipartBody.Builder().setType(MultipartBody.ALTERNATIVE)
-                .addFormDataPart("category", "1").build();
-        mPresenter.list(UrlConstants.getMapHeader(mActivity), body);
     }
 
     @Override
