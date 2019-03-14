@@ -288,6 +288,7 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
         vpMainfrag.setAdapter(viewPagerSelectCarAdapter);
         vpMainfrag.setOffscreenPageLimit(2);//预加载2个
         vpMainfrag.setPageMargin(-70);//设置viewpage之间的间距
+        vpMainfrag.setClipChildren(false);
         vpMainfrag.setPageTransformer(true, new CardTransformer());
 
         osv_mainfrag_local.setCallbacks(this);
@@ -787,6 +788,15 @@ public class MainFragment extends BaseFragment<MainFragmentPresenter> implements
             bannerList1.addAll(data);
             vpMainfrag.setVisibility(View.VISIBLE);
             viewPagerSelectCarAdapter.notifyDataSetChanged();
+            if (data.size() > 1) {
+                vpMainfrag.setCurrentItem(1);
+            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    vpMainfrag.setCurrentItem(0);
+                }
+            }, 500);
         } else {
             vpMainfrag.setVisibility(View.GONE);
         }
