@@ -70,10 +70,19 @@ public class ChargeingState {
         private String soc;
         private String power;
         private String provider;
+        private int providerId;
         private int state = -1;
         private String providerName;
         private List<String> dialogTips;
         private int stopTimeout;
+
+        public int getProviderId() {
+            return providerId;
+        }
+
+        public void setProviderId(int providerId) {
+            this.providerId = providerId;
+        }
 
         public int getStopTimeout() {
             return stopTimeout;
