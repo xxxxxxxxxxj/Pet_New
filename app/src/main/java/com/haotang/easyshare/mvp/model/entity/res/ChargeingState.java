@@ -69,19 +69,18 @@ public class ChargeingState {
         private String endCode;
         private String soc;
         private String power;
-        private String provider;
-        private int providerId;
+        private int provider;
         private int state = -1;
         private String providerName;
         private List<String> dialogTips;
         private int stopTimeout;
 
         public int getProviderId() {
-            return providerId;
+            return provider;
         }
 
         public void setProviderId(int providerId) {
-            this.providerId = providerId;
+            this.provider = providerId;
         }
 
         public int getStopTimeout() {
@@ -186,14 +185,6 @@ public class ChargeingState {
 
         public void setPower(String power) {
             this.power = power;
-        }
-
-        public String getProvider() {
-            return provider;
-        }
-
-        public void setProvider(String provider) {
-            this.provider = provider;
         }
     }
 }

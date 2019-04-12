@@ -58,14 +58,14 @@ public class StartChargeing {
         private String unit;
         private String providerName;
         private List<String> dialogTips;
-        private int providerId;
+        private int provider;
 
         public int getProviderId() {
-            return providerId;
+            return provider;
         }
 
         public void setProviderId(int providerId) {
-            this.providerId = providerId;
+            this.provider = providerId;
         }
 
         public int getInterval() {

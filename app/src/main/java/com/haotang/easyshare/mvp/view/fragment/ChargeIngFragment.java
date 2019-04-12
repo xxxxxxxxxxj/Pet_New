@@ -56,6 +56,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.iwgang.countdownview.CountdownView;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
@@ -115,7 +116,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
     @BindView(R.id.wpv_chargeing)
     WaveProgressView wpv_chargeing;
     @BindView(R.id.tv_chargeing_cdsj)
-    TextView tv_chargeing_cdsj;
+    CountdownView tv_chargeing_cdsj;
     private String phone;
     private int orderId;
     private String endCode;
@@ -388,7 +389,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 ll_chargeing_ing.bringToFront();
                 StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
-                handler.sendEmptyMessage(0);
+                //handler.sendEmptyMessage(0);
+                PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
+                PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
             }
         }
     }
@@ -409,7 +412,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             if (event.getCode() == 0) {
                 ChargeingState.DataBean data = event.getData();
                 if (data != null) {
-                    StringUtil.setText(tv_chargeing_cdsj, data.getTotalTime(), "", View.VISIBLE, View.VISIBLE);
+                    tv_chargeing_cdsj.updateShow(Integer.parseInt(data.getTotalTime()) * 1000);
+                    tv_chargeing_cdsj.pause();
                     rl_chargeing_coupon.setVisibility(View.GONE);
                     rlChargeingChargeAfter.setVisibility(View.VISIBLE);
                     rlChargeingChargeBefore.setVisibility(View.GONE);
@@ -443,7 +447,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                             StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
                             StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
                             //handler.sendEmptyMessageDelayed(0, (interval * 1000));
-                            handler.sendEmptyMessage(0);
+                            PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
+                            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
                         } else if (state == 1) {//进行中,轮询查询充电状态接口
                             tv_chargeing_tishi.setVisibility(View.GONE);
                             closeTimeOutDialog();
@@ -461,7 +466,8 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                                 StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
                             }
                             //handler.sendEmptyMessageDelayed(0, (interval * 1000));
-                            handler.sendEmptyMessage(0);
+                            PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
+                            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
                         } else if (state == 2) {//结算中,轮询获取账单接口
                             tv_chargeing_tishi.setVisibility(View.GONE);
                             closeTimeOutDialog();
