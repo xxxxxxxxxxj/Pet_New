@@ -238,7 +238,7 @@ public class ScanCodeActivity extends BaseActivity<ScanCodePresenter> implements
             if (StringUtil.isEmpty(data.getUnit())) {
                 data.setUnit("0");
             }
-            DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId(), data.getTimeout(), Integer.parseInt(data.getUnit()), data.getDialogTips()));
+            DevRing.busManager().postEvent(new StartCodeChargeing(data.getOrderId(), data.getTimeout(), Integer.parseInt(data.getUnit()), data.getDialogTips(),data.getInterval()));
             finish();
         }
     }

@@ -8,8 +8,8 @@ android {
         applicationId "com.haotang.easyshare"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 8
-        versionName "3.0"
+        versionCode 10
+        versionName "3.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         //指定EventBus加速用的Index

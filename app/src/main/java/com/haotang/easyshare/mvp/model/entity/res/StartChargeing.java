@@ -54,9 +54,18 @@ public class StartChargeing {
         private int orderId;
         private int timeout;
         private int state = -1;
+        private int interval;
         private String unit;
         private String providerName;
         private List<String> dialogTips;
+
+        public int getInterval() {
+            return interval;
+        }
+
+        public void setInterval(int interval) {
+            this.interval = interval;
+        }
 
         public List<String> getDialogTips() {
             return dialogTips;

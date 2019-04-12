@@ -15,15 +15,25 @@ public class StartCodeChargeing {
     private int timeOut;
     private int unit;
     private List<String> dialogTips;
+    private int interval;
 
     public StartCodeChargeing() {
     }
 
-    public StartCodeChargeing(int orderId, int timeOut, int unit, List<String> dialogTips) {
+    public StartCodeChargeing(int orderId, int timeOut, int unit, List<String> dialogTips,int interval) {
         this.orderId = orderId;
         this.timeOut = timeOut;
         this.unit = unit;
         this.dialogTips = dialogTips;
+        this.interval = interval;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
     }
 
     public List<String> getDialogTips() {
