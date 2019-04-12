@@ -442,7 +442,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                             ll_chargeing_jsm.setVisibility(View.GONE);
                             StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
                             StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
-                            handler.sendEmptyMessageDelayed(0,(interval*1000));
+                            handler.sendEmptyMessageDelayed(0, (interval * 1000));
                         } else if (state == 1) {//进行中,轮询查询充电状态接口
                             tv_chargeing_tishi.setVisibility(View.GONE);
                             closeTimeOutDialog();
@@ -455,7 +455,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                             }
                             StringUtil.setText(tvChargeingStatus, "充电中...", "", View.VISIBLE, View.VISIBLE);
                             StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
-                            handler.sendEmptyMessageDelayed(0,(interval*1000));
+                            handler.sendEmptyMessageDelayed(0, (interval * 1000));
                         } else if (state == 2) {//结算中,轮询获取账单接口
                             tv_chargeing_tishi.setVisibility(View.GONE);
                             closeTimeOutDialog();
