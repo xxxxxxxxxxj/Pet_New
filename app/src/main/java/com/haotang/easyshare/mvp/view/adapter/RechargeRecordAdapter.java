@@ -66,7 +66,7 @@ public class RechargeRecordAdapter extends BaseQuickAdapter<ChargeList.DataBean.
             StringUtil.setText(tv_item_rechargerecord_cdl, "充电量：" + item.getTotalPower() + "度", "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_rechargerecord_kssj, "开始时间：" + item.getStartTime(), "", View.VISIBLE, View.VISIBLE);
             StringUtil.setText(tv_item_rechargerecord_jssj, "结束时间：" + item.getEndTime(), "", View.VISIBLE, View.VISIBLE);
-            StringUtil.setText(tv_item_rechargerecord_cdsj, "充电时间：" + item.getTotalTime() + "分钟", "", View.VISIBLE, View.VISIBLE);
+            StringUtil.setText(tv_item_rechargerecord_cdsj, "充电时间：" + item.getTotalTime(), "", View.VISIBLE, View.VISIBLE);
         }
     }
 }

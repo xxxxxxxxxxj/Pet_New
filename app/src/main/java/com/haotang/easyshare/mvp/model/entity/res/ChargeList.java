@@ -71,7 +71,7 @@ public class ChargeList {
 
             private double totalPrice;
             private double payPrice;
-            private double totalTime;
+            private String totalTime;
             private String stationName;
             private String startTime;
             private String endTime;
@@ -95,11 +95,11 @@ public class ChargeList {
                 this.totalPrice = totalPrice;
             }
 
-            public double getTotalTime() {
+            public String getTotalTime() {
                 return totalTime;
             }
 
-            public void setTotalTime(double totalTime) {
+            public void setTotalTime(String totalTime) {
                 this.totalTime = totalTime;
             }
 

@@ -508,6 +508,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                 PollingUtils.stopPollingService(getActivity(), ChargeBillService.class, ChargeBillService.ACTION);
                 PollingUtils.startPollingService(getActivity(), billTimeOut, ChargeBillService.class, ChargeBillService.ACTION, orderId);
             } else {
+                handler.removeMessages(0);
                 closeTimeOutDialog();
                 RingToast.show(event.getMsg());
                 rlChargeingChargeAfter.setVisibility(View.GONE);
@@ -551,8 +552,6 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                     StringUtil.setText(tvChargeingFwf, totalServiceFee + "", "", View.VISIBLE, View.VISIBLE);
                     StringUtil.setText(tvChargeingZfy, totalPrice + "", "", View.VISIBLE, View.VISIBLE);
                 }
-            } else {
-                RingToast.show("账单在飞来的路上，请耐心等候哦");
             }
         }
     }
@@ -635,7 +634,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                         mPresenter.stop(UrlConstants.getMapHeader(mActivity), build);
                     }
                 } else if (state == 2) {//结算中,轮询获取账单接口
+                    RingToast.show("账单在飞来的路上，请耐心等候哦");
                 } else if (state == 3) {//待支付,轮询获取账单接口
+                    RingToast.show("账单在飞来的路上，请耐心等候哦");
                 } else if (state == 4) {//获取到账单，调取支付接口
                     showDialog();
                     MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
