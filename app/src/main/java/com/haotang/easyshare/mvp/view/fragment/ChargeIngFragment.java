@@ -408,6 +408,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
 
     @Subscribe
     public void getChargeState(ChargeingState event) {//轮询获取充电状态结果
+        ll_chargeing_jsm.setVisibility(View.GONE);
         if (event != null) {
             if (event.getCode() == 0) {
                 ChargeingState.DataBean data = event.getData();
@@ -690,7 +691,7 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             StringUtil.setText(tvChargeingName, data.getProviderName(), "", View.VISIBLE, View.GONE);
             handler.removeMessages(0);
             if (state == 0) {//连接中,插枪未充电
-                unit = Integer.parseInt(data.getUnit());
+                unit = data.getUnit();
                 //启动倒计时
                 num = data.getTimeout() % unit > 0 ? data.getTimeout() / unit + 1 : data.getTimeout() / unit;
                 RingLog.e("num = " + num);

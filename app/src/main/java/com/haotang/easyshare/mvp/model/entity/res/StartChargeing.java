@@ -55,7 +55,7 @@ public class StartChargeing {
         private int timeout;
         private int state = -1;
         private int interval;
-        private String unit;
+        private int unit;
         private String providerName;
         private List<String> dialogTips;
         private int provider;
@@ -84,11 +84,11 @@ public class StartChargeing {
             this.dialogTips = dialogTips;
         }
 
-        public String getUnit() {
+        public int getUnit() {
             return unit;
         }
 
-        public void setUnit(String unit) {
+        public void setUnit(int unit) {
             this.unit = unit;
         }
 

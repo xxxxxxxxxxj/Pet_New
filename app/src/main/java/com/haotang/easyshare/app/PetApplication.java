@@ -12,10 +12,13 @@ import com.haotang.easyshare.shareutil.ShareManager;
 import com.haotang.easyshare.util.SharedPreferenceUtil;
 import com.haotang.easyshare.util.StringUtil;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.http.HttpConfig;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.FileUtil;
 import com.umeng.commonsdk.UMConfigure;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
+
+import java.util.concurrent.TimeUnit;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.im.android.api.JMessageClient;
@@ -61,9 +64,13 @@ public class PetApplication extends Application {
 //        DevRing.configureHttp().getOkHttpClientBuilder();
 //        DevRing.configureHttp().getRetrofitBuilder();*/
 
-        DevRing.configureHttp()//配置retrofit
-                .setBaseUrl(UrlConstants.getServiceBaseUrl())//设置BaseUrl
-                .setConnectTimeout(15)//设置请求超时时长，单位秒
+        HttpConfig httpConfig = DevRing.configureHttp();
+
+        httpConfig.getOkHttpClientBuilder().readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS).build();
+
+        //配置retrofit
+        httpConfig.setBaseUrl(UrlConstants.getServiceBaseUrl())//设置BaseUrl
                 .setIsUseLog(AppConfig.isShowLog);//设置是否开启Log，默认不开启
 
 

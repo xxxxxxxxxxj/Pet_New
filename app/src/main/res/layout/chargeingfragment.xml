@@ -235,6 +235,7 @@
                     android:layout_marginLeft="15dip"
                     android:layout_marginRight="15dip"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <TextView
