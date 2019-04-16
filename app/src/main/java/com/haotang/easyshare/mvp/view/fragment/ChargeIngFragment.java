@@ -447,9 +447,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                             ll_chargeing_jsm.setVisibility(View.GONE);
                             StringUtil.setText(tvChargeingStatus, "连接中...", "", View.VISIBLE, View.VISIBLE);
                             StringUtil.setText(btnChargeingSubmit, "充电连接中...", "", View.VISIBLE, View.VISIBLE);
-                            //handler.sendEmptyMessageDelayed(0, (interval * 1000));
-                            PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
-                            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
+                            handler.sendEmptyMessageDelayed(0, (interval * 1000));
+                            /*PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
+                            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);*/
                         } else if (state == 1) {//进行中,轮询查询充电状态接口
                             tv_chargeing_tishi.setVisibility(View.GONE);
                             closeTimeOutDialog();
@@ -466,9 +466,9 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
                             } else {
                                 StringUtil.setText(btnChargeingSubmit, "结束充电", "", View.VISIBLE, View.VISIBLE);
                             }
-                            //handler.sendEmptyMessageDelayed(0, (interval * 1000));
-                            PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
-                            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);
+                            handler.sendEmptyMessageDelayed(0, (interval * 1000));
+                            /*PollingUtils.stopPollingService(getActivity(), ChargeStateService.class, ChargeStateService.ACTION);
+                            PollingUtils.startPollingService(getActivity(), stateTimeOut, ChargeStateService.class, ChargeStateService.ACTION, orderId);*/
                         } else if (state == 2) {//结算中,轮询获取账单接口
                             tv_chargeing_tishi.setVisibility(View.GONE);
                             closeTimeOutDialog();

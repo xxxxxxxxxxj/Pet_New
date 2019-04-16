@@ -66,8 +66,8 @@ public class PetApplication extends Application {
 
         HttpConfig httpConfig = DevRing.configureHttp();
 
-        httpConfig.getOkHttpClientBuilder().readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS).build();
+        httpConfig.getOkHttpClientBuilder().readTimeout(AppConfig.HTTP_TIMEOUT, TimeUnit.SECONDS)
+                .connectTimeout(AppConfig.HTTP_TIMEOUT, TimeUnit.SECONDS).build();
 
         //配置retrofit
         httpConfig.setBaseUrl(UrlConstants.getServiceBaseUrl())//设置BaseUrl
