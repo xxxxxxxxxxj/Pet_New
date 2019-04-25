@@ -187,12 +187,16 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
             couponId = event.getId();
             if (reduceType == 1) {//减免券
                 tv_chargeing_coupon.setText("优惠券减免" + event.getAmount() + "元");
-                totalPrice = String.valueOf(ComputeUtil.sub(Double.valueOf(totalPrice), event.getAmount()));
+                totalPrice = String.valueOf(ComputeUtil.sub(Double.valueOf(totalPrice), (event.getAmount() > event.getMaxDiscount() ? event.getMaxDiscount() : event.getAmount())));
                 StringUtil.setText(tvChargeingZfy, totalPrice + "", "", View.VISIBLE, View.VISIBLE);
             } else if (reduceType == 2) {//折扣券
-                tv_chargeing_coupon.setText("服务费" + event.getAmount() + "折,优惠" + ComputeUtil.sub(Double.valueOf(totalServiceFee), ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount())) + "元");
-                totalPrice = String.valueOf(ComputeUtil.sub(Double.valueOf(totalPrice), ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount())));
-                StringUtil.setText(tvChargeingFwf, ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount()) + "", "", View.VISIBLE, View.VISIBLE);
+                double sub = ComputeUtil.sub(Double.valueOf(totalServiceFee), ComputeUtil.mul(Double.valueOf(totalServiceFee), event.getAmount()));
+                if (sub > event.getMaxDiscount()) {
+                    sub = event.getMaxDiscount();
+                }
+                tv_chargeing_coupon.setText("服务费" + event.getAmount() + "折,优惠" + sub + "元");
+                totalPrice = String.valueOf(ComputeUtil.sub(Double.valueOf(totalPrice), sub));
+                StringUtil.setText(tvChargeingFwf, totalServiceFee, "", View.VISIBLE, View.VISIBLE);
                 StringUtil.setText(tvChargeingZfy, totalPrice + "", "", View.VISIBLE, View.VISIBLE);
             }
         }

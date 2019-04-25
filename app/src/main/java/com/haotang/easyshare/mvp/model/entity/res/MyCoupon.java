@@ -82,6 +82,15 @@ public class MyCoupon {
             private String endTime;
             private String title;
             private boolean isSelect;
+            private double maxDiscount;
+
+            public double getMaxDiscount() {
+                return maxDiscount;
+            }
+
+            public void setMaxDiscount(double maxDiscount) {
+                this.maxDiscount = maxDiscount;
+            }
 
             public boolean isSelect() {
                 return isSelect;

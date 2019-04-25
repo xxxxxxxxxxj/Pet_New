@@ -20,11 +20,20 @@ public class SelectCouponEvent {
     private String endTime;
     private String title;
     private boolean isSelect;
+    private double maxDiscount;
+
+    public double getMaxDiscount() {
+        return maxDiscount;
+    }
+
+    public void setMaxDiscount(double maxDiscount) {
+        this.maxDiscount = maxDiscount;
+    }
 
     public SelectCouponEvent() {
     }
 
-    public SelectCouponEvent(double amount, String amountTxt, String description, int reduceType, String startTime, int id, int state, int isAvali, String endTime, String title, boolean isSelect) {
+    public SelectCouponEvent(double amount, String amountTxt, String description, int reduceType, String startTime, int id, int state, int isAvali, String endTime, String title, boolean isSelect,double maxDiscount) {
         this.amount = amount;
         this.amountTxt = amountTxt;
         this.description = description;
@@ -36,6 +45,7 @@ public class SelectCouponEvent {
         this.endTime = endTime;
         this.title = title;
         this.isSelect = isSelect;
+        this.maxDiscount = maxDiscount;
     }
 
     public double getAmount() {

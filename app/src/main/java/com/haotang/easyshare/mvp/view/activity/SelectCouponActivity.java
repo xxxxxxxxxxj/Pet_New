@@ -95,7 +95,7 @@ public class SelectCouponActivity extends BaseActivity<SelectCouponPresenter> im
                     MyCoupon.DataBean.DatasetBean datasetBean = list.get(position);
                     datasetBean.setSelect(true);
                     selectCouponAdapter.notifyDataSetChanged();
-                    DevRing.busManager().postEvent(new SelectCouponEvent(datasetBean.getAmount(),datasetBean.getAmountTxt(),datasetBean.getDescription(),datasetBean.getReduceType(),datasetBean.getStartTime(),datasetBean.getId(),datasetBean.getState(),datasetBean.getIsAvali(),datasetBean.getEndTime(),datasetBean.getTitle(),datasetBean.isSelect()));
+                    DevRing.busManager().postEvent(new SelectCouponEvent(datasetBean.getAmount(),datasetBean.getAmountTxt(),datasetBean.getDescription(),datasetBean.getReduceType(),datasetBean.getStartTime(),datasetBean.getId(),datasetBean.getState(),datasetBean.getIsAvali(),datasetBean.getEndTime(),datasetBean.getTitle(),datasetBean.isSelect(),datasetBean.getMaxDiscount()));
                     finish();
                 }
             }
