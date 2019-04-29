@@ -71,7 +71,7 @@ public interface ChargeingFragmentApiService {
     Observable<HttpResult<AddChargeBean>> save(@HeaderMap Map<String, String> headers,@Body RequestBody build);
 
     /**
-     * 故障报修
+     * 取消订单
      *
      * @param build
      */

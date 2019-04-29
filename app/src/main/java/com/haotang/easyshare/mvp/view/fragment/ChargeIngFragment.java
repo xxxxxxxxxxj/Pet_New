@@ -27,6 +27,7 @@ import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingBill;
 import com.haotang.easyshare.mvp.model.entity.res.ChargeingState;
 import com.haotang.easyshare.mvp.model.entity.res.HomeBean;
+import com.haotang.easyshare.mvp.model.entity.res.LoginBean;
 import com.haotang.easyshare.mvp.model.entity.res.StartChargeing;
 import com.haotang.easyshare.mvp.presenter.ChargeIngFragmentPresenter;
 import com.haotang.easyshare.mvp.view.activity.LoginActivity;
@@ -216,6 +217,14 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         if (refreshFragmentEvent != null && refreshFragmentEvent.getRefreshIndex() ==
                 RefreshFragmentEvent.REFRESH_CHARGEINGFRAGMET && mPresenter != null) {
             RingLog.e("REFRESH_CHARGEINGFRAGMET");
+            refresh();
+        }
+    }
+
+    @Subscribe
+    public void RefreshFragment(LoginBean loginBean) {//切换地步tab
+        if (loginBean != null) {
+            RingLog.e("REFRESH_CHARGEINGFRAGMET LoginBean");
             refresh();
         }
     }
@@ -766,6 +775,11 @@ public class ChargeIngFragment extends BaseFragment<ChargeIngFragmentPresenter> 
         rlChargeingChargeBefore.setVisibility(View.VISIBLE);
         tvChargeingLjcz.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         tvChargeingLjcz.getPaint().setAntiAlias(true);//抗锯齿
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

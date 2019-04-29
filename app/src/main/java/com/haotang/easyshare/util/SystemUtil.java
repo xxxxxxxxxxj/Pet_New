@@ -50,6 +50,7 @@ import com.haotang.easyshare.mvp.model.entity.res.AddChargeBean;
 import com.haotang.easyshare.mvp.model.entity.res.LngLat;
 import com.haotang.easyshare.mvp.model.entity.res.base.HttpResult;
 import com.haotang.easyshare.mvp.model.http.NavApiService;
+import com.haotang.easyshare.mvp.view.activity.LoginActivity;
 import com.haotang.easyshare.mvp.view.activity.PhotoViewPagerActivity;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
@@ -284,9 +285,10 @@ public class SystemUtil {
         return translateAnimation;
     }
 
-    public static void Exit(Context activity, int code) {
+    public static void Exit(Context mActivity, int code) {
         if (code == AppConfig.EXIT_USER_CODE) {
-            SharedPreferenceUtil.getInstance(activity).removeData("cellphone");
+            SharedPreferenceUtil.getInstance(mActivity).removeData("cellphone");
+            mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
         }
     }
 
